@@ -19,7 +19,7 @@ const LL inf = 1e18;
 int T;
 int n, m, Q;
 int pw[Max_n], son[Max_n][20];
-LL f[Max_n][20];
+LL f[Max_n][21];
 char S[Max_n];
 inline void Init() {
   n = read(), m = read(), Q = read();
@@ -33,10 +33,12 @@ inline void DP() {
   for (int i = 2; i <= n; i++) pw[i] = pw[i - 1] * 10 % m;
   for (int i = 1; i <= n; i++)
     for (int j = 0; j < m; j++) {
+      son[i][j] = m + 1, f[i - 1][m + 1] = -inf;
       if (S[i] == '?')
         for (int k = 0; k <= 9; k++) {
           int to = get_to(i, j, k);
           Fix(f[i][j] += f[i - 1][to]);
+          if (f[i - 1][to] > f[i - 1][son[i][j]]) son[i][j] = to;
         }
       else
         Fix(f[i][j] += f[i - 1][get_to(i, j, S[i] - '0')];
