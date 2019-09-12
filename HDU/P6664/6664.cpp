@@ -18,7 +18,8 @@ const int mod = 1e9 + 7, Max_n = 5e4 + 5;
 const LL inf = 1e18;
 int T;
 int n, m, Q;
-int pw[Max_n], son[Max_n][20];
+int pw[Max_n], son[Max_n][21];
+int jp[17][Max_n][21];
 LL f[Max_n][21];
 char S[Max_n];
 inline void Init() {
