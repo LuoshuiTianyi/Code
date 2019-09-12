@@ -34,14 +34,16 @@ inline void DP() {
   for (int i = 1; i <= n; i++)
     for (int j = 0; j < m; j++) {
       son[i][j] = m + 1, f[i - 1][m + 1] = -inf;
-      if (S[i] == '?')
+      if (S[i] == '?') {
         for (int k = 0; k <= 9; k++) {
           int to = get_to(i, j, k);
           Fix(f[i][j] += f[i - 1][to]);
           if (f[i - 1][to] > f[i - 1][son[i][j]]) son[i][j] = to;
         }
-      else
-        Fix(f[i][j] += f[i - 1][get_to(i, j, S[i] - '0')];
+      } else {
+        int to = son[i][j] = get_to(i, j, S[i] - '0');
+        Fix(f[i][j] += f[i - 1][to]);
+      }
     }
 }
 void Solve() {
