@@ -23,9 +23,8 @@ double f[Max_n][12][51], g[Max_n * 12][Max_n * 12], ans[Max_n * 12];
 bool vis[Max_n][12][51], inf[Max_n * 12];
 char S[12], T[52];
 inline int get_to(int now, char c) {
-  for (int i = now; ; i = nx[i]) {
-    if (S[i + 1] == c)
-      return i + 1;
+  for (int i = now;; i = nx[i]) {
+    if (S[i + 1] == c) return i + 1;
     if (!i) return 0;
   }
 }
@@ -60,23 +59,40 @@ inline void Init() {
   }
   dfs(1, 0, 0);
 }
+inline void Elimi(int n) {
+  for (int i = 0, mp = 0; i < n; mp = ++i) {
+    for (int j = i + 1; j < n; j++) abs(g[j][i]) > abs(g[mp][i]) ? mp = j : mp;
+    for (int j = i; j <= n; j++) swap(g[mp][j], g[i][j]);
+    if (abs(g[i][i]) <= 1e-6) {
+      cout << "-1";
+      exit(0);
+    }
+  }
+}
 inline void Solve() {
   for (int k = p; k; k--) {
     int cnt = 0, no = k & 1, ol = (k + 1) & 1;
     for (int i = 1; i <= n; i++)
-      for (int j = 0; j < w; j++) 
+      for (int j = 0; j < w; j++)
         if (vis[i][j][k]) id[no][i][j] = cnt++;
-    for (int i = 1 ; i <= n; i++)
+    for (int i = 1; i <= n; i++)
       for (int j = 0; j < w; j++)
         if (vis[i][j][k]) {
           int x = id[no][i][j];
-          g[x][x] = 1, g[x][cnt] = 1;
+          g[x][x] = out[i], g[x][cnt] = out[i];
           for (int t = 0; t < M; t++)
             if (ch[i][t]) {
               char c = i + 'a';
               int to = get_to(j, c);
+              if (to == w) continue;
+              if (c == T[k + 1])
+                g[x][cnt] += ans[id[ol][ch[i][t]][to]];
+              else
+                g[x][id[no][ch[i][t]][to]]--;
             }
         }
+    Elimi(cnt);
+    memset(g, 0, sizeof(g));
   }
 }
 int main() {
