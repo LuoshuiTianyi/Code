@@ -19,7 +19,25 @@ const int Max_n = 25, M = 26;
 int n, m, w, p;
 int nx[12], ch[Max_n][M];
 double f[Max_n][11][51], g[Max_n * 12][Max_n * 12], ans[Max_n * 12];
+bool vis[Max_][11][51], inf[Max_n * 12];
 char S[12], T[52];
+inline int get_to(int now, char c) {
+  for (int i = now; ; i = nx[i]) {
+    if (S[i + 1] == c)
+      return i + 1;
+    
+  }
+}
+void dfs(int x, int ls, int lt) {
+  if (vis[x][ls][lt]) return;
+  vis[x][ls][lt] = 1;
+  if (ls == w || lt == p) return;
+  for (int i = 0; i < M; i++)
+    if (ch[x][i]) {
+      char c = i + 'a';
+      int to = get_to(ls, c);
+    }
+}
 inline void Init() {
   n = read(), m = read();
   int u, v;
@@ -38,6 +56,7 @@ inline void Init() {
         break;
       }
   }
+  dfs(1, 0, 0);
 }
 inline void Solve() {
   for (int k = p; k; i--) {
