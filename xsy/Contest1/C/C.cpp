@@ -19,7 +19,7 @@ const int Max_n = 25, M = 26;
 int n, m, w, p;
 int nx[12], ch[Max_n][M];
 int out[Max_n], id[2][Max_n][12];
-double f[Max_n][12][51], g[Max_n * 12][Max_n * 12], ans[Max_n * 12];
+double g[Max_n * 12][Max_n * 12], ans[Max_n * 12];
 bool vis[Max_n][12][51], inf[Max_n * 12];
 char S[12], T[52];
 inline int get_to(int now, char c) {
@@ -31,12 +31,13 @@ inline int get_to(int now, char c) {
 void dfs(int x, int ls, int lt) {
   if (vis[x][ls][lt]) return;
   vis[x][ls][lt] = 1;
+  cout << x << " " << ls << " " << lt << endl;
   if (ls == w || lt == p) return;
   for (int i = 0; i < M; i++)
     if (ch[x][i]) {
       char c = i + 'a';
       int to = get_to(ls, c);
-      dfs(ch[x][i], to, lt + c == T[lt + 1]);
+      dfs(ch[x][i], to, lt + (c == T[lt + 1]));
     }
 }
 inline void Init() {
@@ -47,7 +48,7 @@ inline void Init() {
     u = read(), v = read(), scanf(" %c", &c);
     out[u]++, ch[u][c - 'a'] = v;
   }
-  scanf(" %s", S + 1), scanf(" %s", T);
+  scanf(" %s", S + 1), scanf(" %s", T + 1);
   w = strlen(S + 1), p = strlen(T + 1);
   for (int i = 2; i <= w; i++) {
     nx[i] = S[i] == S[1] ? 1 : 0;
@@ -67,7 +68,14 @@ inline void Elimi(int n) {
       cout << "-1";
       exit(0);
     }
+    for (int j = 0; j < n; j++)
+      if (i != j) {
+        double x = g[j][i] / g[i][i];
+        for (int k = i; k <= n; k++) g[j][k] -= g[i][k] * x;
+      }
   }
+  for (int i = 0; i < n; i++)
+    ans[i] = g[i][n] / g[i][i];
 }
 inline void Solve() {
   for (int k = p; k; k--) {
@@ -102,4 +110,5 @@ int main() {
 #endif
   Init();
   Solve();
+  printf("%.2lf", ans[0]);
 }
