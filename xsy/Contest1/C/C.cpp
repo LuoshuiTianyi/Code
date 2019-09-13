@@ -14,10 +14,20 @@ LL read() {
   }
   return x * w;
 }
-int n;
+const int Max_n = 25, M = 26;
+int n, m;
+int ch[Max_n][M];
+char S[100], T[100];
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("C.in", "r", stdin);
   freopen("C.out", "w", stdout);
 #endif
+  n = read(), m = read();
+  int u, v;
+  char c;
+  for (int i = 1; i <= m; i++) {
+    u = read(), v = read(), scanf(" %c", &c);
+    ch[u][c - 'a'] = v;
+  }
 }
