@@ -69,7 +69,13 @@ inline void Solve() {
     for (int i = 1 ; i <= n; i++)
       for (int j = 0; j < w; j++)
         if (vis[i][j][k]) {
-          int x = id[i][j];
+          int x = id[no][i][j];
+          g[x][x] = 1, g[x][cnt] = 1;
+          for (int t = 0; t < M; t++)
+            if (ch[i][t]) {
+              char c = i + 'a';
+              int to = get_to(j, c);
+            }
         }
   }
 }
