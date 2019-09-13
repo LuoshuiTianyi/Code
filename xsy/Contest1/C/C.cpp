@@ -18,8 +18,9 @@ inline LL read() {
 const int Max_n = 25, M = 26;
 int n, m, w, p;
 int nx[12], ch[Max_n][M];
-double f[Max_n][11][51], g[Max_n * 12][Max_n * 12], ans[Max_n * 12];
-bool vis[Max_][11][51], inf[Max_n * 12];
+int out[Max_n], id[2][Max_n][12];
+double f[Max_n][12][51], g[Max_n * 12][Max_n * 12], ans[Max_n * 12];
+bool vis[Max_n][12][51], inf[Max_n * 12];
 char S[12], T[52];
 inline int get_to(int now, char c) {
   for (int i = now; ; i = nx[i]) {
@@ -36,6 +37,7 @@ void dfs(int x, int ls, int lt) {
     if (ch[x][i]) {
       char c = i + 'a';
       int to = get_to(ls, c);
+      dfs(ch[x][i], to, lt + c == T[lt + 1]);
     }
 }
 inline void Init() {
@@ -44,7 +46,7 @@ inline void Init() {
   char c;
   for (int i = 1; i <= m; i++) {
     u = read(), v = read(), scanf(" %c", &c);
-    ch[u][c - 'a'] = v;
+    out[u]++, ch[u][c - 'a'] = v;
   }
   scanf(" %s", S + 1), scanf(" %s", T);
   w = strlen(S + 1), p = strlen(T + 1);
@@ -59,8 +61,16 @@ inline void Init() {
   dfs(1, 0, 0);
 }
 inline void Solve() {
-  for (int k = p; k; i--) {
-    
+  for (int k = p; k; k--) {
+    int cnt = 0, no = k & 1, ol = (k + 1) & 1;
+    for (int i = 1; i <= n; i++)
+      for (int j = 0; j < w; j++) 
+        if (vis[i][j][k]) id[no][i][j] = cnt++;
+    for (int i = 1 ; i <= n; i++)
+      for (int j = 0; j < w; j++)
+        if (vis[i][j][k]) {
+          int x = id[i][j];
+        }
   }
 }
 int main() {
