@@ -28,11 +28,18 @@ int main() {
     for (int j = 1; j <= n + 1; j++) a[i][j] = read();
   for (int i = 1; i <= n; i++) {
     int mp = i;
-    for (int j = i; j <= n; j++) abs(a[mp][i]) < abs(a[j][i]) ? mp = j : mp;
+    for (int j = i + 1; j <= n; j++) abs(a[mp][i]) < abs(a[j][i]) ? mp = j : mp;
     for (int j = i; j <= n + 1; j++) swap(a[i][j], a[mp][j]);
     if (!a[i][i]) {
       cout << "No Solution";
       return 0;
     }
+    for (int j = 1; j <= n; j++)
+      if (i != j) {
+        double x = a[j][i] / a[i][i];
+        for (int k = i; k <= n + 1; k++) a[j][k] -= a[i][k] * x;
+      }
   }
+  for (int i = 1; i <= n; i++)
+    printf("%.2lf\n", a[i][n + 1] / a[i][i]);
 }
