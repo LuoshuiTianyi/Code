@@ -31,7 +31,6 @@ inline int get_to(int now, char c) {
 void dfs(int x, int ls, int lt) {
   if (vis[x][ls][lt]) return;
   vis[x][ls][lt] = 1;
-  cout << x << " " << ls << " " << lt << endl;
   if (ls == w || lt == p) return;
   for (int i = 0; i < M; i++)
     if (ch[x][i]) {
@@ -78,7 +77,7 @@ inline void Elimi(int n) {
     ans[i] = g[i][n] / g[i][i];
 }
 inline void Solve() {
-  for (int k = p; k; k--) {
+  for (int k = p - 1; ~k; k--) {
     int cnt = 0, no = k & 1, ol = (k + 1) & 1;
     for (int i = 1; i <= n; i++)
       for (int j = 0; j < w; j++)
@@ -99,6 +98,7 @@ inline void Solve() {
                 g[x][id[no][ch[i][t]][to]]--;
             }
         }
+    //cout << k << endl;
     Elimi(cnt);
     memset(g, 0, sizeof(g));
   }
