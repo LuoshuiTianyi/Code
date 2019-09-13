@@ -25,7 +25,7 @@ inline int get_to(int now, char c) {
   for (int i = now; ; i = nx[i]) {
     if (S[i + 1] == c)
       return i + 1;
-    
+    if (!i) return 0;
   }
 }
 void dfs(int x, int ls, int lt) {
