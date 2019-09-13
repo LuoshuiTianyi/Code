@@ -1,10 +1,11 @@
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 using namespace std;
 #define LL long long
 #define go(x, i, v) for (int i = hd[x], v = to[i]; i; v = to[i = nx[i]])
 #define inline __inline__ __attribute__((always_inline))
-LL read() {
+inline LL read() {
   long long x = 0, w = 1;
   char ch = getchar();
   while (!isdigit(ch)) w = ch == '-' ? -1 : 1, ch = getchar();
@@ -15,14 +16,11 @@ LL read() {
   return x * w;
 }
 const int Max_n = 25, M = 26;
-int n, m;
-int ch[Max_n][M];
-char S[100], T[100];
-int main() {
-#ifndef ONLINE_JUDGE
-  freopen("C.in", "r", stdin);
-  freopen("C.out", "w", stdout);
-#endif
+int n, m, w, p;
+int nx[12], ch[Max_n][M];
+double f[Max_n][11][51], g[Max_n * 12][Max_n * 12], ans[Max_n * 12];
+char S[12], T[52];
+inline void Init() {
   n = read(), m = read();
   int u, v;
   char c;
@@ -30,4 +28,19 @@ int main() {
     u = read(), v = read(), scanf(" %c", &c);
     ch[u][c - 'a'] = v;
   }
+  scanf(" %s", S + 1), scanf(" %s", T);
+  w = strlen(S + 1), p = strlen(T + 1);
+}
+void Solve() {
+  for (int k = p; k; i--) {
+    
+  }
+}
+int main() {
+#ifndef ONLINE_JUDGE
+  freopen("C.in", "r", stdin);
+  freopen("C.out", "w", stdout);
+#endif
+  Init();
+  Solve();
 }
