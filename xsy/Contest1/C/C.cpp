@@ -14,6 +14,7 @@ LL read() {
   }
   return x * w;
 }
+int n;
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("C.in", "r", stdin);
