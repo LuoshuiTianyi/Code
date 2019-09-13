@@ -70,7 +70,6 @@ int main() {
     for (int j = 1; j <= n; j++)
       for (int k = 0; k < ls; k++)
         if (vis[j][k][i]) id[j][k] = sz++;
-    cout << sz << endl;
     for (int j = 1; j <= n; j++)
       for (int k = 0; k < ls; k++)
         if (vis[j][k][i]) {
@@ -83,6 +82,7 @@ int main() {
               char c = l + 'a';
               while (l2 && s[l2 + 1] != c) l2 = fa[l2];
               if (s[l2 + 1] == c) l2++;
+              cout << l2 << " ";
               if (l2 == ls) continue;
               if (c == t[i + 1])
                 f[x][sz] += tmp[id2[v][l2]];
@@ -90,6 +90,12 @@ int main() {
                 f[x][id[v][l2]]--;
             }
         }
+    //for (int i = 0; i < sz; i++) {
+    //  for (int j = 0; j <= sz; j++)
+    //    cout << f[i][j] << " ";
+    //  cout << endl;
+    //}
+    cout << endl;
     gauss(sz);
     memcpy(id2, id, sizeof(id));
     for (int j = 0; j < sz; j++) tmp[j] = f[j][sz];

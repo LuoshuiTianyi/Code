@@ -1,9 +1,9 @@
+#include <cmath>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
 using namespace std;
 #define LL long long
-#define go(x, i, v) for (int i = hd[x], v = to[i]; i; v = to[i = nx[i]])
 #define inline __inline__ __attribute__((always_inline))
 inline LL read() {
   long long x = 0, w = 1;
@@ -89,7 +89,7 @@ inline void Solve() {
           g[x][x] = out[i], g[x][cnt] = out[i];
           for (int t = 0; t < M; t++)
             if (ch[i][t]) {
-              char c = i + 'a';
+              char c = t + 'a';
               int to = get_to(j, c);
               if (to == w) continue;
               if (c == T[k + 1])
@@ -98,7 +98,6 @@ inline void Solve() {
                 g[x][id[no][ch[i][t]][to]]--;
             }
         }
-    //cout << k << endl;
     Elimi(cnt);
     memset(g, 0, sizeof(g));
   }
