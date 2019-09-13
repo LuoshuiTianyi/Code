@@ -30,8 +30,16 @@ inline void Init() {
   }
   scanf(" %s", S + 1), scanf(" %s", T);
   w = strlen(S + 1), p = strlen(T + 1);
+  for (int i = 2; i <= w; i++) {
+    nx[i] = S[i] == S[1] ? 1 : 0;
+    for (int j = nx[i - 1]; j; j = nx[j])
+      if (S[j + 1] == S[i]) {
+        nx[i] = j + 1;
+        break;
+      }
+  }
 }
-void Solve() {
+inline void Solve() {
   for (int k = p; k; i--) {
     
   }
