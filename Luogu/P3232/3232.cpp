@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -28,7 +29,7 @@ inline void addr(int u, int v) {
 inline void Elimi() {
   for (int i = 1, mp = 1; i < n; mp = ++i) {
     for (int j = i + 1; j < n; j++)
-      if (f[j][i] > f[mp][i]) mp = j;
+      if (abs(f[j][i]) > abs(f[mp][i])) mp = j;
     for (int j = i; j <= n; j++) swap(f[i][j], f[mp][j]);
     for (int j = 1; j < n; j++)
       if (i != j) {
@@ -53,7 +54,13 @@ int main() {
     go(i, j, v) if (v != n) f[i][v] = -1.0 / in[v];
   }
   f[1][n] = 1;
+  for (int i = 1; i < n; i++) {
+    for (int j = 1; j < n; j++)
+      printf("%.3lfx%d ", f[i][j], j);
+    printf("=%.3lf\n", f[i][n]);
+  }
   Elimi();
+  cout << ans[2] << endl;
   for (int i = 1; i <= m; i++) num[i] = ans[u[i]] + ans[v[i]];
   sort(num + 1, num + m + 1);
   for (int i = 1; i <= m; i++)
