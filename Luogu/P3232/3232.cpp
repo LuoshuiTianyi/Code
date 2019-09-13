@@ -19,8 +19,8 @@ inline LL read() {
 const int Max_n = 505;
 int n, m;
 int cntr, hd[Max_n], nx[Max_n * Max_n << 1], to[Max_n * Max_n << 1];
-int u[Max_n * Max_n], v[Max_n * Max_n], num[Max_n * Max_n];
-double Ans, in[Max_n], f[Max_n][Max_n], ans[Max_n];
+int u[Max_n * Max_n], v[Max_n * Max_n];
+double Ans, in[Max_n], f[Max_n][Max_n], num[Max_n * Max_n], ans[Max_n];
 inline void addr(int u, int v) {
   cntr++;
   nx[cntr] = hd[u], to[cntr] = v;
@@ -54,16 +54,15 @@ int main() {
     go(i, j, v) if (v != n) f[i][v] = -1.0 / in[v];
   }
   f[1][n] = 1;
-  for (int i = 1; i < n; i++) {
-    for (int j = 1; j < n; j++)
-      printf("%.3lfx%d ", f[i][j], j);
-    printf("=%.3lf\n", f[i][n]);
-  }
+  //for (int i = 1; i < n; i++) {
+  //  for (int j = 1; j < n; j++)
+  //    printf("%.3lfx%d ", f[i][j], j);
+  //  printf("=%.3lf\n", f[i][n]);
+  //}
   Elimi();
-  cout << ans[2] << endl;
   for (int i = 1; i <= m; i++) num[i] = ans[u[i]] + ans[v[i]];
   sort(num + 1, num + m + 1);
   for (int i = 1; i <= m; i++)
-    Ans += num[i] * (m - i + 1);
+    Ans += (double)num[i] * (m - i + 1);
   printf("%.3lf", Ans);
 }
