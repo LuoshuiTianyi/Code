@@ -18,7 +18,24 @@ const int Max_n = 2e5 + 5;
 int T;
 int n, m, mod;
 int fac[Max_n], ifac[Max_n];
+int ksm(int a, int b) {
+  int res = 1;
+  for (; b; b >>= 1, a = 1ll * a * a % mod)
+    if (b & 1) res = 1ll * res * a % mod;
+  return res;
+}
+void Init() {
+  fac[0] = 1;
+  for (int i = 1; i <= n + m; i++) fac[i] = 1ll * fac[i - 1] * i % mod;
+  ifac[n + m] = ksm(fac[n + m], mod - 2);
+  for (int i = n + m - 1; ~i; i--) ifac[i] = 1ll * ifac[i + 1] * (i + 1) % mod;
+}
+int C(int n, int m) {
+  return n < m ? 0 : 1ll * fac[n] * ifac[m] % mod * ifac[n - m] % mod;
+}
 int Lucas(int n, int m) {
+  if (!m) return 1;
+  return 1ll * C(n % mod, m % mod) * Lucas(n / mod, m / mod) % mod;
 }
 int main() {
 #ifndef ONLINE_JUDGE
@@ -28,6 +45,7 @@ int main() {
   T = read();
   while (T--) {
     n = read(), m = read(), mod = read();
+    Init();
     cout << Lucas(n + m, n) << endl;
   }
 }
