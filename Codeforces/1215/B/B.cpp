@@ -14,21 +14,21 @@ inline LL read() {
   }
   return x * w;
 }
-int a1, a2, k1, k2, n;
+const int Max_n = 2e5 + 5;
+int n;
+LL ans1, ans2;
+int a[Max_n], sum[2];
 int main() {
 #ifndef ONLINE_JUDGE
-  freopen("A.in", "r", stdin);
-  freopen("A.out", "w", stdout);
+  freopen("B.in", "r", stdin);
+  freopen("B.out", "w", stdout);
 #endif
-  a1 = read(), a2 = read(), k1 = read(), k2 = read(), n = read();
-  if (n <= a1 * (k1 - 1) + a2 * (k2 - 1))
-    cout << "0 ";
-  else
-    cout << min(a1 + a2, n - a1 * (k1 - 1) - a2 * (k2 - 1)) << " ";
-  if (k1 > k2) swap(k1, k2), swap(a1, a2);
-  int tmp = n, ans = 0;
-  ans += min(a1, n / k1);
-  tmp -= ans * k1;
-  ans += min(a2, tmp / k2);
-  cout << ans;
+  n = read();
+  int now = 0;
+  for (int i = 1; i <= n; i++) {
+    a[i] = read();
+    if (a[i] < 0) now ^= 1;
+    ans1 += sum[now ^ 1], ans2 += sum[now]++;
+  }
+  cout << ans1 << " " << ans2;
 }
