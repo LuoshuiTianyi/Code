@@ -34,10 +34,10 @@ int main() {
       d -= s[i] - '0';
     else
       s2++;
-  s1 -= min(s1, s2), s2 -= min(s1, s2);
+  int tp = min(s1, s2);
+  s1 -= tp, s2 -= tp;
   if (s2) swap(s1, s2), d = -d;
-  cout << s1 << " " << -d << endl;
-  if (s1 * 9 == -d) {
+  if (s1 * 9 == -2 * d) {
     cout << "Bicarp";
     return 0;
   }
