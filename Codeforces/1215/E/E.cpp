@@ -20,11 +20,11 @@ int a[Max_n], num[21];
 LL g[21][Max_n], f[1 << 20], len[1 << 20];
 int main() {
 #ifndef ONLINE_JUDGE
-  freopen("", "r", stdin);
-  freopen("", "w", stdout);
+  freopen("E.in", "r", stdin);
+  freopen("E.out", "w", stdout);
 #endif
   n = read();
-  for (int i = 1; i <= n; i++) g[a[i] = read()][0] += a[i], num[a[i]]++;
+  for (int i = 1; i <= n; i++) g[a[i] = read()][0] += a[i] - num[a[i]], num[a[i]]++;
   for (int j = 1; j <= 20; j++) {
     int sl = 0, sr = 0;
     for (int i = 1; i <= n; i++)
@@ -35,5 +35,14 @@ int main() {
     }
   }
   for (int s = 0; s < (1 << 20); s++) {
+    for (int i = 1; i <= 20; i++)
+      if ((1 << i - 1) & s) {
+        len[s] = len[s ^ (1 << i - 1)] + num[i];
+        break;
+      }
+    for (int i = 1; i <= 20; i++)
+      if (!((1 << i - 1) & s))
+        f[s | (1 << i - 1)] = min(f[s | (1 << i - 1)], f[s] + g[i][len[s] + 1]);
   }
+  cout << f[(1 << 20) - 1];
 }
