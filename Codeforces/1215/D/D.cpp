@@ -17,8 +17,6 @@ inline LL read() {
 const int Max_n = 2e5 + 5;
 int n, s1, s2, d;
 char s[Max_n];
-bool check() {
-}
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("D.in", "r", stdin);
@@ -36,14 +34,12 @@ int main() {
       d -= s[i] - '0';
     else
       s2++;
-  if (check()) {
-    cout << "Monocarp";
+  s1 -= min(s1, s2), s2 -= min(s1, s2);
+  if (s2) swap(s1, s2), d = -d;
+  cout << s1 << " " << -d << endl;
+  if (s1 * 9 == -d) {
+    cout << "Bicarp";
     return 0;
   }
-  swap(s1, s2), d = -d;
-  if (check()) {
-    cout << "Monocarp";
-    return 0;
-  }
-  cout << "Bicarp";
+  cout << "Monocarp";
 }
