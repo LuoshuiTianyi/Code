@@ -16,20 +16,17 @@ inline LL read() {
 }
 const int Max_n = 2e5 + 5;
 int n;
-LL ans1, ans2;
-int a[Max_n], sum[2];
+int s[Max_n], t[Max_n];
+char S[Max_n], T[Max_n];
 int main() {
 #ifndef ONLINE_JUDGE
-  freopen("B.in", "r", stdin);
-  freopen("B.out", "w", stdout);
+  freopen("C.in", "r", stdin);
+  freopen("C.out", "w", stdout);
 #endif
   n = read();
-  int now = 0;
-  sum[0] = 1;
-  for (int i = 1; i <= n; i++) {
-    a[i] = read();
-    if (a[i] < 0) now ^= 1;
-    ans1 += sum[now ^ 1], ans2 += sum[now]++;
-  }
-  cout << ans1 << " " << ans2;
+  scanf("%s", S + 1), scanf("%s", T + 1);
+  for (int i = 1; i <= n; i++) s[i] = S[i] == 'a' ? 0 : 1;
+  for (int i = 1; i <= n; i++) t[i] = T[i] == 'a' ? 0 : 1;
+  for (int i = 1; i <= n; i++)
+    if (s[i] ^ t[i])
 }
