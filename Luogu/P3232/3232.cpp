@@ -54,11 +54,6 @@ int main() {
     go(i, j, v) if (v != n) f[i][v] = -1.0 / in[v];
   }
   f[1][n] = 1;
-  //for (int i = 1; i < n; i++) {
-  //  for (int j = 1; j < n; j++)
-  //    printf("%.3lfx%d ", f[i][j], j);
-  //  printf("=%.3lf\n", f[i][n]);
-  //}
   Elimi();
   for (int i = 1; i <= m; i++) num[i] = ans[u[i]] + ans[v[i]];
   sort(num + 1, num + m + 1);
