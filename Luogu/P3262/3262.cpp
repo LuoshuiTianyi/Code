@@ -14,7 +14,7 @@ inline LL read() {
   }
   return x * w;
 }
-const int Max_n = 1 << 10;
+const int Max_n = 1 << 11;
 int n, m;
 int w1[Max_n][11], w2[Max_n][11];
 int main() {
