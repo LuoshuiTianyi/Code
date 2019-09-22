@@ -17,13 +17,24 @@ inline LL read() {
 const int Max_n = 1e4 + 5;
 const LL Inf = 1e17;
 int n;
-int x[Max_n], y[Max_n];
+LL a[Max_n], b[Max_n];
+bool check(LL x, LL y) {
+  bool ans = 0;
+  for (int i = 1; i <= n; i++) {
+    LL m = b[i] - y, n = m + (LL)abs(a[i] - x);
+    if (x < a[i]) continue;
+    if (n - m > m) continue;
+    cout << i << " " << n << " " << m << endl;
+    ans ^= n ^ m;
+  }
+  return ans;
+}
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("B.in", "r", stdin);
   freopen("B.out", "w", stdout);
 #endif
   n = read();
-  for (int i = 1; i <= n; i++) x[i] = read(), y[i] = read();
-  
+  for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
+  cout << check(1, 0);
 }
