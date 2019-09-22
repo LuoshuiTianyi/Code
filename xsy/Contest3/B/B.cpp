@@ -34,5 +34,6 @@ int main() {
 #endif
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
+  
   LL l = -inf, r = inf, ans;
 }
