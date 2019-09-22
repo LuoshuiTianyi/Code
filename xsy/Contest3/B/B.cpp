@@ -21,11 +21,9 @@ LL a[Max_n], b[Max_n];
 bool check(LL x, LL y) {
   bool ans = 0;
   for (int i = 1; i <= n; i++) {
-    LL m = b[i] - y, n = m + (LL)abs(a[i] - x);
-    if (x < a[i]) continue;
-    if (n - m > m) continue;
-    cout << i << " " << n << " " << m << endl;
-    ans ^= n ^ m;
+    LL m = b[i] - y, n = x - a[i];
+    if (m < n || m < 0) continue;
+    ans ^= ((n & m) == n);
   }
   return ans;
 }
@@ -36,5 +34,5 @@ int main() {
 #endif
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
-  cout << check(1, 0);
+  cout << check(-1, 0);
 }
