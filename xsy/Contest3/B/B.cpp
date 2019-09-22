@@ -15,14 +15,14 @@ inline LL read() {
   return x * w;
 }
 const int Max_n = 1e4 + 5;
-const LL Inf = 1e17;
+const LL lim = 1e17, inf = 1e18;
 int n;
 LL a[Max_n], b[Max_n];
 bool check(LL x, LL y) {
   bool ans = 0;
   for (int i = 1; i <= n; i++) {
     LL m = b[i] - y, n = x - a[i];
-    if (m < n || m < 0) continue;
+    if (m < n || m < 0 || n < 0) continue;
     ans ^= ((n & m) == n);
   }
   return ans;
@@ -34,5 +34,5 @@ int main() {
 #endif
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
-  cout << check(-1, 0);
+  LL l = -inf, r = inf, ans;
 }
