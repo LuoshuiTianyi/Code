@@ -14,9 +14,16 @@ inline LL read() {
   }
   return x * w;
 }
+const int Max_n = 1e4 + 5;
+const LL Inf = 1e17;
+int n;
+int x[Max_n], y[Max_n];
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("B.in", "r", stdin);
   freopen("B.out", "w", stdout);
 #endif
+  n = read();
+  for (int i = 1; i <= n; i++) x[i] = read(), y[i] = read();
+  
 }
