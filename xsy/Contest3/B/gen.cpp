@@ -30,7 +30,7 @@ int main() {
   srand(time(NULL)); 
   bk[p][p] = 1;
   for (int i = 1; i <= 20; i++) {
-    int x = rand() % 2000 + 1, y = rand() % 2000 + 1;
+    int x = rand() % 5 + 1000, y = rand() % 5 + 1000;
     bk[x][y] ^= 1, bk[x][y - 1] ^= 1, bk[x + 1][y - 1] ^= 1;
   }
   for (int i = 0; i <= 2000; i++)
