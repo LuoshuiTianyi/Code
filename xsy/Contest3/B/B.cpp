@@ -43,14 +43,15 @@ bool DP(int len, bool lim, int res) {
 }
 void work(LL L, LL R, LL a, LL b) {
   m = b;
+  cout << m << endl;
   for (Res = 0; Res < 3; Res++) {
     N = R - a, memset(f, -1, sizeof(f));
     res[Res] ^= DP(63, 1, 0);
-    cout << Res << " " << res[Res] << endl;
+    cout << N << " " << Res << " " << res[Res] << endl;
     if (L > a) {
       N = L - a - 1, memset(f, -1, sizeof(f));
       res[Res] ^= DP(63, 1, 0);
-      cout << Res << " " << res[Res] << endl;
+      cout << N << " " << Res << " " << res[Res] << endl;
     }
   }
 }
@@ -62,8 +63,13 @@ int main() {
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
   res[0] = res[1] = res[2] = 0;
-  work(-2, -2, -2, 1);
-  for (int i = 0; i < 3; i++) cout << res[i] << " ";
+  work(0, 0, -2, 2);
+  cout << res[0] << " " << res[1] << " " << res[2];
+  //for (int i = 1; i <= n; i++) {
+  //  work(0, 0, a[i], b[i]);
+  //  for (int j = 0; j < 3; j++) cout << res[j] << " ";
+  //  cout << endl;
+  //}
   //LL l = -inf, r = inf, ans;
   //while (l != r) {
   //  LL mid = l + r >> 1;
