@@ -20,6 +20,7 @@ int n;
 LL m, f[64][2][3], a[Max_n], b[Max_n];
 LL DP(int len, bool lim, int res) {
   if (!len) return 1;
+  
 }
 void work(LL L, LL R, LL a, LL b) {
   m = b + lim;
