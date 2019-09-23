@@ -85,5 +85,5 @@ int main() {
     if (check(L - (1ll << k), -lim)) L -= (1ll << k);
   for (int k = 63; ~k; k--)
     if (check(R + (1ll << k), -lim)) R += (1ll << k);
-  cout << L << " " << -lim + R - L;
+  cout << L << " " << -lim + R - L << endl;
 }

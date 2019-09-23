@@ -20,11 +20,24 @@ struct node {
   int x, y;
 };
 queue<node> q;
-bool bk[1001][1001];
+bool bk[21][21];
+int p = 10;
+int cnt, nx[10001], ny[10001];
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("B.in", "w", stdout);
 #endif
   srand(time(NULL)); 
-  bk[0][0] = 1;
+  bk[p][p] = 1;
+  for (int i = 1; i <= 4; i++) {
+    int x = rand() % 20 + 1, y = rand() % 20 + 1;
+    bk[x][y] ^= 1, bk[x][y - 1] ^= 1, bk[x + 1][y - 1] ^= 1;
+  }
+  for (int i = 0; i <= 20; i++)
+    for (int j = 0; j <= 20; j++)
+      if (bk[i][j])
+       cnt++, nx[cnt] = i - p, ny[cnt] = j - p;
+  cout << cnt << endl;
+  for (int i = 1; i <= cnt; i++)
+    cout << nx[i] << " " << ny[i] << endl;
 }
