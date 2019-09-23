@@ -19,17 +19,22 @@ const LL lim = 1e17, inf = 1e18;
 int n;
 LL m, N, a[Max_n], b[Max_n];
 bool f[64][2][3], res[3];
-LL DP(int len, bool lim, int res) {
+bool DP(int len, bool lim, int res) {
   if (!len) return 1;
   bool &dp = f[len][lim][res];
+  if (dp != -1) return dp;
+  dp = 0;
   for (int i = 0; i <= (m & (1ll << len - 1)); i++) {
-    if (i > (N & (1ll << len - 1))) continue;
+    if (lim && i > (N & (1ll << len - 1))) continue;
+    dp ^= DP(len - 1, lim && (i == (N & (1ll << len - 1))), (res << 1 | i) % 3);
   }
+  return dp;
 }
+
 void work(LL L, LL R, LL a, LL b) {
   m = b + lim;
-  memset(f, -1, sizeof(f));
-  DP(63, 1, 0);
+  N = R - max(L, a), memset(f, -1, sizeof(f)), DP(63, 1, 0);
+  for (int i = 0; i < 3; i++)
 }
 bool check(LL x, LL y) {
   bool ans = 0;
