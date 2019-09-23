@@ -1,4 +1,3 @@
-#pragma GCC optimize("-Ofast")
 #include <cstdio>
 #include <cstring>
 #include <iostream>
@@ -34,12 +33,23 @@ inline void DP(int Res) {
   memset(f, 0, sizeof(f));
   f[64][1][0] = 1;
   for (int i = 64; i; i--)
-    for (int l = 0; l < 2; l++)
-      for (int j = 0; j < 3; j++)
-        for (int k = 0; k <= (m >> i - 1 & 1); k++) {
-          if (l && k > (N >> i - 1 & 1)) continue;
-          f[i - 1][l && (k == (N >> i - 1 & 1))][(j << 1 | k) % 3] ^= f[i][l][j];
-        }
+    for (int l = 0; l < 2; l++) {
+      int j = 0;
+      for (int k = 0; k <= (m >> i - 1 & 1); k++) {
+        if (l && k > (N >> i - 1 & 1)) continue;
+        f[i - 1][l && (k == (N >> i - 1 & 1))][(j << 1 | k) % 3] ^= f[i][l][j];
+      }
+      j++;
+      for (int k = 0; k <= (m >> i - 1 & 1); k++) {
+        if (l && k > (N >> i - 1 & 1)) continue;
+        f[i - 1][l && (k == (N >> i - 1 & 1))][(j << 1 | k) % 3] ^= f[i][l][j];
+      }
+      j++;
+      for (int k = 0; k <= (m >> i - 1 & 1); k++) {
+        if (l && k > (N >> i - 1 & 1)) continue;
+        f[i - 1][l && (k == (N >> i - 1 & 1))][(j << 1 | k) % 3] ^= f[i][l][j];
+      }
+    }
   for (int i = 0; i < 3; i++) {
     int now = (i - Res + 3) % 3;
     res[i] ^= f[0][0][now] ^ f[0][1][now];
