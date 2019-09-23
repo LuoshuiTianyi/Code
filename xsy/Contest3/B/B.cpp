@@ -1,9 +1,9 @@
+#pragma GCC optimize("-Ofast")
 #include <cstdio>
 #include <cstring>
 #include <iostream>
 using namespace std;
 #define LL long long
-#define go(x, i, v) for (int i = hd[x], v = to[i]; i; v = to[i = nx[i]])
 #define inline __inline__ __attribute__((always_inline))
 inline LL read() {
   long long x = 0, w = 1;
@@ -16,7 +16,7 @@ inline LL read() {
   return x * w;
 }
 const int Max_n = 1e4 + 5;
-const LL lim = 1e17, inf = 1e18;
+const LL lim = 1e17, inf = 2e17;
 int n, Res;
 int f[65][2][3];
 LL m, N, a[Max_n], b[Max_n];
@@ -30,7 +30,7 @@ inline bool check(LL x, LL y) {
   }
   return ans;
 }
-void DP(int Res) {
+inline void DP(int Res) {
   memset(f, 0, sizeof(f));
   f[64][1][0] = 1;
   for (int i = 64; i; i--)
@@ -38,18 +38,15 @@ void DP(int Res) {
       for (int j = 0; j < 3; j++)
         for (int k = 0; k <= (m >> i - 1 & 1); k++) {
           if (l && k > (N >> i - 1 & 1)) continue;
-          if (f[i][l][j])
-            cout << i << " " << l << " " << j << " " << k << endl;
-          f[i - 1][l && (k == (N >> i - 1 & 1))][j << 1 | k] ^= f[i][l][j];
+          f[i - 1][l && (k == (N >> i - 1 & 1))][(j << 1 | k) % 3] ^= f[i][l][j];
         }
-  cout << f[0][1][0] << endl;
   for (int i = 0; i < 3; i++) {
     int now = (i - Res + 3) % 3;
     res[i] ^= f[0][0][now] ^ f[0][1][now];
   }
 }
 inline void work(LL L, LL R, LL a, LL b) {
-  m = b, N = R - a;
+  m = b + lim, N = R - a;
   if (N < 0) return;
   DP(((a % 3) + 3) % 3);
   if (L > a) {
@@ -64,29 +61,20 @@ int main() {
 #endif
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
-  m = 3, N = 3;
-  DP(0);
-  for (int i = 0; i < 3; i++) cout << res[i] << " ";
-  //for (int i = 1; i <= n; i++) {
-  //  work(0, 0, a[i], b[i]);
-  //  for (int i = 0; i < 3; i++) cout << res[i] << " ";
-  //  cout << endl;
-  //}
-  //LL l = -inf, r = inf;
-  //while (l != r) {
-  //  LL mid = (l + r) >> 1;
-  //  res[0] = res[1] = res[2] = 0;
-  //  for (int i = 1; i <= n; i++) work(l, mid, a[i], b[i]);
-  //  if (res[0] || res[1] || res[2])
-  //    r = mid;
-  //  else
-  //    l = mid + 1;
-  //}
-  //LL L = l, R = l;
-  ////cout << check(l, -lim) << endl;
-  //for (int k = 63; ~k; k--)
-  //  if (check(L - (1ll << k), -lim)) L -= (1ll << k);
-  //for (int k = 63; ~k; k--)
-  //  if (check(R + (1ll << k), -lim)) R += (1ll << k);
-  //cout << L << " " << -lim + R - L;
+  LL l = -inf, r = inf;
+  while (l != r) {
+    LL mid = (l + r) >> 1;
+    res[0] = res[1] = res[2] = 0;
+    for (int i = 1; i <= n; i++) work(l, mid, a[i], b[i]);
+    if (res[0] || res[1] || res[2])
+      r = mid;
+    else
+      l = mid + 1;
+  }
+  LL L = l, R = l;
+  for (int k = 63; ~k; k--)
+    if (check(L - (1ll << k), -lim)) L -= (1ll << k);
+  for (int k = 63; ~k; k--)
+    if (check(R + (1ll << k), -lim)) R += (1ll << k);
+  cout << L << " " << -lim + R - L;
 }
