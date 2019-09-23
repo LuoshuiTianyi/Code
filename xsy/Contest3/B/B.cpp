@@ -16,11 +16,11 @@ inline LL read() {
 }
 const int Max_n = 1e4 + 5;
 const LL lim = 1e17, inf = 1e18;
-int n;
+int n, Res;
 LL m, N, a[Max_n], b[Max_n];
 bool f[64][2][3], res[3];
 bool DP(int len, bool lim, int res) {
-  if (!len) return 1;
+  if (!len) return res == Res;
   bool &dp = f[len][lim][res];
   if (dp != -1) return dp;
   dp = 0;
@@ -30,11 +30,13 @@ bool DP(int len, bool lim, int res) {
   }
   return dp;
 }
-
-void work(LL L, LL R, LL a, LL b) {
+int work(LL L, LL R, LL a, LL b) {
   m = b + lim;
-  N = R - max(L, a), memset(f, -1, sizeof(f)), DP(63, 1, 0);
-  for (int i = 0; i < 3; i++)
+  for (Res = 0; Res < 3; Res++) {
+    N = R - max(L, a), memset(f, -1, sizeof(f));
+    if (DP(63, 1, 0)) return 1;
+  }
+  return 0;
 }
 bool check(LL x, LL y) {
   bool ans = 0;
@@ -53,4 +55,7 @@ int main() {
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
   LL l = -inf, r = inf, ans;
+  while (l <= r) {
+    LL mid = l + r >> 1;
+  }
 }
