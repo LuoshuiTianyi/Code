@@ -20,24 +20,6 @@ const LL lim = 1e17, inf = 1e18;
 int n, Res;
 LL m, N, a[Max_n], b[Max_n];
 bool f[64][2][3], res[3];
-bool DP(int len, bool lim, int res) {
-  if (!len) return res == Res;
-  bool &dp = f[len][lim][res];
-  if (dp != -1) return dp;
-  dp = 0;
-  for (int i = 0; i <= (m & (1ll << len - 1)); i++) {
-    if (lim && i > (N & (1ll << len - 1))) continue;
-    dp ^= DP(len - 1, lim && (i == (N & (1ll << len - 1))), (res << 1 | i) % 3);
-  }
-  return dp;
-}
-void work(LL L, LL R, LL a, LL b) {
-  m = b + lim;
-  for (Res = 0; Res < 3; Res++) {
-    N = R - max(L, a), memset(f, -1, sizeof(f));
-    res[Res] ^= DP(63, 1, 0);
-  }
-}
 bool check(LL x, LL y) {
   bool ans = 0;
   for (int i = 1; i <= n; i++) {
@@ -47,6 +29,28 @@ bool check(LL x, LL y) {
   }
   return ans;
 }
+bool DP(int len, bool lim, int res) {
+  if (!len) return res == Res;
+  bool &dp = f[len][lim][res];
+  if (dp != -1) return dp;
+  dp = 0;
+  for (int i = 0; i <= (m & (1ll << len - 1)); i++) {
+    if (lim && i > (N & (1ll << len - 1))) continue;
+    dp ^= DP(len - 1, lim && (i == (N & (1ll << len - 1))), ((res << 1) + i) % 3);
+  }
+  return dp;
+}
+void work(LL L, LL R, LL a, LL b) {
+  m = b;
+  for (Res = 0; Res < 3; Res++) {
+    N = R - max(L, a), memset(f, -1, sizeof(f));
+    res[Res] ^= DP(63, 1, 0);
+    if (L > a) {
+      N = L - a - 1, memset(f, -1, sizeof(f));
+      res[Res] ^= DP(63, 1, 0);
+    }
+  }
+}
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("B.in", "r", stdin);
@@ -54,19 +58,25 @@ int main() {
 #endif
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
-  LL l = -inf, r = inf, ans;
-  while (l != r) {
-    LL mid = l + r >> 1;
-    res[0] = res[1] = res[2] = 0;
-    for (int i = 1; i <= n; i++) work(l, mid, a[i], b[i]);
-    if (res[1] || res[2] || res[0])
-      r = mid;
-    else
-      l = mid + 1;
+  res[0] = res[1] = res[2] = 0;
+  for (int i = 1; i <= n; i++) {
+    work(-1, -1, a[i], b[i]);
+    cout << res[0] << " " << res[1] << " " << res[2] << endl;
   }
-  LL L = l, R = l;
-  for (int k = 63; ~k; k--)
-    if (check(L - (1ll << k), -lim)) L -= (1ll << k);
-  for (int k = 63; ~k; k--)
-    if (check(R + (1ll << k), -lim)) R += (1ll << k);
+  //LL l = -inf, r = inf, ans;
+  //while (l != r) {
+  //  LL mid = l + r >> 1;
+  //  res[0] = res[1] = res[2] = 0;
+  //  for (int i = 1; i <= n; i++) work(l, mid, a[i], b[i]);
+  //  if (res[1] || res[2] || res[0])
+  //    r = mid;
+  //  else
+  //    l = mid + 1;
+  //}
+  //LL L = l, R = l;
+  //for (int k = 63; ~k; k--)
+  //  if (check(L - (1ll << k), -lim)) L -= (1ll << k);
+  //for (int k = 63; ~k; k--)
+  //  if (check(R + (1ll << k), -lim)) R += (1ll << k);
+  //cout << L << " " << -lim + R - L;
 }
