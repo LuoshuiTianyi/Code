@@ -32,41 +32,24 @@ inline bool check(LL x, LL y) {
 }
 void DP(int Res) {
   memset(f, 0, sizeof(f));
-  f[63][1][Res] = 1;
-  for (int i = 63; i > 0; i--)
-    for (int j = 0; j < 3; j++)
-      for (int l = 0; l < 2; l++)
-        for (int k = 0; k <= (m >> (i - 1) & 1); k++) {
-          if (l && k > (N >> (i - 1) & 1)) continue;
-          f[i - 1][l && k][(j << 1 | k) % 3] ^= f[i][l][j];
+  f[64][1][Res] = 1;
+  for (int i = 64; i; i--)
+    for (int l = 0; l < 2; l++)
+      for (int j = 0; j < 3; j++)
+        for (int k = 0; k <= (m >> i - 1 & 1); k++) {
+          if (l && k > (N >> i - 1 & 1)) continue;
+          f[i - 1][l && (k == (N >> i - 1 & 1))][j << 1 | k] ^= f[i][l][j];
         }
-  //  if (!(m >> (i - 1) & 1)) {
-  //    for (int j = 0; j < 3; j++) {
-  //      if (f[i][0][j]) f[i - 1][0][(j << 1) % 3] ^= 1;
-  //      if (f[i][1][j])
-  //        if (N >> (i - 1) & 1)
-  //          f[i - 1][0][(j << 1) % 3] ^= 1;
-  //        else
-  //          f[i - 1][1][(j << 1) % 3] ^= 1;
-  //    }
-  //  } else {
-  //    for (int j = 0; j < 3; j++) {
-  //      if (f[i][0][j])
-  //        f[i - 1][0][(j << 1) % 3] ^= 1, f[i - 1][0][(j << 1 | 1) % 3] ^= 1;
-  //      if (f[i][1][j])
-  //        if (N >> (i - 1) & 1)
-  //          f[i - 1][0][(j << 1) % 3] ^= 1, f[i - 1][1][(j << 1 | 1) % 3] ^= 1;
-  //        else
-  //          f[i - 1][1][(j << 1) % 3] ^= 1;
-  //    }
-  //  }
-  for (int i = 0; i < 3; i++)
-    res[i] ^= f[0][0][i] ^ f[0][1][i];
+  for (int i = 0; i < 3; i++) res[i] ^= f[0][0][i] ^ f[0][1][i];
 }
 inline void work(LL L, LL R, LL a, LL b) {
-  m = b + 4, N = R - a;
+  m = b, N = R - a;
   if (N < 0) return;
   DP(((a % 3) + 3) % 3);
+  if (L > a) {
+    N = L - 1 - a;
+    DP(((a % 3) + 3) % 3);
+  }
 }
 int main() {
 #ifndef ONLINE_JUDGE
@@ -75,27 +58,29 @@ int main() {
 #endif
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
-  m = 3, N = 2, Res = 0;
-  // cout << DP(2, 1, 0);
-  // for (int i = 1; i <= n; i++) {
-  // work(-3, -1, -3, -1);
-  // cout << res[0] << " " << res[1] << " " << res[2] << endl;
+  m = 1, N = 1;
+  DP(0);
+  //work(-3, -1, -2, 1);
+  cout << res[0] << " " << res[1] << " " << res[2];
+  //for (int i = 1; i <= n; i++) {
+  //  work(-3, -1, a[i], b[i]);
+  //  cout << res[0] << " " << res[1] << " " << res[2] << endl;
   //}
-  LL l = -inf, r = inf;
-  while (l != r) {
-    LL mid = (l + r) >> 1;
-    res[0] = res[1] = res[2] = 0;
-    for (int i = 1; i <= n; i++) work(l, mid, a[i], b[i]);
-    if (res[0] || res[1] || res[2])
-      r = mid;
-    else
-      l = mid + 1;
-  }
-  LL L = l, R = l;
+  //LL l = -inf, r = inf;
+  //while (l != r) {
+  //  LL mid = (l + r) >> 1;
+  //  res[0] = res[1] = res[2] = 0;
+  //  for (int i = 1; i <= n; i++) work(l, mid, a[i], b[i]);
+  //  if (res[0] || res[1] || res[2])
+  //    r = mid;
+  //  else
+  //    l = mid + 1;
+  //}
+  //LL L = l, R = l;
   // cout << check(l, -lim) << endl;
-  for (int k = 63; ~k; k--)
-    if (check(L - (1ll << k), -lim)) L -= (1ll << k);
-  for (int k = 63; ~k; k--)
-    if (check(R + (1ll << k), -lim)) R += (1ll << k);
-  cout << L << " " << -lim + R - L;
+  //for (int k = 63; ~k; k--)
+  //  if (check(L - (1ll << k), -lim)) L -= (1ll << k);
+  //for (int k = 63; ~k; k--)
+  //  if (check(R + (1ll << k), -lim)) R += (1ll << k);
+  //cout << L << " " << -lim + R - L;
 }
