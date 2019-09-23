@@ -21,7 +21,7 @@ int n, Res;
 int f[65][2][3];
 LL m, N, a[Max_n], b[Max_n];
 bool res[3];
-bool check(LL x, LL y) {
+inline bool check(LL x, LL y) {
   bool ans = 0;
   for (int i = 1; i <= n; i++) {
     LL M = b[i] - y, N = x - a[i];
@@ -37,14 +37,14 @@ bool DP(int len, bool lim, int res) {
   dp = 0;
   for (int i = 0; i <= ((m >> len - 1) & 1); i++) {
     if (lim && i > ((N >> len - 1) & 1)) continue;
-    cout << len << " " << lim << " " << res << " " << i << " " << DP(len - 1, lim && (i == (N & (1ll << len - 1))), (res << 1 | i) % 3) << endl;
     //if (i > 0)
     //  cout << len << " " << lim << " " << res << endl;
-    dp ^= DP(len - 1, lim && (i == (N & (1ll << len - 1))), (res << 1 | i) % 3);
+    dp ^= DP(len - 1, lim && (i == ((N >> len - 1) & 1)), (res << 1 | i) % 3);
+    //cout << len << " " << lim << " " << res << " " << i << " " << (res << 1 | i) % 3 << " " << dp << endl;
   }
   return dp;
 }
-void work(LL L, LL R, LL a, LL b) {
+inline void work(LL L, LL R, LL a, LL b) {
   m = b + 4, N = R - a;
   if (N < 0) return;
   //cout << m << " " << N << endl;
@@ -67,26 +67,27 @@ int main() {
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
   m = 3, N = 2, Res = 0, memset(f, -1, sizeof(f));
-  cout << DP(64, 1, 0);
+  //cout << DP(2, 1, 0);
   //for (int i = 1; i <= n; i++) {
     //work(-3, -1, -3, -1);
     //cout << res[0] << " " << res[1] << " " << res[2] << endl;
   //}
-  //LL l = -inf, r = inf;
-  //while (l != r) {
-  //  LL mid = (l + r) >> 1;
-  //  res[0] = res[1] = res[2] = 0;
-  //  for (int i = 1; i <= n; i++) work(l, mid, a[i], b[i]);
-  //  if (res[1] || res[2] || res[0])
-  //    r = mid;
-  //  else
-  //    l = mid + 1;
-  //}
-  //LL L = l, R = l;
-  //for (int k = 63; ~k; k--)
-  //  if (check(L - (1ll << k), -lim)) L -= (1ll << k);
-  //for (int k = 63; ~k; k--)
-  //  if (check(R + (1ll << k), -lim)) R += (1ll << k);
+  LL l = -inf, r = inf;
+  while (l != r) {
+    LL mid = (l + r) >> 1;
+    res[0] = res[1] = res[2] = 0;
+    for (int i = 1; i <= n; i++) work(l, mid, a[i], b[i]);
+    if (res[1] || res[2] || res[0])
+      r = mid;
+    else
+      l = mid + 1;
+  }
+  LL L = l, R = l;
+  //cout << check(l, -lim) << endl;
+  for (int k = 63; ~k; k--)
+    if (check(L - (1ll << k), -lim)) L -= (1ll << k);
+  for (int k = 63; ~k; k--)
+    if (check(R + (1ll << k), -lim)) R += (1ll << k);
   //cout << L << " " << R << endl;
-  //cout << L << " " << -lim + R - L;
+  cout << L << " " << -lim + R - L;
 }

@@ -104,12 +104,12 @@ inline void solve(ll c, pair<ll, ll> &a) {
   ll k = epc(c), lk = k, rk = k;
   //  fprintf(stderr,"%lld\n",k);
   register ll i;
-  cout << light(c, k) << endl;
   for (i = 1ll << 62; i; i >>= 1)
     if (light(c, lk - i)) lk -= i;
   for (i = 1ll << 62; i; i >>= 1)
     if (light(c, rk + i)) rk += i;
   a.first = c + (rk - lk);
+  //cout << rk << endl;
   a.second = lk;
   return;
 }
