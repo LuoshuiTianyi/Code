@@ -25,7 +25,7 @@ bool check(LL x, LL y) {
   bool ans = 0;
   for (int i = 1; i <= n; i++) {
     LL M = b[i] - y, N = x - a[i];
-    if (M < N || M < 0 || M < 0) continue;
+    if (M < 0 || M < 0) continue;
     ans ^= ((N & M) == N);
   }
   return ans;
@@ -44,8 +44,8 @@ bool DP(int len, bool lim, int res) {
   return dp;
 }
 void work(LL L, LL R, LL a, LL b) {
-  m = b + lim;
-  if (R < a) return;
+  m = b + lim, N = R - a;
+  if (N < 0) return;
   for (Res = 0; Res < 3; Res++) {
     N = R - a, memset(f, -1, sizeof(f));
     res[Res] ^= DP(64, 1, (a % 3 + 3) % 3);
@@ -75,9 +75,11 @@ int main() {
       l = mid + 1;
   }
   LL L = l, R = l;
+  cout << check(l, -lim) << endl;
   for (int k = 63; ~k; k--)
     if (check(L - (1ll << k), -lim)) L -= (1ll << k);
   for (int k = 63; ~k; k--)
     if (check(R + (1ll << k), -lim)) R += (1ll << k);
+  //cout << L << " " << R << endl;
   cout << L << " " << -lim + R - L;
 }

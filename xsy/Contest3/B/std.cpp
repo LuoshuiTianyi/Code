@@ -1,3 +1,4 @@
+#include <iostream>
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
@@ -6,6 +7,7 @@ using std::make_pair;
 using std::max;
 using std::min;
 using std::pair;
+using namespace std;
 typedef long long ll;
 const int N = 1e4 + 5;
 int n;
@@ -102,6 +104,7 @@ inline void solve(ll c, pair<ll, ll> &a) {
   ll k = epc(c), lk = k, rk = k;
   //  fprintf(stderr,"%lld\n",k);
   register ll i;
+  cout << light(c, k) << endl;
   for (i = 1ll << 62; i; i >>= 1)
     if (light(c, lk - i)) lk -= i;
   for (i = 1ll << 62; i; i >>= 1)
@@ -118,6 +121,7 @@ signed main() {
   scanf("%d", &n);
   for (i = 1; i <= n; i++) scanf("%lld%lld", &x[i], &y[i]);
   solve(-100000000000000000, a);
+  long long c = -100000000000000000;
   printf("%lld %lld", a.first, a.second);
   return 0;
 }
