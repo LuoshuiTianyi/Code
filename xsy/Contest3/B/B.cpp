@@ -45,14 +45,13 @@ bool DP(int len, bool lim, int res) {
 }
 void work(LL L, LL R, LL a, LL b) {
   m = b + lim;
-  //cout << m << endl;
   for (Res = 0; Res < 3; Res++) {
     N = R - a, memset(f, -1, sizeof(f));
-    res[Res] ^= DP(64, 1, (a % 3 + 3) % 3);
+    res[Res] ^= DP(64, 1, (a % 3ll + 3ll) % 3ll);
     //cout << N << " " << Res << " " << res[Res] << endl;
     if (L > a) {
       N = L - a - 1, memset(f, -1, sizeof(f));
-      res[Res] ^= DP(64, 1, (a % 3 + 3) % 3);
+      res[Res] ^= DP(64, 1, (a % 3ll + 3ll) % 3ll);
       //cout << N << " " << Res << " " << res[Res] << endl;
     }
   }
@@ -66,8 +65,7 @@ int main() {
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
   LL l = -inf, r = inf;
   while (l != r) {
-    LL mid = l + r >> 1;
-    cerr << mid << endl;
+    LL mid = (l + r) >> 1;
     res[0] = res[1] = res[2] = 0;
     for (int i = 1; i <= n; i++) work(l, mid, a[i], b[i]);
     if (res[1] || res[2] || res[0])
