@@ -44,16 +44,17 @@ bool DP(int len, bool lim, int res) {
   return dp;
 }
 void work(LL L, LL R, LL a, LL b) {
-  m = b + lim, N = R - a;
+  m = b + 4, N = R - a;
   if (N < 0) return;
+  cout << m << endl;
   for (Res = 0; Res < 3; Res++) {
     N = R - a, memset(f, -1, sizeof(f));
     res[Res] ^= DP(64, 1, (a % 3 + 3) % 3);
-    //cout << N << " " << Res << " " << res[Res] << endl;
+    cout << N << " " << Res << " " << res[Res] << endl;
     if (L > a) {
       N = L - a - 1, memset(f, -1, sizeof(f));
       res[Res] ^= DP(64, 1, (a % 3 + 3) % 3);
-      //cout << N << " " << Res << " " << res[Res] << endl;
+      cout << N << " " << Res << " " << res[Res] << endl;
     }
   }
 }
@@ -64,6 +65,10 @@ int main() {
 #endif
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
+  //for (int i = 1; i <= n; i++) {
+    work(-3, -1, -3, -2);
+    cout << res[0] << " " << res[1] << " " << res[2] << endl;
+  //}
   LL l = -inf, r = inf;
   while (l != r) {
     LL mid = (l + r) >> 1;
@@ -75,11 +80,10 @@ int main() {
       l = mid + 1;
   }
   LL L = l, R = l;
-  cout << check(l, -lim) << endl;
   for (int k = 63; ~k; k--)
     if (check(L - (1ll << k), -lim)) L -= (1ll << k);
   for (int k = 63; ~k; k--)
     if (check(R + (1ll << k), -lim)) R += (1ll << k);
-  //cout << L << " " << R << endl;
+  cout << L << " " << R << endl;
   cout << L << " " << -lim + R - L;
 }
