@@ -35,8 +35,8 @@ bool DP(int len, bool lim, int res) {
   int &dp = f[len][lim][res];
   if (dp != -1) return dp;
   dp = 0;
-  for (int i = 0; i <= (m >> len - 1 & 1); i++) {
-    if (lim && i > (N & (1ll << len - 1))) continue;
+  for (int i = 0; i <= ((m >> len - 1) & 1); i++) {
+    if (lim && i > ((N >> len - 1) & 1)) continue;
     //if (i > 0)
       //cout << len << " " << lim << " " << res << endl;
     dp ^= DP(len - 1, lim && (i == (N & (1ll << len - 1))), (res << 1 | i) % 3);
@@ -44,14 +44,15 @@ bool DP(int len, bool lim, int res) {
   return dp;
 }
 void work(LL L, LL R, LL a, LL b) {
-  m = b + lim;
+  m = b;
+  if (R < a) return;
   for (Res = 0; Res < 3; Res++) {
     N = R - a, memset(f, -1, sizeof(f));
-    res[Res] ^= DP(64, 1, (a % 3ll + 3ll) % 3ll);
+    res[Res] ^= DP(64, 1, (a % 3 + 3) % 3);
     //cout << N << " " << Res << " " << res[Res] << endl;
     if (L > a) {
       N = L - a - 1, memset(f, -1, sizeof(f));
-      res[Res] ^= DP(64, 1, (a % 3ll + 3ll) % 3ll);
+      res[Res] ^= DP(64, 1, (a % 3 + 3) % 3);
       //cout << N << " " << Res << " " << res[Res] << endl;
     }
   }
@@ -63,6 +64,12 @@ int main() {
 #endif
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
+  //work(-1, -1, 0, 1);
+  //for (int i = 1; i <= n; i++) {
+  //  work(0, 0, a[i], b[i]);
+  //  //cout << res[0] << " " << res[1] << " " << res[2] << endl;
+  //}
+  //cout << res[0] << " " << res[1] << " " << res[2] << endl;
   LL l = -inf, r = inf;
   while (l != r) {
     LL mid = (l + r) >> 1;
