@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 using namespace std;
 #define LL long long
@@ -30,13 +31,12 @@ bool DP(int len, bool lim, int res) {
   }
   return dp;
 }
-int work(LL L, LL R, LL a, LL b) {
+void work(LL L, LL R, LL a, LL b) {
   m = b + lim;
   for (Res = 0; Res < 3; Res++) {
     N = R - max(L, a), memset(f, -1, sizeof(f));
-    if (DP(63, 1, 0)) return 1;
+    res[Res] ^= DP(63, 1, 0);
   }
-  return 0;
 }
 bool check(LL x, LL y) {
   bool ans = 0;
@@ -55,7 +55,18 @@ int main() {
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
   LL l = -inf, r = inf, ans;
-  while (l <= r) {
+  while (l != r) {
     LL mid = l + r >> 1;
+    res[0] = res[1] = res[2] = 0;
+    for (int i = 1; i <= n; i++) work(l, mid, a[i], b[i]);
+    if (res[1] || res[2] || res[0])
+      r = mid;
+    else
+      l = mid + 1;
   }
+  LL L = l, R = l;
+  for (int k = 63; ~k; k--)
+    if (check(L - (1ll << k), -lim)) L -= (1ll << k);
+  for (int k = 63; ~k; k--)
+    if (check(R + (1ll << k), -lim)) R += (1ll << k);
 }
