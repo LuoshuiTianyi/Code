@@ -66,7 +66,7 @@ int main() {
 #endif
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
-  m = 3, N = 2, Res = 0, memset(f, -1, sizeof(f));
+  m = 3, N = 2, Res = 0;
   //cout << DP(2, 1, 0);
   //for (int i = 1; i <= n; i++) {
     //work(-3, -1, -3, -1);
@@ -82,12 +82,12 @@ int main() {
     else
       l = mid + 1;
   }
-  LL L = l, R = l;
-  //cout << check(l, -lim) << endl;
-  for (int k = 63; ~k; k--)
-    if (check(L - (1ll << k), -lim)) L -= (1ll << k);
-  for (int k = 63; ~k; k--)
-    if (check(R + (1ll << k), -lim)) R += (1ll << k);
-  //cout << L << " " << R << endl;
-  cout << L << " " << -lim + R - L;
+  //LL L = l, R = l;
+  ////cout << check(l, -lim) << endl;
+  //for (int k = 63; ~k; k--)
+  //  if (check(L - (1ll << k), -lim)) L -= (1ll << k);
+  //for (int k = 63; ~k; k--)
+  //  if (check(R + (1ll << k), -lim)) R += (1ll << k);
+  ////cout << L << " " << R << endl;
+  //cout << L << " " << -lim + R - L;
 }
