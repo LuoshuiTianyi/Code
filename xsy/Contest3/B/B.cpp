@@ -17,10 +17,14 @@ inline LL read() {
 const int Max_n = 1e4 + 5;
 const LL lim = 1e17, inf = 1e18;
 int n;
-LL m, f[64][2][3], a[Max_n], b[Max_n];
+LL m, N, a[Max_n], b[Max_n];
+bool f[64][2][3], res[3];
 LL DP(int len, bool lim, int res) {
   if (!len) return 1;
-  
+  bool &dp = f[len][lim][res];
+  for (int i = 0; i <= (m & (1ll << len - 1)); i++) {
+    if (i > (N & (1ll << len - 1))) continue;
+  }
 }
 void work(LL L, LL R, LL a, LL b) {
   m = b + lim;
