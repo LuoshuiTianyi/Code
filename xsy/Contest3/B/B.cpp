@@ -30,30 +30,38 @@ inline bool check(LL x, LL y) {
   }
   return ans;
 }
-void DP(int res) {
+void DP(int Res) {
   memset(f, 0, sizeof(f));
-  f[63][1][res] = 1;
-  for (i = 63; i > 0; i--)
-    if (!(m >> (i - 1) & 1)) {
-      for (j = 0; j < 3; j++) {
-        if (f[i][0][j]) f[i - 1][0][(j * 2) % 3] ^= 1;
-        if (f[i][1][j])
-          if (N >> (i - 1) & 1)
-            f[i - 1][0][(j * 2) % 3] ^= 1;
-          else
-            f[i - 1][1][(j * 2) % 3] ^= 1;
-      }
-    } else {
-      for (j = 0; j < 3; j++) {
-        if (f[i][0][j])
-          f[i - 1][0][(j * 2) % 3] ^= 1, f[i - 1][0][(j * 2 + 1) % 3] ^= 1;
-        if (f[i][1][j])
-          if (N >> (i - 1) & 1)
-            f[i - 1][0][(j * 2) % 3] ^= 1, f[i - 1][1][(j * 2 + 1) % 3] ^= 1;
-          else
-            f[i - 1][1][(j * 2) % 3] ^= 1;
-      }
-    }
+  f[63][1][Res] = 1;
+  for (int i = 63; i > 0; i--)
+    for (int j = 0; j < 3; j++)
+      for (int l = 0; l < 2; l++)
+        for (int k = 0; k <= (m >> (i - 1) & 1); k++) {
+          if (l && k > (N >> (i - 1) & 1)) continue;
+          f[i - 1][l && k][(j << 1 | k) % 3] ^= f[i][l][j];
+        }
+  //  if (!(m >> (i - 1) & 1)) {
+  //    for (int j = 0; j < 3; j++) {
+  //      if (f[i][0][j]) f[i - 1][0][(j << 1) % 3] ^= 1;
+  //      if (f[i][1][j])
+  //        if (N >> (i - 1) & 1)
+  //          f[i - 1][0][(j << 1) % 3] ^= 1;
+  //        else
+  //          f[i - 1][1][(j << 1) % 3] ^= 1;
+  //    }
+  //  } else {
+  //    for (int j = 0; j < 3; j++) {
+  //      if (f[i][0][j])
+  //        f[i - 1][0][(j << 1) % 3] ^= 1, f[i - 1][0][(j << 1 | 1) % 3] ^= 1;
+  //      if (f[i][1][j])
+  //        if (N >> (i - 1) & 1)
+  //          f[i - 1][0][(j << 1) % 3] ^= 1, f[i - 1][1][(j << 1 | 1) % 3] ^= 1;
+  //        else
+  //          f[i - 1][1][(j << 1) % 3] ^= 1;
+  //    }
+  //  }
+  for (int i = 0; i < 3; i++)
+    res[i] ^= f[0][0][i] ^ f[0][1][i];
 }
 inline void work(LL L, LL R, LL a, LL b) {
   m = b + 4, N = R - a;
