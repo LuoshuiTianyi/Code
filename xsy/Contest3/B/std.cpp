@@ -118,6 +118,6 @@ signed main() {
   scanf("%d", &n);
   for (i = 1; i <= n; i++) scanf("%lld%lld", &x[i], &y[i]);
   solve(-100000000000000000, a);
-  printf("%lld %lld\n", a.first, a.second);
+  printf("%lld %lld", a.first, a.second);
   return 0;
 }
