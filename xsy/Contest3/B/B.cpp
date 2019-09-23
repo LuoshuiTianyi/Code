@@ -38,8 +38,11 @@ void DP(int Res) {
       for (int j = 0; j < 3; j++)
         for (int k = 0; k <= (m >> i - 1 & 1); k++) {
           if (l && k > (N >> i - 1 & 1)) continue;
+          if (f[i][l][j])
+            cout << i << " " << l << " " << j << " " << k << endl;
           f[i - 1][l && (k == (N >> i - 1 & 1))][j << 1 | k] ^= f[i][l][j];
         }
+  cout << f[0][1][0] << endl;
   for (int i = 0; i < 3; i++) {
     int now = (i - Res + 3) % 3;
     res[i] ^= f[0][0][now] ^ f[0][1][now];
@@ -61,10 +64,14 @@ int main() {
 #endif
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
-  work(-2, 0, -2, 2);
-  //m = 2, N = 2;
-  //DP(1);
+  m = 3, N = 3;
+  DP(0);
   for (int i = 0; i < 3; i++) cout << res[i] << " ";
+  //for (int i = 1; i <= n; i++) {
+  //  work(0, 0, a[i], b[i]);
+  //  for (int i = 0; i < 3; i++) cout << res[i] << " ";
+  //  cout << endl;
+  //}
   //LL l = -inf, r = inf;
   //while (l != r) {
   //  LL mid = (l + r) >> 1;
