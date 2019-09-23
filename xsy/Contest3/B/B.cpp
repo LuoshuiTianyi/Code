@@ -77,7 +77,7 @@ int main() {
     LL mid = (l + r) >> 1;
     res[0] = res[1] = res[2] = 0;
     for (int i = 1; i <= n; i++) work(l, mid, a[i], b[i]);
-    if (res[1] || res[2] || res[0])
+    if (res[0] || res[1] || res[2])
       r = mid;
     else
       l = mid + 1;
@@ -88,6 +88,5 @@ int main() {
     if (check(L - (1ll << k), -lim)) L -= (1ll << k);
   for (int k = 63; ~k; k--)
     if (check(R + (1ll << k), -lim)) R += (1ll << k);
-  //cout << L << " " << R << endl;
   cout << L << " " << -lim + R - L;
 }
