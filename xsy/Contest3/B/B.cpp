@@ -18,7 +18,7 @@ inline LL read() {
 const int Max_n = 1e4 + 5;
 const LL lim = 1e17, inf = 1e18;
 int n, Res;
-int f[64][2][3];
+int f[65][2][3];
 LL m, N, a[Max_n], b[Max_n];
 bool res[3];
 bool check(LL x, LL y) {
@@ -35,23 +35,25 @@ bool DP(int len, bool lim, int res) {
   int &dp = f[len][lim][res];
   if (dp != -1) return dp;
   dp = 0;
-  for (int i = 0; i <= (m & (1ll << len - 1)); i++) {
+  for (int i = 0; i <= (m >> len - 1 & 1); i++) {
     if (lim && i > (N & (1ll << len - 1))) continue;
+    //if (i > 0)
+      //cout << len << " " << lim << " " << res << endl;
     dp ^= DP(len - 1, lim && (i == (N & (1ll << len - 1))), (res << 1 | i) % 3);
   }
   return dp;
 }
 void work(LL L, LL R, LL a, LL b) {
   m = b;
-  cout << m << endl;
+  //cout << m << endl;
   for (Res = 0; Res < 3; Res++) {
     N = R - a, memset(f, -1, sizeof(f));
-    res[Res] ^= DP(63, 1, 0);
-    cout << N << " " << Res << " " << res[Res] << endl;
+    res[Res] ^= DP(64, 1, 0);
+    //cout << N << " " << Res << " " << res[Res] << endl;
     if (L > a) {
       N = L - a - 1, memset(f, -1, sizeof(f));
-      res[Res] ^= DP(63, 1, 0);
-      cout << N << " " << Res << " " << res[Res] << endl;
+      res[Res] ^= DP(64, 1, 0);
+      //cout << N << " " << Res << " " << res[Res] << endl;
     }
   }
 }
@@ -63,13 +65,11 @@ int main() {
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
   res[0] = res[1] = res[2] = 0;
-  work(0, 0, -2, 2);
-  cout << res[0] << " " << res[1] << " " << res[2];
-  //for (int i = 1; i <= n; i++) {
-  //  work(0, 0, a[i], b[i]);
-  //  for (int j = 0; j < 3; j++) cout << res[j] << " ";
-  //  cout << endl;
-  //}
+  for (int i = 1; i <= n; i++) {
+    work(0, 0, a[i], b[i]);
+    for (int j = 0; j < 3; j++) cout << res[j] << " ";
+    cout << endl;
+  }
   //LL l = -inf, r = inf, ans;
   //while (l != r) {
   //  LL mid = l + r >> 1;
