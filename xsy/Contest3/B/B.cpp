@@ -82,12 +82,12 @@ int main() {
     else
       l = mid + 1;
   }
-  //LL L = l, R = l;
-  ////cout << check(l, -lim) << endl;
-  //for (int k = 63; ~k; k--)
-  //  if (check(L - (1ll << k), -lim)) L -= (1ll << k);
-  //for (int k = 63; ~k; k--)
-  //  if (check(R + (1ll << k), -lim)) R += (1ll << k);
-  ////cout << L << " " << R << endl;
-  //cout << L << " " << -lim + R - L;
+  LL L = l, R = l;
+  //cout << check(l, -lim) << endl;
+  for (int k = 63; ~k; k--)
+    if (check(L - (1ll << k), -lim)) L -= (1ll << k);
+  for (int k = 63; ~k; k--)
+    if (check(R + (1ll << k), -lim)) R += (1ll << k);
+  //cout << L << " " << R << endl;
+  cout << L << " " << -lim + R - L;
 }
