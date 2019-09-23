@@ -41,7 +41,7 @@ void DP(int Res) {
           f[i - 1][l && (k == (N >> i - 1 & 1))][j << 1 | k] ^= f[i][l][j];
         }
   for (int i = 0; i < 3; i++) {
-    int now = (Res + i) % 3;
+    int now = (i - Res + 3) % 3;
     res[i] ^= f[0][0][now] ^ f[0][1][now];
   }
 }
@@ -61,13 +61,10 @@ int main() {
 #endif
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
-  m = 1, N = 1;
-  DP(0);
-  cout << res[0] << " " << res[1] << " " << res[2] << endl;
-  //for (int i = 1; i <= n; i++) {
-  //  work(-4, -3, a[i], b[i]);
-  //  cout << res[0] << " " << res[1] << " " << res[2] << endl;
-  //}
+  work(-2, 0, -2, 2);
+  //m = 2, N = 2;
+  //DP(1);
+  for (int i = 0; i < 3; i++) cout << res[i] << " ";
   //LL l = -inf, r = inf;
   //while (l != r) {
   //  LL mid = (l + r) >> 1;
