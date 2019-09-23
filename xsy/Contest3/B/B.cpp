@@ -32,7 +32,7 @@ inline bool check(LL x, LL y) {
 }
 void DP(int Res) {
   memset(f, 0, sizeof(f));
-  f[64][1][Res] = 1;
+  f[64][1][0] = 1;
   for (int i = 64; i; i--)
     for (int l = 0; l < 2; l++)
       for (int j = 0; j < 3; j++)
@@ -40,7 +40,10 @@ void DP(int Res) {
           if (l && k > (N >> i - 1 & 1)) continue;
           f[i - 1][l && (k == (N >> i - 1 & 1))][j << 1 | k] ^= f[i][l][j];
         }
-  for (int i = 0; i < 3; i++) res[i] ^= f[0][0][i] ^ f[0][1][i];
+  for (int i = 0; i < 3; i++) {
+    int now = (Res + i) % 3;
+    res[i] ^= f[0][0][now] ^ f[0][1][now];
+  }
 }
 inline void work(LL L, LL R, LL a, LL b) {
   m = b, N = R - a;
@@ -60,10 +63,9 @@ int main() {
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
   m = 1, N = 1;
   DP(0);
-  //work(-3, -1, -2, 1);
-  cout << res[0] << " " << res[1] << " " << res[2];
+  cout << res[0] << " " << res[1] << " " << res[2] << endl;
   //for (int i = 1; i <= n; i++) {
-  //  work(-3, -1, a[i], b[i]);
+  //  work(-4, -3, a[i], b[i]);
   //  cout << res[0] << " " << res[1] << " " << res[2] << endl;
   //}
   //LL l = -inf, r = inf;
@@ -77,7 +79,7 @@ int main() {
   //    l = mid + 1;
   //}
   //LL L = l, R = l;
-  // cout << check(l, -lim) << endl;
+  ////cout << check(l, -lim) << endl;
   //for (int k = 63; ~k; k--)
   //  if (check(L - (1ll << k), -lim)) L -= (1ll << k);
   //for (int k = 63; ~k; k--)

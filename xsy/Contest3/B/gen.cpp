@@ -21,7 +21,7 @@ struct node {
 };
 queue<node> q;
 bool bk[201][201];
-int p = 100;
+int p = 5;
 int cnt, nx[1000001], ny[1000001];
 int main() {
 #ifndef ONLINE_JUDGE
@@ -29,8 +29,8 @@ int main() {
 #endif
   srand(time(NULL)); 
   bk[p][p] = 1;
-  for (int i = 1; i <= 1000; i++) {
-    int x = rand() % 200, y = rand() % 200 + 1;
+  for (int i = 1; i <= 1; i++) {
+    int x = rand() % 10, y = rand() % 10 + 1;
     bk[x][y] ^= 1, bk[x][y - 1] ^= 1, bk[x + 1][y - 1] ^= 1;
   }
   for (int i = 0; i <= 200; i++)
