@@ -64,15 +64,10 @@ int main() {
 #endif
   n = read();
   for (int i = 1; i <= n; i++) a[i] = read(), b[i] = read();
-  res[0] = res[1] = res[2] = 0;
-  //for (int i = 1; i <= n; i++) {
-  //  work(-2, 1, a[i], b[i]);
-  //  for (int j = 0; j < 3; j++) cout << res[j] << " ";
-  //  cout << endl;
-  //}
-  LL l = -inf, r = inf, ans;
+  LL l = -inf, r = inf;
   while (l != r) {
     LL mid = l + r >> 1;
+    cerr << mid << endl;
     res[0] = res[1] = res[2] = 0;
     for (int i = 1; i <= n; i++) work(l, mid, a[i], b[i]);
     if (res[1] || res[2] || res[0])

@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <ctime>
 #include <iostream>
-#include <set>
+#include <queue>
 using namespace std;
 #define LL long long
 #define go(x, i, v) for (int i = hd[x], v = to[i]; i; v = to[i = nx[i]])
@@ -19,16 +19,12 @@ inline LL read() {
 struct node {
   int x, y;
 };
-set<node> s;
-bool bk[100001][100001];
+queue<node> q;
+bool bk[1001][1001];
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("B.in", "w", stdout);
 #endif
   srand(time(NULL)); 
-  s.insert((node){0,0});
-  for (int i = 1; i <= 4; i++) {
-    int x = rand() % s.size();
-    
-  }
+  bk[0][0] = 1;
 }
