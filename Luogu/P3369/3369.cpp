@@ -21,9 +21,16 @@ int m;
 int opt, n;
 namespace Splay {
 int cnt, rt;
+#define ls(x) k[x].s[0]
+#define rs(x) k[x].s[1]
 struct node {
-  int fa, val, s[2];
+  int fa, v, s[2];
 } k[Max_n];
+int nx(int x) { return n <= k[x].v ? ls(x) : rs(x); }
+void add() {
+  int x = rt;
+  while (nx(x)) x = nx(x);
+}
 }
 int main() {
 #ifndef ONLINE_JUDGE
@@ -33,5 +40,8 @@ int main() {
   m = read();
   while (m--) {
     opt = read(), n = read();
+    if (opt == 1) {
+      
+    }
   }
 }
