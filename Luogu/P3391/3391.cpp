@@ -21,47 +21,60 @@ int n, m;
 int L, R, a[Max_n];
 namespace Splay {
 int cnt, rt;
-#define ls k[x].s[0]
-#define rs k[x].s[1]
+#define ls(x) k[x].s[0]
+#define rs(x) k[x].s[1]
 struct node {
   int fa, val, s[2], size;
   bool tag;
 } k[Max_n];
-void upd(int x) { k[x].size = k[ls].size + k[rs].size + 1; }
+void upd(int x) { k[x].size = k[ls(x)].size + k[rs(x)].size + 1; }
 int build(int l, int r, int fa) {
   if (l > r) return 0;
   int x = ++cnt, mid = l + r >> 1;
   k[x].fa = fa, k[x].val = a[mid], k[x].size = 1;
-  ls = build(l, mid - 1, x), rs = build(mid + 1, r, x), upd(x);
+  ls(x) = build(l, mid - 1, x), rs(x) = build(mid + 1, r, x), upd(x);
   return x;
 }
 int find(int res) {
   int x = rt;
   while (1)
-    if (k[ls].size < res)
-      x = ls;
+    if (k[ls(x)].size > res)
+      x = ls(x);
     else {
-      res -= k[ls].size;
+      res -= k[ls(x)].size;
       if (!res) return x;
-      res--, x = rs;
+      res--, x = rs(x);
     }
 }
-int kd(int x) { return k[k[x].fa].rs == x; }
+int kd(int x) { return k[k[x].fa].s[1] == x; }
 void pushdown(int x) {
-  k[ls].tag ^= k[x].tag, k[rs].tag ^= k[x].tag;
-  if (k[x].tag) swap(ls, rs), k[x].tag = 0;
+  k[ls(x)].tag ^= k[x].tag, k[rs(x)].tag ^= k[x].tag;
+  if (k[x].tag) swap(ls(x), rs(x)), k[x].tag = 0;
 }
 void rotate(int x) {
-  
+  bool t = kd(x);
+  int A = k[x].fa, B = k[A].fa, C = k[x].s[!t];
+  pushdown(A), pushdown(x);
+  if (B) k[B].s[kd(A)] = x;
+  k[A].fa = x, k[x].fa = B, k[C].fa = A, k[A].s[t] = C, k[x].s[!t] = A;
+  upd(A), upd(x);
 }
 void splay(int x, int to) {
-  for (int i = fa; (fa = k[x].fa) != to; rotate(x))
+  for (int fa; (fa = k[x].fa) != to; rotate(x))
     if (k[fa].fa != to) rotate(kd(x) ^ kd(fa) ? x : fa);
   if (!to) rt = x;
 }
 void Reverse() { 
   L = find(L), R = find(R + 2); 
   splay(L, 0), splay(R, L);
+  k[ls(rs(R))].tag ^= 1;
+}
+void Print(int x) {
+  pushdown(x);
+  if (!x) return;
+  Print(ls(x));
+  if (k[x].val > 0 && k[x].val < 1e9) printf("%d ", k[x].val);
+  Print(rs(x));
 }
 }  // namespace Splay
 int main() {
@@ -72,9 +85,10 @@ int main() {
   n = read(), m = read();
   a[1] = -1e9, a[n + 2] = 1e9;
   for (int i = 2; i <= n + 1; i++) a[i] = i - 1;
-  Splay::rt = Splay::build(1, n, 0);
+  Splay::rt = Splay::build(1, n + 2, 0);
   while (m--) {
     L = read(), R = read();
     Splay::Reverse();
   }
+  Splay::Print(Splay::rt);
 }
