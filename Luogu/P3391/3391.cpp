@@ -28,6 +28,10 @@ struct node {
   bool tag;
 } k[Max_n];
 void upd(int x) { k[x].size = k[ls(x)].size + k[rs(x)].size + 1; }
+void pushdown(int x) {
+  k[ls(x)].tag ^= k[x].tag, k[rs(x)].tag ^= k[x].tag;
+  if (k[x].tag) swap(ls(x), rs(x)), k[x].tag = 0;
+}
 int build(int l, int r, int fa) {
   if (l > r) return 0;
   int x = ++cnt, mid = l + r >> 1;
@@ -37,20 +41,18 @@ int build(int l, int r, int fa) {
 }
 int find(int res) {
   int x = rt;
-  while (1)
-    if (k[ls(x)].size > res)
+  while (1) {
+    pushdown(x);
+    if (k[ls(x)].size >= res) {
       x = ls(x);
-    else {
+    } else {
       res -= k[ls(x)].size;
-      if (!res) return x;
-      res--, x = rs(x);
+      if (!(--res)) return x;
+      x = rs(x);
     }
+  }
 }
 int kd(int x) { return k[k[x].fa].s[1] == x; }
-void pushdown(int x) {
-  k[ls(x)].tag ^= k[x].tag, k[rs(x)].tag ^= k[x].tag;
-  if (k[x].tag) swap(ls(x), rs(x)), k[x].tag = 0;
-}
 void rotate(int x) {
   bool t = kd(x);
   int A = k[x].fa, B = k[A].fa, C = k[x].s[!t];
@@ -64,15 +66,15 @@ void splay(int x, int to) {
     if (k[fa].fa != to) rotate(kd(x) ^ kd(fa) ? x : fa);
   if (!to) rt = x;
 }
-void Reverse() { 
-  L = find(L), R = find(R + 2); 
+void Print(int);
+void Reverse() {
+  L = find(L), R = find(R + 2);
   splay(L, 0), splay(R, L);
-  k[ls(rs(R))].tag ^= 1;
+  k[ls(R)].tag ^= 1;
 }
 void Print(int x) {
-  pushdown(x);
   if (!x) return;
-  Print(ls(x));
+  pushdown(x), Print(ls(x));
   if (k[x].val > 0 && k[x].val < 1e9) printf("%d ", k[x].val);
   Print(rs(x));
 }

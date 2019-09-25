@@ -1,12 +1,25 @@
 #include <cstdio>
 #include <iostream>
 using namespace std;
-int n, opt, x;
+#define LL long long
+#define go(x, i, v) for (int i = hd[x]; i; i = nx[i])
+#define inline __inline__ __attribute__((always_inline))
+inline LL read() {
+  LL x = 0, w = 1;
+  char ch = getchar();
+  while (!isdigit(ch)) {
+    if (ch == '-') w = -1;
+    ch = getchar();
+  }
+  while (isdigit(ch)) {
+    x = (x << 3) + (x << 1) + ch - '0';
+    ch = getchar();
+  }
+  return x * w;
+}
 int main() {
+#ifndef ONLINE_JUDGE
   freopen("3369.in", "r", stdin);
   freopen("3369.out", "w", stdout);
-  cin >> n;
-  while (n--) {
-    scanf("%d%d", &opt, &x);
-  }
+#endif
 }
