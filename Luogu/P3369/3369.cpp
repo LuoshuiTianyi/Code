@@ -2,7 +2,6 @@
 #include <iostream>
 using namespace std;
 #define LL long long
-#define go(x, i, v) for (int i = hd[x]; i; i = nx[i])
 #define inline __inline__ __attribute__((always_inline))
 inline LL read() {
   LL x = 0, w = 1;
@@ -17,9 +16,22 @@ inline LL read() {
   }
   return x * w;
 }
+const int Max_n = 1e5 + 5;
+int m;
+int opt, n;
+namespace Splay {
+int cnt, rt;
+struct node {
+  int fa, val, s[2];
+} k[Max_n];
+}
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("3369.in", "r", stdin);
   freopen("3369.out", "w", stdout);
 #endif
+  m = read();
+  while (m--) {
+    opt = read(), n = read();
+  }
 }
