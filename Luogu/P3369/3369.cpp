@@ -26,6 +26,7 @@ int cnt, rt;
 #define rs(x) k[x].s[1]
 struct node {
   int fa, v, size, cnt, s[2];
+  void init() { fa = v = size = cnt = s[0] = s[1] = 0; }
 } k[Max_n];
 inline bool kd(int x) { return rs(k[x].fa) == x; }
 inline void upd(int x) {
@@ -39,8 +40,9 @@ inline int nx(int x) {
 inline void rotate(int x) {
   bool t = kd(x);
   int A = k[x].fa, B = k[A].fa, C = k[x].s[!t];
-  k[A].s[t] = C, k[B].s[kd(A)] = x, k[x].s[!t] = A;
-  k[A].fa = x, k[x].fa = B, k[C].fa = A;
+  if (B) k[B].s[kd(A)] = x;
+  if (m == 25787) cout << x << " " << A << " " << B << endl;
+  k[A].s[t] = C, k[x].s[!t] = A, k[A].fa = x, k[x].fa = B, k[C].fa = A;
   upd(A), upd(x);
 }
 inline void splay(int x, int to) {
@@ -60,8 +62,7 @@ inline void add() {
     ls(x) = cnt;
   else
     rs(x) = cnt;
-  upd(cnt), splay(cnt, rt);
-  if (!x) x = rt = cnt;
+  upd(cnt), splay(cnt, 0);
 }
 inline void del() {
   int x = rt;
@@ -84,15 +85,16 @@ inline int rak() {
   int res = 0, x = rt;
   for (; nx(x); x = nx(x))
     if (k[x].v < n) res += k[ls(x)].size + k[x].cnt;
+  int tp = res + k[ls(x)].size + 1;
   if (x) splay(x, 0);
-  return res + k[ls(x)].size + 1;
+  return tp;
 }
 inline int num() {
   int x = rt;
   while (1)
     if (k[ls(x)].size < n) {
       n -= k[ls(x)].size;
-      if (!(--n)) {
+      if ((n -= k[x].cnt) <= 0) {
         if (x) splay(x, 0);
         return k[x].v;
       }
@@ -122,12 +124,6 @@ inline int nxt() {
   }
   return res;
 }
-void Print(int x) {
-  if (!x) return;
-  Print(ls(x));
-  printf("%d ", k[x].v);
-  Print(rs(x));
-}
 }  // namespace Splay
 int main() {
 #ifndef ONLINE_JUDGE
@@ -140,13 +136,7 @@ int main() {
     if (opt == 1) Splay::add();
     if (opt == 2) Splay::del();
     if (opt == 3) printf("%d\n", Splay::rak());
-    if (opt == 4) {
-      if (m == 7951) {
-        Splay::Print(Splay::rt);
-        cout << endl;
-      }
-      printf("%d\n", Splay::num());
-    }
+    if (opt == 4) printf("%d\n", Splay::num());
     if (opt == 5) n--, printf("%d\n", Splay::pre());
     if (opt == 6) n++, printf("%d\n", Splay::nxt());
   }
