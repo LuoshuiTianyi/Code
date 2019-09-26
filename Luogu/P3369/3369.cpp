@@ -52,7 +52,7 @@ inline void add() {
   int x = rt;
   while (nx(x)) x = nx(x);
   if (k[x].v == n) {
-    k[x].cnt++, k[x].size++;
+    k[x].cnt++, k[x].size++, splay(x, rt);
     return;
   }
   cnt++, k[cnt].fa = x, k[cnt].v = n, k[cnt].size = k[cnt].cnt = 1;
@@ -66,22 +66,25 @@ inline void add() {
 inline void del() {
   int x = rt;
   while (nx(x)) x = nx(x);
-  if (--k[x].cnt) return;
   splay(x, 0);
+  if (--k[x].cnt) {
+    upd(x);
+    return;
+  }
   if (!ls(x))
-    rt = rs(x);
+    rt = rs(x), k[rs(x)].fa = 0;
   else {
     int q = ls(x);
     while (rs(q)) q = rs(q);
     splay(q, x);
-    rt = q, rs(q) = rs(x), k[rs(x)].fa = q, upd(q);
+    rt = q, rs(q) = rs(x), k[rs(x)].fa = q, k[q].fa = 0, upd(q);
   }
 }
 inline int rak() {
   int res = 0, x = rt;
   for (; nx(x); x = nx(x))
     if (k[x].v < n) res += k[ls(x)].size + k[x].cnt;
-  return res + k[ls(x)].size;
+  return res + k[ls(x)].size + 1;
 }
 inline int num() {
   int x = rt;
@@ -111,12 +114,6 @@ inline int nxt() {
   }
   return res;
 }
-void Print(int x) {
-  if (!x) return;
-  Print(ls(x));
-  printf("%d %d\n", k[x].v, k[x].cnt);
-  Print(rs(x));
-}
 }  // namespace Splay
 int main() {
 #ifndef ONLINE_JUDGE
@@ -130,10 +127,7 @@ int main() {
     if (opt == 2) Splay::del();
     if (opt == 3) printf("%d\n", Splay::rak());
     if (opt == 4) printf("%d\n", Splay::num());
-    if (opt == 5) {
-      printf("%d\n", Splay::pre());
-      //Splay::Print(Splay::rt);
-    }
+    if (opt == 5) printf("%d\n", Splay::pre());
     if (opt == 6) printf("%d\n", Splay::nxt());
   }
 }
