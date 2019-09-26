@@ -27,10 +27,14 @@ int cnt, rt;
 struct node {
   int fa, v, size, cnt, s[2];
 } k[Max_n];
-bool kd(int x) { return rs(k[x].fa) == x; }
-void upd(int x) {
+inline bool kd(int x) { return rs(k[x].fa) == x; }
+inline void upd(int x) {
   if (!x) return;
   k[x].size = k[ls(x)].size + k[rs(x)].size + k[x].cnt;
+}
+inline int nx(int x) {
+  if (k[x].v == n) return 0;
+  return k[x].v > n ? ls(x) : rs(x);
 }
 inline void rotate(int x) {
   bool t = kd(x);
@@ -46,22 +50,22 @@ inline void splay(int x, int to) {
 }
 inline void add() {
   int x = rt;
-  if (!x) x = rt = cnt + 1;
-  for (; k[x].v != n && x;) x = k[x].v > n ? ls(x) : rs(x);
-  if (x) {
+  while (nx(x)) x = nx(x);
+  if (k[x].v == n) {
     k[x].cnt++, k[x].size++;
     return;
   }
-  cnt++, k[cnt].fa = x, k[cnt].v = n, k[cnt].size = 1;
+  cnt++, k[cnt].fa = x, k[cnt].v = n, k[cnt].size = k[cnt].cnt = 1;
   if (n < k[x].v)
     ls(x) = cnt;
   else
     rs(x) = cnt;
   upd(cnt), splay(cnt, rt);
+  if (!x) x = rt = cnt;
 }
 inline void del() {
   int x = rt;
-  for (; k[x].v != n;) x = k[x].v > n ? ls(x) : rs(x);
+  while (nx(x)) x = nx(x);
   if (--k[x].cnt) return;
   splay(x, 0);
   if (!ls(x))
@@ -75,8 +79,8 @@ inline void del() {
 }
 inline int rak() {
   int res = 0, x = rt;
-  for (; k[x].v != n; x = k[x].v > n ? ls(x) : rs(x))
-    if (k[x].v < n) res += k[ls(x)].size + 1;
+  for (; nx(x); x = nx(x))
+    if (k[x].v < n) res += k[ls(x)].size + k[x].cnt;
   return res + k[ls(x)].size;
 }
 inline int num() {
@@ -90,14 +94,28 @@ inline int num() {
       x = ls(x);
 }
 inline int pre() {
-  int x = rt;
-  for (; k[x].v != n;) x = k[x].v > n ? ls(x) : rs(x);
-  splay(x, 0);
+  int x = rt, res = -1e9;
+  if (k[x].v < n) res = max(res, k[x].v);
+  while (nx(x)) {
+    x = nx(x);
+    if (k[x].v < n) res = max(res, k[x].v);
+  }
+  return res;
 }
 inline int nxt() {
-  int x = rt;
-  for (; k[x].v != n;) x = k[x].v > n ? ls(x) : rs(x);
-  splay(x, 0);
+  int x = rt, res = 1e9;
+  if (k[x].v > n) res = min(res, k[x].v);
+  while (nx(x)) {
+    x = nx(x);
+    if (k[x].v > n) res = min(res, k[x].v);
+  }
+  return res;
+}
+void Print(int x) {
+  if (!x) return;
+  Print(ls(x));
+  printf("%d %d\n", k[x].v, k[x].cnt);
+  Print(rs(x));
 }
 }  // namespace Splay
 int main() {
@@ -112,7 +130,10 @@ int main() {
     if (opt == 2) Splay::del();
     if (opt == 3) printf("%d\n", Splay::rak());
     if (opt == 4) printf("%d\n", Splay::num());
-    if (opt == 5) printf("%d\n", Splay::pre());
+    if (opt == 5) {
+      printf("%d\n", Splay::pre());
+      //Splay::Print(Splay::rt);
+    }
     if (opt == 6) printf("%d\n", Splay::nxt());
   }
 }
