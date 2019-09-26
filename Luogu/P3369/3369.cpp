@@ -84,6 +84,7 @@ inline int rak() {
   int res = 0, x = rt;
   for (; nx(x); x = nx(x))
     if (k[x].v < n) res += k[ls(x)].size + k[x].cnt;
+  if (x) splay(x, 0);
   return res + k[ls(x)].size + 1;
 }
 inline int num() {
@@ -91,7 +92,10 @@ inline int num() {
   while (1)
     if (k[ls(x)].size < n) {
       n -= k[ls(x)].size;
-      if (!(--n)) return k[x].v;
+      if (!(--n)) {
+        if (x) splay(x, 0);
+        return k[x].v;
+      }
       x = rs(x);
     } else
       x = ls(x);
@@ -112,7 +116,17 @@ inline int nxt() {
     x = nx(x);
     if (k[x].v > n) res = min(res, k[x].v);
   }
+  while (x) {
+    if (k[x].v > n && k[x].v < res) res = k[x].v;
+    x = nx(x);
+  }
   return res;
+}
+void Print(int x) {
+  if (!x) return;
+  Print(ls(x));
+  printf("%d ", k[x].v);
+  Print(rs(x));
 }
 }  // namespace Splay
 int main() {
@@ -126,8 +140,14 @@ int main() {
     if (opt == 1) Splay::add();
     if (opt == 2) Splay::del();
     if (opt == 3) printf("%d\n", Splay::rak());
-    if (opt == 4) printf("%d\n", Splay::num());
-    if (opt == 5) printf("%d\n", Splay::pre());
-    if (opt == 6) printf("%d\n", Splay::nxt());
+    if (opt == 4) {
+      if (m == 7951) {
+        Splay::Print(Splay::rt);
+        cout << endl;
+      }
+      printf("%d\n", Splay::num());
+    }
+    if (opt == 5) n--, printf("%d\n", Splay::pre());
+    if (opt == 6) n++, printf("%d\n", Splay::nxt());
   }
 }
