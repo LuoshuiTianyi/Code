@@ -41,7 +41,7 @@ inline void rotate(int x) {
   bool t = kd(x);
   int A = k[x].fa, B = k[A].fa, C = k[x].s[!t];
   //if (m == 25787) cerr << x << " " << A << " " << B << endl;
-  k[A].s[t] = C, k[x].s[!t] = A, k[B].s[kd(A)] = x;
+  k[A].s[t] = C, k[x].s[!t] = A, k[B].s[kd(A)] = x, k[0].init();
   k[A].fa = x, k[x].fa = B, k[C].fa = A;
   upd(A), upd(x);
 }
