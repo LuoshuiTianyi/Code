@@ -40,7 +40,7 @@ inline int nx(int x) {
 inline void rotate(int x) {
   bool t = kd(x);
   int A = k[x].fa, B = k[A].fa, C = k[x].s[!t];
-  //if (m == 25787) cerr << x << " " << A << " " << B << endl;
+  // if (m == 25787) cerr << x << " " << A << " " << B << endl;
   k[A].s[t] = C, k[x].s[!t] = A, k[B].s[kd(A)] = x;
   k[A].fa = x, k[x].fa = B, k[C].fa = A;
   upd(A), upd(x);
@@ -54,7 +54,7 @@ inline void add() {
   int x = rt;
   while (nx(x)) x = nx(x);
   if (k[x].v == n) {
-    k[x].cnt++, k[x].size++, splay(x, rt);
+    k[x].cnt++, k[x].size++, splay(x, 0);
     return;
   }
   cnt++, k[cnt].fa = x, k[cnt].v = n, k[cnt].size = k[cnt].cnt = 1;
@@ -104,22 +104,16 @@ inline int num() {
 }
 inline int pre() {
   int x = rt, res = -1e9;
-  if (k[x].v < n) res = max(res, k[x].v);
-  while (nx(x)) {
+  while (x) {
+    if (k[x].v <= n) res = max(res, k[x].v);
     x = nx(x);
-    if (k[x].v < n) res = max(res, k[x].v);
   }
   return res;
 }
 inline int nxt() {
   int x = rt, res = 1e9;
-  if (k[x].v > n) res = min(res, k[x].v);
-  while (nx(x)) {
-    x = nx(x);
-    if (k[x].v > n) res = min(res, k[x].v);
-  }
   while (x) {
-    if (k[x].v > n && k[x].v < res) res = k[x].v;
+    if (k[x].v >= n) res = min(res, k[x].v);
     x = nx(x);
   }
   return res;
