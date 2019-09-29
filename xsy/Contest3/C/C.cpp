@@ -27,9 +27,11 @@ int num[Max_n], U[Max_n], V[Max_n], B[Max_n], C[Max_n];
 int fa[Max_n], rk[Max_n], dn[Max_n];
 int w;
 struct node {
-  int fa, v, siz, cnt, s[2];
+  int fa, v, size, cnt, s[2];
 };
 struct Splay {
+#define ls(x) k[x].s[0]
+#define rs(x) k[x].s[1]
   vector<node> k;
   int rt;
   bool kd(int x) { return rs(k[x].fa) != x; }
@@ -46,8 +48,9 @@ struct Splay {
     update(A), update(x);
   }
   void splay(int x, int to) {
+    if (!x) return;
     for (int fa; (fa = k[x].fa) != to; rotate(x))
-      if (kd(k[fa]) ^ kd(x))
+      if (kd(fa) ^ kd(x))
         rotate(x);
       else
         rotate(fa);
@@ -88,10 +91,11 @@ struct Splay {
   }
   int pre() {
     int x = rt, ans = 0;
-    for (; nx(x); x = nx(x))
+    for (; nx(x); x = nx(x)) {
       if (k[x].v < n) ans += k[ls(x)].size + k[x].cnt;
+    }
     int tp = ans + k[ls(x)].size + k[x].cnt;
-    if (x) splay(x, 0);
+    splay(x, 0);
     return tp;
   }
 } c[Max_n];
@@ -106,6 +110,7 @@ void build(int x, int f) {
   go(x, i, v) if (v != f) build(v, x);
 }
 void addc(int k, int x) {
+  if (!k) return;
   w = x;
   for (int i = k; i <= n; i += i & -i) c[i].add();
 }
@@ -116,18 +121,26 @@ void delc(int k, int x) {
 int query(int R, int B) {
   w = B;
   int ans = 0;
-  for (int i = R; i > 0; i -= i & -i) ans += c[i].pre();
+  for (int i = R; i > 0; i -= i & -i) {
+    ans += c[i].pre();
+  }
+  return ans;
 }
 void Count(int x, int f, LL ans, int tot) {
-  int now = dn[x], l = dn[x], r = dn[x] + n;
+  int now = dn[x], p = 0, l = dn[x], r = dn[x] + n;
+  // cerr << x << endl;
   while (l <= r) {
     int mid = l + r >> 1;
+    // cerr << mid << endl;
     if (query(rk[x] - 1, mid) >= (tot + 1 >> 1))
-      now = max(now, mid), r = mid - 1;
+      p = mid, r = mid - 1;
     else
       l = mid + 1;
   }
+  now = max(now, p);
+  cerr << x << " " << rk[x] << " " << now << endl;
   ans += now, addc(rk[x], now);
+  cerr << x << endl;
   go(x, i, v) if (v != f) Count(v, x, ans, tot + 1);
   delc(rk[x], now);
   Ans[x] += ans;
@@ -138,21 +151,23 @@ int main() {
   freopen("C.out", "w", stdout);
 #endif
   n = read();
+  int tp[Max_n];
   for (int i = 1; i <= n; i++) {
-    U[i] = read(), V[i] = read(), B[i] = read(), C[i] = read(), num[i] = i;
-    addr(U[i], V[i]), addr(V[i], U[i]);
+    U[i] = read(), V[i] = read(), tp[i] = B[i] = read(), C[i] = read();
+    num[i] = i, addr(U[i], V[i]), addr(V[i], U[i]);
   }
   sort(num + 1, num + n + 1, cmp);
   int cnt = 0;
-  B[0] = -1;
+  tp[0] = -1;
   for (int i = 1; i <= n; i++) {
-    if (B[num[i]] != B[num[i - 1]]) cnt++;
+    if (tp[num[i]] != tp[num[i - 1]]) cnt++;
     B[num[i]] = cnt;
   }
+  for (int i = 1; i <= n; i++) c[i].k.push_back((node){0, 0, 0, 0, {0, 0}});
   build(0, 0);
   for (int i = 1; i <= n; i++) {
     if (fa[U[i]] == V[i]) swap(U[i], V[i]);
-    rk[V[i]] = B[i], dn[V[i]] = B[i];
+    rk[V[i]] = B[i], dn[V[i]] = C[i];
   }
   Count(0, -1, 0, 0);
 }
