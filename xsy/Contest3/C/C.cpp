@@ -31,14 +31,68 @@ struct node {
 };
 struct Splay {
   vector<node> k;
+  int rt;
   bool kd(int x) { return rs(k[x].fa) != x; }
-  int nx(int x) { return k[x].v < x ? rs(x) : ls(x); }
+  int nx(int x) {
+    if (k[x].v == w) return 0;
+    return k[x].v < w ? rs(x) : ls(x);
+  }
+  void update(int x) { k[x].size = k[ls(x)].size + k[rs(x)].size; }
+  void rotate(int x) {
+    bool t = kd(x), t2 = kd(k[x].fa);
+    int A = k[x].fa, B = k[A].fa, C = k[x].s[!t];
+    k[x].fa = B, k[A].fa = x, k[C].fa = A;
+    k[x].s[!t] = A, k[A].s[t] = C, k[B].s[t2] = x;
+    update(A), update(x);
+  }
   void splay(int x, int to) {
     for (int fa; (fa = k[x].fa) != to; rotate(x))
-      
+      if (kd(k[fa]) ^ kd(x))
+        rotate(x);
+      else
+        rotate(fa);
+    if (!to) rt = x;
   }
-  void add(int x) {
-    
+  void add() {
+    int x = rt;
+    while (nx(x)) x = nx(x);
+    if (w == k[x].v) {
+      k[x].cnt++;
+      splay(x, 0);
+      return;
+    }
+    k.push_back((node){x, w, 1, 1, {0, 0}});
+    if (w < k[x].v)
+      ls(x) = k.size() - 1;
+    else
+      rs(x) = k.size() - 1;
+    update(x);
+  }
+  void del() {
+    int x = rt;
+    while (nx(x)) x = nx(x);
+    k[x].cnt--;
+    if (k[x].cnt) {
+      splay(x, 0);
+      return;
+    }
+    int q = ls(x);
+    if (!q) {
+      rt = rs(x), k[rs(x)].fa = 0;
+    } else {
+      while (rs(q)) q = rs(q);
+      splay(q, x);
+      k[rs(x)].fa = ls(x), rs(ls(x)) = rs(x), rt = ls(x), update(ls(x));
+    }
+    k.pop_back();
+  }
+  int pre() {
+    int x = rt, ans = 0;
+    for (; nx(x); x = nx(x))
+      if (k[x].v < n) ans += k[ls(x)].size + k[x].cnt;
+    int tp = ans + k[ls(x)].size + k[x].cnt;
+    if (x) splay(x, 0);
+    return tp;
   }
 } c[Max_n];
 void addr(int u, int v) {
@@ -52,13 +106,31 @@ void build(int x, int f) {
   go(x, i, v) if (v != f) build(v, x);
 }
 void addc(int k, int x) {
-  for (int i = k; i <= n; i += i & -i) c[i].add(x);
+  w = x;
+  for (int i = k; i <= n; i += i & -i) c[i].add();
 }
 void delc(int k, int x) {
-  for (int i = k; i <= n; i += i & -i) c[i].del(x);
+  w = x;
+  for (int i = k; i <= n; i += i & -i) c[i].del();
 }
-void Count(int x, int f, LL ans) {
-  
+int query(int R, int B) {
+  w = B;
+  int ans = 0;
+  for (int i = R; i > 0; i -= i & -i) ans += c[i].pre();
+}
+void Count(int x, int f, LL ans, int tot) {
+  int now = dn[x], l = dn[x], r = dn[x] + n;
+  while (l <= r) {
+    int mid = l + r >> 1;
+    if (query(rk[x] - 1, mid) >= (tot + 1 >> 1))
+      now = max(now, mid), r = mid - 1;
+    else
+      l = mid + 1;
+  }
+  ans += now, addc(rk[x], now);
+  go(x, i, v) if (v != f) Count(v, x, ans, tot + 1);
+  delc(rk[x], now);
+  Ans[x] += ans;
 }
 int main() {
 #ifndef ONLINE_JUDGE
@@ -82,5 +154,5 @@ int main() {
     if (fa[U[i]] == V[i]) swap(U[i], V[i]);
     rk[V[i]] = B[i], dn[V[i]] = B[i];
   }
-  Count(0, 0);
+  Count(0, -1, 0, 0);
 }
