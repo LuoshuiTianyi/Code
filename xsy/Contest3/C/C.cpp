@@ -34,34 +34,33 @@ struct Splay {
 #define rs(x) k[x].s[1]
   vector<node> k;
   int rt;
-  bool kd(int x) { return rs(k[x].fa) != x; }
+  bool kd(int x) { return rs(k[x].fa) == x; }
   int nx(int x) {
     if (k[x].v == w) return 0;
     return k[x].v < w ? rs(x) : ls(x);
   }
-  void update(int x) { k[x].size = k[ls(x)].size + k[rs(x)].size; }
+  void update(int x) {
+    if (!x) return;
+    k[x].size = k[ls(x)].size + k[rs(x)].size;
+  }
   void rotate(int x) {
-    bool t = kd(x), t2 = kd(k[x].fa);
+    bool t = kd(x);
     int A = k[x].fa, B = k[A].fa, C = k[x].s[!t];
+    k[x].s[!t] = A, k[A].s[t] = C, k[B].s[kd(A)] = x;
     k[x].fa = B, k[A].fa = x, k[C].fa = A;
-    k[x].s[!t] = A, k[A].s[t] = C, k[B].s[t2] = x;
     update(A), update(x);
   }
   void splay(int x, int to) {
     if (!x) return;
     for (int fa; (fa = k[x].fa) != to; rotate(x))
-      if (kd(fa) ^ kd(x))
-        rotate(x);
-      else
-        rotate(fa);
+      if (k[fa].fa != to) rotate(kd(x) ^ kd(fa) ? x : fa);
     if (!to) rt = x;
   }
   void add() {
     int x = rt;
     while (nx(x)) x = nx(x);
     if (w == k[x].v) {
-      k[x].cnt++;
-      splay(x, 0);
+      k[x].cnt++, k[x].size++, splay(x, 0);
       return;
     }
     k.push_back((node){x, w, 1, 1, {0, 0}});
@@ -69,14 +68,15 @@ struct Splay {
       ls(x) = k.size() - 1;
     else
       rs(x) = k.size() - 1;
-    update(x);
+    update(k.size() - 1);
+    splay(k.size() - 1, 0);
   }
   void del() {
     int x = rt;
     while (nx(x)) x = nx(x);
-    k[x].cnt--;
-    if (k[x].cnt) {
-      splay(x, 0);
+    splay(x, 0);
+    if (--k[x].cnt) {
+      update(x);
       return;
     }
     int q = ls(x);
@@ -85,18 +85,23 @@ struct Splay {
     } else {
       while (rs(q)) q = rs(q);
       splay(q, x);
-      k[rs(x)].fa = ls(x), rs(ls(x)) = rs(x), rt = ls(x), update(ls(x));
+      k[rs(x)].fa = q, rs(q) = rs(x), rt = q, update(q);
     }
     k.pop_back();
   }
   int pre() {
     int x = rt, ans = 0;
-    for (; nx(x); x = nx(x)) {
+    for (; nx(x); x = nx(x))
       if (k[x].v < n) ans += k[ls(x)].size + k[x].cnt;
-    }
     int tp = ans + k[ls(x)].size + k[x].cnt;
     splay(x, 0);
     return tp;
+  }
+  void Print(int x) {
+    if (!x) return;
+    Print(ls(x));
+    printf("%d ", k[x].v);
+    Print(rs(x));
   }
 } c[Max_n];
 void addr(int u, int v) {
@@ -121,26 +126,22 @@ void delc(int k, int x) {
 int query(int R, int B) {
   w = B;
   int ans = 0;
-  for (int i = R; i > 0; i -= i & -i) {
-    ans += c[i].pre();
-  }
+  for (int i = R; i > 0; i -= i & -i) ans += c[i].pre();
   return ans;
 }
 void Count(int x, int f, LL ans, int tot) {
   int now = dn[x], p = 0, l = dn[x], r = dn[x] + n;
-  // cerr << x << endl;
+  for (int i = 1; i <= n; i++) c[i].Print(c[i].rt);
+  cout << endl;
   while (l <= r) {
     int mid = l + r >> 1;
-    // cerr << mid << endl;
     if (query(rk[x] - 1, mid) >= (tot + 1 >> 1))
       p = mid, r = mid - 1;
     else
       l = mid + 1;
   }
   now = max(now, p);
-  cerr << x << " " << rk[x] << " " << now << endl;
   ans += now, addc(rk[x], now);
-  cerr << x << endl;
   go(x, i, v) if (v != f) Count(v, x, ans, tot + 1);
   delc(rk[x], now);
   Ans[x] += ans;
