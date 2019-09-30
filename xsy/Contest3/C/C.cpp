@@ -35,29 +35,29 @@ struct Splay {
 #define rs(x) k[x].s[1]
   vector<node> k;
   int rt;
-  bool kd(int x) { return rs(k[x].fa) == x; }
-  int nx(int x) {
+  inline bool kd(int x) { return rs(k[x].fa) == x; }
+  inline void upd(int x) {
+    if (!x) return;
+    k[x].size = k[ls(x)].size + k[rs(x)].size + k[x].cnt;
+  }
+  inline int nx(int x) {
     if (k[x].v == w) return 0;
     return k[x].v < w ? rs(x) : ls(x);
   }
-  void update(int x) {
-    if (!x) return;
-    k[x].size = k[ls(x)].size + k[rs(x)].size;
-  }
-  void rotate(int x) {
+  inline void rotate(int x) {
     bool t = kd(x);
     int A = k[x].fa, B = k[A].fa, C = k[x].s[!t];
-    k[x].s[!t] = A, k[A].s[t] = C, k[B].s[kd(A)] = x;
-    k[x].fa = B, k[A].fa = x, k[C].fa = A;
-    update(A), update(x);
+    k[A].s[t] = C, k[x].s[!t] = A, k[B].s[kd(A)] = x;
+    k[A].fa = x, k[x].fa = B, k[C].fa = A;
+    upd(A), upd(x);
   }
-  void splay(int x, int to) {
+  inline void splay(int x, int to) {
     if (!x) return;
     for (int fa; (fa = k[x].fa) != to; rotate(x))
       if (k[fa].fa != to) rotate(kd(x) ^ kd(fa) ? x : fa);
     if (!to) rt = x;
   }
-  void add() {
+  inline void add() {
     int x = rt;
     while (nx(x)) x = nx(x);
     if (w == k[x].v) {
@@ -69,15 +69,15 @@ struct Splay {
       ls(x) = k.size() - 1;
     else
       rs(x) = k.size() - 1;
-    update(k.size() - 1);
+    upd(k.size() - 1);
     splay(k.size() - 1, 0);
   }
-  void del() {
+  inline void del() {
     int x = rt;
     while (nx(x)) x = nx(x);
     splay(x, 0);
     if (--k[x].cnt) {
-      update(x);
+      upd(x);
       return;
     }
     int q = ls(x);
@@ -86,13 +86,15 @@ struct Splay {
     } else {
       while (rs(q)) q = rs(q);
       splay(q, x);
-      k[rs(x)].fa = q, rs(q) = rs(x), rt = q, update(q);
+      rt = q, rs(q) = rs(x), k[rs(x)].fa = q, k[q].fa = 0, upd(q);
     }
   }
-  int pre() {
+  inline int pre() {
     int x = rt, ans = 0;
-    for (; x; x = nx(x))
-      if (k[x].v < w) ans += k[ls(x)].size + k[x].cnt;
+    while (x) {
+      if (k[x].v <= w) ans += k[ls(x)].size + k[x].cnt;
+      x = nx(x);
+    }
     splay(x, 0);
     return ans;
   }
@@ -103,53 +105,54 @@ struct Splay {
     Print(rs(x));
   }
 } c[Max_n];
-void addr(int u, int v) {
+inline void addr(int u, int v) {
   cntr++;
   nx[cntr] = hd[u], to[cntr] = v;
   hd[u] = cntr;
 }
-bool cmp(int x, int y) { return B[x] < B[y]; }
+inline bool cmp(int x, int y) { return B[x] < B[y]; }
 void build(int x, int f) {
   fa[x] = f;
   go(x, i, v) if (v != f) build(v, x);
 }
-void addc(int k, int x) {
+inline void addc(int k, int x) {
   if (!k) return;
   w = x;
   for (int i = k; i <= n; i += i & -i) c[i].add();
 }
-void delc(int k, int x) {
+inline void delc(int k, int x) {
+  if (!k) return;
   w = x;
   for (int i = k; i <= n; i += i & -i) c[i].del();
 }
-int query(int R, int B) {
-  w = B;
+inline int query(int R, int B) {
+  w = B - 1;
   int ans = 0;
-  // cout << R << " " << B << " " << endl;
   for (int i = R; i > 0; i -= i & -i) {
     ans += c[i].pre();
-    // c[i].Print(c[i].rt);
-    // cout << endl;
+    //cout << w << " " << c[i].pre() << " ";
+    //c[i].Print(c[i].rt);
+    //cout << endl;
   }
-  // cout << ans << endl;
+  //cout << ans << endl;
   return ans;
 }
-void ad(int k, int x) {
+inline void ad(int k, int x) {
   if (!k) return;
   for (int i = k; i <= n; i += i & -i) s[i] += x;
 }
-int qry(int k) {
+inline int qry(int k) {
   int ans = 0;
   for (int i = k; i > 0; i -= i & -i) ans += s[i];
   return ans;
 }
 void Count(int x, int f, LL ans, int tot) {
-  int now = dn[x], l = 1, r = dn[x] + n;
+  int now = dn[x], l = 1, r = 1e9 + n;
   ad(rk[x], 1);
   // for (int i = 1; i <= n; i++) c[i].Print(c[i].rt), cout << " ";
   // cout << endl;
   int sum = qry(rk[x] - 1);
-  cout << x << " " << rk[x] << endl;
+  //cout << x << " " << now << endl;
   if (sum) {
     while (l <= r) {
       int mid = l + r >> 1;
@@ -160,7 +163,6 @@ void Count(int x, int f, LL ans, int tot) {
     }
   }
   ans += now, addc(rk[x], now);
-  // cerr << x << " " << now << endl;
   Ans[x] = ans;
   go(x, i, v) if (v != f) Count(v, x, ans, tot + 1);
   delc(rk[x], now);
@@ -191,4 +193,5 @@ int main() {
     rk[V[i]] = B[i], dn[V[i]] = C[i];
   }
   Count(0, -1, 0, 0);
+  for (int i = 1; i <= n; i++) printf("%lld ", Ans[i]);
 }
