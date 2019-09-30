@@ -92,11 +92,10 @@ struct Splay {
   }
   int pre() {
     int x = rt, ans = 0;
-    for (; nx(x); x = nx(x))
-      if (k[x].v < n) ans += k[ls(x)].size + k[x].cnt;
-    int tp = ans + k[ls(x)].size + k[x].cnt;
+    for (; x; x = nx(x))
+      if (k[x].v < w) ans += k[ls(x)].size + k[x].cnt;
     splay(x, 0);
-    return tp;
+    return ans;
   }
   void Print(int x) {
     if (!x) return;
@@ -127,7 +126,13 @@ void delc(int k, int x) {
 int query(int R, int B) {
   w = B;
   int ans = 0;
-  for (int i = R; i > 0; i -= i & -i) ans += c[i].pre();
+  // cout << R << " " << B << " " << endl;
+  for (int i = R; i > 0; i -= i & -i) {
+    ans += c[i].pre();
+    // c[i].Print(c[i].rt);
+    // cout << endl;
+  }
+  // cout << ans << endl;
   return ans;
 }
 void ad(int k, int x) {
@@ -142,9 +147,10 @@ int qry(int k) {
 void Count(int x, int f, LL ans, int tot) {
   int now = dn[x], l = 1, r = dn[x] + n;
   ad(rk[x], 1);
-  for (int i = 1; i <= n; i++) c[i].Print(c[i].rt), cout << " ";
-  cout << endl;
+  // for (int i = 1; i <= n; i++) c[i].Print(c[i].rt), cout << " ";
+  // cout << endl;
   int sum = qry(rk[x] - 1);
+  cout << x << " " << rk[x] << endl;
   if (sum) {
     while (l <= r) {
       int mid = l + r >> 1;
@@ -155,7 +161,7 @@ void Count(int x, int f, LL ans, int tot) {
     }
   }
   ans += now, addc(rk[x], now);
-  cerr << x << " " << now << endl;
+  // cerr << x << " " << now << endl;
   Ans[x] = ans;
   go(x, i, v) if (v != f) Count(v, x, ans, tot + 1);
   delc(rk[x], now);
