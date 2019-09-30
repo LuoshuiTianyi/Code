@@ -25,6 +25,7 @@ LL Ans[Max_n];
 int cntr = 1, hd[Max_n], nx[Max_n << 1], to[Max_n << 1];
 int num[Max_n], U[Max_n], V[Max_n], B[Max_n], C[Max_n];
 int fa[Max_n], rk[Max_n], dn[Max_n];
+int s[Max_n];
 int w;
 struct node {
   int fa, v, size, cnt, s[2];
@@ -129,22 +130,36 @@ int query(int R, int B) {
   for (int i = R; i > 0; i -= i & -i) ans += c[i].pre();
   return ans;
 }
+void ad(int k, int x) {
+  if (!k) return;
+  for (int i = k; i <= n; i += i & -i) s[i] += x;
+}
+int qry(int k) {
+  int ans = 0;
+  for (int i = k; i > 0; i -= i & -i) ans += s[i];
+  return ans;
+}
 void Count(int x, int f, LL ans, int tot) {
-  int now = dn[x], p = 0, l = dn[x], r = dn[x] + n;
-  for (int i = 1; i <= n; i++) c[i].Print(c[i].rt);
+  int now = dn[x], l = 1, r = dn[x] + n;
+  ad(rk[x], 1);
+  for (int i = 1; i <= n; i++) c[i].Print(c[i].rt), cout << " ";
   cout << endl;
-  while (l <= r) {
-    int mid = l + r >> 1;
-    if (query(rk[x] - 1, mid) >= (tot + 1 >> 1))
-      p = mid, r = mid - 1;
-    else
-      l = mid + 1;
+  int sum = qry(rk[x] - 1);
+  if (sum) {
+    while (l <= r) {
+      int mid = l + r >> 1;
+      if (query(rk[x] - 1, mid) >= (sum + 1 >> 1))
+        now = mid, r = mid - 1;
+      else
+        l = mid + 1;
+    }
   }
-  now = max(now, p);
   ans += now, addc(rk[x], now);
+  cerr << x << " " << now << endl;
+  Ans[x] = ans;
   go(x, i, v) if (v != f) Count(v, x, ans, tot + 1);
   delc(rk[x], now);
-  Ans[x] += ans;
+  ad(rk[x], -1);
 }
 int main() {
 #ifndef ONLINE_JUDGE
