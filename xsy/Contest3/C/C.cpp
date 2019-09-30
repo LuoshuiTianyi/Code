@@ -90,7 +90,7 @@ struct Splay {
   inline int pre() {
     int res = 0, x = rt;
     for (; nx(x); x = nx(x))
-      if (k[x].v <= n) res += k[ls(x)].size + k[x].cnt;
+      if (k[x].v <= w) res += k[ls(x)].size + k[x].cnt;
     int tp = res + k[ls(x)].size + 1;
     if (x) splay(x, 0);
     return tp;
@@ -189,5 +189,5 @@ int main() {
     rk[V[i]] = B[i], dn[V[i]] = C[i];
   }
   Count(0, 0, 0, 0);
-  for (int i = 1; i <= n; i++) printf("%lld ", Ans[i]);
+  //for (int i = 1; i <= n; i++) printf("%lld ", Ans[i]);
 }
