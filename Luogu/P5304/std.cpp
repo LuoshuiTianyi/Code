@@ -3,7 +3,7 @@
 using namespace std;
 const int maxn=100000+10;
 const int maxm=500000+10;
-const ll inf=0x3f3f3f3f3f3f3f3f;    
+const ll inf=9187201950435737471;    
 int n,m,k,a[maxn],X[maxm],Y[maxm],W[maxm],col[2][maxn],head[maxn],tot;
 ll dis[2][maxn],ans;bool vis[maxn],iscity[maxn];
 
@@ -84,6 +84,8 @@ inline void solve()
         x=X[i];y=Y[i];w=W[i];
         if(col[0][x]&&col[1][y]&&col[0][x]!=col[1][y]) ans=min(ans,dis[0][x]+dis[1][y]+w);
     }
+    for (int i = 1; i <= n; i++) cout << dis[1][i] << " ";
+    cout << endl;
     printf("%lld\n",ans);
     for(int i=1;i<=n;i++) head[i]=iscity[i]=0;
     tot=0;

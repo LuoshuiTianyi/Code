@@ -41,8 +41,10 @@ void Dij(bool t) {
     int x = q[t].top().id;
     q[t].pop();
     for (int i = hd[t][x], v = to[t][i]; i; v = to[t][(i = nx[t][i])])
-      if (dis[t][v] > dis[t][x] + w[t][i])
-        q[t].push((node){v, dis[t][v] = dis[t][x] + w[t][i]}), fr[t][v] = x;
+      if (dis[t][v] > dis[t][x] + w[t][i]) {
+        q[t].push((node){v, dis[t][v] = dis[t][x] + w[t][i]});
+        fr[t][v] = fr[t][x];
+      }
   }
 }
 int main() {
@@ -62,13 +64,13 @@ int main() {
     }
     ans = 2e18, memset(dis, 0x7f, sizeof(dis));
     for (int i = 1; i <= K; i++) {
-      u = read(), dis[0][u] = dis[1][u] = 0;
+      u = read(), dis[0][u] = dis[1][u] = 0, fr[0][u] = fr[1][u] = u;
       q[0].push((node){u, 0ll}), q[1].push((node){u, 0ll});
     }
     Dij(0), Dij(1);
-    for (int i = 1; i <= n; i++)
-      for (int j = hd[0][i], v = to[0][j]; j; v = to[0][(j = nx[0][j])])
-        if (fr[0][i] != fr[1][v]) ans = min(ans, w[0][j] + dis[0][i] + dis[1][v]);
+    for (int x = 1; x <= n; x++)
+      for (int i = hd[0][x], v = to[0][i]; i; v = to[0][(i = nx[0][i])])
+        if (fr[0][x] != fr[1][v]) ans = min(ans, w[0][i] + dis[0][x] + dis[1][v]);
     cout << ans << endl;
   }
 }
