@@ -88,7 +88,6 @@ struct Splay {
       splay(q, x);
       k[rs(x)].fa = q, rs(q) = rs(x), rt = q, update(q);
     }
-    k.pop_back();
   }
   int pre() {
     int x = rt, ans = 0;
