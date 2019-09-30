@@ -34,7 +34,7 @@ struct Splay {
 #define ls(x) k[x].s[0]
 #define rs(x) k[x].s[1]
   vector<node> k;
-  int rt;
+  int rt, cntn = 0;
   inline bool kd(int x) { return rs(k[x].fa) == x; }
   inline void upd(int x) {
     if (!x) return;
@@ -42,7 +42,7 @@ struct Splay {
   }
   inline int nx(int x) {
     if (k[x].v == w) return 0;
-    return k[x].v < w ? rs(x) : ls(x);
+    return k[x].v > w ? ls(x) : rs(x);
   }
   inline void rotate(int x) {
     bool t = kd(x);
@@ -52,7 +52,6 @@ struct Splay {
     upd(A), upd(x);
   }
   inline void splay(int x, int to) {
-    if (!x) return;
     for (int fa; (fa = k[x].fa) != to; rotate(x))
       if (k[fa].fa != to) rotate(kd(x) ^ kd(fa) ? x : fa);
     if (!to) rt = x;
@@ -60,17 +59,16 @@ struct Splay {
   inline void add() {
     int x = rt;
     while (nx(x)) x = nx(x);
-    if (w == k[x].v) {
+    if (k[x].v == w) {
       k[x].cnt++, k[x].size++, splay(x, 0);
       return;
     }
-    k.push_back((node){x, w, 1, 1, {0, 0}});
+    cntn++, k.push_back((node){x, w, 1, 1, {0, 0}});
     if (w < k[x].v)
-      ls(x) = k.size() - 1;
+      ls(x) = cntn;
     else
-      rs(x) = k.size() - 1;
-    upd(k.size() - 1);
-    splay(k.size() - 1, 0);
+      rs(x) = cntn;
+    upd(cntn), splay(cntn, 0);
   }
   inline void del() {
     int x = rt;
@@ -80,23 +78,22 @@ struct Splay {
       upd(x);
       return;
     }
-    int q = ls(x);
-    if (!q) {
+    if (!ls(x))
       rt = rs(x), k[rs(x)].fa = 0;
-    } else {
+    else {
+      int q = ls(x);
       while (rs(q)) q = rs(q);
       splay(q, x);
       rt = q, rs(q) = rs(x), k[rs(x)].fa = q, k[q].fa = 0, upd(q);
     }
   }
   inline int pre() {
-    int x = rt, ans = 0;
-    while (x) {
-      if (k[x].v <= w) ans += k[ls(x)].size + k[x].cnt;
-      x = nx(x);
-    }
-    splay(x, 0);
-    return ans;
+    int res = 0, x = rt;
+    for (; nx(x); x = nx(x))
+      if (k[x].v <= n) res += k[ls(x)].size + k[x].cnt;
+    int tp = res + k[ls(x)].size + 1;
+    if (x) splay(x, 0);
+    return tp;
   }
   void Print(int x) {
     if (!x) return;
@@ -152,7 +149,6 @@ void Count(int x, int f, LL ans, int tot) {
   // for (int i = 1; i <= n; i++) c[i].Print(c[i].rt), cout << " ";
   // cout << endl;
   int sum = qry(rk[x] - 1);
-  //cout << x << " " << now << endl;
   if (sum) {
     while (l <= r) {
       int mid = l + r >> 1;
@@ -192,6 +188,6 @@ int main() {
     if (fa[U[i]] == V[i]) swap(U[i], V[i]);
     rk[V[i]] = B[i], dn[V[i]] = C[i];
   }
-  Count(0, -1, 0, 0);
+  Count(0, 0, 0, 0);
   for (int i = 1; i <= n; i++) printf("%lld ", Ans[i]);
 }
