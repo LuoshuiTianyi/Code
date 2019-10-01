@@ -45,12 +45,6 @@ struct Splay {
     if (k[x].v == w) return 0;
     return k[x].v > w ? ls(x) : rs(x);
   }
-  void Print(int x) {
-    if (!x) return;
-    Print(ls(x));
-    printf("%d %d %d\n", x, k[x].v, k[x].cnt);
-    Print(rs(x));
-  }
   inline void rotate(int x) {
     bool t = kd(x);
     int A = k[x].fa, B = k[A].fa, C = k[x].s[!t];
@@ -87,13 +81,11 @@ struct Splay {
       upd(x);
       return;
     }
-    if (!ls(x)) {
-      rs(x) = 0, k[rt = rs(x)].fa = 0;
+    int q = ls(x);
+    if (!q) {
+      k[rt = rs(x)].fa = 0;
     } else {
-      int q = ls(x);
       while (rs(q)) q = rs(q);
-      // Print(rt);
-      // cout << k[x].v << endl;
       splay(q, x);
       rt = q, rs(q) = rs(x), k[rs(x)].fa = q, k[q].fa = 0, upd(q);
     }
@@ -149,31 +141,16 @@ void Count(int x, int f, LL ans) {
   if (sum) {
     while (l <= r) {
       int mid = l + r >> 1;
-      //if (x == 6) cout << mid << endl;
       if (query(rk[x] - 1, mid) >= (sum + 1 >> 1))
         now = mid, r = mid - 1;
       else
         l = mid + 1;
     }
   }
-  cout << x << " " << now << endl;
   ans += now, addc(rk[x], now);
-  for (int i = 1; i <= n; i++) {
-    cout << i << "!";
-    c[i].Print(c[i].rt);
-    cout << endl;
-  }
-  cout << "========\n";
   Ans[x] = ans;
   go(x, i, v) if (v != f) Count(v, x, ans);
   delc(rk[x], now);
-  //cout << x << endl;
-  //for (int i = 1; i <= n; i++) {
-  //  cout << i << "!";
-  //  c[i].Print(c[i].rt);
-  //  cout << endl;
-  //}
-  cout << "--------\n";
   ad(rk[x], -1);
 }
 int main() {
