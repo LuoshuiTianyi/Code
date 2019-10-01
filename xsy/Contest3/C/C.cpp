@@ -44,6 +44,12 @@ struct Splay {
     if (k[x].v == w) return 0;
     return k[x].v > w ? ls(x) : rs(x);
   }
+  void Print(int x) {
+    if (!x) return;
+    Print(ls(x));
+    printf("%d %d %d\n", x, k[x].s[0], k[x].cnt);
+    Print(rs(x));
+  }
   inline void rotate(int x) {
     bool t = kd(x);
     int A = k[x].fa, B = k[A].fa, C = k[x].s[!t];
@@ -83,6 +89,8 @@ struct Splay {
     else {
       int q = ls(x);
       while (rs(q)) q = rs(q);
+      //Print(rt);
+      //cout << k[x].v << endl;
       splay(q, x);
       rt = q, rs(q) = rs(x), k[rs(x)].fa = q, k[q].fa = 0, upd(q);
     }
@@ -94,12 +102,6 @@ struct Splay {
     int tp = res + k[ls(x)].size + 1;
     if (x) splay(x, 0);
     return tp;
-  }
-  void Print(int x) {
-    if (!x) return;
-    Print(ls(x));
-    printf("%d ", k[x].v);
-    Print(rs(x));
   }
 } c[Max_n];
 inline void addr(int u, int v) {
@@ -161,7 +163,17 @@ void Count(int x, int f, LL ans, int tot) {
   ans += now, addc(rk[x], now);
   Ans[x] = ans;
   go(x, i, v) if (v != f) Count(v, x, ans, tot + 1);
+  for (int i = 1; i <= n; i++) {
+    c[i].Print(c[i].rt);
+    cout << endl;
+  }
+  cout << "--------";
   delc(rk[x], now);
+  for (int i = 1; i <= n; i++) {
+    c[i].Print(c[i].rt);
+    cout << endl;
+  }
+  cout << "========";
   ad(rk[x], -1);
 }
 int main() {
