@@ -29,6 +29,7 @@ int s[Max_n];
 int w;
 struct node {
   int fa, v, size, cnt, s[2];
+  void init() { fa = v = size = cnt = s[0] = s[1] = 0; }
 };
 struct Splay {
 #define ls(x) k[x].s[0]
@@ -47,7 +48,7 @@ struct Splay {
   void Print(int x) {
     if (!x) return;
     Print(ls(x));
-    printf("%d %d %d\n", x, k[x].s[0], k[x].cnt);
+    printf("%d %d %d\n", x, k[x].v, k[x].cnt);
     Print(rs(x));
   }
   inline void rotate(int x) {
@@ -55,7 +56,7 @@ struct Splay {
     int A = k[x].fa, B = k[A].fa, C = k[x].s[!t];
     k[A].s[t] = C, k[x].s[!t] = A, k[B].s[kd(A)] = x;
     k[A].fa = x, k[x].fa = B, k[C].fa = A;
-    upd(A), upd(x);
+    upd(A), upd(x), k[0].init();
   }
   inline void splay(int x, int to) {
     for (int fa; (fa = k[x].fa) != to; rotate(x))
@@ -70,7 +71,9 @@ struct Splay {
       return;
     }
     cntn++, k.push_back((node){x, w, 1, 1, {0, 0}});
-    if (w < k[x].v)
+    if (!x)
+      rt = cntn;
+    else if (w < k[x].v)
       ls(x) = cntn;
     else
       rs(x) = cntn;
@@ -84,13 +87,13 @@ struct Splay {
       upd(x);
       return;
     }
-    if (!ls(x))
-      rt = rs(x), k[rs(x)].fa = 0;
-    else {
+    if (!ls(x)) {
+      rs(x) = 0, k[rt = rs(x)].fa = 0;
+    } else {
       int q = ls(x);
       while (rs(q)) q = rs(q);
-      //Print(rt);
-      //cout << k[x].v << endl;
+      // Print(rt);
+      // cout << k[x].v << endl;
       splay(q, x);
       rt = q, rs(q) = rs(x), k[rs(x)].fa = q, k[q].fa = 0, upd(q);
     }
@@ -99,9 +102,9 @@ struct Splay {
     int res = 0, x = rt;
     for (; nx(x); x = nx(x))
       if (k[x].v <= w) res += k[ls(x)].size + k[x].cnt;
-    int tp = res + k[ls(x)].size + 1;
+    if (k[x].v <= w) res += k[ls(x)].size + k[x].cnt;
     if (x) splay(x, 0);
-    return tp;
+    return res;
   }
 } c[Max_n];
 inline void addr(int u, int v) {
@@ -127,13 +130,7 @@ inline void delc(int k, int x) {
 inline int query(int R, int B) {
   w = B - 1;
   int ans = 0;
-  for (int i = R; i > 0; i -= i & -i) {
-    ans += c[i].pre();
-    //cout << w << " " << c[i].pre() << " ";
-    //c[i].Print(c[i].rt);
-    //cout << endl;
-  }
-  //cout << ans << endl;
+  for (int i = R; i > 0; i -= i & -i) ans += c[i].pre();
   return ans;
 }
 inline void ad(int k, int x) {
@@ -145,35 +142,38 @@ inline int qry(int k) {
   for (int i = k; i > 0; i -= i & -i) ans += s[i];
   return ans;
 }
-void Count(int x, int f, LL ans, int tot) {
+void Count(int x, int f, LL ans) {
   int now = dn[x], l = 1, r = 1e9 + n;
   ad(rk[x], 1);
-  // for (int i = 1; i <= n; i++) c[i].Print(c[i].rt), cout << " ";
-  // cout << endl;
   int sum = qry(rk[x] - 1);
   if (sum) {
     while (l <= r) {
       int mid = l + r >> 1;
+      //if (x == 6) cout << mid << endl;
       if (query(rk[x] - 1, mid) >= (sum + 1 >> 1))
         now = mid, r = mid - 1;
       else
         l = mid + 1;
     }
   }
+  cout << x << " " << now << endl;
   ans += now, addc(rk[x], now);
+  for (int i = 1; i <= n; i++) {
+    cout << i << "!";
+    c[i].Print(c[i].rt);
+    cout << endl;
+  }
+  cout << "========\n";
   Ans[x] = ans;
-  go(x, i, v) if (v != f) Count(v, x, ans, tot + 1);
-  for (int i = 1; i <= n; i++) {
-    c[i].Print(c[i].rt);
-    cout << endl;
-  }
-  cout << "--------";
+  go(x, i, v) if (v != f) Count(v, x, ans);
   delc(rk[x], now);
-  for (int i = 1; i <= n; i++) {
-    c[i].Print(c[i].rt);
-    cout << endl;
-  }
-  cout << "========";
+  //cout << x << endl;
+  //for (int i = 1; i <= n; i++) {
+  //  cout << i << "!";
+  //  c[i].Print(c[i].rt);
+  //  cout << endl;
+  //}
+  cout << "--------\n";
   ad(rk[x], -1);
 }
 int main() {
@@ -200,6 +200,6 @@ int main() {
     if (fa[U[i]] == V[i]) swap(U[i], V[i]);
     rk[V[i]] = B[i], dn[V[i]] = C[i];
   }
-  Count(0, 0, 0, 0);
-  //for (int i = 1; i <= n; i++) printf("%lld ", Ans[i]);
+  Count(0, 0, 0);
+  for (int i = 1; i <= n; i++) printf("%lld ", Ans[i]);
 }
