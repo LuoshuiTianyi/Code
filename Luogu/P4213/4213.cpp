@@ -26,9 +26,9 @@ LL sumu[Max_n], suph[Max_n];
 bool vis[Max_n];
 inline void init() {
   vis[1] = mu[1] = phi[1] = 1;
-  for (int i = 2; i <= n; i++) {
+  for (int i = 2; i < Max_n; i++) {
     if (!vis[i]) pri[++cnt] = i, phi[i] = i - 1, mu[i] = -1;
-    for (int j = 1; j <= cnt && pri[j] * i <= n; j++) {
+    for (int j = 1; j <= cnt && pri[j] * i < Max_n; j++) {
       vis[i * pri[j]] = 1, mu[i * pri[j]] = -mu[i];
       phi[i * pri[j]] = phi[i] * phi[pri[j]];
       if (i % pri[j] == 0) {
@@ -37,15 +37,35 @@ inline void init() {
       }
     }
   }
+  for (int i = 1; i < Max_n; i++) 
+    sumu[i] = sumu[i - 1] + mu[i], suph[i] = suph[i - 1] + phi[i];
+}
+struct Hs {
+  LL mu, ph;
+};
+map<LL, Hs> S;
+Hs get_S(LL n) {
+  if (n < Max_n) return (Hs){sumu[n], suph[n]};
+  if (S[n].mu) return S[n];
+  Hs Sres = (Hs){1, 1ll * n * (n + 1) / 2};
+  for (int l = 2, r; l <= n; l = r + 1) {
+    r = n / (n / l);
+    Hs res = get_S(n / l);
+    Sres.mu -= 1ll * (r - l + 1) * res.mu;
+    Sres.ph -= 1ll * (r - l + 1) * res.ph;
+  }
+  return S[n] = Sres;
 }
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("4213.in", "r", stdin);
   freopen("4213.out", "w", stdout);
 #endif
+  init();
   T = read();
   while (T--) {
     n = read();
-    
+    Hs S = get_S(n);
+    cout << S.ph << " " << S.mu << endl;
   }
 }
