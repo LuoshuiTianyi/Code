@@ -24,12 +24,15 @@ struct points {
 } V;
 struct edges {
   int nx[Max_m], to[Max_m], w[Max_m];
-} G;
+} E;
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("4897.in", "r", stdin);
   freopen("4897.out", "w", stdout);
 #endif
   n = read(), m = read();
-  
+  int u, v, w;
+  for (int i = 1; i <= m; i++) {
+    u = read(), v = read(), w = read();
+  }
 }
