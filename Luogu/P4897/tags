@@ -1,0 +1,31 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+4897.cpp	4897.cpp	1;"	F
+E	4897.cpp	/^} E;$/;"	v	typeref:struct:edges
+LL	4897.cpp	4;"	d	file:
+Max_m	4897.cpp	/^const int Max_n = 505, Max_m = 1e4 + 5;$/;"	v
+Max_n	4897.cpp	/^const int Max_n = 505, Max_m = 1e4 + 5;$/;"	v
+V	4897.cpp	/^} V;$/;"	v	typeref:struct:points
+addr	4897.cpp	/^void addr(points &V, edges &E, int u, int v, int w) {$/;"	f	signature:(points &V, edges &E, int u, int v, int w)
+cntr	4897.cpp	/^  int cntr, nx[Max_m], to[Max_m], w[Max_m];$/;"	m	struct:edges	file:	access:public
+edges	4897.cpp	/^struct edges {$/;"	s	file:
+edges::cntr	4897.cpp	/^  int cntr, nx[Max_m], to[Max_m], w[Max_m];$/;"	m	struct:edges	file:	access:public
+edges::nx	4897.cpp	/^  int cntr, nx[Max_m], to[Max_m], w[Max_m];$/;"	m	struct:edges	file:	access:public
+edges::to	4897.cpp	/^  int cntr, nx[Max_m], to[Max_m], w[Max_m];$/;"	m	struct:edges	file:	access:public
+edges::w	4897.cpp	/^  int cntr, nx[Max_m], to[Max_m], w[Max_m];$/;"	m	struct:edges	file:	access:public
+go	4897.cpp	5;"	d	file:
+hd	4897.cpp	/^  int hd[Max_n];$/;"	m	struct:points	file:	access:public
+inline	4897.cpp	6;"	d	file:
+m	4897.cpp	/^int n, m;$/;"	v
+main	4897.cpp	/^int main() {$/;"	f	signature:()
+n	4897.cpp	/^int n, m;$/;"	v
+nx	4897.cpp	/^  int cntr, nx[Max_m], to[Max_m], w[Max_m];$/;"	m	struct:edges	file:	access:public
+points	4897.cpp	/^struct points {$/;"	s	file:
+points::hd	4897.cpp	/^  int hd[Max_n];$/;"	m	struct:points	file:	access:public
+read	4897.cpp	/^inline LL read() {$/;"	f	signature:()
+to	4897.cpp	/^  int cntr, nx[Max_m], to[Max_m], w[Max_m];$/;"	m	struct:edges	file:	access:public
+w	4897.cpp	/^  int cntr, nx[Max_m], to[Max_m], w[Max_m];$/;"	m	struct:edges	file:	access:public
