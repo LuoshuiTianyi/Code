@@ -17,6 +17,7 @@ inline LL read() {
   }
   return x * w;
 }
+const int Max_n = 505, Max_m = 1e4 + 5;
 int n, m;
 int main() {
 #ifndef ONLINE_JUDGE
