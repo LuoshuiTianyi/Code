@@ -19,9 +19,12 @@ inline LL read() {
 }
 const int Max_n = 505, Max_m = 1e4 + 5;
 int n, m;
-struct spot {
-  int hd;
-} v[Max_n];
+struct points {
+  int hd[Max_n];
+} V;
+struct edges {
+  int nx[Max_m], to[Max_m], w[Max_m];
+} G;
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("4897.in", "r", stdin);
