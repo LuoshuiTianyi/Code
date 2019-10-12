@@ -27,6 +27,8 @@ struct edges {
 } E;
 void addr(points &V, edges &E, int u, int v, int w) {
   E.cntr++;
+  E.nx[E.cntr] = V.hd[u], E.to[E.cntr] = v, E.w[E.cntr] = w;
+  V.hd[u] = E.cntr;
 }
 int main() {
 #ifndef ONLINE_JUDGE
