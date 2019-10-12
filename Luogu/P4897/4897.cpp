@@ -23,10 +23,12 @@ struct points {
   int hd[Max_n];
 } V;
 struct edges {
-  int cntr, nx[Max_m], to[Max_m], w[Max_m];
+  int cntr = 1, nx[Max_m], to[Max_m], w[Max_m];
 } E;
 void addr(points &V, edges &E, int u, int v, int w) {
   E.cntr++;
+  E.nx[E.cntr] = V.hd[u], E.to[E.cntr] = v, E.w[E.cntr] = w;
+  V.hd[u];
 }
 int main() {
 #ifndef ONLINE_JUDGE
