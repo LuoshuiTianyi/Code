@@ -72,6 +72,7 @@ void Solve(int l, int r) {
   if (l == r) return;
   Gf = G;
   int W = FLOW::Dinic(Gf, node[l], node[r]);
+  cout << W << endl;
   G2.addr(node[l], node[r], W), G2.addr(node[r], node[l], W);
   int top1 = 0, top2 = 0;
   for (int i = l; i <= r; i++)
@@ -118,9 +119,9 @@ int main() {
       f[j][i] = f[j - 1][f[j - 1][i]];
       Min[j][i] = min(Min[j - 1][i], Min[j - 1][f[j - 1][i]]);
     }
-  Q = read();
-  while (Q--) {
-    u = read() + 1, v = read() + 1;
-    printf("%d\n", query(u, v));
-  }
+  //Q = read();
+  //while (Q--) {
+  //  u = read() + 1, v = read() + 1;
+  //  printf("%d\n", query(u, v));
+  //}
 }
