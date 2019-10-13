@@ -89,7 +89,10 @@ void Solve(int l, int r) {
   Solve(l, l + top1 - 1), Solve(l + top1, r);
 }
 void build(int x, int fa) {
-  
+  cout << x << endl;
+  go(G, x, i, v) if (v != fa) {
+    cout << x << " " << v << " " << G.w[i] << endl;
+  }
 }
 int main() {
 #ifndef ONLINE_JUDGE
