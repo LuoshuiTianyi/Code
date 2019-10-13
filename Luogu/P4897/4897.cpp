@@ -78,8 +78,8 @@ void Solve(int l, int r) {
   Gf = G;
   for (int i = l; i <= r; i++) vis[node[i]] = 1;
   int W = FLOW::Dinic(Gf, node[l], node[r]);
-  cout << node[l] << " " << node[r] << " " << W << endl;
   G2.addr(node[l], node[r], W), G2.addr(node[r], node[l], W);
+  cout << node[l] << " " << node[r] << " " << W << endl;
   for (int i = l; i <= r; i++) vis[node[i]] = 0;
   int top1 = 0, top2 = 0;
   for (int i = l; i <= r; i++)
