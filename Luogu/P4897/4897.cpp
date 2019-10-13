@@ -89,7 +89,6 @@ void Solve(int l, int r) {
   Solve(l, l + top1 - 1), Solve(l + top1, r);
 }
 void build(int x, int fa) {
-  cout << x << endl;
   go(G, x, i, v) if (v != fa) {
     cout << x << " " << v << " " << G.w[i] << endl;
   }
@@ -107,6 +106,6 @@ int main() {
     G.addr(u, v, 0), G.addr(v, u, w);
   }
   for (int i = 0; i <= n; i++) node[i] = i;
-  Solve(0, n);
-  build(0, -1);
+  //Solve(0, n);
+  //build(0, -1);
 }
