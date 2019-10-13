@@ -30,6 +30,10 @@ struct graph {
     hd[u] = cntr;
   }
 } G, G2;
+namespace FLOW {
+int Dinic(int &G, int S, int T) {
+}
+}
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("4897.in", "r", stdin);
@@ -42,5 +46,5 @@ int main() {
     G.addr(u, v, w), G.addr(v, u, 0);
     G.addr(u, v, 0), G.addr(v, u, w);
   }
-  for (int i = 1; i <= n; i++)
+  for (int i = 1; i <= n; i++) node[i] = i;
 }
