@@ -42,6 +42,8 @@ bool build(graph &G, int n) {
   init(G, n);
   q.push(S), dep[S] = 0, fnow[S] = 1e9;
   while (!q.empty()) {
+    int x = q.front();
+    q.pop();
   }
 }
 int dfs(graph &G, int x) {
