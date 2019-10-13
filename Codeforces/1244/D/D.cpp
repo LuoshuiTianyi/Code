@@ -20,7 +20,7 @@ inline LL read() {
 }
 const int Max_n = 1e5 + 5;
 int n;
-int c[Max_n][3];
+int c[Max_n][3], col[Max_n];
 LL f[Max_n][3], s[Max_n][3];
 struct graph {
   int hd[Max_n];
@@ -57,4 +57,7 @@ int main() {
     G.addr(u, v), G.addr(v, u);
   }
   DP(1, 0);
+  int Min = 0;
+  for (int i = 1; i < 3; i++) if (f[1][i] > f[1][Min]) Min = i;
+  cout << f[1][Min] << endl;
 }
