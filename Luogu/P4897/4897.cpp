@@ -75,7 +75,7 @@ void Solve(int l, int r) {
   if (l == r) return;
   Gf = G;
   for (int i = l; i <= r; i++) vis[node[i]] = 1;
-  G2.addr(node[l], node[r], FLOW::Dinic(Gf, node[l], node[r]));
+  G2.addr(node[l], node[r], FLOW::Dinic(Gf, n, node[l], node[r]));
   for (int i = l; i <= r; i++) vis[node[i]] = 0;
   int top1 = 0, top2 = 0;
   for (int i = l; i <= r; i++)
