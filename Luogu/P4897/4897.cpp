@@ -2,7 +2,8 @@
 #include <iostream>
 using namespace std;
 #define LL long long
-#define go(x, i, v) for (int i = hd[x], v = to[i]; i; v = to[i = nx[i]])
+#define go(G, x, i, v) \
+  for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 #define inline __inline__ __attribute__((always_inline))
 inline LL read() {
   LL x = 0, w = 1;
@@ -28,7 +29,7 @@ struct graph {
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
     hd[u] = cntr;
   }
-} G;
+} G, G2;
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("4897.in", "r", stdin);
@@ -41,4 +42,5 @@ int main() {
     G.addr(u, v, w), G.addr(v, u, 0);
     G.addr(u, v, 0), G.addr(v, u, w);
   }
+  for (int i = 1; i <= n; i++)
 }
