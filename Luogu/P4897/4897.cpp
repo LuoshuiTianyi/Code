@@ -35,12 +35,12 @@ struct graph {
 namespace FLOW {
 int S, T;
 int cur[Max_n], dep[Max_n], fnow[Max_n], flow[Max_n], ans;
-void init(graph &G, int n) {
+void init(graph &G) {
   for (int i = 1; i <= n; i++) cur[i] = G.hd[i], dep[i] = -1, fnow[i] = 0;
 }
 queue<int> q;
-bool build(graph &G, int n) {
-  init(G, n);
+bool build(graph &G) {
+  init(G);
   q.push(S), dep[S] = 0, fnow[S] = 1e9;
   while (!q.empty()) {
     int x = q.front();
@@ -64,10 +64,10 @@ void dfs(graph &G, int x) {
       flow[v] = 0;
     }
 }
-int Dinic(graph &G, int n, int s, int t) {
+int Dinic(graph &G, int s, int t) {
   S = s, T = t;
   ans = 0;
-  while (build(G, n)) dfs(G, S);
+  while (build(G)) dfs(G, S);
   return ans;
 }
 }  // namespace FLOW
@@ -75,11 +75,11 @@ void Solve(int l, int r) {
   if (l == r) return;
   Gf = G;
   for (int i = l; i <= r; i++) vis[node[i]] = 1;
-  G2.addr(node[l], node[r], FLOW::Dinic(Gf, n, node[l], node[r]));
+  G2.addr(node[l], node[r], FLOW::Dinic(Gf, node[l], node[r]));
   for (int i = l; i <= r; i++) vis[node[i]] = 0;
   int top1 = 0, top2 = 0;
   for (int i = l; i <= r; i++)
-    if (dep[node[i]] != -1)
+    if (FLOW::dep[node[i]] != -1)
       tp1[++top1] = node[i];
     else
       tp2[++top2] = node[i];
