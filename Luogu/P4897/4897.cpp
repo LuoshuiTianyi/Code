@@ -106,6 +106,6 @@ int main() {
     G.addr(u, v, 0), G.addr(v, u, w);
   }
   for (int i = 0; i <= n; i++) node[i] = i;
-  //Solve(0, n);
+  Solve(0, n);
   //build(0, -1);
 }
