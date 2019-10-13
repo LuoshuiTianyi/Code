@@ -44,7 +44,9 @@ bool build(graph &G, int n) {
   while (!q.empty()) {
     int x = q.front();
     q.pop();
-    go(G, x, i, v) if (dep[v] == -1 && G.w[i]) dep[v] = dep[x] + 1, q.push(v);
+    go(G, x, i, v) if (dep[v] == -1 && G.w[i] && vis[v]) {
+      dep[v] = dep[x] + 1, q.push(v);
+    }
   }
   return dep[T] != -1;
 }
@@ -54,7 +56,7 @@ void dfs(graph &G, int x) {
     return;
   }
   for (int i = cur[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
-    if (dep[v] == dep[x] + 1 && G.w[i]) {
+    if (dep[v] == dep[x] + 1 && G.w[i] && vis[v]) {
       fnow[v] = min(fnow[x], G.w[i]), dfs(G, v);
       fnow[x] -= flow[v], G.w[i] -= flow[v];
       flow[x] += flow[v], G.w[i ^ 1] += flow[v];
@@ -74,7 +76,8 @@ void Solve(int l, int r) {
   G2.addr(node[l], node[r], FLOW::Dinic(Gf, node[l], node[r]));
   for (int i = l; i <= r; i++) vis[node[i]] = 0;
   int top1 = 0, top2 = 0;
-  for (int i = l; i <= r; i++) if (dep[node[i]] != -1) tp1[++top1] = node[i];
+  for (int i = l; i <= r; i++)
+    if (dep[node[i]] != -1) tp1[++top1] = node[i];
 }
 int main() {
 #ifndef ONLINE_JUDGE
