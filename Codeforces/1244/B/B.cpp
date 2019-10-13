@@ -30,5 +30,10 @@ int main() {
   while (T--) {
     n = read();
     scanf("%s", s + 1);
+    int l = 0, r = 0;
+    for (int i = 1; i <= n; i++)
+      if (!l && s[i] == '1') l = i;
+    for (int i = n; i >= 1; i--)
+      if (!r && s[i] == '1') r = i;
   }
 }
