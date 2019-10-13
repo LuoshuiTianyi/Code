@@ -85,7 +85,7 @@ void Solve(int l, int r) {
       tp2[++top2] = node[i];
   for (int i = 1; i <= top1; i++) node[l + i - 1] = tp1[i];
   for (int i = 1; i <= top2; i++) node[l + top1 + i - 1] = tp2[i];
-  Solve(l, top1), Solve(top1 + 1, r);
+  Solve(l, l + top1 - 1), Solve(l + top1, r);
 }
 int main() {
 #ifndef ONLINE_JUDGE
