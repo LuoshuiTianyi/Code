@@ -38,7 +38,7 @@ void init(graph &G, int n) {
   for (int i = 1; i <= n; i++) cur[i] = G.hd[i], dep[i] = -1, fnow[i] = 0;
 }
 queue<int> q;
-bool build(graph &G, int n) {
+bool build(graph &G, int n, int S) {
   init(G, n);
   q.push(S), dep[S] = 0, fnow[S] = 1e9;
   while (!q.empty()) {
@@ -65,7 +65,7 @@ void dfs(graph &G, int x) {
 }
 int Dinic(graph &G, int n, int S, int T) {
   ans = 0;
-  while (build()) dfs(G, S);
+  while (build(G, n, S)) dfs(G, S);
   return ans;
 }
 }  // namespace FLOW
