@@ -45,7 +45,7 @@ void DP(int x, int fa) {
 }
 void Col(int x, int fa, int c) {
   col[x] = c;
-    go(G, x, i, v) if (v != fa) Col(v, x, s[v][c]);
+  go(G, x, i, v) if (v != fa) Col(v, x, s[v][c]);
 }
 int main() {
 #ifndef ONLINE_JUDGE
@@ -65,4 +65,6 @@ int main() {
   int Min = 0;
   for (int i = 1; i < 3; i++) if (f[1][i] > f[1][Min]) Min = i;
   Col(1, 0, Min);
+  cout << f[1][Min] << endl;
+  for (int i = 1; i <= n; i++) printf("%d ", col[i] + 1);
 }
