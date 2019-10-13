@@ -29,12 +29,20 @@ struct graph {
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
     hd[u] = cntr;
   }
-} G, G2;
+} G, Gf, G2;
 namespace FLOW {
-int Dinic(int &G, int S, int T) {}
+void init() {
+}
+int dfs(int x) {
+}
+int Dinic(int &G, int S, int T) {
+  
+}
 }  // namespace FLOW
 void Solve(int l, int r) {
-  
+  if (l == r) return;
+  Gf = G;
+  G2.addr(node[l], node[r], FLOW::Dinic(Gf, node[l], node[r]));
 }
 int main() {
 #ifndef ONLINE_JUDGE
