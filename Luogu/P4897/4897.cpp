@@ -99,6 +99,6 @@ int main() {
     G.addr(u, v, w), G.addr(v, u, 0);
     G.addr(u, v, 0), G.addr(v, u, w);
   }
-  for (int i = 1; i <= n; i++) node[i] = i;
-  Solve(1, n);
+  for (int i = 0; i <= n; i++) node[i] = i;
+  Solve(0, n);
 }
