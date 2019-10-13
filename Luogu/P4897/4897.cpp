@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <iostream>
+#include <queue>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
@@ -33,7 +34,6 @@ struct graph {
 namespace FLOW {
 int cur[Max_n], dep[Max_n], fnow[Max_n], flow[Max_n], ans;
 void init(graph &G, int n) {
-  ans = 0;
   for (int i = 1; i <= n; i++)
     cur[i] = G.hd[i], dep[i] = -1, fnow[i] = 0;
 }
@@ -44,6 +44,8 @@ bool build(graph &G, int n) {
 int dfs(graph &G, int x) {
 }
 int Dinic(graph &G, int n, int S, int T) {
+  ans = 0;
+  
 }
 }  // namespace FLOW
 void Solve(int l, int r) {
