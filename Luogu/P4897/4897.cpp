@@ -66,6 +66,7 @@ void dfs(graph &G, int x) {
 }
 int Dinic(graph &G, int s, int t) {
   S = s, T = t, ans = 0;
+  for (int i = 1; i <= n; i++) flow[i] = 0;
   while (build(G)) dfs(G, S);
   return ans;
 }
@@ -120,9 +121,9 @@ int main() {
       f[j][i] = f[j - 1][f[j - 1][i]];
       Min[j][i] = min(Min[j - 1][i], Min[j - 1][f[j - 1][i]]);
     }
-  //Q = read();
-  //while (Q--) {
-  //  u = read() + 1, v = read() + 1;
-  //  printf("%d\n", query(u, v));
-  //}
+  Q = read();
+  while (Q--) {
+    u = read() + 1, v = read() + 1;
+    printf("%d\n", query(u, v));
+  }
 }
