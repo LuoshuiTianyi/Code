@@ -42,10 +42,11 @@ bool build(graph &G, int n) {
   dep[S] = 0, fnow[S] = 1e9;
 }
 int dfs(graph &G, int x) {
+  
 }
 int Dinic(graph &G, int n, int S, int T) {
   ans = 0;
-  
+  while (build()) dfs(G, S);
 }
 }  // namespace FLOW
 void Solve(int l, int r) {
