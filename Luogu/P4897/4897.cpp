@@ -54,12 +54,16 @@ void dfs(graph &G, int x) {
   }
   for (int i = cur[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
     if (dep[v] == dep[x] + 1 && G.w[i]) {
-      fnow[v] = min(fnow[x], G.w[i]);
+      fnow[v] = min(fnow[x], G.w[i]), dfs(G, v);
+      fnow[x] -= flow[v], G.w[i] -= flow[v];
+      flow[x] += flow[v], G.w[i ^ 1] += flow[v];
+      flow[v] = 0;
     }
 }
 int Dinic(graph &G, int n, int S, int T) {
   ans = 0;
   while (build()) dfs(G, S);
+  return ans;
 }
 }  // namespace FLOW
 void Solve(int l, int r) {
