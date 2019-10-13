@@ -23,7 +23,6 @@ const int Max_n = 505, Max_m = 1e4 + 5;
 int n, m;
 int node[Max_n], tp1[Max_n], tp2[Max_n];
 int f[10][Max_n], Min[10][Max_n];
-bool vis[Max_n];
 struct graph {
   int hd[Max_n];
   int cntr = 1, nx[Max_m], to[Max_m], w[Max_m];
@@ -46,11 +45,7 @@ bool build(graph &G) {
   while (!q.empty()) {
     int x = q.front();
     q.pop();
-    go(G, x, i, v) {
-      if (dep[v] == -1 && G.w[i] && vis[v]) {
-        dep[v] = dep[x] + 1, q.push(v);
-      }
-    }
+    go(G, x, i, v) if (dep[v] == -1 && G.w[i]) dep[v] = dep[x] + 1, q.push(v);
   }
   return dep[T] != -1;
 }
@@ -60,7 +55,7 @@ void dfs(graph &G, int x) {
     return;
   }
   for (int i = cur[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
-    if (dep[v] == dep[x] + 1 && G.w[i] && vis[v]) {
+    if (dep[v] == dep[x] + 1 && G.w[i]) {
       fnow[v] = min(fnow[x], G.w[i]), dfs(G, v);
       fnow[x] -= flow[v], G.w[i] -= flow[v];
       flow[x] += flow[v], G.w[i ^ 1] += flow[v];
@@ -76,10 +71,8 @@ int Dinic(graph &G, int s, int t) {
 void Solve(int l, int r) {
   if (l == r) return;
   Gf = G;
-  for (int i = l; i <= r; i++) vis[node[i]] = 1;
   int W = FLOW::Dinic(Gf, node[l], node[r]);
   G2.addr(node[l], node[r], W), G2.addr(node[r], node[l], W);
-  for (int i = l; i <= r; i++) vis[node[i]] = 0;
   int top1 = 0, top2 = 0;
   for (int i = l; i <= r; i++)
     if (FLOW::dep[node[i]] != -1)
@@ -91,10 +84,8 @@ void Solve(int l, int r) {
   Solve(l, l + top1 - 1), Solve(l + top1, r);
 }
 void build(int x, int fa) {
-  go(G2, x, i, v) if (v != fa) {
-    cout << x << " " << v << " " << G2.w[i] << endl;
-    build(v, x);
-  }
+  f[0][x] = fa;
+  go(G2, x, i, v) if (v != fa) Min[0][v] = G2.w[i], build(v, x);
 }
 int main() {
 #ifndef ONLINE_JUDGE
