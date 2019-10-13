@@ -35,12 +35,17 @@ void DP(int x, int fa) {
   for (int i = 0; i < 3; i++) {
     f[x][i] = c[x][i];
     go(G, x, i, v) if (v != fa) {
+      DP(v, x);
       int minn = (i + 1) % 3;
       for (int j = 1; j < 3; j++)
         if (j != i && f[v][minn] > f[v][j]) minn = j;
       f[x][i] += f[v][minn], s[v][i] = minn;
     }
   }
+}
+void Col(int x, int fa, int c) {
+  col[x] = c;
+    go(G, x, i, v) if (v != fa) Col(v, x, s[v][c]);
 }
 int main() {
 #ifndef ONLINE_JUDGE
@@ -59,5 +64,5 @@ int main() {
   DP(1, 0);
   int Min = 0;
   for (int i = 1; i < 3; i++) if (f[1][i] > f[1][Min]) Min = i;
-  cout << f[1][Min] << endl;
+  Col(1, 0, Min);
 }
