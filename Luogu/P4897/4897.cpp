@@ -35,14 +35,15 @@ int cur[Max_n], dep[Max_n], fnow[Max_n], flow[Max_n], ans;
 void init(graph &G, int n) {
   ans = 0;
   for (int i = 1; i <= n; i++)
-    cur[i] = G.hd[i], dep[i] = -1, fnow[i] = flow[i] = 0;
+    cur[i] = G.hd[i], dep[i] = -1, fnow[i] = 0;
 }
 bool build(graph &G, int n) {
+  init(G, n);
+  dep[S] = 0, fnow[S] = 1e9;
 }
 int dfs(graph &G, int x) {
 }
 int Dinic(graph &G, int n, int S, int T) {
-  init(G, n);
 }
 }  // namespace FLOW
 void Solve(int l, int r) {
