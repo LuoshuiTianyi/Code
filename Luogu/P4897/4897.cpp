@@ -75,6 +75,7 @@ int Dinic(graph &G, int s, int t) {
 }  // namespace FLOW
 void Solve(int l, int r) {
   if (l == r) return;
+  cout << l << " " << r << endl;
   Gf = G;
   for (int i = l; i <= r; i++) vis[node[i]] = 1;
   G2.addr(node[l], node[r], FLOW::Dinic(Gf, node[l], node[r]));
