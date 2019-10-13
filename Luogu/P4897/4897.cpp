@@ -22,6 +22,7 @@ inline LL read() {
 const int Max_n = 505, Max_m = 1e4 + 5;
 int n, m;
 int node[Max_n], tp1[Max_n], tp2[Max_n];
+int f[10][Max_n], Min[10][Max_n];
 bool vis[Max_n];
 struct graph {
   int hd[Max_n];
@@ -87,6 +88,9 @@ void Solve(int l, int r) {
   for (int i = 1; i <= top2; i++) node[l + top1 + i - 1] = tp2[i];
   Solve(l, l + top1 - 1), Solve(l + top1, r);
 }
+void build(int x, int fa) {
+  
+}
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("4897.in", "r", stdin);
@@ -101,4 +105,5 @@ int main() {
   }
   for (int i = 0; i <= n; i++) node[i] = i;
   Solve(0, n);
+  build(0, -1);
 }
