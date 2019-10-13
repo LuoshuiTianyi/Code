@@ -26,8 +26,13 @@ int main() {
 #endif
   n = read(), p = read(), w = read(), d = read();
   LL x = p / w;
-  while ((p - x * w) % d != 0 && x > 0) x--;
+  while ((p - x * w) % d != 0 && x > 0) {
+    cout << x << endl;
+    x--;
+  }
   LL y = (p - x * w) / d;
-  if (x + y <= n)
-    cout << x << " " << y << " " 
+  if (x * w + y * d == n && x + y <= n)
+    cout << x << " " << y << " " << n - x - y;
+  else
+    cout << "-1";
 }
