@@ -52,6 +52,10 @@ void dfs(graph &G, int x) {
     flow[x] = fnow[x], ans += flow[x];
     return;
   }
+  for (int i = cur[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
+    if (dep[v] == dep[x] + 1 && G.w[i]) {
+      fnow[v] = min(fnow[x], G.w[i]);
+    }
 }
 int Dinic(graph &G, int n, int S, int T) {
   ans = 0;
