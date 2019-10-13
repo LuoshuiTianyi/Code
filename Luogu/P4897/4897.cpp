@@ -90,7 +90,7 @@ void Solve(int l, int r) {
   Solve(l, l + top1 - 1), Solve(l + top1, r);
 }
 void build(int x, int fa) {
-  go(G, x, i, v) if (v != fa) {
+  go(G2, x, i, v) if (v != fa) {
     cout << x << " " << v << " " << G.w[i] << endl;
   }
 }
@@ -106,8 +106,6 @@ int main() {
     G.addr(u, v, w), G.addr(v, u, w);
   }
   for (int i = 0; i <= n; i++) node[i] = i;
-  for (int i = 0; i <= n; i++) vis[i] = 1;
-  cout << FLOW::Dinic(G, 0, 3);
-  // Solve(0, n);
-  // build(0, -1);
+  Solve(0, n);
+  build(0, -1);
 }
