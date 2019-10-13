@@ -25,6 +25,11 @@ LL f[Max_n][3], s[Max_n][3];
 struct graph {
   int hd[Max_n];
   int cntr, nx[Max_n << 1], to[Max_n << 1];
+  void addr(int u, int v) {
+    cntr++;
+    nx[cntr] = hd[u], to[cntr] = v;
+    hd[u] = cntr;
+  }
 } G;
 int main() {
 #ifndef ONLINE_JUDGE
@@ -32,4 +37,7 @@ int main() {
   freopen("D.out", "w", stdout);
 #endif
   n = read();
+  for (int i = 1; i <= n; i++) c[i][0] = read();
+  for (int i = 1; i <= n; i++) c[i][1] = read();
+  for (int i = 1; i <= n; i++) c[i][2] = read();
 }
