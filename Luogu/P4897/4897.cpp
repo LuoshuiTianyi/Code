@@ -85,7 +85,10 @@ void Solve(int l, int r) {
 }
 void build(int x, int fa) {
   f[0][x] = fa, dep[x] = dep[fa] + 1;
-  go(G2, x, i, v) if (v != fa) Min[0][v] = G2.w[i], build(v, x);
+  go(G2, x, i, v) if (v != fa) {
+    cout << x << " " << v << " " << G2.w[i] << endl;
+    Min[0][v] = G2.w[i], build(v, x);
+  }
 }
 int query(int u, int v) {
   int ans = 1e9;
@@ -113,7 +116,7 @@ int main() {
   for (int i = 0; i <= n; i++) node[i] = i;
   Solve(0, n);
   build(0, -1);
-  cout << Min[3][0] << endl;
+  cout << Min[0][3] << endl;
   for (int j = 1; j < 10; j++)
     for (int i = 0; i <= n; i++) {
       f[j][i] = f[j - 1][f[j - 1][i]];
