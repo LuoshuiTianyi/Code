@@ -31,12 +31,17 @@ struct graph {
   }
 } G, Gf, G2;
 namespace FLOW {
+int cur[Max_n], dep[Max_n], fnow[Max_n], flow[Max_n], ans;
 void init() {
+  ans = 0;
+  for (int i = 1; i <= n; i++)
 }
-int dfs(int x) {
+bool build(int &G) {
+}
+int dfs(int &G, int x) {
 }
 int Dinic(int &G, int S, int T) {
-  
+  init();
 }
 }  // namespace FLOW
 void Solve(int l, int r) {
