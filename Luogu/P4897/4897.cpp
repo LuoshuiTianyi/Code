@@ -36,12 +36,12 @@ namespace FLOW {
 int S, T;
 int cur[Max_n], dep[Max_n], fnow[Max_n], flow[Max_n], ans;
 void init(graph &G) {
-  for (int i = 0; i <= n; i++) cur[i] = G.hd[i], dep[i] = -1, fnow[i] = 0;
+  for (int i = 1; i <= n; i++) cur[i] = G.hd[i], dep[i] = -1, fnow[i] = 0;
 }
 queue<int> q;
 bool build(graph &G) {
   init(G);
-  q.push(S), dep[S] = 0, fnow[S] = 1e9;
+  q.push(S), dep[S] = 0, fnow[S] = 1e7;
   while (!q.empty()) {
     int x = q.front();
     q.pop();
