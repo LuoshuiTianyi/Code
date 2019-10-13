@@ -31,6 +31,11 @@ struct graph {
     hd[u] = cntr;
   }
 } G;
+void DP(int x, int fa) {
+  for (int i = 0; i < 3; i++) f[x][i] = c[x][i];
+  go(G, x, i, v) if (v != fa) {
+  }
+}
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("D.in", "r", stdin);
@@ -40,4 +45,10 @@ int main() {
   for (int i = 1; i <= n; i++) c[i][0] = read();
   for (int i = 1; i <= n; i++) c[i][1] = read();
   for (int i = 1; i <= n; i++) c[i][2] = read();
+  int u, v;
+  for (int i = 1; i < n; i++) {
+    u = read(), v = read();
+    G.addr(u, v), G.addr(v, u);
+  }
+  DP(1, 0);
 }
