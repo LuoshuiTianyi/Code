@@ -20,7 +20,7 @@ inline LL read() {
   return x * w;
 }
 const int Max_n = 505, Max_m = 1e4 + 5;
-int n, m;
+int n, m, Q;
 int node[Max_n], tp1[Max_n], tp2[Max_n];
 int f[10][Max_n], Min[10][Max_n];
 struct graph {
@@ -87,6 +87,9 @@ void build(int x, int fa) {
   f[0][x] = fa;
   go(G2, x, i, v) if (v != fa) Min[0][v] = G2.w[i], build(v, x);
 }
+int query(int u, int v) {
+  if (dep[u] > dep[v]) swap(u, v);
+}
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("4897.in", "r", stdin);
@@ -106,4 +109,9 @@ int main() {
       f[j][i] = f[j - 1][f[j - 1][i]];
       Min[j][i] = min(Min[j - 1][i], Min[j - 1][f[j - 1][i]]);
     }
+  Q = read();
+  while (Q--) {
+    u = read(), v = read();
+    printf("%d\n", query(u, v));
+  }
 }
