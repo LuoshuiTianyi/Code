@@ -47,10 +47,10 @@ bool build(graph &G, int n) {
   }
   return dep[T] != -1;
 }
-int dfs(graph &G, int x) {
+void dfs(graph &G, int x) {
   if (x == T) {
-    flow[x] = fnow[x];
-    return 0;
+    flow[x] = fnow[x], ans += flow[x];
+    return;
   }
 }
 int Dinic(graph &G, int n, int S, int T) {
