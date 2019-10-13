@@ -35,5 +35,10 @@ int main() {
       if (!l && s[i] == '1') l = i;
     for (int i = n; i >= 1; i--)
       if (!r && s[i] == '1') r = i;
+    if (!l)
+      cout << n << endl;
+    else
+      cout << max(n + 1, max((l << 1), (r << 1))) << endl;
+    ;
   }
 }
