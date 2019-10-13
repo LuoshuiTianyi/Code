@@ -107,15 +107,15 @@ int main() {
   freopen("4897.in", "r", stdin);
   freopen("4897.out", "w", stdout);
 #endif
-  n = read(), m = read();
+  n = read() + 1, m = read();
   int u, v, w;
   for (int i = 1; i <= m; i++) {
-    u = read(), v = read(), w = read();
+    u = read() + 1, v = read() + 1, w = read();
     G.addr(u, v, w), G.addr(v, u, w);
   }
-  for (int i = 0; i <= n; i++) node[i] = i;
-  Solve(0, n);
-  build(0, n + 1);
+  for (int i = 1; i <= n; i++) node[i] = i;
+  Solve(1, n);
+  build(0, 1);
   for (int j = 1; j < 10; j++)
     for (int i = 0; i <= n; i++) {
       f[j][i] = f[j - 1][f[j - 1][i]];
