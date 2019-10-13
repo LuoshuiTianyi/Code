@@ -32,8 +32,11 @@ struct graph {
   }
 } G;
 void DP(int x, int fa) {
-  for (int i = 0; i < 3; i++) f[x][i] = c[x][i];
-  go(G, x, i, v) if (v != fa) {
+  for (int i = 0; i < 3; i++) {
+    f[x][i] = c[x][i];
+    go(G, x, i, v) if (v != fa) {
+      int minn = 0;
+    }
   }
 }
 int main() {
