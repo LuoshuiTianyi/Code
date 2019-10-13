@@ -46,9 +46,10 @@ bool build(graph &G) {
   while (!q.empty()) {
     int x = q.front();
     q.pop();
-    go(G, x, i, v) {cout << x << " " << v << endl;if (dep[v] == -1 && G.w[i] && vis[v]) {
-      dep[v] = dep[x] + 1, q.push(v);
-    }
+    go(G, x, i, v) {
+      if (dep[v] == -1 && G.w[i] && vis[v]) {
+        dep[v] = dep[x] + 1, q.push(v);
+      }
     }
   }
   return dep[T] != -1;
@@ -105,7 +106,8 @@ int main() {
     G.addr(u, v, w), G.addr(v, u, w);
   }
   for (int i = 0; i <= n; i++) node[i] = i;
+  for (int i = 0; i <= n; i++) vis[i] = 1;
   cout << FLOW::Dinic(G, 0, 3);
-  //Solve(0, n);
-  //build(0, -1);
+  // Solve(0, n);
+  // build(0, -1);
 }
