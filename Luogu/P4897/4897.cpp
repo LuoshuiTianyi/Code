@@ -33,12 +33,13 @@ struct graph {
   }
 } G, Gf, G2;
 namespace FLOW {
+int S, T;
 int cur[Max_n], dep[Max_n], fnow[Max_n], flow[Max_n], ans;
 void init(graph &G, int n) {
   for (int i = 1; i <= n; i++) cur[i] = G.hd[i], dep[i] = -1, fnow[i] = 0;
 }
 queue<int> q;
-bool build(graph &G, int n, int S) {
+bool build(graph &G, int n) {
   init(G, n);
   q.push(S), dep[S] = 0, fnow[S] = 1e9;
   while (!q.empty()) {
@@ -63,9 +64,10 @@ void dfs(graph &G, int x) {
       flow[v] = 0;
     }
 }
-int Dinic(graph &G, int n, int S, int T) {
+int Dinic(graph &G, int n, int s, int t) {
+  S = s, T = t;
   ans = 0;
-  while (build(G, n, S)) dfs(G, S);
+  while (build(G, n)) dfs(G, S);
   return ans;
 }
 }  // namespace FLOW
