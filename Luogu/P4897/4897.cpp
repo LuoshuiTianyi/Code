@@ -34,8 +34,7 @@ struct graph {
 namespace FLOW {
 int cur[Max_n], dep[Max_n], fnow[Max_n], flow[Max_n], ans;
 void init(graph &G, int n) {
-  for (int i = 1; i <= n; i++)
-    cur[i] = G.hd[i], dep[i] = -1, fnow[i] = 0;
+  for (int i = 1; i <= n; i++) cur[i] = G.hd[i], dep[i] = -1, fnow[i] = 0;
 }
 queue<int> q;
 bool build(graph &G, int n) {
@@ -44,11 +43,10 @@ bool build(graph &G, int n) {
   while (!q.empty()) {
     int x = q.front();
     q.pop();
+    go(G, x, i, v) if (dep[v] == -1 && G.w[i]) dep[v] = dep[x] + 1, q.push(v);
   }
 }
-int dfs(graph &G, int x) {
-  
-}
+int dfs(graph &G, int x) {}
 int Dinic(graph &G, int n, int S, int T) {
   ans = 0;
   while (build()) dfs(G, S);
