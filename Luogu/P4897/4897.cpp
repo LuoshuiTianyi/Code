@@ -45,8 +45,14 @@ bool build(graph &G, int n) {
     q.pop();
     go(G, x, i, v) if (dep[v] == -1 && G.w[i]) dep[v] = dep[x] + 1, q.push(v);
   }
+  return dep[T] != -1;
 }
-int dfs(graph &G, int x) {}
+int dfs(graph &G, int x) {
+  if (x == T) {
+    flow[x] = fnow[x];
+    return 0;
+  }
+}
 int Dinic(graph &G, int n, int S, int T) {
   ans = 0;
   while (build()) dfs(G, S);
