@@ -115,8 +115,7 @@ int main() {
   }
   for (int i = 0; i <= n; i++) node[i] = i;
   Solve(0, n);
-  build(0, -1);
-  cout << Min[0][3] << endl;
+  build(0, n + 1);
   for (int j = 1; j < 10; j++)
     for (int i = 0; i <= n; i++) {
       f[j][i] = f[j - 1][f[j - 1][i]];
