@@ -19,10 +19,14 @@ inline LL read() {
 }
 const int Max_n = 505, Max_m = 1e4 + 5;
 int n, m;
+int node[Max_n], tp[Max_n];
 struct graph {
   int hd[Max_n];
   int cntr = 1, nx[Max_m], to[Max_m], w[Max_m];
   void addr(int u, int v, int W) {
+    cntr++;
+    nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
+    hd[u] = cntr;
   }
 } G;
 int main() {
@@ -34,5 +38,7 @@ int main() {
   int u, v, w;
   for (int i = 1; i <= m; i++) {
     u = read(), v = read(), w = read();
+    G.addr(u, v, w), G.addr(v, u, 0);
+    G.addr(u, v, 0), G.addr(v, u, w);
   }
 }
