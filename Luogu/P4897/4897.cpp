@@ -35,6 +35,7 @@ int cur[Max_n], dep[Max_n], fnow[Max_n], flow[Max_n], ans;
 void init(graph &G, int n) {
   ans = 0;
   for (int i = 1; i <= n; i++)
+    cur[i] = G.hd[i], dep[i] = -1, fnow[i] = flow[i] = 0;
 }
 bool build(graph &G, int n) {
 }
