@@ -35,12 +35,12 @@ int main() {
       if (!l && s[i] == '1') l = i;
     for (int i = n; i >= 1; i--)
       if (!r && s[i] == '1') r = i;
-    if (n - l > l) l = n - l;
-    if (n - r > r) r = n - r;
-    if (!l)
+    if (!l) {
       cout << n << endl;
-    else
+    } else {
+      if (n - l + 1 > l) l = n - l + 1;
+      if (n - r + 1 > r) r = n - r + 1;
       cout << max(n + 1, max((l << 1), (r << 1))) << endl;
-    ;
+    }
   }
 }
