@@ -31,8 +31,10 @@ struct graph {
   }
 } G, G2;
 namespace FLOW {
-int Dinic(int &G, int S, int T) {
-}
+int Dinic(int &G, int S, int T) {}
+}  // namespace FLOW
+void Solve(int l, int r) {
+  
 }
 int main() {
 #ifndef ONLINE_JUDGE
@@ -47,4 +49,5 @@ int main() {
     G.addr(u, v, 0), G.addr(v, u, w);
   }
   for (int i = 1; i <= n; i++) node[i] = i;
+  Solve(1, n);
 }
