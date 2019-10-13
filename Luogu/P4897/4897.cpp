@@ -19,17 +19,12 @@ inline LL read() {
 }
 const int Max_n = 505, Max_m = 1e4 + 5;
 int n, m;
-struct points {
+struct graph {
   int hd[Max_n];
-} V;
-struct edges {
   int cntr = 1, nx[Max_m], to[Max_m], w[Max_m];
-} E;
-void addr(points &V, edges &E, int u, int v, int w) {
-  E.cntr++;
-  E.nx[E.cntr] = V.hd[u], E.to[E.cntr] = v, E.w[E.cntr] = w;
-  V.hd[u];
-}
+  void addr(int u, int v, int W) {
+  }
+} G;
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("4897.in", "r", stdin);
