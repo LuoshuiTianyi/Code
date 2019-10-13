@@ -88,7 +88,9 @@ void build(int x, int fa) {
   go(G2, x, i, v) if (v != fa) Min[0][v] = G2.w[i], build(v, x);
 }
 int query(int u, int v) {
-  if (dep[u] > dep[v]) swap(u, v);
+  if (dep[u] < dep[v]) swap(u, v);
+  for (int i = 9; ~i; i--)
+    if (dep[f[i][u]] >= dep[v])
 }
 int main() {
 #ifndef ONLINE_JUDGE
