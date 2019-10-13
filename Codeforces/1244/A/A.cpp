@@ -29,6 +29,10 @@ int main() {
   T = read();
   while (T--) {
     a = read(), b = read(), c = read(), d = read(), k = read();
-    
+    int x = ceil(a / c), y = ceil(b / d);
+    if (x + y > k)
+      puts("-1");
+    else
+      printf("%d %d\n", x, y);
   }
 }
