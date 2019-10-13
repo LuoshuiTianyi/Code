@@ -25,7 +25,4 @@ int main() {
   freopen("C.out", "w", stdout);
 #endif
   n = read(), p = read(), w = read(), d = read();
-  if (d < w) {
-    LL a = p / w;
-  }
 }
