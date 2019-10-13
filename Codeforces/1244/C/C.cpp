@@ -18,9 +18,14 @@ inline LL read() {
   }
   return x * w;
 }
+LL n, p, w, d;
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("C.in", "r", stdin);
   freopen("C.out", "w", stdout);
 #endif
+  n = read(), p = read(), w = read(), d = read();
+  if (d < w) {
+    LL a = p / w;
+  }
 }
