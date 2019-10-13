@@ -68,7 +68,6 @@ void dfs(graph &G, int x) {
 int Dinic(graph &G, int s, int t) {
   S = s, T = t, ans = 0;
   while (build(G)) dfs(G, S);
-  cerr << S << " " << T << endl;
   return ans;
 }
 }  // namespace FLOW
