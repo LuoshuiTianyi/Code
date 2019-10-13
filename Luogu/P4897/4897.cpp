@@ -77,7 +77,13 @@ void Solve(int l, int r) {
   for (int i = l; i <= r; i++) vis[node[i]] = 0;
   int top1 = 0, top2 = 0;
   for (int i = l; i <= r; i++)
-    if (dep[node[i]] != -1) tp1[++top1] = node[i];
+    if (dep[node[i]] != -1)
+      tp1[++top1] = node[i];
+    else
+      tp2[++top2] = node[i];
+  for (int i = 1; i <= top1; i++) node[l + i - 1] = tp1[i];
+  for (int i = 1; i <= top2; i++) node[l + top1 + i - 1] = tp2[i];
+  Solve(l, top1), Solve(top1 + 1, r);
 }
 int main() {
 #ifndef ONLINE_JUDGE
