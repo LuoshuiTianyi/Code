@@ -35,7 +35,10 @@ void DP(int x, int fa) {
   for (int i = 0; i < 3; i++) {
     f[x][i] = c[x][i];
     go(G, x, i, v) if (v != fa) {
-      int minn = 0;
+      int minn = (i + 1) % 3;
+      for (int j = 1; j < 3; j++)
+        if (j != i && f[v][minn] > f[v][j]) minn = j;
+      f[x][i] += f[v][minn], s[v][i] = minn;
     }
   }
 }
