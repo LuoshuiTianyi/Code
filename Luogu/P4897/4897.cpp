@@ -79,7 +79,6 @@ void Solve(int l, int r) {
   for (int i = l; i <= r; i++) vis[node[i]] = 1;
   int W = FLOW::Dinic(Gf, node[l], node[r]);
   G2.addr(node[l], node[r], W), G2.addr(node[r], node[l], W);
-  cout << node[l] << " " << node[r] << " " << W << endl;
   for (int i = l; i <= r; i++) vis[node[i]] = 0;
   int top1 = 0, top2 = 0;
   for (int i = l; i <= r; i++)
@@ -93,7 +92,8 @@ void Solve(int l, int r) {
 }
 void build(int x, int fa) {
   go(G2, x, i, v) if (v != fa) {
-    cout << x << " " << v << " " << G.w[i] << endl;
+    cout << x << " " << v << " " << G2.w[i] << endl;
+    build(v, x);
   }
 }
 int main() {
