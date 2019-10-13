@@ -18,9 +18,17 @@ inline LL read() {
   }
   return x * w;
 }
+int T;
+int n;
+char s[1005];
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("B.in", "r", stdin);
   freopen("B.out", "w", stdout);
 #endif
+  T = read();
+  while (T--) {
+    n = read();
+    scanf("%s", s + 1);
+  }
 }
