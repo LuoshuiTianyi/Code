@@ -22,7 +22,7 @@ inline LL read() {
 const int Max_n = 505, Max_m = 1e4 + 5;
 int n, m, Q;
 int node[Max_n], tp1[Max_n], tp2[Max_n];
-int f[10][Max_n], Min[10][Max_n];
+int dep[Max_n], f[10][Max_n], Min[10][Max_n];
 struct graph {
   int hd[Max_n];
   int cntr = 1, nx[Max_m], to[Max_m], w[Max_m];
@@ -84,13 +84,20 @@ void Solve(int l, int r) {
   Solve(l, l + top1 - 1), Solve(l + top1, r);
 }
 void build(int x, int fa) {
-  f[0][x] = fa;
+  f[0][x] = fa, dep[x] = dep[fa] + 1;
   go(G2, x, i, v) if (v != fa) Min[0][v] = G2.w[i], build(v, x);
 }
 int query(int u, int v) {
+  int ans = 1e9;
   if (dep[u] < dep[v]) swap(u, v);
   for (int i = 9; ~i; i--)
-    if (dep[f[i][u]] >= dep[v])
+    if (dep[f[i][u]] >= dep[v]) ans = min(ans, Min[i][u]), u = f[i][u];
+  for (int i = 9; ~i; i--)
+    if (f[i][u] != f[i][v]) {
+      ans = min(ans, min(Min[i][u], Min[i][v]));
+      u = f[i][u], v = f[i][v];
+    }
+  return u == v ? ans : min(ans, min(Min[0][u], Min[0][v]));
 }
 int main() {
 #ifndef ONLINE_JUDGE
