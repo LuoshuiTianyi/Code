@@ -37,7 +37,7 @@ namespace FLOW {
 int S, T;
 int cur[Max_n], dep[Max_n], fnow[Max_n], flow[Max_n], ans;
 void init(graph &G) {
-  for (int i = 1; i <= n; i++) cur[i] = G.hd[i], dep[i] = -1, fnow[i] = 0;
+  for (int i = 0; i <= n; i++) cur[i] = G.hd[i], dep[i] = -1, fnow[i] = 0;
 }
 queue<int> q;
 bool build(graph &G) {
@@ -46,8 +46,9 @@ bool build(graph &G) {
   while (!q.empty()) {
     int x = q.front();
     q.pop();
-    go(G, x, i, v) if (dep[v] == -1 && G.w[i] && vis[v]) {
+    go(G, x, i, v) {cout << x << " " << v << endl;if (dep[v] == -1 && G.w[i] && vis[v]) {
       dep[v] = dep[x] + 1, q.push(v);
+    }
     }
   }
   return dep[T] != -1;
@@ -101,8 +102,7 @@ int main() {
   int u, v, w;
   for (int i = 1; i <= m; i++) {
     u = read(), v = read(), w = read();
-    G.addr(u, v, w), G.addr(v, u, 0);
-    G.addr(u, v, 0), G.addr(v, u, w);
+    G.addr(u, v, w), G.addr(v, u, w);
   }
   for (int i = 0; i <= n; i++) node[i] = i;
   cout << FLOW::Dinic(G, 0, 3);
