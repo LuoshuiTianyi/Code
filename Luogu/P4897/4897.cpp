@@ -21,7 +21,8 @@ inline LL read() {
 }
 const int Max_n = 505, Max_m = 1e4 + 5;
 int n, m;
-int node[Max_n], tp[Max_n];
+int node[Max_n], tp1[Max_n], tp2[Max_n];
+bool vis[Max_n];
 struct graph {
   int hd[Max_n];
   int cntr = 1, nx[Max_m], to[Max_m], w[Max_m];
@@ -69,7 +70,11 @@ int Dinic(graph &G, int n, int S, int T) {
 void Solve(int l, int r) {
   if (l == r) return;
   Gf = G;
+  for (int i = l; i <= r; i++) vis[node[i]] = 1;
   G2.addr(node[l], node[r], FLOW::Dinic(Gf, node[l], node[r]));
+  for (int i = l; i <= r; i++) vis[node[i]] = 0;
+  int top1 = 0, top2 = 0;
+  for (int i = l; i <= r; i++) if (dep[node[i]] != -1) tp1[++top1] = node[i];
 }
 int main() {
 #ifndef ONLINE_JUDGE
