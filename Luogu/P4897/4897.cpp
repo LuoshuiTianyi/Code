@@ -37,9 +37,12 @@ void init(graph &G, int n) {
   for (int i = 1; i <= n; i++)
     cur[i] = G.hd[i], dep[i] = -1, fnow[i] = 0;
 }
+queue<int> q;
 bool build(graph &G, int n) {
   init(G, n);
-  dep[S] = 0, fnow[S] = 1e9;
+  q.push(S), dep[S] = 0, fnow[S] = 1e9;
+  while (!q.empty()) {
+  }
 }
 int dfs(graph &G, int x) {
   
