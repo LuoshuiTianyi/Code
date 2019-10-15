@@ -18,12 +18,19 @@ inline LL read() {
   }
   return x * w;
 }
-const int Max_n = 505;
+const int Max_n = 505, Max_m = 2e5 + 5;
 int n, m, K;
 double f[Max_n][Max_n], g[Max_n][Max_n];
 bool vis[Max_n];
 struct graph {
-}
+  int hd[Max_n], deg[Max_n];
+  int cntr, nx[Max_m], to[Max_m];
+  void addr(int u, int v) {
+    cntr++;
+    nx[cntr] = hd[u], to[cntr] = v;
+    hd[u] = cntr;
+  }
+} G;
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("D.in", "r", stdin);
