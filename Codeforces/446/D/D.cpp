@@ -36,4 +36,10 @@ int main() {
   freopen("D.in", "r", stdin);
   freopen("D.out", "w", stdout);
 #endif
+  n = read(), m = read(), K = read();
+  for (int i = 1; i <= n; i++) vis[i] = read();
+  int u, v;
+  while (m--) {
+    u = read(), v = read();
+  }
 }
