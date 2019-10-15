@@ -41,5 +41,6 @@ int main() {
   int u, v;
   while (m--) {
     u = read(), v = read();
+    G.addr(u, v), G.addr(v, u);
   }
 }
