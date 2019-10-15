@@ -19,8 +19,11 @@ inline LL read() {
   return x * w;
 }
 const int Max_n = 505;
-int n;
-int g[Max_n][Max_n];
+int n, m, K;
+double f[Max_n][Max_n], g[Max_n][Max_n];
+bool vis[Max_n];
+struct graph {
+}
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("D.in", "r", stdin);
