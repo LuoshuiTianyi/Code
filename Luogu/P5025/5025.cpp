@@ -18,9 +18,16 @@ inline LL read() {
   }
   return x * w;
 }
+const int Max_n = 5e5 + 5;
+int n;
+LL X[Max_n], R[Max_n];
+namespace SGT {
+}
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("5025.in", "r", stdin);
   freopen("5025.out", "w", stdout);
 #endif
+  n = read();
+  for (int i = 1; i <= n; i++) X[i] = read(), R[i] = read();
 }
