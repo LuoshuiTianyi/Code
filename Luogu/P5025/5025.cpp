@@ -22,6 +22,8 @@ const int Max_n = 5e5 + 5;
 int n;
 LL X[Max_n], R[Max_n];
 namespace SGT {
+void build(int o, int l, int r) {
+}
 }
 int main() {
 #ifndef ONLINE_JUDGE
