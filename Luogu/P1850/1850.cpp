@@ -56,7 +56,8 @@ void main() {
   f[1][0][0] = f[1][1][1] = 0;
   for (int i = 2; i <= n; i++)
     for (int j = 0; j <= m; j++) {
-      double t1 = f[i - 1][j][];
+      double t1 = f[i - 1][j][0] + dis[a[i - 1]][a[i]];
+      double t2 = f[i - 1][j][1] + (1 - k[i - 1]) * dis[a[i - 1]][a[i]];
     }
 }
 }  // namespace Solve
