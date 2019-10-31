@@ -57,7 +57,12 @@ void main() {
   for (int i = 2; i <= n; i++)
     for (int j = 0; j <= m; j++) {
       double t1 = f[i - 1][j][0] + dis[a[i - 1]][a[i]];
-      double t2 = f[i - 1][j][1] + (1 - k[i - 1]) * dis[a[i - 1]][a[i]];
+      double t2 = (1 - k[i - 1]) * dis[a[i - 1]][a[i]];
+      t2 += k[i - 1] * dis[b[i - 1]][a[i]] + f[i - 1][j][1];
+      f[i][j][0] = min(t1, t2);
+      if (j) {
+        
+      }
     }
 }
 }  // namespace Solve
