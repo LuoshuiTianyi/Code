@@ -53,6 +53,9 @@ void main() {
 
 namespace Solve {
 void main() {
+  for (int i = 1; i <= n; i++)
+    for (int j = 0; j <= m; j++) {
+    }
 }
 }  // namespace Solve
 
