@@ -53,7 +53,8 @@ void main() {
 
 namespace Solve {
 void main() {
-  for (int i = 1; i <= n; i++)
+  f[1][0][0] = f[1][1][1] = 0;
+  for (int i = 2; i <= n; i++)
     for (int j = 0; j <= m; j++) {
     }
 }
