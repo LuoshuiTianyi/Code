@@ -29,6 +29,8 @@ namespace Input {
 void main() {
   n = read(), m = read(), v = read(), e = read();
   for (int i = 1; i <= n; i++) a[i] = read();
+  for (int i = 1; i <= n; i++) b[i] = read();
+  for (int i = 1; i <= n; i++) scanf(" %f", &k[i]);
 }
 }  // namespace Input
 
