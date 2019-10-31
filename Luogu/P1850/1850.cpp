@@ -22,7 +22,7 @@ inline LL read() {
 const int Max_n = 2005;
 int n, m, v, e;
 int a[Max_n], b[Max_n];
-double k[Max_n];
+double k[Max_n], f[Max_n][Max_n][2];
 int dis[Max_n][Max_n];
 
 namespace Input {
@@ -31,15 +31,29 @@ void main() {
   for (int i = 1; i <= n; i++) a[i] = read();
   for (int i = 1; i <= n; i++) b[i] = read();
   for (int i = 1; i <= n; i++) scanf(" %f", &k[i]);
+  for (int i = 1; i <= v; i++)
+    for (int j = 1; j <= v; j++) dis[i][j] = 1e9;
+  while (e--) {
+    int u = read(), v = read();
+    double w;
+    scanf(" %f", &w);
+    dis[u][v] = dis[v][u] = min(dis[u][v], w);
+  }
 }
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  for (int i = 1; i <= v; i++)
+    for (int j = 1; j <= v; j++)
+      for (int k = 1; k <= v; k++)
+        dis[j][k] = min(dis[j][k], dis[j][i] + dis[i][k]);
+}
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+}
 }  // namespace Solve
 
 int main() {
