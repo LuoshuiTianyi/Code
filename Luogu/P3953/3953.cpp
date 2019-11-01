@@ -22,11 +22,16 @@ inline LL read() {
 
 const int Max_n = 1e5 + 5, inf = 1e9;
 int n, m, lim, mod;
-int Dis;
+int Dis, pdis[Max_n], rdis[Max_n];
+int f[Max_n][51];
 bool vis[Max_n];
 struct graph {
-  int hd[Max_n], dis[Max_n];
+  int hd[Max_n];
   int cntr, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
+  void memset(int n) {
+    cntr = 0;
+    for (int i = 1; i <= n; i++) hd[i] = 0;
+  }
   void addr(int u, int v, int W) {
     cntr++;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
@@ -37,6 +42,7 @@ struct graph {
 namespace Input {
 void main() {
   n = read(), m = read(), lim = read(), mod = read();
+  G.memset(n), G2.memset(n);
   int u, v, w;
   for (int i = 1; i <= m; i++) {
     u = read(), v = read(), w = read();
@@ -62,7 +68,8 @@ void Dij(graph G, int s, int *dis) {
   }
 }
 void main() {
-  Dij(G, 1, dis);
+  Dij(G, 1, pdis), Dij(G2, n, rdis); 
+  for (int 
 }
 }  // namespace Init
 
