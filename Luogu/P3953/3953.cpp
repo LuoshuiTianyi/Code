@@ -20,12 +20,10 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 1e5 + 5;
-int n, m, mod;
-LL Dis;
-struct node {
-  int id, dis;
-};
+const int Max_n = 1e5 + 5, inf = 1e9;
+int n, m, lim, mod;
+int Dis;
+bool vis[Max_n];
 struct graph {
   int hd[Max_n], dis[Max_n];
   int cntr, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
@@ -38,7 +36,7 @@ struct graph {
 
 namespace Input {
 void main() {
-  n = read(), m = read();
+  n = read(), m = read(), lim = read(), mod = read();
   int u, v, w;
   for (int i = 1; i <= m; i++) {
     u = read(), v = read(), w = read();
@@ -48,7 +46,24 @@ void main() {
 }  // namespace Input
 
 namespace Init {
-void main() {}
+struct node {
+  int id, dis;
+};
+priority_queue<node> q;
+void Push(int x, int dis) { q.push((node){x, dis}); }
+void Dij(graph G, int s, int *dis) {
+  for (int i = 1; i <= n; i++) dis[i] = inf, vis[i] = 0;
+  Push(s, dis[s] = 0);
+  while (!q.empty()) {
+    int x = q.top().id, tp;
+    if (vis[x]) continue;
+    vis[x] = 1, q.pop();
+    go(G, x, i, v) if ((tp = dis[x] + G.w[i]) < dis[v]) Push(v, dis[v] = td);
+  }
+}
+void main() {
+  Dij(G, 1, dis);
+}
 }  // namespace Init
 
 namespace Solve {
