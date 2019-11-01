@@ -81,9 +81,9 @@ void dfs(int x, int fa) {
     for (int i = add[l][x].size() - 1; ~i; i--) buk[l][add[l][x][i]]++;
   int t0 = buk[0][s0], t1 = buk[1][s1];
   go(G, x, i, v) if (v != fa) dfs(v, x);
-  Ans[x] += t0 - buk[0][s0] + t1 - buk[1][s1];
   for (int l = 0; l < 2; l++)
     for (int i = del[l][x].size() - 1; ~i; i--) buk[l][del[l][x][i]]--;
+  Ans[x] += t0 - buk[0][s0] + t1 - buk[1][s1];
 }
 void main() {
   dfs(1, 0);
