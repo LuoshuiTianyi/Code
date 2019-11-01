@@ -21,8 +21,9 @@ inline LL read() {
 }
 
 const int Max_n = 1e5 + 5, inf = 1e9;
+int T;
 int n, m, lim, mod;
-int Dis, pdis[Max_n], rdis[Max_n];
+int dis[Max_n];
 int f[Max_n][51];
 bool vis[Max_n];
 struct graph {
@@ -54,6 +55,9 @@ void main() {
 namespace Init {
 struct node {
   int id, dis;
+  bool operator<(const node &b) const {
+    return dis > b.dis;
+  }
 };
 priority_queue<node> q;
 void Push(int x, int dis) { q.push((node){x, dis}); }
@@ -62,15 +66,16 @@ void Dij(graph G, int s, int *dis) {
   Push(s, dis[s] = 0);
   while (!q.empty()) {
     int x = q.top().id, tp;
+    q.pop();
     if (vis[x]) continue;
-    vis[x] = 1, q.pop();
-    go(G, x, i, v) if ((tp = dis[x] + G.w[i]) < dis[v]) Push(v, dis[v] = td);
+    vis[x] = 1;
+    go(G, x, i, v) if ((tp = dis[x] + G.w[i]) < dis[v]) Push(v, dis[v] = tp);
   }
 }
 void main() {
-  Dij(G, 1, pdis), Dij(G2, n, rdis); 
+  Dij(G2, n, dis);
   for (int i = 1; i <= n; i++)
-    for (int j = 0; j <= K; j++) f[i][j] = -1;
+    for (int j = 0; j <= lim; j++) f[i][j] = -1;
 }
 }  // namespace Init
 
@@ -79,15 +84,22 @@ int status[Max_n];
 int DP(int x, int left) {
   if (left < 0) return 0;
   if (x == n) return 1;
+  cout << x << " " << left << endl;
   if (status[x] == left) return -1;
   int &res = f[x][left];
   if (res != -1) return res;
-  res = 0;
+  res = 0, status[x] = left;
   go(G, x, i, v) {
+    int t = DP(v, left - (G.w[i] + dis[v] - dis[x]));
+    if (t == -1) return -1;
+    (res += t) %= mod;
   }
+  status[x] = -1;
+  return res;
 }
-void main() {
-  printf("%d\n", DP(1, K));
+void main() { 
+  for (int i = 1; i <= n; i++) status[i] = -1;
+  printf("%d\n", DP(1, lim)); 
 }
 }  // namespace Solve
 
