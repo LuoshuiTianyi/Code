@@ -1,5 +1,5 @@
 from random import randint
-n = 5
+n = 3
 m = 1
 print(n, m)
 for i in range(2, n + 1):
