@@ -58,6 +58,7 @@ void build(int x, int f) {
   }
   for (int i = M[x].size() - 1; ~i; i--) {
     int j = M[x][i];
+    if (s[j] == t[j]) lca[j] = s[j];
     if (find(s[j]) != s[j] || find(t[j]) != t[j]) 
       lca[j] = find(s[j]) != s[j] ? find(s[j]) : find(t[j]);
   }
