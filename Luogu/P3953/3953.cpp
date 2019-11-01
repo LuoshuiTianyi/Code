@@ -70,12 +70,24 @@ void Dij(graph G, int s, int *dis) {
 void main() {
   Dij(G, 1, pdis), Dij(G2, n, rdis); 
   for (int i = 1; i <= n; i++)
-    for (int j = 0; j <= K; j++) f[i][j] = 0;
+    for (int j = 0; j <= K; j++) f[i][j] = -1;
 }
 }  // namespace Init
 
 namespace Solve {
+int status[Max_n];
+int DP(int x, int left) {
+  if (left < 0) return 0;
+  if (x == n) return 1;
+  if (status[x] == left) return -1;
+  int &res = f[x][left];
+  if (res != -1) return res;
+  res = 0;
+  go(G, x, i, v) {
+  }
+}
 void main() {
+  printf("%d\n", DP(1, K));
 }
 }  // namespace Solve
 
