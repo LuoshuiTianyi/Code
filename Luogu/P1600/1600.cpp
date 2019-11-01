@@ -52,7 +52,10 @@ namespace Init {
 int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
 void build(int x, int f) {
   dep[x] = dep[f] + 1;
-  go(G, x, i, v) if (v != f) build(v, x);
+  go(G, x, i, v) if (v != f) {
+    build(v, x);
+    fa[find(v)] = find(x);
+  }
   for (int i = M[x].size() - 1; ~i; i--) {
     int j = M[x][i];
     if (find(s[j]) != s[j] || find(t[j]) != t[j]) 
@@ -73,14 +76,14 @@ void main() {
 
 namespace Solve {
 void dfs(int x, int fa) {
-  //int s0 = w[x] + dep[x], s1 = w[x] - dep[x] + P;
-  //int t0 = buk[0][s0], t1 = buk[1][s1];
-  //for (int l = 0; l < 2; l++)
-  //  for (int i = add[l][x].size(); ~i; i--) buk[l][add[l][x][i]]++;
-  //go(G, x, i, v) if (v != fa) dfs(v, x);
-  //Ans[x] += buk[0][s0] + buk[1][s1] - t0 - t1;
-  //for (int l = 0; l < 2; l++)
-  //  for (int i = del[l][x].size(); ~i; i--) buk[l][del[l][x][i]]--;
+  int s0 = w[x] + dep[x], s1 = w[x] - dep[x] + P;
+  int t0 = buk[0][s0], t1 = buk[1][s1];
+  for (int l = 0; l < 2; l++)
+    for (int i = add[l][x].size() - 1; ~i; i--) buk[l][add[l][x][i]]++;
+  go(G, x, i, v) if (v != fa) dfs(v, x);
+  Ans[x] += buk[0][s0] + buk[1][s1] - t0 - t1;
+  for (int l = 0; l < 2; l++)
+    for (int i = del[l][x].size() - 1; ~i; i--) buk[l][del[l][x][i]]--;
 }
 void main() {
   dfs(1, 0);
