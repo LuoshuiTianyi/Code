@@ -48,6 +48,8 @@ void main() {
     for (int j = 1; j <= v; j++)
       for (int k = 1; k <= v; k++)
         dis[j][k] = min(dis[j][k], dis[j][i] + dis[i][k]);
+  for (int i = 0; i <= n; i++)
+    for (int j = 0; j <= m; j++) f[i][j][0] = f[i][j][1] = 1e8;
 }
 }  // namespace Init
 
@@ -66,13 +68,11 @@ void main() {
         t2 = f[i - 1][j - 1][1] + k[i - 1] * k[i] * dis[b[i - 1]][b[i]];
         t2 += k[i - 1] * (1 - k[i]) * dis[b[i - 1]][a[i]];
         t2 += (1 - k[i - 1]) * k[i] * dis[a[i - 1]][b[i]];
-        t2 += (1 - k[i - 1]) * k[i] * dis[a[i - 1]][a[i]];
+        t2 += (1 - k[i - 1]) * (1 - k[i]) * dis[a[i - 1]][a[i]];
         f[i][j][1] = min(t1, t2);
       }
-      cout << i << " " << j << " " << f[i][j][0] << " " << f[i][j][1] << endl;
     }
-  for (int i = 0; i <= m; i++) ans = min(ans, f[n][i][0]);
-  for (int i = 1; i <= m; i++) ans = min(ans, f[n][i][1]);
+  for (int i = 0; i <= m; i++) ans = min(ans, min(f[n][i][0], f[n][i][1]));
   printf("%.2lf", ans);
 }
 }  // namespace Solve
