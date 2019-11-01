@@ -22,7 +22,7 @@ inline LL read() {
 const int Max_n = 2005;
 int n, m, v, e;
 int a[Max_n], b[Max_n];
-double k[Max_n], f[Max_n][Max_n][2];
+double ans, k[Max_n], f[Max_n][Max_n][2];
 int dis[Max_n][Max_n];
 
 namespace Input {
@@ -61,9 +61,18 @@ void main() {
       t2 += k[i - 1] * dis[b[i - 1]][a[i]] + f[i - 1][j][1];
       f[i][j][0] = min(t1, t2);
       if (j) {
-        
+        t1 = f[i - 1][j - 1][0] + k[i] * dis[a[i - 1]][b[i]];
+        t1 += (1 - k[i]) * dis[a[i - 1]][a[i]];
+        t2 = f[i - 1][j - 1][1] + k[i - 1] * k[i] * dis[b[i - 1]][b[i]];
+        t2 += k[i - 1] * (1 - k[i]) * dis[b[i - 1]][a[i]];
+        t2 += (1 - k[i - 1]) * k[i] * dis[a[i - 1]][b[i]];
+        t2 += (1 - k[i - 1]) * k[i] * dis[a[i - 1]][a[i]];
+        f[i][j][1] = min(t1, t2);
       }
     }
+  for (int i = 0; i <= m; i++)
+    ans = min(ans, min(f[n][i][0], f[n][i][1]));
+  printf("%.2f", ans);
 }
 }  // namespace Solve
 
