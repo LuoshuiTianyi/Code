@@ -83,12 +83,10 @@ namespace Solve {
 int status[Max_n];
 int DP(int x, int left) {
   if (left < 0) return 0;
-  if (x == n) return 1;
-  cout << x << " " << left << endl;
   if (status[x] == left) return -1;
   int &res = f[x][left];
   if (res != -1) return res;
-  res = 0, status[x] = left;
+  res = x == n ? 1 : 0, status[x] = left;
   go(G, x, i, v) {
     int t = DP(v, left - (G.w[i] + dis[v] - dis[x]));
     if (t == -1) return -1;
