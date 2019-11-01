@@ -67,7 +67,7 @@ void main() {
   for (int i = 1; i <= m; i++) {
     int u = s[i], v = t[i], l = lca[i];
     int d1 = dep[u], d2 = dep[u] - (dep[l] << 1) + P;
-    del[0][l].push_back(d1), add[0][u].push_back(d1);
+    add[0][l].push_back(d1), del[0][u].push_back(d1);
     add[1][l].push_back(d2), del[1][v].push_back(d2);
     Ans[l] -= (dep[u] - dep[l] == w[l]);
   }
@@ -77,11 +77,11 @@ void main() {
 namespace Solve {
 void dfs(int x, int fa) {
   int s0 = w[x] + dep[x], s1 = w[x] - dep[x] + P;
-  //int t0 = buk[0][s0], t1 = buk[1][s1];
   for (int l = 0; l < 2; l++)
     for (int i = add[l][x].size() - 1; ~i; i--) buk[l][add[l][x][i]]++;
+  int t0 = buk[0][s0], t1 = buk[1][s1];
   go(G, x, i, v) if (v != fa) dfs(v, x);
-  Ans[x] += buk[0][s0] + buk[1][s1];// - t0 - t1;
+  Ans[x] += t0 - buk[0][s0] + t1 - buk[1][s1];
   for (int l = 0; l < 2; l++)
     for (int i = del[l][x].size() - 1; ~i; i--) buk[l][del[l][x][i]]--;
 }
