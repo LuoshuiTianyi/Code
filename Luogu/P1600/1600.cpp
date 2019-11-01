@@ -20,11 +20,11 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 3e5 + 5, add = 3e5 + 5;
+const int Max_n = 3e5 + 5, P = 3e5 + 5;
 int n, m, Ans[Max_n];
 int s[Max_n], t[Max_n], lca[Max_n], w[Max_n], fa[Max_n], buk[Max_n << 1];
 int dep[Max_n];
-vector<int> M[Max_n], a1[Max_n], b1[Max_n], a2[Max_n], b2[Max_n];
+vector<int> M[Max_n], ad1[Max_n], de1[Max_n], ad2[Max_n], de2[Max_n];
 struct graph {
   int hd[Max_n];
   int cntr, nx[Max_n << 1], to[Max_n << 1];
@@ -62,12 +62,23 @@ void build(int x, int f) {
 void main() {
   build(1, 0);
   for (int i = 1; i <= m; i++) {
+    int u = s[i], v = t[i], l = lca[i];
+    int d1 = dep[u], d2 = dep[u] - (dep[l] << 1) + P;
+    ad1[l].push_back(d1), de1[u].push_back(d1);
+    de2[l].push_back(d2), ad2[v].push_back(d2);
+    Ans[l] -= (dep[u] - dep[l] == w[l]);
   }
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void dfs(int x, int fa) {
+  int tp1 = 
+  go(G, x, i, v) if (v != fa) dfs(v, x);
+}
+void main() {
+  dfs(1, 0);
+}
 }  // namespace Solve
 
 int main() {
