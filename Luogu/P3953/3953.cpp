@@ -69,12 +69,14 @@ void Dij(graph G, int s, int *dis) {
 }
 void main() {
   Dij(G, 1, pdis), Dij(G2, n, rdis); 
-  for (int 
+  for (int i = 1; i <= n; i++)
+    for (int j = 0; j <= K; j++) f[i][j] = 0;
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+}
 }  // namespace Solve
 
 int main() {
