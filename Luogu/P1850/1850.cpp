@@ -22,21 +22,21 @@ inline LL read() {
 const int Max_n = 2005;
 int n, m, v, e;
 int a[Max_n], b[Max_n];
-double ans, k[Max_n], f[Max_n][Max_n][2];
-int dis[Max_n][Max_n];
+double ans, k[Max_n], dis[Max_n][Max_n], f[Max_n][Max_n][2];
 
 namespace Input {
 void main() {
   n = read(), m = read(), v = read(), e = read();
   for (int i = 1; i <= n; i++) a[i] = read();
   for (int i = 1; i <= n; i++) b[i] = read();
-  for (int i = 1; i <= n; i++) scanf(" %f", &k[i]);
+  for (int i = 1; i <= n; i++) scanf(" %lf", &k[i]);
   for (int i = 1; i <= v; i++)
     for (int j = 1; j <= v; j++) dis[i][j] = 1e9;
+  for (int i = 1; i <= v; i++) dis[i][i] = 0;
   while (e--) {
     int u = read(), v = read();
     double w;
-    scanf(" %f", &w);
+    scanf(" %lf", &w);
     dis[u][v] = dis[v][u] = min(dis[u][v], w);
   }
 }
@@ -53,7 +53,7 @@ void main() {
 
 namespace Solve {
 void main() {
-  f[1][0][0] = f[1][1][1] = 0;
+  f[1][0][0] = f[1][1][1] = 0, ans = 1e9;
   for (int i = 2; i <= n; i++)
     for (int j = 0; j <= m; j++) {
       double t1 = f[i - 1][j][0] + dis[a[i - 1]][a[i]];
@@ -69,17 +69,20 @@ void main() {
         t2 += (1 - k[i - 1]) * k[i] * dis[a[i - 1]][a[i]];
         f[i][j][1] = min(t1, t2);
       }
+      cout << i << " " << j << " " << f[i][j][0] << " " << f[i][j][1] << endl;
     }
-  for (int i = 0; i <= m; i++)
-    ans = min(ans, min(f[n][i][0], f[n][i][1]));
-  printf("%.2f", ans);
+  for (int i = 0; i <= m; i++) ans = min(ans, f[n][i][0]);
+  for (int i = 1; i <= m; i++) ans = min(ans, f[n][i][1]);
+  printf("%.2lf", ans);
 }
 }  // namespace Solve
 
 int main() {
-#ifndef ONLINE_JUDGE
+#ifdef Thyu
   freopen("1850.in", "r", stdin);
   freopen("1850.out", "w", stdout);
 #endif
-  Input::main(), Init::main(), Solve::main();
+  Input::main();
+  Init::main();
+  Solve::main();
 }
