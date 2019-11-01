@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <iostream>
+#include <vector>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
@@ -18,6 +19,11 @@ inline LL read() {
   }
   return x * w;
 }
+
+const int Max_n = 3e5 + 5;
+int n, m;
+
+vector<int> Lca[Max_n], a1[Max_n], b1[Max_n], a2[Max_n], b2[Max_n];
 
 namespace Input {
 void main() {}
