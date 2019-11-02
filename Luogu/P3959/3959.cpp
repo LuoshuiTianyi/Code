@@ -47,12 +47,30 @@ void main() {
       Min[i][s] = minn;
     }
   for (int s = 1; s < (1 << n); s++) {
+    int to = 0;
+    for (int i = 1; i <= n; i++) {
+      if (!(s >> i - 1 & 1)) continue;
+      for (int j = 1; j <= n; j++)
+        if (r[i][j] != inf && !(s >> j - 1 & 1))
+          to |= 1 << j - 1;
+    }
+    G[s] = to;
   }
+  for (int i = 1; i <= n; i++)
+    for (int s = 0; s < (1 << n); s++) f[i][s] = inf;
+  for (int i = 1; i <= n; i++) f[1][1 << i - 1] = 0;
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  for (int i = 2; i <= n; i++)
+    for (int s = 1; s < (1 << n); s++)
+      for (int son = s;; son = (son - 1) & s) {
+        if ((G[son] | (s ^ son)) != G[son]) continue;
+        f[i][s] = min(f[i][s], f[i - 1][son] + work(s ^ son, son)
+      }
+}
 }  // namespace Solve
 
 int main() {
