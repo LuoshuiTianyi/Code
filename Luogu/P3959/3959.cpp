@@ -19,16 +19,36 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 12;
+const int Max_n = 12, inf = 1e8;
 int n, m;
+int r[Max_n][Max_n];
 int f[Max_n + 1][1 << Max_n];
+int Min[Max_n][1 << Max_n], G[1 << Max_n];
 
 namespace Input {
-void main() {}
+void main() {
+  n = read(), m = read();
+  for (int i = 1; i <= n; i++)
+    for (int j = 1; j <= n; j++)
+      if (i != j) r[i][j] = inf;
+  int u, v;
+  for (int i = 1; i <= m; i++)
+    u = read(), v = read(), r[u][v] = r[v][u] = min(r[u][v], read());
+}
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  for (int i = 1; i <= n; i++)
+    for (int s = 0; s < (1 << n); s++) {
+      int minn = inf;
+      for (int j = 1; j <= n; j++)
+        if (s >> j - 1 & 1) minn = min(minn, r[j][i]);
+      Min[i][s] = minn;
+    }
+  for (int s = 1; s < (1 << n); s++) {
+  }
+}
 }  // namespace Init
 
 namespace Solve {
