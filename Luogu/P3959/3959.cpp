@@ -20,20 +20,20 @@ inline LL read() {
 }
 
 const int Max_n = 12, inf = 1e8;
-int n, m;
+int n, m, ans;
 int r[Max_n][Max_n];
 int f[Max_n + 1][1 << Max_n];
 int Min[Max_n][1 << Max_n], G[1 << Max_n];
 
 namespace Input {
 void main() {
-  n = read(), m = read();
+  n = read(), m = read(), ans = inf;
   for (int i = 1; i <= n; i++)
     for (int j = 1; j <= n; j++)
       if (i != j) r[i][j] = inf;
   int u, v;
   for (int i = 1; i <= m; i++)
-    u = read(), v = read(), r[u][v] = r[v][u] = min(r[u][v], read());
+    u = read(), v = read(), r[u][v] = r[v][u] = min(r[u][v], (int)read());
 }
 }  // namespace Input
 
@@ -51,25 +51,33 @@ void main() {
     for (int i = 1; i <= n; i++) {
       if (!(s >> i - 1 & 1)) continue;
       for (int j = 1; j <= n; j++)
-        if (r[i][j] != inf && !(s >> j - 1 & 1))
-          to |= 1 << j - 1;
+        if (r[i][j] != inf && !(s >> j - 1 & 1)) to |= 1 << j - 1;
     }
     G[s] = to;
   }
-  for (int i = 1; i <= n; i++)
+  for (int i = 0; i <= n; i++)
     for (int s = 0; s < (1 << n); s++) f[i][s] = inf;
   for (int i = 1; i <= n; i++) f[1][1 << i - 1] = 0;
 }
 }  // namespace Init
 
 namespace Solve {
+int work(int s, int to) {
+  int ans = 0;
+  for (int i = 1; i <= n; i++)
+    if (s >> i - 1 & 1) ans += Min[i][to];
+  return ans;
+}
 void main() {
   for (int i = 2; i <= n; i++)
     for (int s = 1; s < (1 << n); s++)
       for (int son = s;; son = (son - 1) & s) {
-        if ((G[son] | (s ^ son)) != G[son]) continue;
-        f[i][s] = min(f[i][s], f[i - 1][son] + work(s ^ son, son)
+        if ((G[son] | (s ^ son)) == G[son])
+          f[i][s] = min(f[i][s], f[i - 1][son] + work(s ^ son, son) * (i - 1));
+        if (!son) break;
       }
+  for (int i = 0; i <= n; i++) ans = min(ans, f[i][(1 << n) - 1]);
+  cout << ans;
 }
 }  // namespace Solve
 
