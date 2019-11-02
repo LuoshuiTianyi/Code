@@ -21,9 +21,9 @@ inline LL read() {
 
 const int Max_n = 12, inf = 1e8;
 int n, m, ans;
-int r[Max_n][Max_n];
+int r[Max_n + 1][Max_n + 1];
 int f[Max_n + 1][1 << Max_n];
-int Min[Max_n][1 << Max_n], G[1 << Max_n];
+int Min[Max_n + 1][1 << Max_n], G[1 << Max_n];
 
 namespace Input {
 void main() {
