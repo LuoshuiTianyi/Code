@@ -19,7 +19,9 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = ;
+const int Max_n = 12;
+int n, m;
+int f[Max_n + 1][1 << Max_n];
 
 namespace Input {
 void main() {}
