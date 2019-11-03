@@ -28,12 +28,14 @@ LL q[Max_n << 1];
 bool qt[Max_n << 1];
 vector<int> que[Max_n], pad[Max_n];
 
+LL id(int x, int y) { return 1ll * (x - 1) * m + y; }
+
 struct Tree {
   int t1, t2, ad[Max_n], dl[Max_n];
   int c[LIM + 1];
   #define mid (l + r >> 1)
-  #define ls (o - (o & -o >> 1))
-  #define rs (o + (o & -o >> 1))
+  #define ls (o - (lowbit(o) >> 1))
+  #define rs (o + (lowbit(o) >> 1))
   void Init() {
     for (int p = 1; p <= m; p++)
       for (int i = p; i <= LIM; i += i & -i) c[i] = 1;
@@ -45,11 +47,12 @@ struct Tree {
       dl[++t2] = k;
     for (int i = k; i <= LIM; i += i & -i) c[i] += x;
   }
-  void find(int k) {
+  int lowbit(int x) { return x & -x; }
+  int find(int k) {
     int l = 1, r = LIM, o = LIM >> 1;
     while (l < r) {
       if (c[o] >= k) o = ls, r = mid;
-      else k -= c[i], o = rs, l = mid + 1;
+      else k -= c[o], o = rs, l = mid + 1;
     }
     return l;
   }
@@ -68,10 +71,11 @@ void main() {
 
 namespace Init {
 void main() {
-  for (int i = 1; i <= n; i++) q[i] = 1ll * i * m, s.add(i, 1);
+  for (int i = 1; i <= n; i++) q[i] = id(i, m), s.add(i, 1);
   for (int i = 1; i <= Q; i++) {
     que[x[i]].push_back(i);
-    int p = s.find(
+    int p = s.find(x[i]);
+    pad[x[i]].push_back(p), s.add(p, -1), s.add(s.find(n - 1) + 1, 1);
   }
   s.init(), s.Init();
 }
