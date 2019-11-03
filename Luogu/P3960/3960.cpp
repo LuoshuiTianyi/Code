@@ -19,10 +19,15 @@ inline LL read() {
   return x * w;
 }
 
+const int Max_n = 3e5 + 5;
 int n, m, Q;
+int q[Max_n];
 
 namespace Input {
-void main() {}
+void main() {
+  n = read(), m = read(), Q = read();
+  for (int i = 1; i <= n; i++) q[i] = ;
+}
 }  // namespace Input
 
 namespace Init {
