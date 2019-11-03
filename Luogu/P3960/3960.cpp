@@ -1,5 +1,7 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
+#include <vector>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
@@ -21,12 +23,13 @@ inline LL read() {
 
 const int Max_n = 3e5 + 5;
 int n, m, Q;
-int q[Max_n];
+LL q[Max_n << 1];
+bool qt[Max_n << 1];
 
 namespace Input {
 void main() {
   n = read(), m = read(), Q = read();
-  for (int i = 1; i <= n; i++) q[i] = ;
+  for (int i = 1; i <= n; i++) q[i] = 1ll * i * m;
 }
 }  // namespace Input
 
