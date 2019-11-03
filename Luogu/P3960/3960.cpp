@@ -23,13 +23,28 @@ inline LL read() {
 
 const int Max_n = 3e5 + 5;
 int n, m, Q;
+int x[Max_n], y[Max_n];
 LL q[Max_n << 1];
 bool qt[Max_n << 1];
+vector<int> que[Max_n], pad[Max_n];
+
+struct Tree {
+  int t1, t2, add[Max_n], del[Max_n];
+  int c[Max_n];
+  void Add(int k, int x) {
+  }
+  void init() {
+    while (t1) Add(add[--t1], -1);
+    while (t2) Add(del[--t1], 1);
+  }
+} s;
 
 namespace Input {
 void main() {
   n = read(), m = read(), Q = read();
   for (int i = 1; i <= n; i++) q[i] = 1ll * i * m;
+  for (int i = 1; i <= Q; i++) {
+  }
 }
 }  // namespace Input
 
