@@ -19,6 +19,8 @@ inline LL read() {
   return x * w;
 }
 
+int n, m, Q;
+
 namespace Input {
 void main() {}
 }  // namespace Input
