@@ -38,7 +38,7 @@ struct Tree {
   #define rs (o + (lowbit(o) >> 1))
   void Init() {
     for (int p = 1; p <= m; p++)
-      for (int i = p; i <= LIM; i += i & -i) c[i] = 1;
+      for (int i = p; i <= LIM; i += i & -i) c[i]++;
   }
   void add(int k, int x) {
     if (x > 0)
@@ -85,15 +85,20 @@ namespace Solve {
 void main() {
   for (int i = 1; i <= n; i++) {
     for (int j = 0; j < que[i].size(); j++) {
-      int x = que[i][j], p = s.find(x);
-      if (p <= m) Ans[x] = id(i, p);
+      int x = que[i][j], p = s.find(y[x]);
+      //cout << i << " " << x << " " << y[x] << " " << p << endl;
+      if (p <= m) {
+        cout << i << " " << x << " " << y[x] << " " << p << endl;
+        Ans[n + x] = id(i, p);
+      }
       else qt[x] = 1, Ans[x] = pad[i][p - m - 1];
+      s.add(p, -1), s.add(s.find(m - 1) + 1, 1);
     }
     s.init();
   }
   for (int i = n + 1; i <= n + Q; i++) {
     if (qt[i]) Ans[i] = Ans[Ans[i]];
-    printf("%d\n", Ans[i]);
+    printf("%lld\n", Ans[i]);
   }
 }
 }  // namespace Solve
