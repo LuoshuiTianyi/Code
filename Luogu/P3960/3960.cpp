@@ -29,7 +29,7 @@ bool qt[Max_n << 1];
 vector<int> que[Max_n], pad[Max_n];
 
 struct Tree {
-  int t1, t2, add[Max_n], del[Max_n];
+  int t1, t2, ad[Max_n], dl[Max_n];
   int c[LIM + 1];
   #define mid (l + r >> 1)
   #define ls (o - (o & -o >> 1))
@@ -38,11 +38,11 @@ struct Tree {
     for (int p = 1; p <= m; p++)
       for (int i = p; i <= LIM; i += i & -i) c[i] = 1;
   }
-  void Add(int k, int x) {
+  void add(int k, int x) {
     if (x > 0)
-      add[++t1] = k;
+      ad[++t1] = k;
     else
-      del[++t2] = k;
+      dl[++t2] = k;
     for (int i = k; i <= LIM; i += i & -i) c[i] += x;
   }
   void find(int k) {
@@ -54,8 +54,8 @@ struct Tree {
     return l;
   }
   void init() {
-    while (t1) Add(add[--t1], -1);
-    while (t2) Add(del[--t2], 1);
+    while (t1) add(ad[--t1], -1);
+    while (t2) add(dl[--t2], 1);
   }
 } s;
 
@@ -71,6 +71,7 @@ void main() {
   for (int i = 1; i <= n; i++) q[i] = 1ll * i * m, s.add(i, 1);
   for (int i = 1; i <= Q; i++) {
     que[x[i]].push_back(i);
+    int p = s.find(
   }
   s.init(), s.Init();
 }
