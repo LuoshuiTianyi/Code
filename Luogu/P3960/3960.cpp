@@ -24,7 +24,7 @@ inline LL read() {
 const int Max_n = 3e5 + 5, LIM = 1 << 20;
 int n, m, Q;
 int x[Max_n], y[Max_n];
-LL q[Max_n << 1];
+LL Ans[Max_n << 1];
 bool qt[Max_n << 1];
 vector<int> que[Max_n], pad[Max_n];
 
@@ -57,8 +57,8 @@ struct Tree {
     return l;
   }
   void init() {
-    while (t1) add(ad[--t1], -1);
-    while (t2) add(dl[--t2], 1);
+    while (t1) add(ad[t1--], -1);
+    while (t2) add(dl[t2--], 1);
   }
 } s;
 
@@ -71,13 +71,17 @@ void main() {
 
 namespace Init {
 void main() {
-  for (int i = 1; i <= n; i++) q[i] = id(i, m), s.add(i, 1);
+  for (int i = 1; i <= n; i++) Ans[i] = id(i, m), s.add(i, 1);
   for (int i = 1; i <= Q; i++) {
     que[x[i]].push_back(i);
     int p = s.find(x[i]);
     pad[x[i]].push_back(p), s.add(p, -1), s.add(s.find(n - 1) + 1, 1);
   }
   s.init(), s.Init();
+  for (int i = 1; i <= n; i++) {
+    for (int j = 0; j < pad[i].size(); j++) cout << pad[i][j] << " ";
+    cout << endl;
+  }
 }
 }  // namespace Init
 
@@ -92,5 +96,5 @@ int main() {
 #endif
   Input::main();
   Init::main();
-  Solve::main();
+  //Solve::main();
 }
