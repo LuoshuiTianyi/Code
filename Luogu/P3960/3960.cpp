@@ -31,8 +31,8 @@ vector<int> que[Max_n], pad[Max_n];
 LL id(int x, int y) { return 1ll * (x - 1) * m + y; }
 
 struct Tree {
-  int t1, t2, ad[LIM], dl[Max_n];
-  int c[LIM + 1];
+  int t1, t2, ad[Max_n], dl[Max_n];
+  int c[LIM + 2];
 #define mid (l + r >> 1)
 #define ls (o - (lowbit(o) >> 1))
 #define rs (o + (lowbit(o) >> 1))
