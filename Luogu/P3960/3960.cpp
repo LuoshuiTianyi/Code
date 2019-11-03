@@ -31,13 +31,13 @@ vector<int> que[Max_n], pad[Max_n];
 LL id(int x, int y) { return 1ll * (x - 1) * m + y; }
 
 struct Tree {
-  int t1, t2, ad[Max_n], dl[Max_n];
+  int t1, t2, ad[LIM], dl[Max_n];
   int c[LIM + 1];
 #define mid (l + r >> 1)
 #define ls (o - (lowbit(o) >> 1))
 #define rs (o + (lowbit(o) >> 1))
   void Init() {
-    for (int p = 1; p < m; p++)
+    for (int p = 1; p <= m; p++)
       for (int i = p; i <= LIM; i += i & -i) c[i]++;
   }
   void add(int k, int x) {
@@ -81,8 +81,7 @@ void main() {
     int p = s.find(x[i]);
     pad[x[i]].push_back(p), s.add(p, -1), s.add(s.find(n - 1) + 1, 1);
   }
-  s.init();
-  s.Init();
+  s.init(), s.Init();
 }
 }  // namespace Init
 
@@ -91,12 +90,10 @@ void main() {
   for (int i = 1; i <= n; i++) {
     for (int j = 0; j < que[i].size(); j++) {
       int x = que[i][j], p = s.find(y[x]);
-      cout << i << " " << x << " " << y[x] << " " << p << endl;
-      if (p < m) {
-        cout << i << " " << x << " " << y[x] << " " << p << endl;
+      if (p < m)
         Ans[n + x] = id(i, p);
-      } else
-        qt[x] = 1, Ans[x] = pad[i][p - m - 1];
+      else
+        qt[n + x] = 1, Ans[n + x] = pad[i][p - m];
       s.add(p, -1), s.add(s.find(m - 1) + 1, 1);
     }
     s.init();
