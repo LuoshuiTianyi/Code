@@ -78,15 +78,24 @@ void main() {
     pad[x[i]].push_back(p), s.add(p, -1), s.add(s.find(n - 1) + 1, 1);
   }
   s.init(), s.Init();
-  for (int i = 1; i <= n; i++) {
-    for (int j = 0; j < pad[i].size(); j++) cout << pad[i][j] << " ";
-    cout << endl;
-  }
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  for (int i = 1; i <= n; i++) {
+    for (int j = 0; j < que[i].size(); j++) {
+      int x = que[i][j], p = s.find(x);
+      if (p <= m) Ans[x] = id(i, p);
+      else qt[x] = 1, Ans[x] = pad[i][p - m - 1];
+    }
+    s.init();
+  }
+  for (int i = n + 1; i <= n + Q; i++) {
+    if (qt[i]) Ans[i] = Ans[Ans[i]];
+    printf("%d\n", Ans[i]);
+  }
+}
 }  // namespace Solve
 
 int main() {
@@ -96,5 +105,5 @@ int main() {
 #endif
   Input::main();
   Init::main();
-  //Solve::main();
+  Solve::main();
 }
