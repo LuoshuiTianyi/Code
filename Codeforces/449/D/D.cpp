@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -22,7 +23,7 @@ inline LL read() {
 const int Max_n = 1e6 + 5, Max = 1 << 20, mod = 1e9 + 7;
 int n, ans;
 int a[Max_n], f[Max + 1], g[100];
-int nx[20][Max_n];
+int top, stk[20], nx[Max_n][20];
 void Mod(int &x) { x = x >= mod ? x - mod : x < 0 ? x + mod : x; }
 
 namespace Input {
@@ -34,6 +35,14 @@ void main() {
 
 namespace Init {
 void main() {
+  for (int i = 0; i < 20; i++)
+    for (int j = n + 1; j; j--)
+      nx[j][i] = (a[j] >> i & 1) ? nx[j + 1][i] : j;
+  for (int i = 1; i <= n; i++) {
+    top = 0;
+    for (int j = 0; j < 20; j++)
+      if (a[i] >> j & 1) stk[++top] = j;
+  }
   for (int j = 0; j < 20; j++)
     for (int i = 0; i < Max; i++)
       if (!(i >> j & 1)) Mod(f[i] += f[i | (1 << j)]);
