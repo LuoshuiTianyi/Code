@@ -26,7 +26,7 @@ int a[Max_n], f[Max + 1];
 namespace Input {
 void main() {
   n = read();
-  for (int i = 0; i <= Max; i++) f[i] = 1e9;
+  for (int i = 0; i < Max; i++) f[i] = 1e9;
   for (int i = 1; i <= n; i++)
     a[i] = read() ^ a[i - 1], f[a[i]] = min(f[a[i]], i);
 }
@@ -34,12 +34,22 @@ void main() {
 
 namespace Init {
 void main() {
-  for (int j = 0; j < 
+  for (int j = 0; j <= 19; j++)
+    for (int i = 0; i < Max; i++)
+      if (i >> j & 1) f[i] = min(f[i], f[i ^ (1 << j)]);
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  for (int i = 1; i <= n; i++) {
+    int ans = a[i];
+    for (int j = 19; ~j; j--)
+      if (!(ans >> j & 1))
+        if (f[ans | (1 << j)] <= i) ans |= (1 << j);
+    printf("%d\n", ans);
+  }
+}
 }  // namespace Solve
 
 int main() {
