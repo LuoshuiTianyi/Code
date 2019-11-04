@@ -20,8 +20,10 @@ inline LL read() {
 }
 
 const int Max_n = 1e6 + 5, Max = 1 << 20, mod = 1e9 + 7;
-int n;
-int a[Max_n], f[Max + 1];
+int n, ans;
+int a[Max_n], f[Max + 1], g[100];
+int nx[20][Max_n];
+void Mod(int &x) { x = x >= mod ? x - mod : x < 0 ? x + mod : x; }
 
 namespace Input {
 void main() {
@@ -31,11 +33,23 @@ void main() {
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  for (int j = 0; j < 20; j++)
+    for (int i = 0; i < Max; i++)
+      if (!(i >> j & 1)) Mod(f[i] += f[i | (1 << j)]);
+}
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  for (int i = 0; i < Max; i++) Mod(g[__builtin_popcount(i)] += f[i]);
+  for (int i = 0; i <= 20; i++)
+    if (i & 1)
+      Mod(ans -= g[i]);
+    else
+      Mod(ans += g[i]);
+  cout << ans;
+}
 }  // namespace Solve
 
 int main() {
