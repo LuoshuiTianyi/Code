@@ -29,19 +29,33 @@ void Mod(int &x) { x = x >= mod ? x - mod : x < 0 ? x + mod : x; }
 namespace Input {
 void main() {
   n = read();
-  for (int i = 1; i <= n; i++) f[read()]++;
+  for (int i = 1; i <= n; i++) a[i] = read();
 }
 }  // namespace Input
 
 namespace Init {
+int pos_now;
+bool cmp(int a, int b) { return nx[pos_now][a] < nx[pos_now][b]; }
 void main() {
   for (int i = 0; i < 20; i++)
-    for (int j = n + 1; j; j--)
-      nx[j][i] = (a[j] >> i & 1) ? nx[j + 1][i] : j;
+    for (int j = n + 1; j; j--) nx[j][i] = (a[j] >> i & 1) ? nx[j + 1][i] : j;
   for (int i = 1; i <= n; i++) {
-    top = 0;
+    top = 0, pos_now = i;
     for (int j = 0; j < 20; j++)
-      if (a[i] >> j & 1) stk[++top] = j;
+      if (a[i] >> j & 1) {
+        stk[++top] = j;
+        cout << i << " " << j << " " << nx[i][j] << endl;
+      }
+    stable_sort(stk + 1, stk + top + 1, cmp);
+    int now = a[i];
+    f[now] += nx[i][stk[1]] - i;
+    for (int j = 2; j <= top; j++) {
+      if (nx[i][stk[j]] != nx[i][stk[j - 1]]) {
+        f[now] += nx[i][stk[j]] - nx[i][stk[j - 1]];
+        //cout << i << " " << now << " " << stk[j - 1] << " " << nx[stk[j]] << endl;
+      }
+      now ^= (1 << stk[j]);
+    }
   }
   for (int j = 0; j < 20; j++)
     for (int i = 0; i < Max; i++)
