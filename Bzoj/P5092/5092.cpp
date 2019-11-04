@@ -36,18 +36,21 @@ namespace Init {
 void main() {
   for (int j = 0; j <= 19; j++)
     for (int i = 0; i < Max; i++)
-      if (i >> j & 1) f[i] = min(f[i], f[i ^ (1 << j)]);
+      if (!(i >> j & 1)) f[i] = min(f[i], f[i | (1 << j)]);
+  //for (int i = 1; i <= n; i++)
+  //  cout << a[i] << " " << f[a[i]] << endl;
+  //cout << endl;
 }
 }  // namespace Init
 
 namespace Solve {
 void main() {
   for (int i = 1; i <= n; i++) {
-    int ans = a[i];
+    int ans = 0;
     for (int j = 19; ~j; j--)
-      if (!(ans >> j & 1))
+      if (!(a[i] >> j & 1))
         if (f[ans | (1 << j)] <= i) ans |= (1 << j);
-    printf("%d\n", ans);
+    printf("%d\n", ans + (ans ^ a[i]));
   }
 }
 }  // namespace Solve
