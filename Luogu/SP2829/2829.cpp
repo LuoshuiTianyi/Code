@@ -28,7 +28,7 @@ void Mod(int &x) { x = x >= mod ? x - mod : x < 0 ? x + mod : x; }
 
 namespace Input {
 void main() {
-  n = read(), all = (1 << read()) - 1;
+  n = read(), all = (1 << read()) - 1, ans = 0;
   for (int i = 1; i <= n; i++) c[i] = read();
 }
 }  // namespace Input
