@@ -19,21 +19,32 @@ inline LL read() {
   return x * w;
 }
 
-const int Max = 1 << 15;
+const int Max = 1 << 15, mod = 1e9;
 int T;
-int n, m;
+int n, all;
+int c[100];
 int f[Max + 1], g[Max + 1];
 
 namespace Input {
-void main() {}
+void main() { 
+  n = read(), all = (1 << read()) - 1; 
+  for (int i = 1; i <= n; i++) c[i] = read();
+}
 }  // namespace Input
 
-namespace Init {
-void main() {}
-}  // namespace Init
-
 namespace Solve {
-void main() {}
+void init() {
+  swap(g, i);
+  for (int i = 0; i <= all; i++) f[i] = 0;
+  for (int j = 0; j < 15; j++)
+    for (int i = all; ~i; i--)
+      if (i >> j & 1) 
+}
+void main() {
+  for (int i = 1; i <= n; i++) {
+    init();
+  }
+}
 }  // namespace Solve
 
 int main() {
@@ -44,7 +55,6 @@ int main() {
   T = read();
   while (T--) {
     Input::main();
-    Init::main();
     Solve::main();
   }
 }
