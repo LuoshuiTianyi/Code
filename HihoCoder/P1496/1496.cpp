@@ -22,24 +22,41 @@ inline LL read() {
 const int Max = 1 << 20;
 int T;
 int n;
+LL ans;
 struct sum {
   int mx, cmx;
 } f[Max + 1];
+void chkmax(sum &a, int b) {
+  if (b > a.mx)
+    a.cmx = a.mx, a.mx = b;
+  else if (b > a.cmx)
+    a.cmx = b;
+}
+void chkmax(sum &a, sum b) { chkmax(a, b.mx), chkmax(a, b.cmx); }
 
 namespace Input {
 void main() {
-  n = read();
+  n = read(), ans = 0;
   for (int i = 0; i < Max; i++) f[i] = (sum){0, 0};
-  
+  int x;
+  for (int i = 1; i <= n; i++) x = read(), chkmax(f[x], x);
 }
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  for (int j = 0; j < 20; j++)
+    for (int i = Max - 1; i; i--)
+      if (!(i >> j & 1)) chkmax(f[i], f[i | (1 << j)]);
+}
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  for (int i = 1; i < Max; i++)
+    ans = max(ans, 1ll * i * f[i].mx * f[i].cmx);
+  printf("%lld\n", ans);
+}
 }  // namespace Solve
 
 int main() {
