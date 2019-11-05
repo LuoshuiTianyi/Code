@@ -21,19 +21,24 @@ inline LL read() {
 
 const int Max = 1 << 20;
 int T;
-int n, m;
-int cntr, u[Max + 1], v[Max + 1];
+int n, m, fa[21];
+int u[Max + 1], v[Max + 1];
 int f[Max + 1];
 bool r[21][21];
 
 namespace Input {
 void main() {
   n = read(), m = read();
+  for (int i = 1; i <= m; i++) u[i] = read(), v[i] = read();
 }
 }  // namespace Input
 
 namespace Init {
-void main() {}
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+void main() {
+  for (int i = 1; i <= n; i++) fa[i] = i;
+  for (int i = 1; i <= m; i++) fa[find(u[i])] = find(v[i]);
+}
 }  // namespace Init
 
 namespace Solve {
