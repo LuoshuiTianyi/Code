@@ -21,23 +21,29 @@ inline LL read() {
 
 const int Max = 1 << 22;
 int n, all;
-int f[Max + 1];
+int a[Max + 1], f[Max + 1];
 
 namespace Input {
 void main() {
   n = read(), all = Max - 1;
-  for (int i = 1; i <= n; i++) f[read()] = read();
+  for (int i = 1; i <= n; i++) f[a[i] = read()] = a[i];
 }
 }  // namespace Input
 
 namespace Init {
 void main() {
-  for (int i = 0; i < Max; i++) if (!f[i]) f[i] = -1;
+  for (int i = 0; i < Max; i++)
+    if (!f[i]) f[i] = -1;
+  for (int j = 0; j < 22; j++)
+    for (int i = 0; i < Max; i++)
+      if (i >> j & 1)
+        if (f[i ^ (1 << j)] != -1) f[i] = f[i ^ (1 << j)];
 }
 }  // namespace Init
 
 namespace Solve {
 void main() {
+  for (int i = 1; i <= n; i++) printf("%d ", f[all ^ a[i]]);
 }
 }  // namespace Solve
 
