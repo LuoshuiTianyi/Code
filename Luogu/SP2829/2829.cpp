@@ -19,6 +19,11 @@ inline LL read() {
   return x * w;
 }
 
+const int Max = 1 << 15;
+int T;
+int n, m;
+int f[Max + 1], g[Max + 1];
+
 namespace Input {
 void main() {}
 }  // namespace Input
@@ -36,7 +41,10 @@ int main() {
   freopen("2829.in", "r", stdin);
   freopen("2829.out", "w", stdout);
 #endif
-  Input::main();
-  Init::main();
-  Solve::main();
+  T = read();
+  while (T--) {
+    Input::main();
+    Init::main();
+    Solve::main();
+  }
 }
