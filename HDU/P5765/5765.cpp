@@ -37,7 +37,6 @@ namespace Init {
 int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
 void main() {
   for (int i = 1; i <= n; i++) fa[i] = i;
-  for (int i = 1; i <= m; i++) fa[find(u[i])] = find(v[i]);
 }
 }  // namespace Init
 
