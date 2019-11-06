@@ -34,14 +34,21 @@ void main() {
 }  // namespace Input
 
 namespace Init {
-int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
 void main() {
-  for (int i = 1; i <= n; i++) fa[i] = i;
+  for (int i = 1; i <= n; i++) {
+    fa[i] = i;
+    for(int j = 1; j <= n; j++) r[i][j] = 0;
+  }
+  for (int i = 1; i <= m; i++) r[u[i]][v[i]] = r[v[i]][u[i]] = 1;
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+void main() {
+  for (int s = 0; s < (1 << n); s++) {
+  }
+}
 }  // namespace Solve
 
 int main() {
