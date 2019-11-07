@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <iostream>
@@ -21,27 +22,27 @@ inline LL read() {
 }
 
 const int Max_n = 1e3;
-LL n;
+LL n, ans;
 LL top, stk[Max_n];
 LL f[Max_n];
-
-namespace Input {
-void main() { n = read(); }
-}  // namespace Input
-
-namespace Solve {
-void main() {
-  for (int i = sqrt(n); i; i--) {
-  }
-}
-}  // namespace Solve
 
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("2303.in", "r", stdin);
   freopen("2303.out", "w", stdout);
 #endif
-  Input::main();
-  Init::main();
-  Solve::main();
+  n = read();
+  for (LL i = sqrt(n); i; i--)
+    if (n % i == 0) {
+      stk[++top] = i, stk[++top] = n / i;
+      if (i * i == n) top--;
+    }
+  sort(stk + 1, stk + top + 1);
+  for (int i = top; i; i--) {
+    f[i] = n / stk[i];
+    for (int j = i + 1; j <= top; j++)
+      if (stk[j] % stk[i] == 0) f[i] -= f[j];
+    ans += f[i] * stk[i];
+  }
+  cout << ans;
 }
