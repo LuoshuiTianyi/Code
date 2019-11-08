@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
@@ -46,10 +47,19 @@ inline void add(int c) {
     }
   }
 }
+int buk[Max_n];
+int stk[Max_n];
+void Sort() {
+  for (int i = 1; i <= cnt; i++) buk[k[i].len]++;
+  for (int i = 1; i <= n; i++) buk[i] += buk[i - 1];
+  for (int i = 1; i <= cnt; i++) stk[buk[k[i].len]--] = i;
+}
 void Count() {
+  Sort();
   for (int i = cnt; i; i--) {
-    k[k[i].fa].nu += k[i].nu;
-    if (k[i].nu > 1) ans = max(ans, 1ll * k[i].nu * k[i].len);
+    int x = stk[i];
+    k[k[x].fa].nu += k[x].nu;
+    if (k[x].nu > 1) ans = max(ans, 1ll * k[x].nu * k[x].len);
   }
 }
 }  // namespace SAM
