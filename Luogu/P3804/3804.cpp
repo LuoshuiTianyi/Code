@@ -19,14 +19,15 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 2e6 + 5;
+const int Max_n = 2e6 + 5, M = 26;
 char S[Max_n];
 
 namespace SAM {
 int cnt = 1, las = 1;
 struct node {
-  
-}
+  int fa, len, nu, ch[M];
+};
+
 }
 
 namespace Input {
