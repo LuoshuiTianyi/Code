@@ -25,6 +25,7 @@ char S[Max_n];
 namespace SAM {
 int cnt = 1, las = 1;
 struct node {
+  
 }
 }
 
