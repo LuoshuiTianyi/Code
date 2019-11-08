@@ -20,6 +20,13 @@ inline LL read() {
 }
 
 const int Max_n = 2e6 + 5;
+char S[Max_n];
+
+namespace SAM {
+int cnt = 1, las = 1;
+struct node {
+}
+}
 
 namespace Input {
 void main() {}
