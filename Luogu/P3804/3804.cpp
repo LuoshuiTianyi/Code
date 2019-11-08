@@ -46,17 +46,16 @@ inline void add(int c) {
     }
   }
 }
-void Count(int x) {
-  for (int i = 0; i < M; i++)
-    if (k[x].to[i]) Count(k[x].to[i]), k[x].nu += k[v].nu;
-  if (k[x].nu > 1) ans = max(ans, 1ll * k[x].nu * k[x].len);
+void Count() {
+  for (int i = cnt; i; i--) {
+    k[k[i].fa].nu += k[i].nu;
+    if (k[i].nu > 1) ans = max(ans, 1ll * k[i].nu * k[i].len);
+  }
 }
 }  // namespace SAM
 
 namespace Input {
-void main() {
-  scanf("%s", S + 1);
-}
+void main() { scanf("%s", S + 1); }
 }  // namespace Input
 
 namespace Init {
@@ -68,6 +67,8 @@ void main() {
 
 namespace Solve {
 void main() {
+  SAM::Count();
+  cout << ans;
 }
 }  // namespace Solve
 
