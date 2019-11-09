@@ -75,7 +75,6 @@ void Print(int x) {
   for (int i = 0; i < M; i++) {
     int v = k[x].to[i];
     if (v) {
-      //cout << x << " " << v << endl;
       if (k[v].sum < K)
         K -= k[v].sum;
       else
