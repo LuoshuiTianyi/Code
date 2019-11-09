@@ -62,27 +62,21 @@ void Count() {
   for (int i = cnt; i; i--) {
     int x = stk[i];
     if (!t) k[x].nu = 1;
-    k[k[x].fa].nu += k[x].nu;
-  }
-  for (int i = cnt; i; i--) {
-    int x = stk[i];
-    k[x].sum = 1ll * k[x].nu * (k[x].len - k[k[x].fa].len);
-    for (int i = 0; i < M; i++) k[x].sum += k[k[x].to[i]].sum;
+    k[k[x].fa].nu += (k[x].sum = k[x].nu);
+    for (int j = 0; j < M; j++) k[x].sum += k[k[x].to[j]].sum;
   }
   k[0].sum = 0;
 }
 void Print(int x) {
   for (int i = 0; i < M; i++) {
     int v = k[x].to[i];
-    if (v) {
+    if (v)
       if (k[v].sum < K)
         K -= k[v].sum;
-      else
-        if (k[v].sum) {
-          printf("%c", (char)(i + 'a')), Print(v);
-          break;
-        }
-    }
+      else {
+        printf("%c", (char)(i + 'a')), Print(v);
+        break;
+      }
   }
 }
 }  // namespace SAM
