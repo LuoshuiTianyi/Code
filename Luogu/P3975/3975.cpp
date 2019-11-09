@@ -59,22 +59,24 @@ void Sort() {
 }
 void Count() {
   Sort();
-  for (int i = cnt; i; i--) {
+  for (int i = cnt; i > 1; i--) {
     int x = stk[i];
     if (!t) k[x].nu = 1;
     k[k[x].fa].nu += (k[x].sum = k[x].nu);
     for (int j = 0; j < M; j++) k[x].sum += k[k[x].to[j]].sum;
   }
+  for (int j = 0; j < M; j++) k[1].sum += k[k[1].to[j]].sum;
   k[0].sum = 0;
 }
 void Print(int x) {
+  if (!K) return;
   for (int i = 0; i < M; i++) {
     int v = k[x].to[i];
     if (v)
       if (k[v].sum < K)
         K -= k[v].sum;
       else {
-        printf("%c", (char)(i + 'a')), Print(v);
+        printf("%c", (char)(i + 'a')), K -= k[v].nu, Print(v);
         break;
       }
   }
@@ -98,7 +100,10 @@ void main() {
 
 namespace Solve {
 void main() {
-  cout << SAM::k[4].sum << endl;
+  if (SAM::k[1].sum - 1 < K) {
+    puts("-1");
+    return;
+  }
   SAM::Print(1);
 }
 }  // namespace Solve
