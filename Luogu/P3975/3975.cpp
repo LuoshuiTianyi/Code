@@ -50,8 +50,8 @@ void add(int c) {
     }
   }
 }
-int buk[Max_n];
-int stk[Max_n];
+int buk[Max_n << 1];
+int stk[Max_n << 1];
 void Sort() {
   for (int i = 1; i <= cnt; i++) buk[k[i].len]++;
   for (int i = 1; i <= n; i++) buk[i] += buk[i - 1];
