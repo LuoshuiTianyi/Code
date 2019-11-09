@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 using namespace std;
 #define LL long long
@@ -27,12 +28,14 @@ namespace SAM {
 int cnt = 1, las = 1;
 struct node {
   int fa, len, to[M];
-  int nu, sum;
+  int nu;
+  LL sum;
 };
 node k[Max_n << 1];
 void add(int c) {
   int p = las, np = las = ++cnt;
-  for (; !k[p].to[c]; p = k[p].fa) k[p].to[c] = np;
+  k[np].len = k[p].len + 1, k[np].nu = 1;
+  for (; p && !k[p].to[c]; p = k[p].fa) k[p].to[c] = np;
   if (!p) {
     k[np].fa = 1;
   } else {
@@ -43,6 +46,7 @@ void add(int c) {
       int nq = ++cnt;
       k[nq] = k[q], k[nq].nu = k[nq].sum = 0, k[nq].len = k[p].len + 1;
       k[np].fa = k[q].fa = nq;
+      for (; p && k[p].to[c] == q; p = k[p].fa) k[p].to[c] = nq;
     }
   }
 }
@@ -55,6 +59,13 @@ void Sort() {
 }
 void Count() {
   Sort();
+  for (int i = n; i; i--) {
+    int x = stk[i];
+    cout << x << " ";
+    if (!t) k[x].nu = 1;
+    k[x].sum = 1ll * k[x].nu * (k[x].len - k[k[x].fa].len);
+    k[k[x].fa].nu += k[x].nu, k[k[x].fa].sum += k[x].sum;
+  }
 }
 }
 
@@ -68,11 +79,15 @@ void main() {
 namespace Init {
 void main() {
   n = strlen(S + 1);
+  for (int i = 1; i <= n; i++) SAM::add(S[i] - 'a');
+  SAM::Count();
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  cout << SAM::k[1].sum << endl;
+}
 }  // namespace Solve
 
 int main() {
