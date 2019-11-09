@@ -22,12 +22,40 @@ inline LL read() {
 const int Max_n = 5e5 + 5, M = 26;
 int n, K, t;
 char S[Max_n];
+
 namespace SAM {
 int cnt = 1, las = 1;
 struct node {
-  int fa, to[M];
+  int fa, len, to[M];
   int nu, sum;
 };
+node k[Max_n << 1];
+void add(int c) {
+  int p = las, np = las = ++cnt;
+  for (; !k[p].to[c]; p = k[p].fa) k[p].to[c] = np;
+  if (!p) {
+    k[np].fa = 1;
+  } else {
+    int q = k[p].to[c];
+    if (k[q].len == k[p].len + 1) {
+      k[np].fa = q;
+    } else {
+      int nq = ++cnt;
+      k[nq] = k[q], k[nq].nu = k[nq].sum = 0, k[nq].len = k[p].len + 1;
+      k[np].fa = k[q].fa = nq;
+    }
+  }
+}
+int buk[Max_n];
+int stk[Max_n];
+void Sort() {
+  for (int i = 1; i <= cnt; i++) buk[k[i].len]++;
+  for (int i = 1; i <= n; i++) buk[i] += buk[i - 1];
+  for (int i = 1; i <= cnt; i++) stk[buk[k[i].len]--] = i;
+}
+void Count() {
+  Sort();
+}
 }
 
 namespace Input {
