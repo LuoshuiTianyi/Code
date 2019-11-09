@@ -59,15 +59,34 @@ void Sort() {
 }
 void Count() {
   Sort();
-  for (int i = n; i; i--) {
+  for (int i = cnt; i; i--) {
     int x = stk[i];
-    cout << x << " ";
     if (!t) k[x].nu = 1;
+    k[k[x].fa].nu += k[x].nu;
+  }
+  for (int i = cnt; i; i--) {
+    int x = stk[i];
     k[x].sum = 1ll * k[x].nu * (k[x].len - k[k[x].fa].len);
-    k[k[x].fa].nu += k[x].nu, k[k[x].fa].sum += k[x].sum;
+    for (int i = 0; i < M; i++) k[x].sum += k[k[x].to[i]].sum;
+  }
+  k[0].sum = 0;
+}
+void Print(int x) {
+  for (int i = 0; i < M; i++) {
+    int v = k[x].to[i];
+    if (v) {
+      //cout << x << " " << v << endl;
+      if (k[v].sum < K)
+        K -= k[v].sum;
+      else
+        if (k[v].sum) {
+          printf("%c", (char)(i + 'a')), Print(v);
+          break;
+        }
+    }
   }
 }
-}
+}  // namespace SAM
 
 namespace Input {
 void main() {
@@ -86,7 +105,8 @@ void main() {
 
 namespace Solve {
 void main() {
-  cout << SAM::k[1].sum << endl;
+  cout << SAM::k[4].sum << endl;
+  SAM::Print(1);
 }
 }  // namespace Solve
 
