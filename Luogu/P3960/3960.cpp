@@ -92,9 +92,12 @@ void main() {
       int x = que[i][j], p = s.find(y[x]);
       if (p < m)
         Ans[n + x] = id(i, p);
-      else
+      else {
+        cout << x << " " << pad[i][p - m] << endl;
         qt[n + x] = 1, Ans[n + x] = pad[i][p - m];
-      s.add(p, -1), s.add(s.find(m - 1) + 1, 1);
+      }
+      s.add(s.find(m) + 1, 1);
+      s.add(p, -1);
     }
     s.init();
   }
@@ -106,10 +109,8 @@ void main() {
 }  // namespace Solve
 
 int main() {
-#ifdef Thyu
   freopen("3960.in", "r", stdin);
   freopen("3960.out", "w", stdout);
-#endif
   Input::main();
   Init::main();
   Solve::main();
