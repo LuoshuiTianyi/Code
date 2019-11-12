@@ -21,15 +21,23 @@ inline LL read() {
 }
 
 const int Max_n = 1e5 + 5;
-int n;
+int n, Q, X, S;
 int h[Max_n], nu[Max_n];
+int bef[Max_n], nx[Max_n];
 
 namespace Input {
-void main() {}
+void main() {
+  n = read();
+  for (int i = 1; i <= n; i++) h[i] = read(), nu[i] = i;
+  X = read(), Q = read();
+}
 }  // namespace Input
 
 namespace Init {
-void main() {}
+bool cmp(int a, int b) { return h[a] < h[b]; }
+void main() {
+  sort(nu + 1, nu + n + 1, cmp);
+}
 }  // namespace Init
 
 namespace Solve {
