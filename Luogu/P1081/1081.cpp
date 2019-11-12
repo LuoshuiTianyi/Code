@@ -20,7 +20,6 @@ inline LL read() {
 }
 
 const int Max_n = 1e5 + 5;
-int a[Max_n];
 
 namespace Input {
 void main() {}
@@ -42,5 +41,4 @@ int main() {
   Input::main();
   Init::main();
   Solve::main();
-  cout << a[1000000];
 }
