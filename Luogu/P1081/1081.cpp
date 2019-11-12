@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -20,6 +21,8 @@ inline LL read() {
 }
 
 const int Max_n = 1e5 + 5;
+int n;
+int h[Max_n], nu[Max_n];
 
 namespace Input {
 void main() {}
