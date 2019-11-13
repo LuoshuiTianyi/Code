@@ -72,9 +72,13 @@ void main() {
 namespace Solve {
 pair<int, int> Jump(int start, int lim) {
   int p = start;
+  LL A = 0, B = 0;
   for (int j = 17; ~j; j--)
-    if (f[p][j].to && f[p][j].A + f[p][j].B <= lim)
+    if (f[p][j].to && f[p][j].A + f[p][j].B <= lim) {
       lim -= f[p][j].A + f[p][j].B, p = f[p][j].to;
+      A += f[p][j].A, B += f[p][j].B;
+    }
+  return make_pair(A, B);
 }
 void main() {
   for (int i = 1; i <= n; i++) {
