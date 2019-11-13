@@ -77,11 +77,11 @@ void DP(int x, int fa) {
       f[x] = f[v], coverd[x] &= coverd[v];
   }
   coverd[x] &= G.nx[G.hd[x]];
-  if (dep[f[v]] - dep[x] <= mid) coverd[x] = 1;
+  if (dep[f[x]] - dep[x] <= mid) coverd[x] = 1;
 }
 bool check() {
   int cur = m;
-  while (dep[a[cur]] > lim && cur) f[a[cur]] = a[cur], cur--;
+  while (dep[a[cur]] > mid && cur) f[a[cur]] = a[cur], cur--;
   DP(1, 0);
   for (int i = 1; i <= t; i++) pre[i] = 0;
   for (int i = 1; i <= cur; i++) pre[bel[a[i]]] = a[i], used[i] = 0;
@@ -89,7 +89,12 @@ bool check() {
     int x = s[i];
     if (pre[x] && !used[pre[x]]) used[pre[x]] = coverd[x] = 1;
     if (coverd[x]) continue;
+    while ((used[j] || (dep[a[j]] - mid) >= dep[x]) && j) j--;
+    while ((used[j] || (dep[a[j]] - mid) < dep[x]) && j <= m) j++;
+    if (j > m) return 0;
+    used[j] = coverd[x] = 1;
   }
+  return 1;
 }
 void main() {
   if (m < t) {
@@ -99,11 +104,13 @@ void main() {
   LL l = 0, r = 1e18;
   while (l <= r) {
     mid = l + r >> 1;
+    cerr << mid << endl;
     if (check())
       ans = mid, r = mid - 1;
     else
       l = mid + 1;
   }
+  cout << ans;
 }
 }  // namespace Solve
 
