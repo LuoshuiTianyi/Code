@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -21,7 +22,8 @@ inline LL read() {
 
 const int Max_n = 5e4 + 5;
 int n, m;
-int 
+int f[Max_n], a[Max_n];
+LL dep[Max_n];
 
 struct graph {
   int hd[Max_n];
@@ -34,11 +36,34 @@ struct graph {
 } G;
 
 namespace Input {
-void main() {}
+void main() {
+  n = read();
+  int u, v, w;
+  for (int i = 1; i < n; i++) {
+    u = read(), v = read(), w = read();
+    G.addr(u, v, w), G.addr(v, u, w);
+  }
+  m = read();
+  for (int i = 1; i <= m; i++) a[i] = read();
+}
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void build(int x, int fa) {
+  go(G, x, i, v) if (v != fa) dep[v] = dep[x] + G.w[i], build(v, x);
+}
+bool cmp(int x, int y) { return dep[a[x]] < dep[a[y]]; }
+void DP(int x, int fa) {
+  go(G, x, i, v) if (v != fa) {
+    DP(v, fa);
+    if (dep[f[v]] - dep[x] < dep[f[x]] - dep[x]) f[x] = f[v];
+  }
+}
+void main() {
+  build(1, 0);
+  sort(a + 1, a + m + 1, cmp);
+  dep[0] = 1e18, DP(1, 0);
+}
 }  // namespace Init
 
 namespace Solve {
