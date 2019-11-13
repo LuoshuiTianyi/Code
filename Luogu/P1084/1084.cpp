@@ -76,7 +76,7 @@ void DP(int x, int fa) {
     if (dep[f[v]] - dep[x] < dep[f[x]] - dep[x]) f[x] = f[v];
     covered[x] &= covered[v];
   }
-  covered[x] &= G.nx[G.hd[x]];
+  covered[x] &= !!G.nx[G.hd[x]];
   if (dep[f[x]] - dep[x] <= mid) covered[x] = 1;
 }
 bool check() {
@@ -84,7 +84,6 @@ bool check() {
   for (int i = 1; i <= n; i++) f[i] = 0;
   while (dep[a[cur]] > mid && cur) f[a[cur]] = a[cur], cur--;
   DP(1, 0), used[cur + 1] = used[0] = 1;
-  //memset(used, 0, sizeof used);
   for (int i = 1; i <= t; i++) pre[s[i]] = 0;
   for (int i = 1; i <= cur; i++) pre[bel[a[i]]] = i, used[i] = 0;
   used[cur + 1] = used[0] = 1;
@@ -94,7 +93,6 @@ bool check() {
     if (covered[x]) continue;
     while (j <= cur && (used[j] || (mid - dep[a[j]]) >= dep[x])) j++;
     while (j && (used[j] || (mid - dep[a[j]]) < dep[x])) j--;
-    cout << x << " " << j << endl;
     if (!j) return 0;
     used[j] = covered[x] = 1;
   }
@@ -105,17 +103,15 @@ void main() {
     puts("-1");
     return;
   }
-  mid = 9;
-  cout << check();
-  //LL l = 0, r = 1e18;
-  //while (l <= r) {
-  //  mid = l + r >> 1;
-  //  if (check())
-  //    ans = mid, r = mid - 1;
-  //  else
-  //    l = mid + 1;
-  //}
-  //cout << ans;
+  LL l = 0, r = 1e18;
+  while (l <= r) {
+    mid = l + r >> 1;
+    if (check())
+      ans = mid, r = mid - 1;
+    else
+      l = mid + 1;
+  }
+  cout << ans;
 }
 }  // namespace Solve
 
