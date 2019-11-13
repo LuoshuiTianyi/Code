@@ -21,6 +21,7 @@ inline LL read() {
 
 const int Max_n = 5e4 + 5;
 int n, m;
+int 
 
 struct graph {
   int hd[Max_n];
