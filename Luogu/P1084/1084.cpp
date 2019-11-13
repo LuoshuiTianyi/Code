@@ -84,8 +84,11 @@ bool check() {
   while (dep[a[cur]] > lim && cur) f[a[cur]] = a[cur], cur--;
   DP(1, 0);
   for (int i = 1; i <= t; i++) pre[i] = 0;
-  for (int i = cur; i <= m; i++) 
+  for (int i = 1; i <= cur; i++) pre[bel[a[i]]] = a[i], used[i] = 0;
   for (int i = 1, j = m; i <= t; i++) {
+    int x = s[i];
+    if (pre[x] && !used[pre[x]]) used[pre[x]] = coverd[x] = 1;
+    if (coverd[x]) continue;
   }
 }
 void main() {
