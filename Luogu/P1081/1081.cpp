@@ -54,23 +54,23 @@ namespace Init {
 bool cmp(int a, int b) { return h[a] < h[b]; }
 void main() {
   sort(nu + 1, nu + n + 1, cmp);
-  for (int i = 1; i <= n; i++) bef[i] = i - 1, nxt[i] = i + 1, bel[nu[i]] = i;
-  h[0] = -1e9;
+  for (int i = 1; i <= n; i++)
+    bef[nu[i]] = nu[i - 1], nxt[nu[i]] = nu[i + 1];
+  nxt[nu[n]] = n + 1;
+  h[0] = h[n + 1] = -1e9;
   for (int i = 1; i <= n; i++) {
     sth S = (sth){0, 0};
-    int pos = bel[i];
-    Max(S, bef[pos], i), Max(S, bef[bef[pos]], i);
-    Max(S, nxt[pos], i), Max(S, nxt[nxt[pos]], i);
+    Max(S, bef[i], i), Max(S, bef[bef[i]], i);
+    Max(S, nxt[i], i), Max(S, nxt[nxt[i]], i);
+    cout << S.Min << " " << S.sMin << " " << nxt[nxt[i]] << endl;
     to1[i] = S.Min, to2[i] = S.sMin;
-    cout << to1[i] << " " << to2[i] << endl;
-    bef[nxt[pos]] = bef[pos], nxt[bef[pos]] = nxt[pos];
+    bef[nxt[i]] = bef[i], nxt[bef[i]] = nxt[i];
   }
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {
-}
+void main() {}
 }  // namespace Solve
 
 int main() {
