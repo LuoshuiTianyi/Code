@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 using namespace std;
 #define LL long long
@@ -20,7 +21,7 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 5e4 + 5;
+const int Max_n = 3e5 + 5;
 int n, m;
 LL ans;
 int t, f[Max_n], a[Max_n], s[Max_n], bel[Max_n];
@@ -83,14 +84,16 @@ bool check() {
   for (int i = 1; i <= n; i++) f[i] = 0;
   while (dep[a[cur]] > mid && cur) f[a[cur]] = a[cur], cur--;
   DP(1, 0), used[cur + 1] = used[0] = 1;
+  //memset(used, 0, sizeof used);
   for (int i = 1; i <= t; i++) pre[s[i]] = 0;
-  for (int i = 1; i <= cur; i++) pre[bel[a[i]]] = a[i], used[i] = 0;
+  for (int i = 1; i <= cur; i++) pre[bel[a[i]]] = i, used[i] = 0;
+  used[cur + 1] = used[0] = 1;
   for (int i = 1, j = 1; i <= t; i++) {
     int x = s[i];
     if (pre[x] && !used[pre[x]] && !covered[x]) used[pre[x]] = covered[x] = 1;
     if (covered[x]) continue;
-    while ((used[j] || (mid - dep[a[j]]) >= dep[x]) && j <= cur) j++;
-    while ((used[j] || (mid - dep[a[j]]) < dep[x]) && j) j--;
+    while (j <= cur && (used[j] || (mid - dep[a[j]]) >= dep[x])) j++;
+    while (j && (used[j] || (mid - dep[a[j]]) < dep[x])) j--;
     if (!j) return 0;
     used[j] = covered[x] = 1;
   }
@@ -102,18 +105,14 @@ void main() {
     return;
   }
   LL l = 0, r = 1e18;
-  mid = 6;
-  cout << check() << endl;
-  mid = 5;
-  cout << check() << endl;
-  //while (l <= r) {
-  //  mid = l + r >> 1;
-  //  if (check())
-  //    ans = mid, r = mid - 1;
-  //  else
-  //    l = mid + 1;
-  //}
-  //cout << ans;
+  while (l <= r) {
+    mid = l + r >> 1;
+    if (check())
+      ans = mid, r = mid - 1;
+    else
+      l = mid + 1;
+  }
+  cout << ans;
 }
 }  // namespace Solve
 
