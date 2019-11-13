@@ -77,6 +77,8 @@ pair<int, int> Jump(int start, int lim) {
       lim -= f[p][j].A + f[p][j].B, p = f[p][j].to;
       A += f[p][j].A, B += f[p][j].B;
     }
+  //cout << p << endl;
+  if (to2[p] && abs(h[p] - h[to2[p]]) <= lim) A += abs(h[p] - h[to2[p]]);
   return make_pair(A, B);
 }
 pair<int, int> Ans;
@@ -84,6 +86,7 @@ void main() {
   for (int i = 1; i <= n; i++) {
     int a = to2[i], b = to1[a];
     f[i][0].to = b, f[i][0].A = abs(h[a] - h[i]), f[i][0].B = abs(h[b] - h[a]);
+    cout << a << " " << b << endl;
   }
   for (int j = 1; j <= 17; j++)
     for (int i = 1; i <= n; i++) {
