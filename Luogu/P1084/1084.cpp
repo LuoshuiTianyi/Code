@@ -73,8 +73,8 @@ void DP(int x, int fa) {
   covered[x] = 1;
   go(G, x, i, v) if (v != fa) {
     DP(v, x);
-    if (dep[f[v]] - dep[x] < dep[f[x]] - dep[x])
-      f[x] = f[v], covered[x] &= covered[v];
+    if (dep[f[v]] - dep[x] < dep[f[x]] - dep[x]) f[x] = f[v];
+    covered[x] &= covered[v];
   }
   covered[x] &= G.nx[G.hd[x]];
   if (dep[f[x]] - dep[x] <= mid) covered[x] = 1;
@@ -94,6 +94,7 @@ bool check() {
     if (covered[x]) continue;
     while (j <= cur && (used[j] || (mid - dep[a[j]]) >= dep[x])) j++;
     while (j && (used[j] || (mid - dep[a[j]]) < dep[x])) j--;
+    cout << x << " " << j << endl;
     if (!j) return 0;
     used[j] = covered[x] = 1;
   }
@@ -104,15 +105,17 @@ void main() {
     puts("-1");
     return;
   }
-  LL l = 0, r = 1e18;
-  while (l <= r) {
-    mid = l + r >> 1;
-    if (check())
-      ans = mid, r = mid - 1;
-    else
-      l = mid + 1;
-  }
-  cout << ans;
+  mid = 9;
+  cout << check();
+  //LL l = 0, r = 1e18;
+  //while (l <= r) {
+  //  mid = l + r >> 1;
+  //  if (check())
+  //    ans = mid, r = mid - 1;
+  //  else
+  //    l = mid + 1;
+  //}
+  //cout << ans;
 }
 }  // namespace Solve
 
