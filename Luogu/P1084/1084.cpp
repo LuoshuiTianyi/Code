@@ -55,12 +55,6 @@ void build(int x, int fa) {
 }
 bool cmp(int x, int y) { return dep[a[x]] < dep[a[y]]; }
 bool cmp2(int x, int y) { return dep[x] > dep[y]; }
-void DP(int x, int fa) {
-  go(G, x, i, v) if (v != fa) {
-    DP(v, fa);
-    if (dep[f[v]] - dep[x] < dep[f[x]] - dep[x]) f[x] = f[v];
-  }
-}
 void main() {
   build(1, 0);
   sort(a + 1, a + m + 1, cmp), dep[0] = 1e18;
@@ -70,12 +64,26 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
+void DP(int x, int fa) {
+  go(G, x, i, v) if (v != fa) {
+    DP(v, fa);
+    if (dep[f[v]] - dep[x] < dep[f[x]] - dep[x]) f[x] = f[v];
+  }
+}
+bool check(LL lim) {
+  
+}
 void main() {
   if (m < t) {
     puts("-1");
     return;
   }
   LL l = 0, r = 1e18;
+  while (l <= r) {
+    LL mid = l + r >> 1;
+    if (check(mid)) ans = mid, r = mid - 1;
+    else l = mid + 1;
+  }
 }
 }  // namespace Solve
 
