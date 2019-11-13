@@ -26,13 +26,15 @@ int n, Q, X, S;
 int h[Max_n], nu[Max_n];
 int bef[Max_n], nxt[Max_n], bel[Max_n];
 int to1[Max_n], to2[Max_n];
+long double ans = 2e18;
 
 struct sth {
   int Min, sMin;
 };
 struct jump {
-  int to[18], v[18];
-} A[Max_n], B[Max_n];
+  int to;
+  LL A, B;
+} f[Max_n][18];
 
 void Max(sth &a, int b, int c) {
   int v = abs(h[b] - h[c]);
@@ -56,21 +58,37 @@ void main() {
   sort(nu + 1, nu + n + 1, cmp);
   for (int i = 1; i <= n; i++)
     bef[nu[i]] = nu[i - 1], nxt[nu[i]] = nu[i + 1];
-  nxt[nu[n]] = n + 1;
-  h[0] = h[n + 1] = -1e9;
+  h[0] = -1e9;
   for (int i = 1; i <= n; i++) {
     sth S = (sth){0, 0};
     Max(S, bef[i], i), Max(S, bef[bef[i]], i);
     Max(S, nxt[i], i), Max(S, nxt[nxt[i]], i);
-    cout << S.Min << " " << S.sMin << " " << nxt[nxt[i]] << endl;
     to1[i] = S.Min, to2[i] = S.sMin;
-    bef[nxt[i]] = bef[i], nxt[bef[i]] = nxt[i];
+    bef[nxt[i]] = bef[i], nxt[bef[i]] = nxt[i], bef[0] = nxt[0] = 0;
   }
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+pair<int, int> Jump(int start, int lim) {
+}
+void main() {
+  for (int i = 1; i <= n; i++) {
+    int a = to2[i], b = to1[a];
+    f[i][0].to = b;
+    f[i][0].A = abs(h[a] - h[i]);
+    f[i][0].B = abs(h[b] - h[a]);
+  }
+  for (int j = 1; j <= 17; j++)
+    for (int i = 1; i <= n; i++) {
+      int To = f[i][j - 1].to;
+      f[i][j].to = f[To][j - 1].to;
+      f[i][j].A = f[i][j - 1].A + f[To][j - 1].A;
+      f[i][j].B = f[i][j - 1].B + f[To][j - 1].B;
+    }
+  for (int i = 1; i <= n; i++)
+    
+}
 }  // namespace Solve
 
 int main() {
