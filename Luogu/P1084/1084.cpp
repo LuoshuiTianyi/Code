@@ -80,11 +80,11 @@ void DP(int x, int fa) {
   if (dep[f[v]] - dep[x] <= mid) coverd[x] = 1;
 }
 bool check() {
-  int cur = 1;
-  while (dep[a[cur]] > lim) f[a[cur]] = a[cur], cur++;
+  int cur = m;
+  while (dep[a[cur]] > lim && cur) f[a[cur]] = a[cur], cur--;
   DP(1, 0);
   for (int i = 1; i <= t; i++) pre[i] = 0;
-  for (int i = cur; i <= m; i++)
+  for (int i = cur; i <= m; i++) 
   for (int i = 1, j = m; i <= t; i++) {
   }
 }
