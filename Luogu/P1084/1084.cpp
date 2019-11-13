@@ -55,7 +55,7 @@ void build(int x, int fa) {
     dep[v] = dep[x] + G.w[i], bel[v] = bel[x], build(v, x);
   }
 }
-bool cmp(int x, int y) { return dep[a[x]] < dep[a[y]]; }
+bool cmp(int x, int y) { return dep[x] < dep[y]; }
 bool cmp2(int x, int y) { return dep[x] > dep[y]; }
 void main() {
   go(G, 1, i, v) bel[v] = v, dep[v] = G.w[i], s[++t] = v, build(v, 1);
@@ -68,16 +68,16 @@ void main() {
 namespace Solve {
 LL mid;
 int pre[Max_n];
-bool coverd[Max_n], used[Max_n];
+bool covered[Max_n], used[Max_n];
 void DP(int x, int fa) {
-  coverd[x] = 1;
+  covered[x] = 1;
   go(G, x, i, v) if (v != fa) {
-    DP(v, fa);
+    DP(v, x);
     if (dep[f[v]] - dep[x] < dep[f[x]] - dep[x])
-      f[x] = f[v], coverd[x] &= coverd[v];
+      f[x] = f[v], covered[x] &= covered[v];
   }
-  coverd[x] &= G.nx[G.hd[x]];
-  if (dep[f[x]] - dep[x] <= mid) coverd[x] = 1;
+  covered[x] &= G.nx[G.hd[x]];
+  if (dep[f[x]] - dep[x] <= mid) covered[x] = 1;
 }
 bool check() {
   int cur = m;
@@ -85,14 +85,16 @@ bool check() {
   DP(1, 0);
   for (int i = 1; i <= t; i++) pre[i] = 0;
   for (int i = 1; i <= cur; i++) pre[bel[a[i]]] = a[i], used[i] = 0;
+  for (int i = 1; i <= t; i++) cout << pre[s[i]] << " ";
+  cout << endl;
   for (int i = 1, j = m; i <= t; i++) {
     int x = s[i];
-    if (pre[x] && !used[pre[x]]) used[pre[x]] = coverd[x] = 1;
-    if (coverd[x]) continue;
-    while ((used[j] || (dep[a[j]] - mid) >= dep[x]) && j) j--;
-    while ((used[j] || (dep[a[j]] - mid) < dep[x]) && j <= m) j++;
+    if (pre[x] && !used[pre[x]] && !covered[x]) used[pre[x]] = covered[x] = 1;
+    if (covered[x]) continue;
+    while ((used[j] || (mid - dep[a[j]]) >= dep[x]) && j) j--;
+    while ((used[j] || (mid - dep[a[j]]) < dep[x]) && j <= m) j++;
     if (j > m) return 0;
-    used[j] = coverd[x] = 1;
+    used[j] = covered[x] = 1;
   }
   return 1;
 }
@@ -102,15 +104,16 @@ void main() {
     return;
   }
   LL l = 0, r = 1e18;
-  while (l <= r) {
-    mid = l + r >> 1;
-    cerr << mid << endl;
-    if (check())
-      ans = mid, r = mid - 1;
-    else
-      l = mid + 1;
-  }
-  cout << ans;
+  mid = 4;
+  cout << check();
+  //while (l <= r) {
+  //  mid = l + r >> 1;
+  //  if (check())
+  //    ans = mid, r = mid - 1;
+  //  else
+  //    l = mid + 1;
+  //}
+  //cout << ans;
 }
 }  // namespace Solve
 
