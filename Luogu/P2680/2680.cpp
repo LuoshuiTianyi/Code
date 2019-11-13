@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -57,9 +58,9 @@ void Get(int x, int fa) {
   go(M, x, i, v) if (find(k[v].s) != k[v].s) k[v].lca = find(k[v].s);
   else if (find(k[v].t) != k[v].t) k[v].lca = find(k[v].t);
 }
-bool cmp(road a, road b) { return a.dist < b.dist; }
+bool cmp(road a, road b) { return a.dist > b.dist; }
 void main() {
-  for (int i = 1; i <= m; i++) M.addr(s[i], i), M.addr(t[i], i);
+  for (int i = 1; i <= m; i++) M.addr(k[i].s, i), M.addr(k[i].t, i);
   for (int i = 1; i <= n; i++) f[i] = i;
   Get(1, 0);
   for (int i = 1; i <= m; i++)
@@ -69,12 +70,31 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
+int Max, pos;
+void count(int x, int fa) {
+  go(G, x, i, v) if (v != fa) count(v, x), c[x] += c[v];
+  if (c[x] == pos - 1) Max = max(Max, dep[x] - dep[fa]);
+}
+bool check(int lim) {
+  pos = 1, Max = 0;
+  for (int i = 1; i <= n; i++) c[i] = 0;
+  while (k[pos].dist > lim && pos <= m) {
+    c[k[pos].s]++, c[k[pos].t]++, c[k[pos].lca] -= 2;
+    pos++;
+  }
+  count(1, 0);
+  return k[1].dist - Max <= lim;
+}
 void main() {
   int l = 0, r = 3e8;
   while (l <= r) {
     int mid = l + r >> 1;
-    if (check(mid)) ans = mid, r = mid - 1;
+    if (check(mid))
+      ans = mid, r = mid - 1;
+    else
+      l = mid + 1;
   }
+  cout << ans;
 }
 }  // namespace Solve
 
