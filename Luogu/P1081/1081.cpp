@@ -26,7 +26,7 @@ int n, Q, X, S;
 int h[Max_n], nu[Max_n];
 int bef[Max_n], nxt[Max_n], bel[Max_n];
 int to1[Max_n], to2[Max_n];
-long double ans = 2e18;
+long double minn = 2e18;
 
 struct sth {
   int Min, sMin;
@@ -56,8 +56,7 @@ namespace Init {
 bool cmp(int a, int b) { return h[a] < h[b]; }
 void main() {
   sort(nu + 1, nu + n + 1, cmp);
-  for (int i = 1; i <= n; i++)
-    bef[nu[i]] = nu[i - 1], nxt[nu[i]] = nu[i + 1];
+  for (int i = 1; i <= n; i++) bef[nu[i]] = nu[i - 1], nxt[nu[i]] = nu[i + 1];
   h[0] = -1e9;
   for (int i = 1; i <= n; i++) {
     sth S = (sth){0, 0};
@@ -80,12 +79,11 @@ pair<int, int> Jump(int start, int lim) {
     }
   return make_pair(A, B);
 }
+pair<int, int> Ans;
 void main() {
   for (int i = 1; i <= n; i++) {
     int a = to2[i], b = to1[a];
-    f[i][0].to = b;
-    f[i][0].A = abs(h[a] - h[i]);
-    f[i][0].B = abs(h[b] - h[a]);
+    f[i][0].to = b, f[i][0].A = abs(h[a] - h[i]), f[i][0].B = abs(h[b] - h[a]);
   }
   for (int j = 1; j <= 17; j++)
     for (int i = 1; i <= n; i++) {
@@ -94,8 +92,14 @@ void main() {
       f[i][j].A = f[i][j - 1].A + f[To][j - 1].A;
       f[i][j].B = f[i][j - 1].B + f[To][j - 1].B;
     }
-  for (int i = 1; i <= n; i++)
-    
+  int ans = n;
+  for (int i = 1; i <= n; i++) {
+    Ans = Jump(i, X);
+    LL A = Ans.first, B = Ans.second;
+    if (B)
+      if ((long double)A / B < minn) minn = (long double)A / B, ans = i;
+  }
+  cout << ans << endl;
 }
 }  // namespace Solve
 
