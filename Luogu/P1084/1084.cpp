@@ -64,14 +64,24 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
+LL mid;
+bool coverd[Max_n], used[Max_n];
 void DP(int x, int fa) {
+  coverd[x] = 1;
   go(G, x, i, v) if (v != fa) {
     DP(v, fa);
-    if (dep[f[v]] - dep[x] < dep[f[x]] - dep[x]) f[x] = f[v];
+    if (dep[f[v]] - dep[x] < dep[f[x]] - dep[x])
+      f[x] = f[v], coverd[x] &= coverd[v];
   }
+  coverd[x] &= G.nx[G.hd[x]];
+  if (dep[f[v]] - dep[x] <= mid) coverd[x] = 1;
 }
-bool check(LL lim) {
-  
+bool check() {
+  int cur = 1;
+  while (dep[a[cur]] <= lim) f[a[cur]] = a[cur], cur++;
+  DP(1, 0);
+  for (int i = 1, j = m; i <= t; i++) {
+  }
 }
 void main() {
   if (m < t) {
@@ -80,9 +90,11 @@ void main() {
   }
   LL l = 0, r = 1e18;
   while (l <= r) {
-    LL mid = l + r >> 1;
-    if (check(mid)) ans = mid, r = mid - 1;
-    else l = mid + 1;
+    mid = l + r >> 1;
+    if (check())
+      ans = mid, r = mid - 1;
+    else
+      l = mid + 1;
   }
 }
 }  // namespace Solve
