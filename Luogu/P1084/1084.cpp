@@ -23,7 +23,7 @@ inline LL read() {
 const int Max_n = 5e4 + 5;
 int n, m;
 LL ans;
-int t, f[Max_n], a[Max_n], s[Max_n];
+int t, f[Max_n], a[Max_n], s[Max_n], bel[Max_n];
 LL dep[Max_n];
 
 struct graph {
@@ -51,20 +51,23 @@ void main() {
 
 namespace Init {
 void build(int x, int fa) {
-  go(G, x, i, v) if (v != fa) dep[v] = dep[x] + G.w[i], build(v, x);
+  go(G, x, i, v) if (v != fa) {
+    dep[v] = dep[x] + G.w[i], bel[v] = bel[x], build(v, x);
+  }
 }
 bool cmp(int x, int y) { return dep[a[x]] < dep[a[y]]; }
 bool cmp2(int x, int y) { return dep[x] > dep[y]; }
 void main() {
+  go(G, 1, i, v) bel[v] = v, dep[v] = G.w[i], s[++t] = v, build(v, 1);
   build(1, 0);
   sort(a + 1, a + m + 1, cmp), dep[0] = 1e18;
-  go(G, 1, i, v) s[++t] = v;
   sort(s + 1, s + t + 1, cmp2);
 }
 }  // namespace Init
 
 namespace Solve {
 LL mid;
+int pre[Max_n];
 bool coverd[Max_n], used[Max_n];
 void DP(int x, int fa) {
   coverd[x] = 1;
@@ -78,8 +81,10 @@ void DP(int x, int fa) {
 }
 bool check() {
   int cur = 1;
-  while (dep[a[cur]] <= lim) f[a[cur]] = a[cur], cur++;
+  while (dep[a[cur]] > lim) f[a[cur]] = a[cur], cur++;
   DP(1, 0);
+  for (int i = 1; i <= t; i++) pre[i] = 0;
+  for (int i = cur; i <= m; i++)
   for (int i = 1, j = m; i <= t; i++) {
   }
 }
