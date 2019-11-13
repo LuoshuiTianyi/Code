@@ -59,7 +59,6 @@ bool cmp(int x, int y) { return dep[x] < dep[y]; }
 bool cmp2(int x, int y) { return dep[x] > dep[y]; }
 void main() {
   go(G, 1, i, v) bel[v] = v, dep[v] = G.w[i], s[++t] = v, build(v, 1);
-  build(1, 0);
   sort(a + 1, a + m + 1, cmp), dep[0] = 1e18;
   sort(s + 1, s + t + 1, cmp2);
 }
@@ -81,19 +80,18 @@ void DP(int x, int fa) {
 }
 bool check() {
   int cur = m;
+  for (int i = 1; i <= n; i++) f[i] = 0;
   while (dep[a[cur]] > mid && cur) f[a[cur]] = a[cur], cur--;
-  DP(1, 0);
-  for (int i = 1; i <= t; i++) pre[i] = 0;
+  DP(1, 0), used[cur + 1] = used[0] = 1;
+  for (int i = 1; i <= t; i++) pre[s[i]] = 0;
   for (int i = 1; i <= cur; i++) pre[bel[a[i]]] = a[i], used[i] = 0;
-  for (int i = 1; i <= t; i++) cout << pre[s[i]] << " ";
-  cout << endl;
-  for (int i = 1, j = m; i <= t; i++) {
+  for (int i = 1, j = 1; i <= t; i++) {
     int x = s[i];
     if (pre[x] && !used[pre[x]] && !covered[x]) used[pre[x]] = covered[x] = 1;
     if (covered[x]) continue;
-    while ((used[j] || (mid - dep[a[j]]) >= dep[x]) && j) j--;
-    while ((used[j] || (mid - dep[a[j]]) < dep[x]) && j <= m) j++;
-    if (j > m) return 0;
+    while ((used[j] || (mid - dep[a[j]]) >= dep[x]) && j <= cur) j++;
+    while ((used[j] || (mid - dep[a[j]]) < dep[x]) && j) j--;
+    if (!j) return 0;
     used[j] = covered[x] = 1;
   }
   return 1;
@@ -104,8 +102,10 @@ void main() {
     return;
   }
   LL l = 0, r = 1e18;
-  mid = 4;
-  cout << check();
+  mid = 6;
+  cout << check() << endl;
+  mid = 5;
+  cout << check() << endl;
   //while (l <= r) {
   //  mid = l + r >> 1;
   //  if (check())
