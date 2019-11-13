@@ -22,6 +22,16 @@ inline LL read() {
 const int Max_n = 5e4 + 5;
 int n, m;
 
+struct graph {
+  int hd[Max_n];
+  int cntr, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
+  void addr(int u, int v, int W = 0) {
+    cntr++;
+    nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
+    hd[u] = cntr;
+  }
+} G;
+
 namespace Input {
 void main() {}
 }  // namespace Input
