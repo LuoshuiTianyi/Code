@@ -57,7 +57,7 @@ bool cmp(int a, int b) { return h[a] < h[b]; }
 void main() {
   sort(nu + 1, nu + n + 1, cmp);
   for (int i = 1; i <= n; i++) bef[nu[i]] = nu[i - 1], nxt[nu[i]] = nu[i + 1];
-  h[0] = -1e9;
+  h[0] = -(2e9 + 1);
   for (int i = 1; i <= n; i++) {
     sth S = (sth){0, 0};
     Max(S, bef[i], i), Max(S, bef[bef[i]], i);
@@ -74,10 +74,9 @@ pair<int, int> Jump(int start, int lim) {
   LL A = 0, B = 0;
   for (int j = 17; ~j; j--)
     if (f[p][j].to && f[p][j].A + f[p][j].B <= lim) {
-      lim -= f[p][j].A + f[p][j].B, p = f[p][j].to;
-      A += f[p][j].A, B += f[p][j].B;
+      lim -= f[p][j].A + f[p][j].B;
+      A += f[p][j].A, B += f[p][j].B, p = f[p][j].to;
     }
-  //cout << p << endl;
   if (to2[p] && abs(h[p] - h[to2[p]]) <= lim) A += abs(h[p] - h[to2[p]]);
   return make_pair(A, B);
 }
@@ -86,7 +85,6 @@ void main() {
   for (int i = 1; i <= n; i++) {
     int a = to2[i], b = to1[a];
     f[i][0].to = b, f[i][0].A = abs(h[a] - h[i]), f[i][0].B = abs(h[b] - h[a]);
-    cout << a << " " << b << endl;
   }
   for (int j = 1; j <= 17; j++)
     for (int i = 1; i <= n; i++) {
@@ -103,6 +101,12 @@ void main() {
       if ((long double)A / B < minn) minn = (long double)A / B, ans = i;
   }
   cout << ans << endl;
+  int s, lim;
+  while (Q--) {
+    s = read(), lim = read();
+    Ans = Jump(s, lim);
+    printf("%d %d\n", Ans.first, Ans.second);
+  }
 }
 }  // namespace Solve
 
