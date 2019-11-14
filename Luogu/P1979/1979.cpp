@@ -20,21 +20,48 @@ inline LL read() {
 }
 
 const int Max_n = 35 * 35 * 4;
+int n, m, Q;
 struct graph {
-  
+  int hd[Max_n];
+  int cntr, nx[Max_n << 3], to[Max_n << 3], w[Max_n << 3];
+  void addr(int u, int v, int W) {
+    cntr++;
+    nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
+    hd[u] = cntr;
+  }
 } G;
 struct maze {
-  int a[35][35], dis[35][35];
+  int a[35][35], dis[35][35], vis[35][35];
+  int h, t, dx[5] = {0, 1, -1, 0, 0}, dy[5] = {0, 0, 0, 1, -1};
+  pair<int, int> q[Max_n];
   void Get_dis(int sx, int sy) {
+    for (int i = 1; i <= n; i++)
+      for (int j = 1; j <= m; j++) dis[i][j] = 1e9, vis[i][j] = 0;
+    dis[sx][sy] = 0, vis[sx][sy] = 1;
+    h = 0, q[t = 1] = make_pair(sx, sy);
+    while (h < t) {
+      pair<int, int> x = q[++h];
+      for (int i = 1; i <= 4; i++) {
+        int xx = x.first + dx[i], yy = x.second + dy[i];
+      }
+    }
   }
 } map;
 
 namespace Input {
-void main() {}
+void main() {
+  n = read(), m = read(), Q = read();
+  for (int i = 1; i <= n; i++)
+    for (int j = 1; j <= m; j++) map.a[i][j] = read();
+}
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  for (int i = 1; i <= n; i++)
+    for (int j = 1; j <= m; j++)
+      
+}
 }  // namespace Init
 
 namespace Solve {
