@@ -23,7 +23,7 @@ const int Max_n = 35 * 35 * 4;
 struct graph {
 } G;
 struct maze {
-}
+} map;
 
 namespace Input {
 void main() {}
