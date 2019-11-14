@@ -106,6 +106,7 @@ void main() {
   LL l = 0, r = 1e18;
   while (l <= r) {
     mid = l + r >> 1;
+    cerr << mid << endl;
     if (check())
       ans = mid, r = mid - 1;
     else
