@@ -24,6 +24,9 @@ struct graph {
   
 } G;
 struct maze {
+  int a[35][35], dis[35][35];
+  void Get_dis(int sx, int sy) {
+  }
 } map;
 
 namespace Input {
