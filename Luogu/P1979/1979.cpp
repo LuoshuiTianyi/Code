@@ -76,6 +76,12 @@ void main() {
         for (int k = 1; k <= 4; k++) {
           int xx = i + dx[k], yy = j + dy[k];
           if (xx < 1 || xx > n || yy < 1 || yy > m || map.a[xx][yy]) continue;
+          map.Get_dis(xx, yy);
+          for (int l = 1; l <= 4; l++) {
+            int xxx = xx + dx[l], yyy = yyy + dy[l];
+            if (map.dis[xxx][yyy] < 1e9)
+              G.addr(id[i][j][k], id[i][j][l], map.dis[xxx][yyy]);
+          }
         }
       }
 }
