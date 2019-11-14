@@ -19,7 +19,11 @@ inline LL read() {
   return x * w;
 }
 
-
+const int Max_n = 35 * 35 * 4;
+struct graph {
+} G;
+struct maze {
+}
 
 namespace Input {
 void main() {}
