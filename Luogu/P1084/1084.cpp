@@ -91,9 +91,8 @@ bool check() {
     int x = s[i];
     if (pre[x] && !used[pre[x]] && !covered[x]) used[pre[x]] = covered[x] = 1;
     if (covered[x]) continue;
-    while (j <= cur && (used[j] || (mid - dep[a[j]]) >= dep[x])) j++;
-    while (j && (used[j] || (mid - dep[a[j]]) < dep[x])) j--;
-    if (!j) return 0;
+    while (used[j]) j++;
+    if (dep[a[j]] + dep[x] > mid) return 0;
     used[j] = covered[x] = 1;
   }
   return 1;
@@ -103,10 +102,9 @@ void main() {
     puts("-1");
     return;
   }
-  LL l = 0, r = 1e18;
+  LL l = 0, r = dep[a[m]] + dep[s[1]];
   while (l <= r) {
     mid = l + r >> 1;
-    cerr << mid << endl;
     if (check())
       ans = mid, r = mid - 1;
     else
