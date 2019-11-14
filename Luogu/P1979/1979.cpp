@@ -21,6 +21,7 @@ inline LL read() {
 
 const int Max_n = 35 * 35 * 4;
 struct graph {
+  
 } G;
 struct maze {
 } map;
