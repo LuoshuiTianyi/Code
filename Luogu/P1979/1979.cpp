@@ -22,6 +22,7 @@ inline LL read() {
 const int Max_n = 35 * 35 * 4;
 int n, m, Q;
 int cnt, id[35][35][5];
+int dx[5] = {0, -1, 1, 0, 0}, dy[5] = {0, 0, 0, -1, 1};
 struct graph {
   int hd[Max_n];
   int cntr, nx[Max_n << 3], to[Max_n << 3], w[Max_n << 3];
@@ -33,7 +34,7 @@ struct graph {
 } G;
 struct maze {
   int a[35][35], dis[35][35], vis[35][35];
-  int h, t, dx[5] = {0, 1, -1, 0, 0}, dy[5] = {0, 0, 0, 1, -1};
+  int h, t;
   pair<int, int> q[Max_n];
   void Get_dis(int sx, int sy) {
     for (int i = 1; i <= n; i++)
@@ -66,12 +67,17 @@ namespace Init {
 void main() {
   for (int i = 1; i <= n; i++)
     for (int j = 1; j <= m; j++)
-      if (map.a[i][j])
+      if (map.a[i][j]) {
         for (int k = 1; k <= 4; k++) {
           int xx = i + dx[k], yy = j + dy[k];
           if (xx < 1 || xx > n || yy < 1 || yy > m || map.a[xx][yy]) continue;
           id[i][j][k] = ++cnt;
         }
+        for (int k = 1; k <= 4; k++) {
+          int xx = i + dx[k], yy = j + dy[k];
+          if (xx < 1 || xx > n || yy < 1 || yy > m || map.a[xx][yy]) continue;
+        }
+      }
 }
 }  // namespace Init
 
