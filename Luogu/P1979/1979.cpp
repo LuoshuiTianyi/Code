@@ -40,9 +40,13 @@ struct maze {
     dis[sx][sy] = 0, vis[sx][sy] = 1;
     h = 0, q[t = 1] = make_pair(sx, sy);
     while (h < t) {
-      pair<int, int> x = q[++h];
+      pair<int, int> now = q[++h];
+      int x = now.first, y = now.second;
       for (int i = 1; i <= 4; i++) {
-        int xx = x.first + dx[i], yy = x.second + dy[i];
+        int xx = x + dx[i], yy = x + dy[i];
+        if (vis[xx][yy] || xx < 1 || xx > n || yy < 1 || yy > m) continue;
+        dis[xx][yy] = dis[x][y] + 1, vis[xx][yy] = 1;
+        q[++t] = make_pair(xx, yy);
       }
     }
   }
