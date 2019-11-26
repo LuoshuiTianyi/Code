@@ -51,8 +51,9 @@ void main() {
       for (int j = 0; j < 2 * n + 1; j++)
         (g[j + 1] += 1ll * f[j] * a[i][x] % mod) %= mod;
       for (int j = 0; j <= 2 * n + 1; j++) (f[j] += g[j]) %= mod;
+      cout << f[n] << " ";
     }
-    cout << f[n] << endl;
+    cout << endl;
     for (int i = n; i <= 2 * n + 1; i++) ans = (ans - g[i] + mod) % mod;
   }
   cout << ans;
