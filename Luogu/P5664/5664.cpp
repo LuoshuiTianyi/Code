@@ -42,15 +42,17 @@ namespace Solve {
 int f[400], g[400];
 void main() {
   for (int x = 1; x <= m; x++) {
-    g[n] = 1;
+    for (int i = 0; i <= 2 * n + 1; i++) f[i] = 0;
+    f[n] = 1;
     for (int i = 1; i <= n; i++) {
-      swap(f, g);
-      for (int i = 0; i <= 2 * n + 1; i++) g[i] = 0;
+      for (int j = 0; j <= 2 * n + 1; j++) g[j] = 0;
       for (int j = 1; j <= 2 * n + 1; j++)
-        g[j - 1] = 1ll * f[i] * (tot[i] - a[i][x] + mod) % mod;
+        g[j - 1] = 1ll * f[j] * (tot[i] - a[i][x] + mod) % mod;
       for (int j = 0; j < 2 * n + 1; j++)
-        (g[j + 1] += 1ll * f[i] * a[i][x] % mod) %= mod;
+        (g[j + 1] += 1ll * f[j] * a[i][x] % mod) %= mod;
+      for (int j = 0; j <= 2 * n + 1; j++) (f[j] += g[j]) %= mod;
     }
+    cout << f[n] << endl;
     for (int i = n; i <= 2 * n + 1; i++) ans = (ans - g[i] + mod) % mod;
   }
   cout << ans;
