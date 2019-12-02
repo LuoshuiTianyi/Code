@@ -20,7 +20,7 @@ inline LL read() {
 }
 
 const int Max_n = 405;
-int n, m, s;
+int n, m, s, ans;
 int l[Max_n], r[Max_n];
 
 namespace Input {
@@ -32,12 +32,17 @@ void main() {
 
 namespace Solve {
 void Solve2() {
+  for (int i = 1; i <= n; i++) ans += ((!s & 1) && l[i] <= s / 2 && r[i] >= s / 2);
+  for (int i = 1; i <= n; i++)
+    for (int j = i; j <= n; j++)
+      if (i != j)
 }
 void Solve3() {
 }
 void Solve4() {
 }
 void main() {
+  m == 2 ? Solve2() : m == 3 ? Solve3() : Solve4();
 }
 }  // namespace Solve
 
