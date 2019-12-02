@@ -32,9 +32,8 @@ void main() {
 
 namespace Solve {
 void Solve2() {
-  for (int i = 1; i <= n; i++) ans += ((!s & 1) && l[i] <= s / 2 && r[i] >= s / 2);
   for (int i = 1; i <= n; i++)
-    for (int j = i + 1; j <= n; j++) {
+    for (int j = i; j <= n; j++) {
       int L = max(l[i], s - r[j]), R = min(r[i], s - l[j]);
       if (R >= L) ans += R - L + 1;
     }
