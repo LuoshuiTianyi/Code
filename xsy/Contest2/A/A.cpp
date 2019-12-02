@@ -19,7 +19,7 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 405;
+const int Max_n = 405, mod = 1e9 + 7;
 int n, m, s, ans;
 int l[Max_n], r[Max_n];
 
@@ -32,11 +32,16 @@ void main() {
 
 namespace Solve {
 void Solve2() {
-  for (int i = 1; i <= n; i++)
+  for (int i = 1; i <= n; i++) ans -= (!(s & 1) && l[i] <= s / 2 && r[i] >= s / 2);
+  for (int i = 1; i <= n; i++) {
     for (int j = i; j <= n; j++) {
       int L = max(l[i], s - r[j]), R = min(r[i], s - l[j]);
-      if (R >= L) ans += R - L + 1;
+      if (R >= L) {
+        ans += R - L + 1;
+        if (j == i) ans -= (R - L + 1) / 2;
+      }
     }
+  }
   cout << ans;
 }
 void Solve3() {
