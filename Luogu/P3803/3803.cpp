@@ -29,7 +29,7 @@ namespace Input {
 void main() {
   n = read(), m = read();
   for (int i = 0; i <= n; i++) f[i] = read();
-  for (int i = 0; i <= n; i++) g[i] = read();
+  for (int i = 0; i <= m; i++) g[i] = read();
 }
 }  // namespace Input
 
@@ -52,7 +52,6 @@ void dft(cp *f, int t) {
 }
 void fft(cp *f, cp *g) {
   dft(f, 1), dft(g, 1);
-  for (int i = 0; i < lim; i++) cout << f[i].read() << " ";
   for (int i = 0; i < len; i++) f[i] *= g[i];
   dft(f, -1);
   for (int i = 0; i < len; i++) f[i] /= (double)len;
@@ -69,7 +68,6 @@ namespace Solve {
 void main() {
   FFT::init(n, m);
   FFT::fft(f, g);
-  cout << endl;
   for (int i = 0; i <= n + m; i++)
     printf("%d ", (int)(f[i].real() + 0.5));
 }
