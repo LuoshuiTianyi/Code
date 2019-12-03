@@ -58,6 +58,7 @@ void fft(cp *f, cp *g) {
 }
 void init(int n, int m) {
   bit = log2(n + m + 2) + 1;
+  cout << bit << endl;
   len = 1 << bit;
   for (int i = 0; i < len; i++)
     rev[i] = rev[i >> 1] >> 1 | (i & 1 << bit - 1);
