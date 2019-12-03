@@ -36,20 +36,27 @@ void main() {
 namespace FFT {
 int bit, len, rev[Max_n];
 void dft(cp *f, int t) {
+  for (int i = 0; i < len; i++)
+    if (rev[i] > i) swap(f[i], f[rev[i]]);
 }
 void fft(cp *f, cp *g) {
   dft(f, 1), dft(g, 1);
-  for (int i = 1; i <= len; i++) f[i] *= g[i];
+  for (int i = 0; i < len; i++) f[i] *= g[i];
   dft(f, -1);
 }
 void init(int n, int m) {
   bit = log2(n + m + 2) + 1;
   len = 1 << bit;
+  for (int i = 0; i < len; i++)
+    rev[i] = rev[i >> 1] >> 1 | (i & 1 << bit - 1);
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  FFT::init(n, m);
+  FFT::fft(f, g);
+}
 }  // namespace Solve
 
 int main() {
