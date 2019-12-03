@@ -52,16 +52,16 @@ void dft(cp *f, int t) {
 }
 void fft(cp *f, cp *g) {
   dft(f, 1), dft(g, 1);
+  for (int i = 0; i < lim; i++) cout << f[i].read() << " ";
   for (int i = 0; i < len; i++) f[i] *= g[i];
   dft(f, -1);
   for (int i = 0; i < len; i++) f[i] /= (double)len;
 }
 void init(int n, int m) {
   bit = log2(n + m + 2) + 1;
-  cout << bit << endl;
   len = 1 << bit;
   for (int i = 0; i < len; i++)
-    rev[i] = rev[i >> 1] >> 1 | (i & 1 << bit - 1);
+    rev[i] = rev[i >> 1] >> 1 | ((i & 1) << bit - 1);
 }
 }  // namespace Init
 
@@ -69,6 +69,7 @@ namespace Solve {
 void main() {
   FFT::init(n, m);
   FFT::fft(f, g);
+  cout << endl;
   for (int i = 0; i <= n + m; i++)
     printf("%d ", (int)(f[i].real() + 0.5));
 }
