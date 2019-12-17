@@ -55,23 +55,25 @@ void dft(cp *f, int t) {
     }
   }
   if (t < 0)
-    for (int i = 0; i < len; i++) f[i] /= len;
+    for (int i = 0; i < len; i++) f[i] /= (double)len;
 }
 LL Get(cp f[], int x) { return (LL)(f[x].real() + 0.5); }
 void main() {
   init();
-  dft(A, 1), dft(B, 1), dft(C, 1);
+  dft(A, 1);//, dft(B, 1), dft(C, 1);
   for (int i = 0; i <= Ml; i++) {
-    a[i] = A[i] * A[i] * A[i] / 6.0;
-    b[i] = A[i] * B[i] / 2.0;
-    c[i] = C[i] / 3.0;
-    d[i] = A[i] * A[i] / 2.0;
-    e[i] = B[i] / 2.0;
-    f[i] = A[i];
+    //a[i] = A[i] * A[i] * A[i];
+    //b[i] = A[i] * B[i];
+    //c[i] = C[i];
+    d[i] = A[i] * A[i];
+    //e[i] = B[i];
+    //f[i] = A[i];
   }
-  dft(a, -1), dft(b, -1), dft(c, -1), dft(d, -1), dft(e, -1), dft(f, -1);
+  //dft(a, -1), dft(b, -1), dft(c, -1), dft(d, -1), dft(e, -1), dft(f, -1);
+  dft(d, -1);
+  cout << Get(d, 11) << " " << Get(e, 11) << endl;
   for (int i = 0; i <= Ml; i++) {
-    LL Ans = Get(a, i) - Get(b, i) + Get(c, i) + Get(d, i) - Get(e, i) + Get(f, i);
+    LL Ans = (Get(a, i) - Get(b, i) + Get(c, i)) / 6 + (Get(d, i) - Get(e, i)) / 2 + Get(f, i);
     if (Ans) printf("%d %lld\n", i, Ans);
   }
 }
