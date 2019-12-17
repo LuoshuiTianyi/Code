@@ -22,12 +22,13 @@ inline LL read() {
 
 const int Max_n = 4e5 + 5, Ml = 1.2e5 + 5;
 const double pi = acos(-1);
-cp ans[Max_n], A[Max_n], B[Max_n], C[Max_n];
+LL ans[Max_n];
+cp Ans[Max_n], A[Max_n], B[Max_n], C[Max_n];
 
 namespace Input {
 void main() {
   int n = read();
-  for (int i = 1, x; i <= n; i++) 
+  for (int i = 1, x; i <= n; i++)
     x = read(), A[x] += 1, B[x * 2] += 1, C[x * 3] += 1;
 }
 }  // namespace Input
@@ -35,7 +36,7 @@ void main() {
 namespace Solve {
 int bit, len, rev[Max_n];
 void init() {
-  int bit = log2(Ml) + 1;
+  int bit = log2(Ml + 1) + 1;
   len = 1 << bit;
   for (int i = 0; i < len; i++)
     rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1));
@@ -53,18 +54,27 @@ void dft(cp *f, int t) {
       }
     }
   }
+  if (t < 0)
+    for (int i = 0; i < len; i++) f[i] /= len;
 }
 void main() {
   init();
   dft(A, 1), dft(B, 1), dft(C, 1);
+  for (int i = 0; i <= Ml; i++)
+    Ans[i] = (A[i] * A[i] * A[i] - A[i] * B[i] * 3.0 + 2.0 * C[i]) / 6.0;
+  dft(Ans, -1);
+  for (int i = 0; i <= Ml; i++)
+    ans[i] += (LL)(Ans[i].real() + 0.5);
+  for (int i = 0; i <= Ml; i++) Ans[i] = (A[i] * A[i] - B[i]) / 2.0;
+  dft(Ans, -1);
+  for (int i = 0; i <= Ml; i++)
+    ans[i] += (LL)(Ans[i].real() + 0.5);
+  for (int i = 0; i <= Ml; i++) Ans[i] = A[i];
+  dft(Ans, -1);
+  for (int i = 0; i <= Ml; i++)
+    ans[i] += (LL)(Ans[i].real() + 0.5);
   for (int i = 0; i <= Ml; i++) {
-    ans[i] = (A[i] * A[i] * A[i] - A[i] * B[i] * 3 + 2 * C[i]) / 6.0;
-    ans[i] += (A[i] * A[i] - B[i]) / 2.0 + A[i];
-  }
-  dfs(ans, -1);
-  for (int i = 0; i <= Ml; i++) {
-    LL Ans = (LL)(ans[i].real() + 0.5);
-    if (Ans) printf("%d %lld\n", i, Ans);
+    if (ans[i]) printf("%d %lld\n", i, ans[i]);
   }
 }
 }  // namespace Solve
