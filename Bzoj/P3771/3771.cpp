@@ -20,7 +20,7 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 4e5 + 5, Ml = 1.2e5 + 5;
+const int Max_n = 4e5 + 5, Ml = 1.2e5;
 const double pi = acos(-1);
 cp A[Max_n], B[Max_n], C[Max_n];
 cp a[Max_n], b[Max_n], c[Max_n], d[Max_n], e[Max_n], f[Max_n];
@@ -39,7 +39,7 @@ void init() {
   int bit = log2(Ml + 1) + 1;
   len = 1 << bit;
   for (int i = 0; i < len; i++)
-    rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1));
+    rev[i] = rev[i >> 1] >> 1 | ((i & 1) << bit - 1);
 }
 void dft(cp *f, int t) {
   for (int i = 0; i < len; i++)
@@ -60,18 +60,16 @@ void dft(cp *f, int t) {
 LL Get(cp f[], int x) { return (LL)(f[x].real() + 0.5); }
 void main() {
   init();
-  dft(A, 1);//, dft(B, 1), dft(C, 1);
-  for (int i = 0; i <= Ml; i++) {
-    //a[i] = A[i] * A[i] * A[i];
-    //b[i] = A[i] * B[i];
-    //c[i] = C[i];
+  dft(A, 1), dft(B, 1), dft(C, 1);
+  for (int i = 0; i < len; i++) {
+    a[i] = A[i] * A[i] * A[i];
+    b[i] = A[i] * B[i];
+    c[i] = C[i];
     d[i] = A[i] * A[i];
-    //e[i] = B[i];
-    //f[i] = A[i];
+    e[i] = B[i];
+    f[i] = A[i];
   }
-  //dft(a, -1), dft(b, -1), dft(c, -1), dft(d, -1), dft(e, -1), dft(f, -1);
-  dft(d, -1);
-  cout << Get(d, 11) << " " << Get(e, 11) << endl;
+  dft(a, -1), dft(b, -1), dft(c, -1), dft(d, -1), dft(e, -1), dft(f, -1);
   for (int i = 0; i <= Ml; i++) {
     LL Ans = (Get(a, i) - Get(b, i) + Get(c, i)) / 6 + (Get(d, i) - Get(e, i)) / 2 + Get(f, i);
     if (Ans) printf("%d %lld\n", i, Ans);
