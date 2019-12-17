@@ -22,8 +22,8 @@ inline LL read() {
 
 const int Max_n = 4e5 + 5, Ml = 1.2e5 + 5;
 const double pi = acos(-1);
-LL ans[Max_n];
-cp Ans[Max_n], A[Max_n], B[Max_n], C[Max_n];
+cp A[Max_n], B[Max_n], C[Max_n];
+cp a[Max_n], b[Max_n], c[Max_n], d[Max_n], e[Max_n], f[Max_n];
 
 namespace Input {
 void main() {
@@ -57,24 +57,22 @@ void dft(cp *f, int t) {
   if (t < 0)
     for (int i = 0; i < len; i++) f[i] /= len;
 }
+LL Get(cp f[], int x) { return (LL)(f[x].real() + 0.5); }
 void main() {
   init();
   dft(A, 1), dft(B, 1), dft(C, 1);
-  for (int i = 0; i <= Ml; i++)
-    Ans[i] = (A[i] * A[i] * A[i] - A[i] * B[i] * 3.0 + 2.0 * C[i]) / 6.0;
-  dft(Ans, -1);
-  for (int i = 0; i <= Ml; i++)
-    ans[i] += (LL)(Ans[i].real() + 0.5);
-  for (int i = 0; i <= Ml; i++) Ans[i] = (A[i] * A[i] - B[i]) / 2.0;
-  dft(Ans, -1);
-  for (int i = 0; i <= Ml; i++)
-    ans[i] += (LL)(Ans[i].real() + 0.5);
-  for (int i = 0; i <= Ml; i++) Ans[i] = A[i];
-  dft(Ans, -1);
-  for (int i = 0; i <= Ml; i++)
-    ans[i] += (LL)(Ans[i].real() + 0.5);
   for (int i = 0; i <= Ml; i++) {
-    if (ans[i]) printf("%d %lld\n", i, ans[i]);
+    a[i] = A[i] * A[i] * A[i] / 6.0;
+    b[i] = A[i] * B[i] / 2.0;
+    c[i] = C[i] / 3.0;
+    d[i] = A[i] * A[i] / 2.0;
+    e[i] = B[i] / 2.0;
+    f[i] = A[i];
+  }
+  dft(a, -1), dft(b, -1), dft(c, -1), dft(d, -1), dft(e, -1), dft(f, -1);
+  for (int i = 0; i <= Ml; i++) {
+    LL Ans = Get(a, i) - Get(b, i) + Get(c, i) + Get(d, i) - Get(e, i) + Get(f, i);
+    if (Ans) printf("%d %lld\n", i, Ans);
   }
 }
 }  // namespace Solve
