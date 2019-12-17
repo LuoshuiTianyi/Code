@@ -1,9 +1,10 @@
+#include <cmath>
+#include <complex>
 #include <cstdio>
 #include <iostream>
 using namespace std;
 #define LL long long
-#define go(G, x, i, v) \
-  for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
+#define cp complex<double>
 #define inline __inline__ __attribute__((always_inline))
 inline LL read() {
   LL x = 0, w = 1;
@@ -19,13 +20,17 @@ inline LL read() {
   return x * w;
 }
 
-namespace Input {
-void main() {}
-}  // namespace Input
+const int Max_n = 4e5 + 5, Ml = 1.2e5 + 5;
+int Ans[Ml];
+cp A[Max_n], B[Max_n], C[Max_n];
 
-namespace Init {
-void main() {}
-}  // namespace Init
+namespace Input {
+void main() {
+  int n = read();
+  for (int i = 1, x; i <= n; i++) 
+    x = read(), A[x] += 1, B[x * 2] += 1, C[x * 3] += 1;
+}
+}  // namespace Input
 
 namespace Solve {
 void main() {}
@@ -37,6 +42,6 @@ int main() {
   freopen("3771.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
+  
   Solve::main();
 }
