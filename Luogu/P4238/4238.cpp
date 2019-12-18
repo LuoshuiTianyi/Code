@@ -1,3 +1,4 @@
+#include <cmath>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -21,12 +22,12 @@ inline LL read() {
 
 const int Max_n = 2e5 + 5, mod = 998244353, G = 3;
 int n;
-int a[Max_n];
+int a[Max_n], ans[Max_n];
 
 namespace Input {
 void main() {
   n = read();
-  for (int i = 0; i <= n; i++) a[i] = read();
+  for (int i = 0; i < n; i++) a[i] = read();
 }
 }  // namespace Input
 
@@ -61,13 +62,20 @@ void solve(int deg, int *f, int *g) {
     return;
   }
   solve(deg + 1 >> 1, f, g);
-  len = 1 << (bit = log2(deg) + 1);
+  len = 1 << (bit = log2(deg) + 1), rev[0] = 0;
   for (int i = 0; i < len; i++) rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1));
   for (int i = 0; i < deg; i++) F[i] = f[i];
   for (int i = deg; i < len; i++) F[i] = 0;
   dft(F, 1), dft(g, 1);
+  for (int i = 0; i < len; i++)
+    g[i] = 1ll * (2ll - 1ll * F[i] * g[i] % mod + mod) * g[i] % mod;
+  dft(g, -1);
+  for (int i = deg; i < len; i++) g[i] = 0;
 }
-void main() {}
+void main() {
+  solve(n, a, ans);
+  for (int i = 0; i < n; i++) printf("%d ", ans[i]);
+}
 }  // namespace Solve
 
 int main() {
@@ -76,6 +84,5 @@ int main() {
   freopen("4238.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
