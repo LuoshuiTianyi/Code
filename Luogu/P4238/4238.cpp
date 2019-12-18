@@ -67,10 +67,10 @@ void solve(int deg, int *f, int *g) {
   for (int i = 0; i < deg; i++) F[i] = f[i];
   for (int i = deg; i < len; i++) F[i] = 0;
   dft(F, 1), dft(g, 1);
-  cout << deg << " " << len << " " << F[0] << endl;
+  //cout << deg << " " << len << " " << bit << " " << F[0] << endl;
   for (int i = 0; i < len; i++)
     g[i] = 1ll * (2ll - 1ll * F[i] * g[i] % mod + mod) * g[i] % mod;
-  dft(g, -1), dft(F, -1);
+  dft(g, -1);
   for (int i = deg; i < len; i++) g[i] = 0;
 }
 void main() {
