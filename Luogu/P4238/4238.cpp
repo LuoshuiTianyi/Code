@@ -20,7 +20,7 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 2e5 + 5, mod = 998244353, G = 3;
+const int Max_n = 6e5 + 5, mod = 998244353, G = 3;
 int n;
 int a[Max_n], ans[Max_n];
 
@@ -40,8 +40,8 @@ int ksm(int a, int b = mod - 2) {
   return res;
 }
 void init(int n) {
-  len = 1 << (bit = log2(n) + 1), rev[0] = 0;
-  for (int i = 0; i < len; i++) rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1));
+  len = 1 << (bit = log2(n * 3) + 1);
+  for (int i = 1; i < len; i++) rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1));
 }
 void dft(int *f, int t) {
   for (int i = 0; i < len; i++)
@@ -69,14 +69,14 @@ void solve(int deg, int *f, int *g) {
   for (int i = 0; i < deg; i++) F[i] = f[i];
   for (int i = deg; i < len; i++) F[i] = 0;
   dft(F, 1), dft(g, 1);
+  //for (int i = 0; i < n; i++) printf("%d ", F[i]);
+  //cout << endl;
   for (int i = 0; i < len; i++)
     g[i] = 1ll * (2ll - 1ll * F[i] * g[i] % mod + mod) * g[i] % mod;
   dft(g, -1);
   for (int i = deg; i < len; i++) g[i] = 0;
-  for (int i = 0; i < n; i++) printf("%d ", g[i]);
 }
 void main() {
-  for (int i = 0; i < n; i++) F[i] = a[i];
   solve(n, a, ans);
   for (int i = 0; i < n; i++) printf("%d ", ans[i]);
 }
