@@ -31,7 +31,7 @@ void main() {
 }  // namespace Input
 
 namespace Solve {
-int rev[Max_n];
+int bit, len, F[Max_n], rev[Max_n];
 int ksm(int a, int b = mod - 2) {
   int res = 1;
   for (; b; b >>= 1, a = 1ll * a * a % mod)
@@ -44,9 +44,11 @@ void solve(int deg, int *f, int *g) {
     return;
   }
   solve(deg + 1 >> 1, f, g);
-  int len, bit;
   len = 1 << (bit = log2(deg) + 1);
   for (int i = 0; i < len; i++) rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1));
+  for (int i = 0; i < deg; i++) F[i] = f[i];
+  for (int i = deg; i < len; i++) F[i] = 0;
+  dft(F, 1), dft(g, 1);
 }
 void main() {}
 }  // namespace Solve
