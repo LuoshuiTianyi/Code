@@ -44,7 +44,15 @@ void dft(int *f, int t) {
   for (int l = 1; l < len; l <<= 1) {
     int Wn = ksm(G, (mod - 1) / (l << 1));
     if (t == -1) Wn = ksm(Wn);
-    for (int 
+    for (int i = 0, Wnk = 1; i < len; i += l << 1)
+      for (int k = i; k < i + l; k++, Wnk = 1ll * Wnk * Wn % mod) {
+        int x = f[k], y = 1ll * f[k + l] * Wnk % mod;
+        f[k] = (x + y) % mod, f[k + l] = (x + mod - y) % mod;
+      }
+  }
+  if (t == -1) {
+    int Inv = ksm(len);
+    for (int i = 0; i < len; i++) f[i] = 1ll * f[i] * Inv % mod;
   }
 }
 void solve(int deg, int *f, int *g) {
