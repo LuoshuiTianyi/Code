@@ -21,16 +21,33 @@ inline LL read() {
 
 const int Max_n = 2e5 + 5, mod = 998244353, G = 3;
 int n;
+int a[Max_n];
 
 namespace Input {
-void main() {}
+void main() {
+  n = read();
+  for (int i = 0; i <= n; i++) a[i] = read();
+}
 }  // namespace Input
 
-namespace Init {
-void main() {}
-}  // namespace Init
-
 namespace Solve {
+int rev[Max_n];
+int ksm(int a, int b = mod - 2) {
+  int res = 1;
+  for (; b; b >>= 1, a = 1ll * a * a % mod)
+    if (b & 1) res = 1ll * res * a % mod;
+  return res;
+}
+void solve(int deg, int *f, int *g) {
+  if (deg == 1) {
+    g[0] = ksm(f[0]);
+    return;
+  }
+  solve(deg + 1 >> 1, f, g);
+  int len, bit;
+  len = 1 << (bit = log2(deg) + 1);
+  for (int i = 0; i < len; i++) rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1));
+}
 void main() {}
 }  // namespace Solve
 
