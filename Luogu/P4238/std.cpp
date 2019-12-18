@@ -51,11 +51,12 @@ void work(int deg, int *a, int *b) {
   for (RI i = 0; i < deg; ++i) c[i] = a[i];
   for (RI i = deg; i < orz; ++i) c[i] = 0;
   NTT(c, orz, 1), NTT(b, orz, 1);
-  cout << deg << " " << orz << " " << c[0] << endl;
   for (RI i = 0; i < orz; ++i)
     b[i] = 1LL * (2 - 1LL * c[i] * b[i] % mod + mod) % mod * b[i] % mod;
   NTT(b, orz, -1);
   for (RI i = deg; i < orz; ++i) b[i] = 0;
+  for (int i = 0; i < n; i++) printf("%d ", b[i]);
+  cout << endl;
 }
 int main() {
   freopen("4238.in", "r", stdin);

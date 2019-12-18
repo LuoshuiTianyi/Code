@@ -49,7 +49,7 @@ void dft(int *f, int t) {
   for (int l = 1; l < len; l <<= 1) {
     int Wn = ksm(G, (mod - 1) / (l << 1));
     if (t == -1) Wn = ksm(Wn);
-    for (int i = 0, Wnk = 1; i < len; i += l << 1)
+    for (int i = 0, Wnk = 1; i < len; i += l << 1, Wnk = 1)
       for (int k = i; k < i + l; k++, Wnk = 1ll * Wnk * Wn % mod) {
         int x = f[k], y = 1ll * f[k + l] * Wnk % mod;
         f[k] = (x + y) % mod, f[k + l] = (x + mod - y) % mod;
@@ -69,19 +69,16 @@ void solve(int deg, int *f, int *g) {
   for (int i = 0; i < deg; i++) F[i] = f[i];
   for (int i = deg; i < len; i++) F[i] = 0;
   dft(F, 1), dft(g, 1);
-  cout << deg << " " << len << " " << bit << " " << F[0] << endl;
   for (int i = 0; i < len; i++)
     g[i] = 1ll * (2ll - 1ll * F[i] * g[i] % mod + mod) * g[i] % mod;
   dft(g, -1);
   for (int i = deg; i < len; i++) g[i] = 0;
+  for (int i = 0; i < n; i++) printf("%d ", g[i]);
 }
 void main() {
   for (int i = 0; i < n; i++) F[i] = a[i];
-  init(n);
-  dft(F, 1), dft(F, -1);
-  cout << F[0] << endl;
-  //solve(n, a, ans);
-  //for (int i = 0; i < n; i++) printf("%d ", ans[i]);
+  solve(n, a, ans);
+  for (int i = 0; i < n; i++) printf("%d ", ans[i]);
 }
 }  // namespace Solve
 
