@@ -38,6 +38,15 @@ int ksm(int a, int b = mod - 2) {
     if (b & 1) res = 1ll * res * a % mod;
   return res;
 }
+void dft(int *f, int t) {
+  for (int i = 0; i < len; i++)
+    if (rev[i] > i) swap(f[i], f[rev[i]]);
+  for (int l = 1; l < len; l <<= 1) {
+    int Wn = ksm(G, (mod - 1) / (l << 1));
+    if (t == -1) Wn = ksm(Wn);
+    for (int 
+  }
+}
 void solve(int deg, int *f, int *g) {
   if (deg == 1) {
     g[0] = ksm(f[0]);
