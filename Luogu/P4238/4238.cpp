@@ -3,8 +3,6 @@
 #include <iostream>
 using namespace std;
 #define LL long long
-#define go(G, x, i, v) \
-  for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 #define inline __inline__ __attribute__((always_inline))
 inline LL read() {
   LL x = 0, w = 1;
@@ -69,8 +67,6 @@ void solve(int deg, int *f, int *g) {
   for (int i = 0; i < deg; i++) F[i] = f[i];
   for (int i = deg; i < len; i++) F[i] = 0;
   dft(F, 1), dft(g, 1);
-  //for (int i = 0; i < n; i++) printf("%d ", F[i]);
-  //cout << endl;
   for (int i = 0; i < len; i++)
     g[i] = 1ll * (2ll - 1ll * F[i] * g[i] % mod + mod) * g[i] % mod;
   dft(g, -1);
