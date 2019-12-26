@@ -18,6 +18,7 @@ inline LL read() {
 }
 
 const int Max_n = 1e5 + 5;
+int n, m;
 
 struct Splay {
   int fa, tag, v, sum, s[2];
@@ -25,15 +26,9 @@ struct Splay {
 namespace LCT {
 #define ls(x) k[x].s[0]
 #define rs(x) k[x].s[1]
-bool kd(int x) {
-  return ls(k[x].fa) == x;
-}
-bool nrt(int x) {
-  return ls(k[x].fa) == x || rs(k[x].fa) == x;
-}
-void upd(int x) {
-  k[x].sum = k[ls(x)].sum ^ k[rs(x)].sum ^ k[x].v;
-}
+bool kd(int x) { return ls(k[x].fa) == x; }
+bool nrt(int x) { return ls(k[x].fa) == x || rs(k[x].fa) == x; }
+void upd(int x) { k[x].sum = k[ls(x)].sum ^ k[rs(x)].sum ^ k[x].v; }
 void pushdown(int x) {
   if (k[x].tag) {
     swap(ls(x), rs(x));
@@ -56,18 +51,45 @@ void splay(int x) {
 void access(int x) {
   for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y, upd(x);
 }
+void makert(int x) { access(x), splay(x), k[x].tag ^= 1, pushdown(x); }
+int findrt(int x) {
+  access(x), splay(x);
+  while (ls(x)) pushdown(x), x = ls(x);
+  splay(x);
+  return x;
 }
+int query(int x, int y) {
+  makert(x), access(y), splay(y);
+  return k[y].sum;
+}
+void link(int x, int y) {
+  makert(x);
+  if (findrt(y) != x) k[x].fa = y;
+}
+void cut(int x, int y) {
+  makert(x);
+  if (findrt(y) == x && k[y].fa == x && !ls(y)) k[y].fa = rs(x) = 0, upd(x);
+}
+}  // namespace LCT
 
 namespace Input {
-void main() {}
+void main() {
+  n = read(), m = read();
+  for (int i = 1; i <= n; i++) k[i].v = read();
+}
 }  // namespace Input
 
-namespace Init {
-void main() {}
-}  // namespace Init
-
 namespace Solve {
-void main() {}
+void main() {
+  int op, x, y;
+  while (m--) {
+    op = read(), x = read(), y = read();
+    if (op == 0) printf("%d\n", LCT::query(x, y));
+    if (op == 1) LCT::link(x, y);
+    if (op == 2) LCT::cut(x, y);
+    if (op == 3) LCT::splay(x), k[x].v = y;
+  }
+}
 }  // namespace Solve
 
 int main() {
@@ -76,6 +98,5 @@ int main() {
   freopen("3690.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
