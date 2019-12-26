@@ -25,10 +25,13 @@ struct Splay {
 namespace LCT {
 #define ls(x) k[x].s[0]
 #define rs(x) k[x].s[1]
+bool kd(int x) {
+  return ls(k[x].fa) == x;
+}
 bool nrt(int x) {
   return ls(k[x].fa) == x || rs(k[x].fa) == x;
 }
-void pushup(int x) {
+void upd(int x) {
   k[x].sum = k[ls(x)].sum ^ k[rs(x)].sum ^ k[x].v;
 }
 void pushdown(int x) {
@@ -38,15 +41,20 @@ void pushdown(int x) {
   }
 }
 void rotate(int x) {
-  int y = k[x].fa, z = k[y].fa, s1 = rs(y) == x, s2 = k[x].s[!s1];
+  int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
   pushdown(x), pushdown(y);
-  if (nrt(y)) k[z].s[rs(z) == y] = x;
+  if (nrt(y)) k[z].s[kd(y)] = x;
   k[x].s[!s1] = y, k[y].s[s1] = s2;
   if (s2) k[s2].fa = y;
-  k[x].fa = z, k[y].fa = x;
-  pushup(y), pushup(x);
+  k[x].fa = z, k[y].fa = x, upd(y);
 }
 void splay(int x) {
+  for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
+    if (nrt(fa)) rotate(kd(x) ^ kd(fa) ? x : fa);
+  upd(x);
+}
+void access(int x) {
+  for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y, upd(x);
 }
 }
 
