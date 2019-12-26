@@ -19,29 +19,34 @@ inline LL read() {
 
 const int Max_n = 1e5 + 5;
 
-struct splay {
+struct Splay {
   int fa, tag, v, sum, s[2];
 } k[Max_n];
 namespace LCT {
 #define ls(x) k[x].s[0]
 #define rs(x) k[x].s[1]
-bool Nrt(int x) {
+bool nrt(int x) {
   return ls(k[x].fa) == x || rs(k[x].fa) == x;
 }
 void pushup(int x) {
   k[x].sum = k[ls(x)].sum ^ k[rs(x)].sum ^ k[x].v;
 }
-void roll(int x) {
-  if (!x) return;
-  k[x].tag ^= 1, swap(ls(x), rs(x));
-}
 void pushdown(int x) {
   if (k[x].tag) {
-    k[x].tag = 0;
-    roll(ls(x)), roll(rs(x));
+    swap(ls(x), rs(x));
+    k[ls(x)].tag ^= 1, k[rs(x)].tag ^= 1, k[x].tag = 0;
   }
 }
 void rotate(int x) {
+  int y = k[x].fa, z = k[y].fa, s1 = rs(y) == x, s2 = k[x].s[!s1];
+  pushdown(x), pushdown(y);
+  if (nrt(y)) k[z].s[rs(z) == y] = x;
+  k[x].s[!s1] = y, k[y].s[s1] = s2;
+  if (s2) k[s2].fa = y;
+  k[x].fa = z, k[y].fa = x;
+  pushup(y), pushup(x);
+}
+void splay(int x) {
 }
 }
 
