@@ -84,7 +84,11 @@ void main() {
   int op, x, y;
   while (m--) {
     op = read(), x = read(), y = read();
-    if (op == 0) printf("%d\n", LCT::query(x, y));
+    if (op == 0) {
+      printf("%d\n", LCT::query(x, y));
+      // LCT::Print(2);
+      // cout << endl;
+    }
     if (op == 1) LCT::link(x, y);
     if (op == 2) LCT::cut(x, y);
     if (op == 3) LCT::splay(x), k[x].v = y;
