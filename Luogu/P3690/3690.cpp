@@ -56,7 +56,7 @@ void splay(int x) {
 void access(int x) {
   for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y;
 }
-void makert(int x) { access(x), splay(x), k[x].tag ^= 1, pushdown(x); }
+void makert(int x) { access(x), splay(x), roll(x); }
 int findrt(int x) {
   access(x), splay(x);
   while (ls(x)) pushdown(x), x = ls(x);
@@ -75,12 +75,6 @@ void cut(int x, int y) {
   makert(x);
   if (findrt(y) == x && k[y].fa == x && !ls(y)) k[y].fa = rs(x) = 0, upd(x);
 }
-void Print(int x) {
-  if (!x) return;
-  pushdown(x), Print(ls(x));
-  printf("%d %d\n", x, k[x].v);
-  Print(rs(x));
-}
 }  // namespace LCT
 
 namespace Input {
@@ -95,11 +89,7 @@ void main() {
   int op, x, y;
   while (m--) {
     op = read(), x = read(), y = read();
-    if (op == 0) {
-      printf("%d\n", LCT::query(x, y));
-      LCT::Print(1);
-      cout << endl;
-    }
+    if (op == 0) printf("%d\n", LCT::query(x, y));
     if (op == 1) LCT::link(x, y);
     if (op == 2) LCT::cut(x, y);
     if (op == 3) LCT::splay(x), k[x].v = y;
