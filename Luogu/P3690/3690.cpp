@@ -26,6 +26,8 @@ struct node {
 namespace LCT {
 #define ls(x) k[x].s[0]
 #define rs(x) k[x].s[1]
+bool nrt(int x) { return ls(k[x].fa) == x || rs(k[x].fa) == x; }
+bool kd(int x) { return rs(k[x].fa) == x; }
 void upd(int x) { k[x].sum = k[ls(x)].sum ^ k[rs(x)].sum ^ k[x].v; }
 void roll(int x) { 
   if (!x) return;
@@ -33,6 +35,16 @@ void roll(int x) {
 }
 void pushdown(x) {
   if (k[x].tag) roll(ls(x)), roll(rs(x)), k[x].tag = 0;
+}
+void rotate(int x) {
+  int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
+  if (nrt(y)) k[z].s[kd(y)] = x;
+  k[x].s[!s1] = y, k[y].s[s1] = s2;
+  if (s2) k[s2].fa = y;
+  k[x].fa = z, k[y].fa = x, upd(y);
+}
+int stk[Max_n];
+void splay(int x) {
 }
 }  // namespace LCT
 
