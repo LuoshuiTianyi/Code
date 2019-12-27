@@ -1,129 +1,107 @@
-#include <bits/stdc++.h>
-#define R register int
-#define I inline void
-#define G         \
-  if (++ip == ie) \
-    if (fread(ip = buf, 1, SZ, stdin))
-#define lc c[x][0]
-#define rc c[x][1]
+#include <cstdio>
+#include <iostream>
 using namespace std;
-const int SZ = 1 << 19, N = 3e5 + 9;
-char buf[SZ], *ie = buf + SZ, *ip = ie - 1;
-inline int in() {
-  G;
-  while (*ip < '-') G;
-  R x = *ip & 15;
-  G;
-  while (*ip > '-') {
-    x *= 10;
-    x += *ip & 15;
-    G;
+#define LL long long
+#define inline __inline__ __attribute__((always_inline))
+inline LL read() {
+  LL x = 0, w = 1;
+  char ch = getchar();
+  while (!isdigit(ch)) {
+    if (ch == '-') w = -1;
+    ch = getchar();
   }
-  return x;
-}
-int f[N], c[N][2], v[N], s[N], st[N];
-bool r[N];
-inline bool nroot(R x) {  //判断节点是否为一个Splay的根（与普通Splay的区别1）
-  return c[f[x]][0] == x || c[f[x]][1] == x;
-}  //原理很简单，如果连的是轻边，他的父亲的儿子里没有它
-I pushup(R x) {  //上传信息
-  s[x] = s[lc] ^ s[rc] ^ v[x];
-}
-I pushr(R x) {
-  R t = lc;
-  lc = rc;
-  rc = t;
-  r[x] ^= 1;
-}  //翻转操作
-I pushdown(R x) {  //判断并释放懒标记
-  if (r[x]) {
-    if (lc) pushr(lc);
-    if (rc) pushr(rc);
-    r[x] = 0;
+  while (isdigit(ch)) {
+    x = (x << 3) + (x << 1) + ch - '0';
+    ch = getchar();
   }
+  return x * w;
 }
-I rotate(R x) {  //一次旋转
-  R y = f[x], z = f[y], k = c[y][1] == x, w = c[x][!k];
-  if (nroot(y)) c[z][c[z][1] == y] = x;
-  c[x][!k] = y;
-  c[y][k] =
-      w;  //额外注意if(nroot(y))语句，此处不判断会引起致命错误（与普通Splay的区别2）
-  if (w) f[w] = y;
-  f[y] = x;
-  f[x] = z;
-  pushup(y);
+
+const int Max_n = 1e5 + 5;
+int n, m;
+
+struct Splay {
+  int fa, tag, v, sum, s[2];
+} k[Max_n];
+namespace LCT {
+#define ls(x) k[x].s[0]
+#define rs(x) k[x].s[1]
+bool kd(int x) { return rs(k[x].fa) == x; }
+bool nrt(int x) { return ls(k[x].fa) == x || rs(k[x].fa) == x; }
+void upd(int x) { k[x].sum = k[ls(x)].sum ^ k[rs(x)].sum ^ k[x].v; }
+void roll(int x) {
+  if (!x) return;
+  swap(ls(x), rs(x)), k[x].tag ^= 1;
 }
-I splay(
-    R x) {  //只传了一个参数，因为所有操作的目标都是该Splay的根（与普通Splay的区别3）
-  R y = x, z = 0;
-  st[++z] =
-      y;  // st为栈，暂存当前点到根的整条路径，pushdown时一定要从上往下放标记（与普通Splay的区别4）
-  while (nroot(y)) st[++z] = y = f[y];
-  while (z) pushdown(st[z--]);
-  while (nroot(x)) {
-    y = f[x];
-    z = f[y];
-    if (nroot(y)) rotate((c[y][0] == x) ^ (c[z][0] == y) ? x : y);
-    rotate(x);
-  }
-  pushup(x);
+void pushdown(int x) {
+  if (k[x].tag) roll(ls(x)), roll(rs(x)), k[x].tag = 0;
 }
-/*当然了，其实利用函数堆栈也很方便，代替上面的手工栈，就像这样
-I pushall(R x){
-    if(nroot(x))pushall(f[x]);
-    pushdown(x);
-}*/
-I access(R x) {  //访问
-  for (R y = 0; x; x = f[y = x]) splay(x), rc = y, pushup(x);
+void rotate(int x) {
+  int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
+  if (nrt(y)) k[z].s[kd(y)] = x;
+  k[x].s[!s1] = y, k[y].s[s1] = s2;
+  if (s2) k[s2].fa = y;
+  k[x].fa = z, k[y].fa = x, upd(y);
 }
-I makeroot(R x) {  //换根
-  access(x);
-  splay(x);
-  pushr(x);
+int stk[Max_n];
+void splay(int x) {
+  int top = 0, p;
+  for (p = x; nrt(p); p = k[p].fa) stk[++top] = p;
+  stk[++top] = p;
+  while (top) pushdown(stk[top--]);
+  for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
+    if (nrt(fa)) rotate(kd(x) ^ kd(fa) ? x : fa);
+  upd(x);
 }
-int findroot(R x) {  //找根（在真实的树中的）
-  access(x);
-  splay(x);
-  while (lc) pushdown(x), x = lc;
+void access(int x) {
+  for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y;
+}
+void makert(int x) { access(x), splay(x), roll(x); }
+int findrt(int x) {
+  access(x), splay(x);
+  while (ls(x)) pushdown(x), x = ls(x);
   splay(x);
   return x;
 }
-I split(R x, R y) {  //提取路径
-  makeroot(x);
-  access(y);
-  splay(y);
+int query(int x, int y) {
+  makert(x), access(y), splay(y);
+  return k[y].sum;
 }
-I link(R x, R y) {  //连边
-  makeroot(x);
-  if (findroot(y) != x) f[x] = y;
+void link(int x, int y) {
+  makert(x);
+  if (findrt(y) != x) k[x].fa = y;
 }
-I cut(R x, R y) {  //断边
-  makeroot(x);
-  if (findroot(y) == x && f[y] == x && !c[y][0]) {
-    f[y] = c[x][1] = 0;
-    pushup(x);
-  }
+void cut(int x, int y) {
+  makert(x);
+  if (findrt(y) == x && k[y].fa == x && !ls(y)) k[y].fa = rs(x) = 0, upd(x);
 }
-int main() {
-  R n = in(), m = in();
-  for (R i = 1; i <= n; ++i) v[i] = in();
+}  // namespace LCT
+
+namespace Input {
+void main() {
+  n = read(), m = read();
+  for (int i = 1; i <= n; i++) k[i].v = read();
+}
+}  // namespace Input
+
+namespace Solve {
+void main() {
+  int op, x, y;
   while (m--) {
-    R type = in(), x = in(), y = in();
-    switch (type) {
-      case 0:
-        split(x, y);
-        printf("%d\n", s[y]);
-        break;
-      case 1:
-        link(x, y);
-        break;
-      case 2:
-        cut(x, y);
-        break;
-      case 3:
-        splay(x);
-        v[x] = y;  //先把x转上去再改，不然会影响Splay信息的正确性
-    }
+    op = read(), x = read(), y = read();
+    if (op == 0) printf("%d\n", LCT::query(x, y));
+    if (op == 1) LCT::link(x, y);
+    if (op == 2) LCT::cut(x, y);
+    if (op == 3) LCT::splay(x), k[x].v = y;
   }
-  return 0;
+}
+}  // namespace Solve
+
+int main() {
+#ifndef ONLINE_JUDGE
+  freopen("3690.in", "r", stdin);
+  freopen("3690.out", "w", stdout);
+#endif
+  Input::main();
+  Solve::main();
 }
