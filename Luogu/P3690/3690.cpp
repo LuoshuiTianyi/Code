@@ -26,24 +26,29 @@ struct Splay {
 namespace LCT {
 #define ls(x) k[x].s[0]
 #define rs(x) k[x].s[1]
-bool kd(int x) { return ls(k[x].fa) == x; }
+bool kd(int x) { return rs(k[x].fa) == x; }
 bool nrt(int x) { return ls(k[x].fa) == x || rs(k[x].fa) == x; }
 void upd(int x) { k[x].sum = k[ls(x)].sum ^ k[rs(x)].sum ^ k[x].v; }
+void roll(int x) {
+  if (!x) return;
+  swap(ls(x), rs(x)), k[x].tag ^= 1;
+}
 void pushdown(int x) {
-  if (k[x].tag) {
-    swap(ls(x), rs(x));
-    k[ls(x)].tag ^= 1, k[rs(x)].tag ^= 1, k[x].tag = 0;
-  }
+  if (k[x].tag) roll(ls(x)), roll(rs(x)), k[x].tag = 0;
 }
 void rotate(int x) {
   int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
   if (nrt(y)) k[z].s[kd(y)] = x;
   k[x].s[!s1] = y, k[y].s[s1] = s2;
   if (s2) k[s2].fa = y;
-  k[x].fa = z, k[y].fa = x, upd(y), upd(x);
+  k[x].fa = z, k[y].fa = x, upd(y);
 }
-int top, stk[Max_n];
+int stk[Max_n];
 void splay(int x) {
+  int top = 0, p;
+  for (p = x; nrt(p); p = k[p].fa) stk[++top] = p;
+  stk[++top] = p;
+  while (top) pushdown(stk[top--]);
   for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
     if (nrt(fa)) rotate(kd(x) ^ kd(fa) ? x : fa);
   upd(x);
@@ -92,8 +97,8 @@ void main() {
     op = read(), x = read(), y = read();
     if (op == 0) {
       printf("%d\n", LCT::query(x, y));
-      //LCT::Print(2);
-      //cout << endl;
+      LCT::Print(1);
+      cout << endl;
     }
     if (op == 1) LCT::link(x, y);
     if (op == 2) LCT::cut(x, y);
