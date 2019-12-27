@@ -37,19 +37,19 @@ void pushdown(int x) {
 }
 void rotate(int x) {
   int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
-  pushdown(x), pushdown(y);
   if (nrt(y)) k[z].s[kd(y)] = x;
   k[x].s[!s1] = y, k[y].s[s1] = s2;
   if (s2) k[s2].fa = y;
-  k[x].fa = z, k[y].fa = x, upd(y);
+  k[x].fa = z, k[y].fa = x, upd(y), upd(x);
 }
+int top, stk[Max_n];
 void splay(int x) {
   for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
     if (nrt(fa)) rotate(kd(x) ^ kd(fa) ? x : fa);
   upd(x);
 }
 void access(int x) {
-  for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y, upd(x);
+  for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y;
 }
 void makert(int x) { access(x), splay(x), k[x].tag ^= 1, pushdown(x); }
 int findrt(int x) {
@@ -70,6 +70,12 @@ void cut(int x, int y) {
   makert(x);
   if (findrt(y) == x && k[y].fa == x && !ls(y)) k[y].fa = rs(x) = 0, upd(x);
 }
+void Print(int x) {
+  if (!x) return;
+  pushdown(x), Print(ls(x));
+  printf("%d %d\n", x, k[x].v);
+  Print(rs(x));
+}
 }  // namespace LCT
 
 namespace Input {
@@ -86,8 +92,8 @@ void main() {
     op = read(), x = read(), y = read();
     if (op == 0) {
       printf("%d\n", LCT::query(x, y));
-      // LCT::Print(2);
-      // cout << endl;
+      //LCT::Print(2);
+      //cout << endl;
     }
     if (op == 1) LCT::link(x, y);
     if (op == 2) LCT::cut(x, y);
