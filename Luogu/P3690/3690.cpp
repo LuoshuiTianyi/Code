@@ -38,7 +38,10 @@ void pushdown(int x) {
 }
 void rotate(int x) {
   int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
-  
+  if (nrt(y)) k[z].s[kd(y)] = x;
+  k[x].s[!s1] = y, k[y].s[s1] = s2;
+  if (s2) k[s2].fa = y;
+  k[x].fa = z, k[y].fa = x, upd(y);
 }
 int stk[Max_n];
 void splay(int x) {
@@ -49,6 +52,21 @@ void splay(int x) {
   for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
     if (nrt(fa)) rotate(kd(fa) ^ kd(x) ? x : fa);
   upd(x);
+}
+void access(int x) {
+  for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y;
+}
+void makert(int x) {
+  access(x), splay(x), roll(x);
+}
+int findrt(int x) {
+  access(x), splay(x), pushdown(x);
+  while (ls(x)) x = ls(x), pushdown(x);
+  return x;
+}
+void link(int x, int y) {
+  makert(x);
+  if (findrt(y) != x) splay(y);
 }
 }  // namespace LCT
 
