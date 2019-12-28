@@ -1,9 +1,8 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 using namespace std;
 #define LL long long
-#define go(G, x, i, v) \
-  for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 #define inline __inline__ __attribute__((always_inline))
 inline LL read() {
   LL x = 0, w = 1;
@@ -19,8 +18,17 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 5e4 + 5;
-int n, m;
+const int Max_n = 2e5 + 5;
+int n, m, cnt;
+struct edge {
+  int u, v, a, b;
+} e[Max_n];
+
+struct node {
+  int fa, v, Max, tag, s[2];
+} k[Max_n];
+namespace LCT {
+}
 
 namespace Input {
 void main() {}
