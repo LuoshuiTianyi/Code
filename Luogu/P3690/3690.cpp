@@ -71,7 +71,11 @@ void link(int x, int y) {
 }
 void cut(int x, int y) {
   makert(x);
-  //if (findrt(y) == x && k[y].fa == x && ) k[x].fa = y;
+  if (findrt(y) == x && k[y].fa == x && !ls(y)) k[y].fa = rs(x) = 0, upd(x);
+}
+int query(int x, int y) {
+  makert(x), access(y), splay(y);
+  return k[y].sum;
 }
 }  // namespace LCT
 
@@ -83,7 +87,15 @@ void main() {
 }  // namespace Input
 
 namespace Solve {
-void main() {}
+void main() {
+  while (m--) {
+    int op = read(), x = read(), y = read();
+    if (op == 0) printf("%d\n", LCT::query(x, y));
+    if (op == 1) LCT::link(x, y);
+    if (op == 2) LCT::cut(x, y);
+    if (op == 3) k[x].v = y, LCT::upd(x);
+  }
+}
 }  // namespace Solve
 
 int main() {
