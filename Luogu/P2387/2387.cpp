@@ -20,9 +20,12 @@ inline LL read() {
 
 const int Max_n = 2e5 + 5;
 int n, m, cnt, ans = 1e9;
+int fa[Max_n];
 struct edge {
   int u, v, a, b;
 } e[Max_n];
+
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
 
 struct node {
   int fa, v, Max, tag, s[2];
@@ -30,11 +33,11 @@ struct node {
 namespace LCT {
 #define ls(x) k[x].s[0]
 #define rs(x) k[x].s[1]
+int Max(int x, int y) { return k[x].v > k[y].v ? x : y; }
 bool kd(int x) { return rs(k[x].fa) == x; }
 bool nrt(int x) { return kd(x) || ls(k[x].fa) == x; }
 void upd(int x) {
-  k[x].Max = max(k[ls(x)].Max, k[rs(x)].Max);
-  k[x].Max = max(k[x].Max, k[x].v);
+  k[x].Max = Max(x, Max(ls(x), rs(x)));
 }
 void roll(int x) {
   if (!x) return;
@@ -63,7 +66,20 @@ void splay(int x) {
 void access(int x) {
   for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y, upd(x);
 }
-
+void makert(int x) {
+  access(x), splay(x), roll(x);
+}
+int findrt(int x) {
+  access(x), splay(x);
+  while (ls(x)) pushdown(x), x = ls(x);
+  return x;
+}
+void link(int x, int y) {
+}
+int query(int x, int y) {
+  makert(x), access(y), splay(y);
+  return k[y].Max;
+}
 }  // namespace LCT
 
 namespace Input {
