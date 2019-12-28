@@ -75,26 +75,14 @@ int findrt(int x) {
   return x;
 }
 void link(int x, int y) {
-  cout << "link: " << x << "," << y << endl;
   makert(x), k[x].fa = y;
 }
 void cut(int x, int y) {
-  cout << "cut: " << x << "," << y << endl;
   makert(x), access(y), splay(y);
   ls(y) = k[x].fa = 0, upd(y);
 }
-void Print(int x) {
-  if (!x) return;
-  pushdown(x);
-  Print(ls(x)), cout << x << " " << k[x].v << " " << k[x].Max << endl, Print(rs(x));
-}
 int query(int x, int y) {
   makert(x), access(y), splay(y);
-  //Print(y);
-  //cout << y << " " << ls(y) << " " << rs(y) << endl;
-  //cout << k[k[y].Max].v << " " << k[k[ls(y)].Max].v << " " << k[k[rs(y)].Max].v << endl;
-  //cout << k[y].Max << endl;
-  //cout << x << " " << y << " " << k[y].Max << endl;
   return k[y].Max;
 }
 }  // namespace LCT
@@ -134,10 +122,9 @@ void main() {
     }
     if (find(1) == find(n)) {
       ans = min(ans, e[i].a + k[LCT::query(1, n)].v);
-      cout << ans << " " << LCT::query(1, n) << endl;
     }
   }
-  //cout << (ans == 1e9 ? -1 : ans);
+  cout << (ans == 1e9 ? -1 : ans);
 }
 }  // namespace Solve
 
