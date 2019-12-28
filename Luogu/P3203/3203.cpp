@@ -31,16 +31,16 @@ namespace LCT {
 #define rs(x) k[x].s[1]
 bool kd(int x) { return rs(k[x].fa) == x; }
 bool nrt(int x) { return kd(x) || ls(k[x].fa) == x; }
-void upd(int x) { k[x].siz = k[ls(x)].siz + k[rs(x)].siz + 1; }
+void upd(int x) {
+  if (!x) return;
+  k[x].siz = k[ls(x)].siz + k[rs(x)].siz + 1;
+}
 void roll(int x) {
   if (!x) return;
   swap(ls(x), rs(x)), k[x].tag ^= 1;
 }
 void pushdown(int x) {
-  if (k[x].tag) {
-    roll(ls(x)), roll(rs(x));
-    k[x].tag = 0;
-  }
+  if (k[x].tag) roll(ls(x)), roll(rs(x)), k[x].tag = 0;
 }
 void rotate(int x) {
   int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
@@ -55,35 +55,43 @@ void splay(int x) {
   for (; nrt(x); p = k[p].fa) stk[++top] = p;
   stk[++top] = p;
   while (top) pushdown(stk[top--]);
-  for (int fa = x; nrt(x); rotate(x), fa = k[x])
+  for (int fa = x; nrt(x); rotate(x), fa = k[x].fa)
     if (nrt(fa)) rotate(kd(fa) ^ kd(x) ? x : fa);
   upd(x);
 }
 void access(int x) {
   for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y, upd(x);
 }
-void makert(int x) {
-  access(x), splay(x), roll(x);
-}
-void link(int x, int y) {
-  makert(x), k[x].fa = y;
-}
+void makert(int x) { access(x), splay(x), roll(x); }
+void link(int x, int y) { makert(x), k[x].fa = min(y, n + 1); }
 void cut(int x, int y) {
   makert(x), access(y), splay(y);
-  
+  ls(y) = k[x].fa = 0, upd(y);
+}
+int query(int x) {
+  makert(n + 1), access(x);
+  return k[x].siz;
 }
 }  // namespace LCT
 
 namespace Input {
-void main() { n = read(), m = read(); }
+void main() {
+  n = read();
+  for (int i = 1; i <= n; i++) a[i] = read(), LCT::link(i, i + a[i]);
+}
 }  // namespace Input
 
-namespace Init {
-void main() {}
-}  // namespace Init
-
 namespace Solve {
-void main() {}
+void main() {
+  m = read();
+  while (m--) {
+    int op = read(), x = read();
+    if (op == 1)
+      printf("%d\n", LCT::query(x));
+    else
+      LCT::cut(x, x + a[x]), LCT::link(x, x + (a[x] = read()));
+  }
+}
 }  // namespace Solve
 
 int main() {
@@ -92,6 +100,5 @@ int main() {
   freopen("3203.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
