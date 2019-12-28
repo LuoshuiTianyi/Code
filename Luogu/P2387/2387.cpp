@@ -28,6 +28,13 @@ struct node {
   int fa, v, Max, tag, s[2];
 } k[Max_n];
 namespace LCT {
+bool kd(int x) { return rs(k[x].fa) == x; }
+bool nrt(int x) { return kd(x) || ls(k[x].fa) == x; }
+void upd(int x) { 
+  k[x].Max = max(k[ls(x)].Max, k[rs(x)].Max);
+  k[x].Max = max(k[x].Max, k[x].v);
+}
+void roll(int x) { swap(ls(x), rs(x)), k[x].tag ^= 1; }
 }
 
 namespace Input {
