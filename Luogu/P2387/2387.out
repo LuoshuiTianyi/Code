@@ -2,4 +2,15 @@ link: 5,3
 link: 5,4
 link: 6,2
 link: 6,3
-2 4 0
+cut: 5,3
+cut: 5,4
+link: 7,2
+link: 7,4
+link: 8,1
+link: 8,3
+32 7
+cut: 6,2
+cut: 6,3
+link: 9,1
+link: 9,2
+32 7

@@ -22,7 +22,7 @@ const int Max_n = 2e5 + 5;
 int n, m, cnt, ans = 1e9;
 int fa[Max_n];
 struct edge {
-  int u, v, a;
+  int u, v, a, b;
 } e[Max_n];
 
 int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
@@ -37,7 +37,7 @@ int Max(int x, int y) { return k[x].v > k[y].v ? x : y; }
 bool kd(int x) { return rs(k[x].fa) == x; }
 bool nrt(int x) { return kd(x) || ls(k[x].fa) == x; }
 void upd(int x) {
-  k[x].Max = Max(x, Max(ls(x), rs(x)));
+  k[x].Max = Max(x, Max(k[ls(x)].Max, k[rs(x)].Max));
 }
 void roll(int x) {
   if (!x) return;
@@ -85,13 +85,16 @@ void cut(int x, int y) {
 }
 void Print(int x) {
   if (!x) return;
+  pushdown(x);
   Print(ls(x)), cout << x << " " << k[x].v << " " << k[x].Max << endl, Print(rs(x));
 }
 int query(int x, int y) {
   makert(x), access(y), splay(y);
   //Print(y);
-  upd(y);
-  cout << x << " " << y << " " << k[y].Max << endl;
+  //cout << y << " " << ls(y) << " " << rs(y) << endl;
+  //cout << k[k[y].Max].v << " " << k[k[ls(y)].Max].v << " " << k[k[rs(y)].Max].v << endl;
+  //cout << k[y].Max << endl;
+  //cout << x << " " << y << " " << k[y].Max << endl;
   return k[y].Max;
 }
 }  // namespace LCT
@@ -100,9 +103,8 @@ namespace Input {
 void main() {
   n = cnt = read(), m = read();
   for (int i = 1; i <= m; i++) {
-    int u = read(), v = read(), a = read();
-    k[++cnt].v = read();
-    e[cnt] = (edge){u, v, a};
+    int u = read(), v = read(), a = read(), b = read();
+    e[++cnt] = (edge){u, v, a, b};
   }
 }
 }  // namespace Input
@@ -117,8 +119,9 @@ void main() {
 namespace Solve {
 void main() {
   for (int i = 1; i <= n; i++) fa[i] = i;
-  for (int i = n + 1; i <= 7; i++) {
+  for (int i = n + 1; i <= cnt; i++) {
     int u = e[i].u, v = e[i].v;
+    k[i].v = e[i].b;
     if (find(u) != find(v)) {
       LCT::link(i, u), LCT::link(i, v);
       fa[find(u)] = find(v);
@@ -131,7 +134,7 @@ void main() {
     }
     if (find(1) == find(n)) {
       ans = min(ans, e[i].a + k[LCT::query(1, n)].v);
-      //cout << ans << " " << LCT::query(1, n) << endl;
+      cout << ans << " " << LCT::query(1, n) << endl;
     }
   }
   //cout << (ans == 1e9 ? -1 : ans);
