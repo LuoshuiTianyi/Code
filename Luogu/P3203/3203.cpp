@@ -55,21 +55,25 @@ void splay(int x) {
   for (; nrt(x); p = k[p].fa) stk[++top] = p;
   stk[++top] = p;
   while (top) pushdown(stk[top--]);
-  for (int fa = x; nrt(x); rotate(x), fa = k[x].fa)
+  for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
     if (nrt(fa)) rotate(kd(fa) ^ kd(x) ? x : fa);
   upd(x);
 }
 void access(int x) {
-  for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y, upd(x);
+  for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y;
 }
 void makert(int x) { access(x), splay(x), roll(x); }
-void link(int x, int y) { makert(x), k[x].fa = min(y, n + 1); }
+void link(int x, int y) { 
+  y = min(y, n + 1);
+  makert(x), k[x].fa = y; 
+}
 void cut(int x, int y) {
+  y = min(y, n + 1);
   makert(x), access(y), splay(y);
   ls(y) = k[x].fa = 0, upd(y);
 }
 int query(int x) {
-  makert(n + 1), access(x);
+  makert(n + 1), access(x), splay(x);
   return k[x].siz;
 }
 }  // namespace LCT
@@ -88,8 +92,9 @@ void main() {
     int op = read(), x = read();
     if (op == 1)
       printf("%d\n", LCT::query(x));
-    else
+    else {
       LCT::cut(x, x + a[x]), LCT::link(x, x + (a[x] = read()));
+    }
   }
 }
 }  // namespace Solve
