@@ -19,7 +19,7 @@ inline LL read() {
 }
 
 const int Max_n = 2e5 + 5;
-int n, m, cnt;
+int n, m, cnt, ans = 1e9;
 struct edge {
   int u, v, a, b;
 } e[Max_n];
@@ -44,7 +44,26 @@ void pushdown(int x) {
   if (k[x].tag) k[x].tag = 0, roll(ls(x)), roll(rs(x));
 }
 void rotate(int x) {
+  int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
+  if (nrt(y)) k[z].s[kd(y)] = x;
+  k[x].s[!s1] = y, k[y].s[s1] = s2;
+  if (s2) k[s2].fa = y;
+  k[x].fa = z, k[y].fa =x, upd(y);
 }
+void Push(int x) {
+  if (nrt(x)) Push(k[x].fa);
+  pushdown(x);
+}
+void splay(int x) {
+  Push(x);
+  for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
+    if (nrt(fa)) rotate(kd(fa) ^ kd(x) ? x : fa);
+  upd(x);
+}
+void access(int x) {
+  for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y, upd(x);
+}
+
 }  // namespace LCT
 
 namespace Input {
