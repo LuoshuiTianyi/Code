@@ -65,6 +65,13 @@ void access(int x) {
 void makert(int x) {
   access(x), splay(x), roll(x);
 }
+void link(int x, int y) {
+  makert(x), k[x].fa = y;
+}
+void cut(int x, int y) {
+  makert(x), access(y), splay(y);
+  
+}
 }  // namespace LCT
 
 namespace Input {
