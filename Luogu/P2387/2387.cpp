@@ -75,6 +75,11 @@ int findrt(int x) {
   return x;
 }
 void link(int x, int y) {
+  makert(x), k[x].fa = y;
+}
+void cut(int x, int y) {
+  makert(x), access(y), splay(y);
+  ls(y) = k[x].fa = 0, upd(y);
 }
 int query(int x, int y) {
   makert(x), access(y), splay(y);
@@ -83,15 +88,36 @@ int query(int x, int y) {
 }  // namespace LCT
 
 namespace Input {
-void main() {}
+void main() {
+  n = cnt = read(), m = read();
+  for (int i = 1; i <= m; i++) {
+    int u = read(), v = read(), a = read(), k[++cnt].v = b = read();
+    e[cnt] = (edge){u, v, a, b};
+  }
+}
 }  // namespace Input
 
 namespace Init {
-void main() {}
+bool cmp(edge x, edge y) { return x.a < y.a; }
+void main() {
+  sort(e + n + 1, e + cnt + 1, cmp);
+}
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  for (int i = n + 1; i <= cnt; i++) {
+    int u = k[i].u, v = k[i].v;
+    if (find(u) != find(v)) {
+      LCT::link(i, u), LCT::link(i, v);
+      fa[find(u)] = find(v);
+    } else {
+      int x = LCT::query(u, v);
+      LCT::cut(x, e[x].u), LCT::cut(x, e[x].v);
+      LCT::link(i, u), LCT::link(i, v);
+    }
+  }
+}
 }  // namespace Solve
 
 int main() {
