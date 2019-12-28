@@ -52,7 +52,7 @@ void rotate(int x) {
 int stk[Max_n];
 void splay(int x) {
   int top = 0, p = x;
-  for (; nrt(x); p = k[p].fa) stk[++top] = p;
+  for (; nrt(p); p = k[p].fa) stk[++top] = p;
   stk[++top] = p;
   while (top) pushdown(stk[top--]);
   for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
@@ -74,7 +74,7 @@ void cut(int x, int y) {
 }
 int query(int x) {
   makert(n + 1), access(x), splay(x);
-  return k[x].siz;
+  return k[x].siz - 1;
 }
 }  // namespace LCT
 
@@ -89,7 +89,7 @@ namespace Solve {
 void main() {
   m = read();
   while (m--) {
-    int op = read(), x = read();
+    int op = read(), x = read() + 1;
     if (op == 1)
       printf("%d\n", LCT::query(x));
     else {
