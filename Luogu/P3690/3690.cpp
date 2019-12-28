@@ -71,7 +71,7 @@ void link(int x, int y) {
 }
 void cut(int x, int y) {
   makert(x);
-  if (findrt(y) == x && ) k[x].fa = y;
+  //if (findrt(y) == x && k[y].fa == x && ) k[x].fa = y;
 }
 }  // namespace LCT
 

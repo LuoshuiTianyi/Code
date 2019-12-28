@@ -72,7 +72,7 @@ void link(int x, int y) {
   if (findrt(y) != x) k[x].fa = y;
 }
 void cut(int x, int y) {
-  makert(x), access(y);
+  makert(x), access(y), splay(y), pushdown(y);
   if (ls(y) == x && !rs(x)) k[y].fa = rs(x) = 0, upd(x);
 }
 }  // namespace LCT
