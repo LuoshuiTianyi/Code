@@ -22,7 +22,7 @@ const int Max_n = 2e5 + 5;
 int n, m, cnt, ans = 1e9;
 int fa[Max_n];
 struct edge {
-  int u, v, a, b;
+  int u, v, a;
 } e[Max_n];
 
 int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
@@ -91,8 +91,9 @@ namespace Input {
 void main() {
   n = cnt = read(), m = read();
   for (int i = 1; i <= m; i++) {
-    int u = read(), v = read(), a = read(), k[++cnt].v = b = read();
-    e[cnt] = (edge){u, v, a, b};
+    int u = read(), v = read(), a = read();
+    k[++cnt].v = read();
+    e[cnt] = (edge){u, v, a};
   }
 }
 }  // namespace Input
@@ -106,17 +107,25 @@ void main() {
 
 namespace Solve {
 void main() {
+  for (int i = 1; i <= n; i++) fa[i] = i;
   for (int i = n + 1; i <= cnt; i++) {
-    int u = k[i].u, v = k[i].v;
+    int u = e[i].u, v = e[i].v;
     if (find(u) != find(v)) {
       LCT::link(i, u), LCT::link(i, v);
       fa[find(u)] = find(v);
     } else {
       int x = LCT::query(u, v);
-      LCT::cut(x, e[x].u), LCT::cut(x, e[x].v);
-      LCT::link(i, u), LCT::link(i, v);
+      if (k[x].v > k[i].v) {
+        LCT::cut(x, e[x].u), LCT::cut(x, e[x].v);
+        LCT::link(i, u), LCT::link(i, v);
+      }
+    }
+    if (find(1) == find(n)) {
+      ans = min(ans, e[i].a + k[LCT::query(1, n)].v);
+      cout << ans << " " << LCT::query(1, n) << endl;
     }
   }
+  cout << (ans == 1e9 ? -1 : ans);
 }
 }  // namespace Solve
 
