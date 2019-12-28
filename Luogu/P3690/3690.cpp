@@ -62,11 +62,16 @@ void makert(int x) {
 int findrt(int x) {
   access(x), splay(x), pushdown(x);
   while (ls(x)) x = ls(x), pushdown(x);
+  splay(x);
   return x;
 }
 void link(int x, int y) {
   makert(x);
-  if (findrt(y) != x) splay(y);
+  if (findrt(y) != x) k[x].fa = y;
+}
+void cut(int x, int y) {
+  makert(x);
+  if (findrt(y) == x && ) k[x].fa = y;
 }
 }  // namespace LCT
 
