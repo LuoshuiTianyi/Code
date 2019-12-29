@@ -35,7 +35,7 @@ void upd(int x) {
   k[x].c1 = ls(x) ? k[ls(x)].c1 : k[x].c;
   k[x].c2 = rs(x) ? k[rs(x)].c2 : k[x].c;
   k[x].sum = k[ls(x)].sum + k[rs(x)].sum + 1;
-  k[x].sum -= k[x].c == k[ls(x)].c2 + k[x].c == k[rs(x)].c1;
+  k[x].sum -= (k[x].c == k[ls(x)].c2) + (k[x].c == k[rs(x)].c1);
 }
 void roll(int x) {
   if (!x) return;
@@ -70,18 +70,21 @@ void access(int x) {
   for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y, upd(x);
 }
 void makert(int x) { access(x), splay(x), roll(x); }
-void link(int x, int y) { makert(x), k[x].fa = y; }
+void link(int x, int y) { 
+  cout << x << " " << y << endl;
+  makert(x), k[x].fa = y; 
+}
 void modify(int x, int y, int c) {
   makert(x), access(y), splay(y);
   col(y, c);
 }
 void Print(int x) {
   if (!x) return;
-  Print(ls(x)), cout << x << " ", Print(rs(x));
+  Print(ls(x)), cout << x << " " << k[x].c1 << " " << k[x].c2 << " " << k[x].sum << " " << k[x].c << endl, Print(rs(x));
 }
 int query(int x, int y) {
   makert(x), access(y), splay(y); 
-  Print(y), cout << endl;
+  //Print(y);
   return k[y].sum;
 }
 }  // namespace LCT
