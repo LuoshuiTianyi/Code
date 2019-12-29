@@ -25,10 +25,22 @@ struct node {
   int fa, t1, t2, c, c1, c2, sum, s[2];
 } k[Max_n];
 namespace LCT {
+void col(int x, int c) {
+  if (!x || !c) return;
+  k[x].c = c;
+}
 void upd(int x) {
-  k[x].c1 = k[ls(x)].c2, k[x].c2 = k[rs(x)].c1;
+  if (!x) return;
+  k[x].c1 = k[ls(x)].c1, k[x].c2 = k[rs(x)].c2;
   k[x].sum = k[ls(x)].sum + k[rs(x)].sum + 1;
-  k[x].sum -= k[x].c == k[x].c1 + k[x].c == k[x].c2;
+  k[x].sum -= k[x].c == k[ls(x)].c2 + k[x].c == k[rs(x)].c1;
+}
+void roll(int x) {
+  if (!x) return;
+  swap(ls(x), rs(x)), k[x].t1 ^= 1;
+  col(ls(x), k[x].t2), col(ls(x), k[x].t2), k[x].t2 = 0;
+}
+void pushdown(int x) {
 }
 }
 
