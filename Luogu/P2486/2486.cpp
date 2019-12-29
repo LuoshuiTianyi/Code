@@ -32,9 +32,8 @@ bool kd(int x) { return rs(k[x].fa) == x; }
 bool nrt(int x) { return kd(x) || ls(k[x].fa) == x; }
 void upd(int x) {
   if (!x) return;
-  k[x].c1 = k[ls(x)].c1, k[x].c2 = k[rs(x)].c2;
-  if (!ls(x)) k[x].c1 = k[x].c;
-  if (!rs(x)) k[x].c2 = k[x].c;
+  k[x].c1 = ls(x) ? k[ls(x)].c1 : k[x].c;
+  k[x].c2 = rs(x) ? k[rs(x)].c2 : k[x].c;
   k[x].sum = k[ls(x)].sum + k[rs(x)].sum + 1;
   k[x].sum -= k[x].c == k[ls(x)].c2 + k[x].c == k[rs(x)].c1;
 }
@@ -76,8 +75,13 @@ void modify(int x, int y, int c) {
   makert(x), access(y), splay(y);
   col(y, c);
 }
+void Print(int x) {
+  if (!x) return;
+  Print(ls(x)), cout << x << " ", Print(rs(x));
+}
 int query(int x, int y) {
-  makert(x), access(y), splay(y);
+  makert(x), access(y), splay(y); 
+  Print(y), cout << endl;
   return k[y].sum;
 }
 }  // namespace LCT
