@@ -69,11 +69,6 @@ void access(int x) {
 void makert(int x) {
   access(x), splay(x), roll(x);
 }
-int findrt(int x) {
-  access(x), splay(x);
-  while (ls(x)) pushdown(x), x = ls(x);
-  return x;
-}
 void link(int x, int y) {
   makert(x), k[x].fa = y;
 }
