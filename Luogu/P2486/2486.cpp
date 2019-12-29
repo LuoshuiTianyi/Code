@@ -25,10 +25,8 @@ struct node {
   int fa, t1, t2, c, c1, c2, sum, s[2];
 } k[Max_n];
 namespace LCT {
-void col(int x, int c) {
-  if (!x || !c) return;
-  k[x].c = c;
-}
+bool kd(int x) { return rs(k[x].fa) == x; }
+bool nrt(int x) { return kd(x) || ls(k[x].fa) == x; }
 void upd(int x) {
   if (!x) return;
   k[x].c1 = k[ls(x)].c1, k[x].c2 = k[rs(x)].c2;
@@ -38,19 +36,40 @@ void upd(int x) {
 void roll(int x) {
   if (!x) return;
   swap(ls(x), rs(x)), k[x].t1 ^= 1;
-  col(ls(x), k[x].t2), col(ls(x), k[x].t2), k[x].t2 = 0;
+}
+void col(int x, int c) {
+  if (!x || !c) return;
+  k[x].c = k[x].t2 = c;
 }
 void pushdown(int x) {
+  if (k[x].t1) k[x].t1 = 0, roll(ls(x)), roll(rs(x));
+  col(ls(x), k[x].t2), col(rs(x), k[x].t2), k[x].t2 = 0;
+}
+void rotate(int x) {
+  int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
+  if (nrt(y)) k[z].s[kd(y)] = x;
+  k[x].s[!s1] = y, k[y].s[s1] = z;
+  if (s2) k[s2].fa = y;
+  k[x].fa = z, k[y].fa = x, upd(y);
+}
+void Push(int x) {
+  if (nrt(x)) Push(k[x].fa);
+  pushdown(x);
+}
+void splay(int x) {
+  Push(x);
+  for (int fa = k[x].fa; nrt(x); rotate(x), x = k[x].fa)
+    if (nrt(fa)) rotate(kd(fa) ^ kd(x) ? x : fa);
+  upd(x);
+}
+void access(int x) {
+  for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y, upd(x);
 }
 }
 
 namespace Input {
 void main() {}
 }  // namespace Input
-
-namespace Init {
-void main() {}
-}  // namespace Init
 
 namespace Solve {
 void main() {}
@@ -62,6 +81,5 @@ int main() {
   freopen("2486.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
