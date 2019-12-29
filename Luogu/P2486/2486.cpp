@@ -17,7 +17,7 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 1e4 + 5;
+const int Max_n = 1e5 + 5;
 int n, m;
 
 struct node {
@@ -41,7 +41,7 @@ void roll(int x) {
 }
 void col(int x, int c) {
   if (!x || !c) return;
-  k[x].c = k[x].t2 = c;
+  k[x].c = k[x].c1 = k[x].c2 = k[x].t2 = c, k[x].sum = 1;
 }
 void pushdown(int x) {
   if (k[x].t1) k[x].t1 = 0, roll(ls(x)), roll(rs(x));
@@ -69,22 +69,14 @@ void access(int x) {
 }
 void makert(int x) { access(x), splay(x), roll(x); }
 void link(int x, int y) { 
-  //cout << x << " " << y << endl;
   makert(x), k[x].fa = y; 
 }
 void modify(int x, int y, int c) {
   makert(x), access(y), splay(y);
   col(y, c);
 }
-void Print(int x) {
-  if (!x) return;
-  pushdown(x);
-  Print(ls(x)), cout << x << " " << k[x].c1 << " " << k[x].c2 << " " << k[x].sum << " " << k[x].c << endl, Print(rs(x));
-}
 int query(int x, int y) {
   makert(x), access(y), splay(y); 
-  cout << y << " " << k[y].sum << endl;
-  //Print(y);
   return k[y].sum;
 }
 }  // namespace LCT
