@@ -37,7 +37,7 @@ void upd(int x) {
 }
 void roll(int x) {
   if (!x) return;
-  swap(ls(x), rs(x)), k[x].t1 ^= 1;
+  swap(ls(x), rs(x)), swap(k[x].c1, k[x].c2), k[x].t1 ^= 1;
 }
 void col(int x, int c) {
   if (!x || !c) return;
@@ -78,10 +78,12 @@ void modify(int x, int y, int c) {
 }
 void Print(int x) {
   if (!x) return;
-  //Print(ls(x)), cout << x << " " << k[x].c1 << " " << k[x].c2 << " " << k[x].sum << " " << k[x].c << endl, Print(rs(x));
+  pushdown(x);
+  Print(ls(x)), cout << x << " " << k[x].c1 << " " << k[x].c2 << " " << k[x].sum << " " << k[x].c << endl, Print(rs(x));
 }
 int query(int x, int y) {
   makert(x), access(y), splay(y); 
+  cout << y << " " << k[y].sum << endl;
   //Print(y);
   return k[y].sum;
 }
