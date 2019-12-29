@@ -71,7 +71,7 @@ void access(int x) {
 }
 void makert(int x) { access(x), splay(x), roll(x); }
 void link(int x, int y) { 
-  cout << x << " " << y << endl;
+  //cout << x << " " << y << endl;
   makert(x), k[x].fa = y; 
 }
 void modify(int x, int y, int c) {
@@ -80,7 +80,7 @@ void modify(int x, int y, int c) {
 }
 void Print(int x) {
   if (!x) return;
-  Print(ls(x)), cout << x << " " << k[x].c1 << " " << k[x].c2 << " " << k[x].sum << " " << k[x].c << endl, Print(rs(x));
+  //Print(ls(x)), cout << x << " " << k[x].c1 << " " << k[x].c2 << " " << k[x].sum << " " << k[x].c << endl, Print(rs(x));
 }
 int query(int x, int y) {
   makert(x), access(y), splay(y); 
