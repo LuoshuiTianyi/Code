@@ -2,8 +2,6 @@
 #include <iostream>
 using namespace std;
 #define LL long long
-#define go(G, x, i, v) \
-  for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 #define inline __inline__ __attribute__((always_inline))
 inline LL read() {
   LL x = 0, w = 1;
@@ -52,7 +50,7 @@ void pushdown(int x) {
 void rotate(int x) {
   int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
   if (nrt(y)) k[z].s[kd(y)] = x;
-  k[x].s[!s1] = y, k[y].s[s1] = z;
+  k[x].s[!s1] = y, k[y].s[s1] = s2;
   if (s2) k[s2].fa = y;
   k[x].fa = z, k[y].fa = x, upd(y);
 }
