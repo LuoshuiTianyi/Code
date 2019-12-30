@@ -22,6 +22,18 @@ inline LL read() {
 const int Max_n = 1e5 + 5, mod = 51061;
 int n, Q;
 
+struct node {
+  int fa, t1, t2, t3, siz, v, sum, s[2];
+} k[Max_n];
+namespace LCT {
+#define ls(x) k[x].s[0]
+#define rs(x) k[x].s[1]
+bool kd(int x) { return rs(k[x].fa) == x; }
+bool nrt(int x) { return kd(x) || ls(k[x].fa) == x; }
+void upd(int x) {
+}
+}
+
 namespace Input {
 void main() {}
 }  // namespace Input
