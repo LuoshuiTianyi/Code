@@ -34,6 +34,8 @@ void upd(int x) {
   k[x].sum = (k[ls(x)].sum + k[rs(x).sum] + k[x].v) % mod;
   k[x].siz = k[ls(x)].siz + k[rs(x)].siz + 1;
 }
+void pushdown(int x) {
+}
 }
 
 namespace Input {
