@@ -35,6 +35,7 @@ void upd(int x) {
   k[x].siz = k[ls(x)].siz + k[rs(x)].siz + 1;
 }
 void pushdown(int x) {
+  
 }
 }
 
