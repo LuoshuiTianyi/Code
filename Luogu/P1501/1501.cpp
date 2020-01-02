@@ -53,8 +53,8 @@ void add(int x, int v) {
 }
 void pushdown(int x) {
   if (k[x].t1) roll(ls(x)), roll(rs(x)), k[x].t1 = 0;
-  if (k[x].t2 != 1) mul(ls(x), k[x].t2), mul(rs(x), k[x].t2), k[x].t1 = 1;
-  if (k[x].t3) add(ls(x), k[x].t3), add(rs(x), k[x].t3), k[x].t1 = 0;
+  if (k[x].t2 != 1) mul(ls(x), k[x].t2), mul(rs(x), k[x].t2), k[x].t2 = 1;
+  if (k[x].t3) add(ls(x), k[x].t3), add(rs(x), k[x].t3), k[x].t3 = 0;
 }
 void rotate(int x) {
   int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
