@@ -40,12 +40,30 @@ void roll(int x) {
 void mul(int x, int v) {
   k[x].v = 1ll * k[x].v * v % mod;
   k[x].sum = 1ll * k[x].sum * v % mod;
+  k[x].t2 = 1ll * k[x].t2 * v % mod;
 }
-void add(int x) {
+void add(int x, int v) {
   (k[x].v += v) %= mod;
-  k[x].sum = 1ll * k[x].sum * v % mod;
+  (k[x].sum += 1ll * v * k[x].siz % mod) %= mod;
+  (k[x].t3 += v) %= mod;
 }
 void pushdown(int x) {
+  if (k[x].t1) roll(ls(x)), roll(rs(x)), k[x].t1 = 0;
+  if (k[x].t2 != 1) mul(ls(x)), mul(rs(x)), k[x].t1 = 1;
+  if (k[x].t3) add(ls(x)), add(rs(x)), k[x].t1 = 0;
+}
+void rotate(int x) {
+  int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
+  if (nrt(y)) k[z].s[kd(y)] = x;
+  k[x].s[!s1] = y, k[y].s[s1] = s2;
+  if (s2) k[s2].fa = y;
+  k[y].fa = x, k[x].fa = z;
+}
+void Push(int x) {
+  if (nrt(x)) Push(k[x].fa);
+  pushdown(x);
+}
+void splay(int x) {
   
 }
 }
