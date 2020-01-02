@@ -31,17 +31,22 @@ namespace LCT {
 bool kd(int x) { return rs(k[x].fa) == x; }
 bool nrt(int x) { return kd(x) || ls(k[x].fa) == x; }
 void upd(int x) {
-  k[x].sum = (k[ls(x)].sum + k[rs(x).sum] + k[x].v) % mod;
+  k[x].sum = (k[ls(x)].sum + k[rs(x)].sum + k[x].v) % mod;
   k[x].siz = k[ls(x)].siz + k[rs(x)].siz + 1;
 }
-void roll(int x) { swap(ls(x), rs(x)), k[x].t1 ^= 1; }
+void roll(int x) { 
+  if (!x) return;
+  swap(ls(x), rs(x)), k[x].t1 ^= 1; 
+}
 void mul(int x, int v) {
+  if (!x) return;
   k[x].v = 1ll * k[x].v * v % mod;
   k[x].sum = 1ll * k[x].sum * v % mod;
   k[x].t2 = 1ll * k[x].t2 * v % mod;
   k[x].t3 = 1ll * k[x].t3 * v % mod;
 }
 void add(int x, int v) {
+  if (!x) return;
   (k[x].v += v) %= mod;
   (k[x].sum += 1ll * v * k[x].siz % mod) %= mod;
   (k[x].t3 += v) %= mod;
@@ -72,9 +77,7 @@ void access(int x) {
   for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y, upd(y);
 }
 void makert(int x) { access(x), splay(x), roll(x); }
-void link(int x, int y) {
-  makert(x), k[x].fa = y;
-}
+void link(int x, int y) { makert(x), k[x].fa = y; }
 void cut(int x, int y) {
   makert(x), access(y), splay(y);
   ls(y) = k[x].fa = 0, upd(y);
@@ -95,11 +98,33 @@ int query(int x, int y) {
 namespace Input {
 void main() {
   n = read(), Q = read();
+  for (int i = 1; i <= n; i++) k[i].v = k[i].t2 = 1;
+  for (int i = 1; i < n; i++) {
+    int u = read(), v = read();
+    LCT::link(u, v);
+  }
 }
 }  // namespace Input
 
 namespace Solve {
-void main() {}
+void main() {
+  char op;
+  int u, v, a, b, x;
+  while (Q--) {
+    scanf(" %c", &op);
+    u = read(), v = read();
+    if (op == '-') {
+      a = read(), b = read();
+      LCT::cut(u, v);
+      LCT::link(a, b);
+    } else if (op == '/') {
+      printf("%d\n", LCT::query(u, v));
+    } else {
+      x = read();
+      LCT::modify(u, v, op, x);
+    }
+  }
+}
 }  // namespace Solve
 
 int main() {
@@ -108,6 +133,5 @@ int main() {
   freopen("1501.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
