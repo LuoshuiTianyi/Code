@@ -37,9 +37,13 @@ void upd(int x) {
 void roll(int x) {
   swap(ls(x), rs(x)), k[x].t1 ^= 1;
 }
-void mul(int x) {
+void mul(int x, int v) {
+  k[x].v = 1ll * k[x].v * v % mod;
+  k[x].sum = 1ll * k[x].sum * v % mod;
 }
 void add(int x) {
+  (k[x].v += v) %= mod;
+  k[x].sum = 1ll * k[x].sum * v % mod;
 }
 void pushdown(int x) {
   
