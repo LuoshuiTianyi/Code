@@ -34,13 +34,12 @@ void upd(int x) {
   k[x].sum = (k[ls(x)].sum + k[rs(x).sum] + k[x].v) % mod;
   k[x].siz = k[ls(x)].siz + k[rs(x)].siz + 1;
 }
-void roll(int x) {
-  swap(ls(x), rs(x)), k[x].t1 ^= 1;
-}
+void roll(int x) { swap(ls(x), rs(x)), k[x].t1 ^= 1; }
 void mul(int x, int v) {
   k[x].v = 1ll * k[x].v * v % mod;
   k[x].sum = 1ll * k[x].sum * v % mod;
   k[x].t2 = 1ll * k[x].t2 * v % mod;
+  k[x].t3 = 1ll * k[x].t3 * v % mod;
 }
 void add(int x, int v) {
   (k[x].v += v) %= mod;
@@ -49,27 +48,54 @@ void add(int x, int v) {
 }
 void pushdown(int x) {
   if (k[x].t1) roll(ls(x)), roll(rs(x)), k[x].t1 = 0;
-  if (k[x].t2 != 1) mul(ls(x)), mul(rs(x)), k[x].t1 = 1;
-  if (k[x].t3) add(ls(x)), add(rs(x)), k[x].t1 = 0;
+  if (k[x].t2 != 1) mul(ls(x), k[x].t2), mul(rs(x), k[x].t2), k[x].t1 = 1;
+  if (k[x].t3) add(ls(x), k[x].t3), add(rs(x), k[x].t3), k[x].t1 = 0;
 }
 void rotate(int x) {
   int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
   if (nrt(y)) k[z].s[kd(y)] = x;
   k[x].s[!s1] = y, k[y].s[s1] = s2;
   if (s2) k[s2].fa = y;
-  k[y].fa = x, k[x].fa = z;
+  k[y].fa = x, k[x].fa = z, upd(y);
 }
 void Push(int x) {
   if (nrt(x)) Push(k[x].fa);
   pushdown(x);
 }
 void splay(int x) {
-  
+  Push(x);
+  for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
+    if (nrt(fa)) rotate(kd(fa) ^ kd(x) ? fa : x);
+  upd(x);
 }
+void access(int x) {
+  for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y, upd(y);
 }
+void makert(int x) { access(x), splay(x), roll(x); }
+void link(int x, int y) {
+  makert(x), k[x].fa = y;
+}
+void cut(int x, int y) {
+  makert(x), access(y), splay(y);
+  ls(y) = k[x].fa = 0, upd(y);
+}
+void modify(int x, int y, char op, int v) {
+  makert(x), access(y), splay(y);
+  if (op == '*')
+    mul(y, v);
+  else
+    add(y, v);
+}
+int query(int x, int y) {
+  makert(x), access(y), splay(y);
+  return k[y].sum;
+}
+}  // namespace LCT
 
 namespace Input {
-void main() {}
+void main() {
+  n = read(), Q = read();
+}
 }  // namespace Input
 
 namespace Solve {
