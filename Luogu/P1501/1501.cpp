@@ -34,6 +34,13 @@ void upd(int x) {
   k[x].sum = (k[ls(x)].sum + k[rs(x).sum] + k[x].v) % mod;
   k[x].siz = k[ls(x)].siz + k[rs(x)].siz + 1;
 }
+void roll(int x) {
+  swap(ls(x), rs(x)), k[x].t1 ^= 1;
+}
+void mul(int x) {
+}
+void add(int x) {
+}
 void pushdown(int x) {
   
 }
