@@ -26,6 +26,8 @@ struct node {
   int fa, tag, s[2];
 } k[Max_n];
 namespace LCT {
+#define ls(x) k[x].s[0]
+#define rs(x) k[x].s[1]
 bool kd(int x) { return rs(k[x].fa) == x; }
 bool nrt(int x) { return kd(x) || ls(k[x].fa) == x; }
 void roll(int x) {
@@ -54,17 +56,13 @@ void splay(int x) {
 void access(int x) {
   for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y;
 }
-void makert(int x) {
-  access(x), splay(x), roll(x);
-}
+void makert(int x) { access(x), splay(x), roll(x); }
 int findrt(int x) {
   access(x), splay(x);
   while (ls(x)) x = ls(x);
   return x;
 }
-void link(int x, int y) {
-  makert(x), k[x].fa = y;
-}
+void link(int x, int y) { makert(x), k[x].fa = y; }
 void cut(int x, int y) {
   makert(x), access(y), splay(y);
   ls(y) = k[x].fa = 0;
@@ -73,19 +71,22 @@ bool query(int x, int y) {
   makert(x);
   return findrt(y) == x;
 }
-}
+}  // namespace LCT
 
 namespace Input {
-void main() {
-  n = read(), m = read();
-}
+void main() { n = read(), m = read(); }
 }  // namespace Input
 
 namespace Solve {
 void main() {
   char s[10];
+  int u, v;
   while (m--) {
     scanf(" %s", s);
+    u = read(), v = read();
+    if (s[0] == 'Q') printf("%s\n", LCT::query(u, v) ? "Yes" : "No");
+    if (s[0] == 'C') LCT::link(u, v);
+    if (s[0] == 'D') LCT::cut(u, v);
   }
 }
 }  // namespace Solve
