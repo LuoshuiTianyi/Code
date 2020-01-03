@@ -19,6 +19,9 @@ inline LL read() {
   return x * w;
 }
 
+const int Max_n = 1e4 + 5;
+int n, m;
+
 namespace Input {
 void main() {}
 }  // namespace Input
