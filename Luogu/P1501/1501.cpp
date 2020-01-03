@@ -29,6 +29,7 @@ namespace LCT {
 bool kd(int x) { return rs(k[x].fa) == x; }
 bool nrt(int x) { return kd(x) || ls(k[x].fa) == x; }
 void upd(int x) {
+  if (!x) return;
   k[x].sum = (k[ls(x)].sum + k[rs(x)].sum + k[x].v) % mod;
   k[x].siz = k[ls(x)].siz + k[rs(x)].siz + 1;
 }
