@@ -64,7 +64,7 @@ void add(int k, int x) {
 int query(int k) {
   int ans = 0;
   for (int i = k; i; i -= i & -i) (ans += c[i]) %= mod;
-  return ans;
+  return (ans + mod) % mod;
 }
 void main() {
   srand((unsigned)time(NULL));

@@ -13,9 +13,9 @@ def Chi():
     dl.append([cnt, E[0], E[1]])
 def Reset():
     Dl = choice(dl)
-    print("U", dl[0])
+    print("U", Dl[0])
     dl.remove(Dl)
-    e.append([dl[1], dl[2]])
+    e.append([Dl[1], Dl[2]])
 for i in range(m):
     op = randint(1, 3)
     if op == 1:
