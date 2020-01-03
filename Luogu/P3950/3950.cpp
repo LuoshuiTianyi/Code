@@ -99,4 +99,3 @@ int main() {
   Init::main();
   Solve::main();
 }
-
