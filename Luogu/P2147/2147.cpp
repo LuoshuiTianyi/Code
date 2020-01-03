@@ -22,12 +22,72 @@ inline LL read() {
 const int Max_n = 1e4 + 5;
 int n, m;
 
+struct node {
+  int fa, tag, s[2];
+} k[Max_n];
+namespace LCT {
+bool kd(int x) { return rs(k[x].fa) == x; }
+bool nrt(int x) { return kd(x) || ls(k[x].fa) == x; }
+void roll(int x) {
+  if (!x) return;
+  swap(ls(x), rs(x)), k[x].tag ^= 1;
+}
+void pushdown(int x) {
+  if (k[x].tag) roll(ls(x)), roll(rs(x)), k[x].tag = 0;
+}
+void rotate(int x) {
+  int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
+  if (nrt(y)) k[z].s[kd(y)] = x;
+  k[x].s[!s1] = y, k[y].s[s1] = s2;
+  if (s2) k[s2].fa = y;
+  k[y].fa = x, k[x].fa = z;
+}
+void Push(int x) {
+  if (nrt(x)) Push(k[x].fa);
+  pushdown(x);
+}
+void splay(int x) {
+  Push(x);
+  for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
+    if (nrt(fa)) rotate(kd(fa) ^ kd(x) ? x : fa);
+}
+void access(int x) {
+  for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y;
+}
+void makert(int x) {
+  access(x), splay(x), roll(x);
+}
+int findrt(int x) {
+  access(x), splay(x);
+  while (ls(x)) x = ls(x);
+  return x;
+}
+void link(int x, int y) {
+  makert(x), k[x].fa = y;
+}
+void cut(int x, int y) {
+  makert(x), access(y), splay(y);
+  ls(y) = k[x].fa = 0;
+}
+bool query(int x, int y) {
+  makert(x);
+  return findrt(y) == x;
+}
+}
+
 namespace Input {
-void main() {}
+void main() {
+  n = read(), m = read();
+}
 }  // namespace Input
 
 namespace Solve {
-void main() {}
+void main() {
+  char s[10];
+  while (m--) {
+    scanf(" %s", s);
+  }
+}
 }  // namespace Solve
 
 int main() {
