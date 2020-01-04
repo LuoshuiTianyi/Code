@@ -61,6 +61,7 @@ void main() {
   for (int i = 1; i <= n; i++) {
     Get(k[i].la), Get(k[i].ra), Get(k[i].lb), Get(k[i].rb);
     int x = rand() % mod;
+    //cout << x << endl;
     add(c1, k[i].la, x), add(c1, k[i].ra + 1, -x);
     add(c2, k[i].lb, x), add(c2, k[i].rb + 1, -x);
   }
@@ -70,8 +71,11 @@ void main() {
 namespace Solve {
 void main() {
   bool ans = 1;
-  for (int i = 1; i <= n; i++)
-    ans &= (query(c1, k[i].la) == query(c2, k[i].lb));
+  for (int i = 1; i <= n; i++) {
+    int x1 = query(c1, k[i].la), x2 = query(c2, k[i].lb);
+    int x3 = query(c1, k[i].ra), x4 = query(c2, k[i].rb);
+    ans &= ((x1 == x2) | (x1 == x4) | (x3 == x2) | (x3 == x4));
+  }
   cout << (ans ? "YES" : "NO");
 }
 }  // namespace Solve
