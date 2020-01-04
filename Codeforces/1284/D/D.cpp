@@ -24,7 +24,7 @@ inline LL read() {
 
 const int Max_n = 1e5 + 5, mod = 998244353;
 int n;
-int cnt, t[Max_n * 10], c1[Max_n * 10], c2[Max_n * 10];
+int cnt, t[Max_n * 10], c1[Max_n * 10], c2[Max_n * 10], c3[Max_n * 10], c4[Max_n * 10];
 struct q {
   int la, ra, lb, rb;
 } k[Max_n];
@@ -42,15 +42,6 @@ void main() {
 }
 }  // namespace Input
 
-void add(int *c, int k, int x) {
-  for (int i = k; i <= cnt; i += i & -i) (c[i] += x) %= mod;
-}
-int query(int *c, int k) {
-  int ans = 0;
-  for (int i = k; i; i -= i & -i) (ans += c[i]) %= mod;
-  return (ans + mod) % mod;
-}
-
 namespace Init {
 void Get(int &x) {
   x = lower_bound(t + 1, t + cnt + 1, x) - t;
@@ -61,10 +52,14 @@ void main() {
   for (int i = 1; i <= n; i++) {
     Get(k[i].la), Get(k[i].ra), Get(k[i].lb), Get(k[i].rb);
     int x = rand() % mod;
-    //cout << x << endl;
-    add(c1, k[i].la, x), add(c1, k[i].ra + 1, -x);
-    add(c2, k[i].lb, x), add(c2, k[i].rb + 1, -x);
+    cout << x << endl;
+    (c1[k[i].la] += x) %= mod, (c1[k[i].ra] += -x) %= mod;
+    (c2[k[i].lb] += x) %= mod, (c2[k[i].rb] += -x) %= mod;
+    (c3[k[i].la] += x) %= mod;
+    (c4[k[i].lb] += x) %= mod;
   }
+  for (int i = 1; i <= cnt; i++) ((c1[i] += c1[i - 1]) %= mod + mod) %= mod;
+  for (int i = 1; i <= cnt; i++) ((c2[i] += c2[i - 1]) %= mod + mod) %= mod;
 }
 }  // namespace Init
 
@@ -74,6 +69,7 @@ void main() {
   for (int i = 1; i <= n; i++) {
     int x1 = query(c1, k[i].la), x2 = query(c2, k[i].lb);
     int x3 = query(c1, k[i].ra), x4 = query(c2, k[i].rb);
+    cout << x1 << " " << x2 << " " << x3 << " " << x4 << endl;
     ans &= ((x1 == x2) | (x1 == x4) | (x3 == x2) | (x3 == x4));
   }
   cout << (ans ? "YES" : "NO");
