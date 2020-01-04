@@ -32,19 +32,25 @@ void main() {
     bool fl = 0;
     for (int j = 1; j <= tot; j++) {
       int x = read();
-      if 
+      fl |= x > Min;
       Max = max(Max, x), Min = min(Min, x);
     }
+    siz += fl;
+    if (!fl) minn[i] = Min, nu[Max]++;
+    else minn[i] = -1;
   }
+  for (int i = 1e6; ~i; i--) nu[i] += nu[i + 1];
 }
 }  // namespace Input
 
-namespace Init {
-void main() {}
-}  // namespace Init
-
 namespace Solve {
-void main() {}
+void main() {
+  for (int i = 1; i <= n; i++) {
+    if (minn[i] == -1) ans += n;
+    else ans += siz + nu[minn[i] + 1];
+  }
+  cout << ans;
+}
 }  // namespace Solve
 
 int main() {
@@ -53,6 +59,5 @@ int main() {
   freopen("B.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
