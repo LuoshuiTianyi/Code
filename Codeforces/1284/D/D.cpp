@@ -19,35 +19,22 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 2.5e5 + 5;
-int n, ans, mod;
-int fac[Max_n];
-
 namespace Input {
-void main() {
-  n = read(), mod = read();
-}
+void main() {}
 }  // namespace Input
 
 namespace Init {
-void main() {
-  fac[0] = 1;
-  for (int i = 1; i <= n; i++) fac[i] = 1ll * fac[i - 1] * i % mod;
-}
+void main() {}
 }  // namespace Init
 
 namespace Solve {
-void main() {
-  for (int i = 1; i <= n; i++)
-    (ans += 1ll * (n - i + 1) * (n - i + 1) % mod * fac[i] % mod * fac[n - i] % mod) %= mod;
-  cout << ans;
-}
+void main() {}
 }  // namespace Solve
 
 int main() {
 #ifndef ONLINE_JUDGE
-  freopen("C.in", "r", stdin);
-  freopen("C.out", "w", stdout);
+  freopen("D.in", "r", stdin);
+  freopen("D.out", "w", stdout);
 #endif
   Input::main();
   Init::main();
