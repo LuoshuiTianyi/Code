@@ -22,9 +22,9 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 1e5 + 5;
+const int Max_n = 1e5 + 5, mod = 998244353;
 int n;
-int cnt, t[Max_n], c[Max_n * 10];
+int cnt, t[Max_n], c1[Max_n * 10], c2[Max_n * 10];
 struct {
   int la, ra, lb, rb;
 } k[Max_n];
@@ -42,12 +42,37 @@ void main() {
 }
 }  // namespace Input
 
+void add(int *c, int k, int x) {
+  for (int i = k; i <= cnt; i += i & -i) (c[i] += x) %= mod;
+}
+int query(int *c, int k) {
+  int ans = 0;
+  for (int i = k; i; i -= i & -i) (ans += c[i]) %= mod;
+  return (ans + mod) % mod;
+}
+
 namespace Init {
-void main() {}
+void Get(int &x) {
+  x = lower_bound(t + 1, t + cnt + 1, x) - t;
+}
+void main() {
+  sort(t + 1, t + cnt + 1);
+  for (int i = 1; i <= n; i++) {
+    Get(k[i].la), Get(k[i].ra), Get(k[i].lb), Get(k[i].rb);
+    int x = rand() % mod;
+    add(c1, k[i].la, x), add(c1, k[i].ra + 1, -x);
+    add(c2, k[i].lb, x), add(c2, k[i].rb + 1, -x);
+  }
+}
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  bool ans = 1;
+  for (int i = 1; i <= n; i++)
+    ans &= (query(c1, k[i].la) == query(c2, k[i].lb));
+  cout << (ans ? "YES" : "NO");
+}
 }  // namespace Solve
 
 int main() {
