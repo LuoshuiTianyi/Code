@@ -19,8 +19,24 @@ inline LL read() {
   return x * w;
 }
 
+const int Maxx = 1e6 + 5;
+LL ans;
+int n, siz;
+int minn[Maxx], nu[Maxx];
+
 namespace Input {
-void main() {}
+void main() {
+  n = read();
+  for (int i = 1; i <= n; i++) {
+    int Min = 1e9, Max = -1e9, tot = read();
+    bool fl = 0;
+    for (int j = 1; j <= tot; j++) {
+      int x = read();
+      if 
+      Max = max(Max, x), Min = min(Min, x);
+    }
+  }
+}
 }  // namespace Input
 
 namespace Init {
