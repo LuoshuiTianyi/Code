@@ -42,13 +42,14 @@ bool qry(int l1, int r1, int l2, int r2) {
   return max(l1, l2) <= min(r1, r2);
 }
 bool query(q a, q b) {
-  return qry(a.la, a.ra, b.la, b.ra) ^ qry(a.lb, a.rb, b.lb, b.rb);
+  return !(qry(a.la, a.ra, b.la, b.ra) ^ qry(a.lb, a.rb, b.lb, b.rb));
 }
 void main() {
   bool ans = 1;
   for (int i = 1; i <= n; i++)
-    for (int j = 1; j <= n; j++)
+    for (int j = 1; j <= n; j++) {
       ans &= query(k[i], k[j]);
+    }
   cout << (ans ? "YES" : "NO");
 }
 }  // namespace Solve
