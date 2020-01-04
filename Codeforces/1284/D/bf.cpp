@@ -24,7 +24,7 @@ inline LL read() {
 
 const int Max_n = 1e5 + 5, mod = 998244353;
 int n;
-int cnt, t[Max_n * 10], c1[Max_n * 10], c2[Max_n * 10];
+int cnt, t[Max_n], c1[Max_n * 10], c2[Max_n * 10];
 struct q {
   int la, ra, lb, rb;
 } k[Max_n];
@@ -32,46 +32,23 @@ struct q {
 namespace Input {
 void main() {
   n = read();
-  for (int i = 1; i <= n; i++) {
+  for (int i = 1; i <= n; i++)
     k[i].la = read(), k[i].ra = read(), k[i].lb = read(), k[i].rb = read();
-    t[++cnt] = k[i].la;
-    t[++cnt] = k[i].ra;
-    t[++cnt] = k[i].lb;
-    t[++cnt] = k[i].rb;
-  }
 }
 }  // namespace Input
 
-void add(int *c, int k, int x) {
-  for (int i = k; i <= cnt; i += i & -i) (c[i] += x) %= mod;
-}
-int query(int *c, int k) {
-  int ans = 0;
-  for (int i = k; i; i -= i & -i) (ans += c[i]) %= mod;
-  return (ans + mod) % mod;
-}
-
-namespace Init {
-void Get(int &x) {
-  x = lower_bound(t + 1, t + cnt + 1, x) - t;
-}
-void main() {
-  srand((unsigned)time(NULL));
-  sort(t + 1, t + cnt + 1);
-  for (int i = 1; i <= n; i++) {
-    Get(k[i].la), Get(k[i].ra), Get(k[i].lb), Get(k[i].rb);
-    int x = rand() % mod;
-    add(c1, k[i].la, x), add(c1, k[i].ra + 1, -x);
-    add(c2, k[i].lb, x), add(c2, k[i].rb + 1, -x);
-  }
-}
-}  // namespace Init
-
 namespace Solve {
+bool qry(int l1, int r1, int l2, int r2) {
+  return max(l1, l2) <= min(r1, r2);
+}
+bool query(q a, q b) {
+  return qry(a.la, a.ra, b.la, b.ra) ^ qry(a.lb, a.rb, b.lb, b.rb);
+}
 void main() {
   bool ans = 1;
   for (int i = 1; i <= n; i++)
-    ans &= (query(c1, k[i].la) == query(c2, k[i].lb));
+    for (int j = 1; j <= n; j++)
+      ans &= query(k[i], k[j]);
   cout << (ans ? "YES" : "NO");
 }
 }  // namespace Solve
@@ -79,9 +56,8 @@ void main() {
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("D.in", "r", stdin);
-  freopen("D.out", "w", stdout);
+  freopen("D.ans", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
