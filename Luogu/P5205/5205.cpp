@@ -33,6 +33,7 @@ void main() {
 
 namespace Solve {
 int bit, len, rev[Max_n];
+int F[Max_n], inv[Max_n], ln[Max_n];
 void init(int n) {
   len = 1 << (bit = log2(n * 3) + 1);
   for (int i = 0; i < len; i++)
@@ -44,11 +45,26 @@ void dft(int *f, int t) {
   for (int l = 1; l < len; l <<= 1) {
     int Wn = ksm(G, (mod - 1) / (l << 1));
     if (t == -1) Wn = ksm(Wn);
-    for (int i = 0; i < len; i += (l << 1))
-      
+    for (int i = 0; i < len; i += (l << 1)) {
+      int Wnk = 1;
+      for (int k = i; k < i + l; k++, Wnk = 1ll * Wnk * Wn % mod) {
+        int x = f[k], y = 1ll * f[k + l] * Wnk % mod;
+        f[k] = (x + y) % mod, f[k + l] = (x - y + mod) % mod;
+      }
+    }
   }
+  if (t == -1)
+    for (int inv = ksm(len), i = 0; i < len; i++)
+      f[i] = 1ll * f[i] * inv % mod;
+}
+void Pinv(int deg, int *f, int *g) {
+  if (deg == 1) g[0] = ksm(f[0]);
+  Pinv(deg + 1 >> 1, f, g), init(deg);
+}
+void Pln(int deg, int *f, int *g) {
 }
 void main() {
+  Pln(n, a, ln);
 }
 }  // namespace Solve
 
