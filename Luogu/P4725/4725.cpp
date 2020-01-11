@@ -23,7 +23,7 @@ inline LL read() {
 const int Max_n = 6e5 + 5, mod = 998244353, G = 3;
 int n;
 
-int bit, len, rev[Max_n];
+int len, bit, rev[Max_n];
 int ksm(int a, int b = mod - 2) {
   int res = 1;
   for (; b; b >>= 1, a = 1ll * a * a % mod)
@@ -34,7 +34,6 @@ void init(int n) {
   len = 1 << (bit = log2(n) + 1);
   for (int i = 0; i < len; i++)
     rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1));
-      swap(f[rev[i]], f[i]);
 }
 struct poly {
   int f[Max_n];
@@ -46,6 +45,7 @@ struct poly {
       if (rev[i] > i) swap(f[rev[i]], f[i]);
     for (int l = 1; l < len; l <<= 1) {
       int Wn = ksm(G, (mod - 1) / (l << 1));
+      if (t == -1) Wn = ksm(Wn);
       for (int i = 0; i < len; i += l << 1) {
         int Wnk = 1;
         for (int k = i; k < i + l; k++, Wnk = 1ll * Wnk * Wn % mod) {
@@ -57,23 +57,11 @@ struct poly {
     if (t == -1)
       for (int i = 0, Inv = ksm(len); i < len; i++) f[i] = 1ll * f[i] * Inv % mod;
   }
-  poly dva(int n) {
-    poly res;
-    for (int i = 0; i < n; i++) res.f[i] = 1ll * f[i + 1] * (i + 1) % mod;
-    res.f[len - 1] = 0;
-    return res;
-  }
-  poly itg(int n) {
-    poly res;
-    for (int i = 1; i < len; i++) res.f[i] = 1ll * f[i - 1] * ksm(i) % mod;
-    res.f[0] = 0;
-    return res;
-  }
   poly inv(int n) {
     poly g, F;
     g.f[0] = ksm(f[0]);
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
-      init(len);
+      init(deg * 3);
       for (int i = 0; i < deg; i++) F.f[i] = f[i];
       for (int i = deg; i < len; i++) F.f[i] = 0;
       F.dft(1), g.dft(1);

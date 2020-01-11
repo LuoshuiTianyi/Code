@@ -28,8 +28,8 @@ int ksm(int a, int b = mod - 2) {
     if (b & 1) res = 1ll * res * a % mod;
   return res;
 }
-void init(int deg) {
-  len = 1 << (bit = log2(deg * 3) + 1);
+void init(int n) {
+  len = 1 << (bit = log2(n) + 1);
   for (int i = 0; i < len; i++)
     rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1));
 }
@@ -43,6 +43,7 @@ struct poly {
       if (rev[i] > i) swap(f[rev[i]], f[i]);
     for (int l = 1; l < len; l <<= 1) {
       int Wn = ksm(G, (mod - 1) / (l << 1));
+      if (t == -1) Wn = ksm(Wn);
       for (int i = 0; i < len; i += l << 1) {
         int Wnk = 1;
         for (int k = i; k < i + l; k++, Wnk = 1ll * Wnk * Wn % mod) {
@@ -58,7 +59,7 @@ struct poly {
     poly g, F;
     g.f[0] = ksm(f[0]);
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
-      init(len);
+      init(deg * 3);
       for (int i = 0; i < deg; i++) F.f[i] = f[i];
       for (int i = deg; i < len; i++) F.f[i] = 0;
       F.dft(1), g.dft(1);
