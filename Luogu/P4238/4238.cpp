@@ -20,18 +20,8 @@ inline LL read() {
 
 const int Max_n = 6e5 + 5, mod = 998244353, G = 3;
 int n;
-int a[Max_n], ans[Max_n];
 
-namespace Input {
-void main() {
-  n = read();
-  for (int i = 0; i < n; i++) a[i] = read();
-}
-}  // namespace Input
-
-namespace Solve {
-int bit, len, rev[Max_n];
-int F[Max_n], g[Max_n];
+int len, bit, rev[Max_n];
 int ksm(int a, int b = mod - 2) {
   int res = 1;
   for (; b; b >>= 1, a = 1ll * a * a % mod)
@@ -43,40 +33,57 @@ void init(int deg) {
   for (int i = 0; i < len; i++)
     rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1));
 }
-void dft(int *f, int t) {
-  for (int i = 0; i < len; i++)
-    if (rev[i] > i) swap(f[rev[i]], f[i]);
-  for (int l = 1; l < len; l <<= 1) {
-    int Wn = ksm(G, (mod - 1) / (l << 1));
-    if (t == -1) Wn = ksm(Wn);
-    for (int i = 0; i < len; i += l << 1) {
-      int Wnk = 1;
-      for (int k = i; k < i + l; k++, Wnk = 1ll * Wnk * Wn % mod) {
-        int x = f[k], y = 1ll * f[k + l] * Wnk % mod;
-        f[k] = (x + y) % mod, f[k + l] = (x - y + mod) % mod;
+struct poly {
+  int f[Max_n];
+  poly() {
+    for (int i = 0; i < Max_n; i++) f[i] = 0;
+  }
+  void dft(int t) {
+    for (int i = 0; i < len; i++)
+      if (rev[i] > i) swap(f[rev[i]], f[i]);
+    for (int l = 1; l < len; l <<= 1) {
+      int Wn = ksm(G, (mod - 1) / (l << 1));
+      for (int i = 0; i < len; i += l << 1) {
+        int Wnk = 1;
+        for (int k = i; k < i + l; k++, Wnk = 1ll * Wnk * Wn % mod) {
+          int x = f[k], y = 1ll * f[k + l] * Wnk % mod;
+          f[k] = (x + y) % mod, f[k + l] = (x - y + mod) % mod;
+        }
       }
     }
+    if (t == -1)
+      for (int i = 0, Inv = ksm(len); i < len; i++) f[i] = 1ll * f[i] * Inv % mod;
   }
-  if (t == -1)
-    for (int i = 0, inv = ksm(len); i < len; i++) f[i] = 1ll * f[i] * inv % mod;
-}
-void Pinv(int deg, int *f, int *g) {
-  if (deg == 1) {
-    g[0] = ksm(f[0]);
-    return;
+  poly inv(int n) {
+    poly g, F;
+    g.f[0] = ksm(f[0]);
+    for (int deg = 2; deg < (n << 1); deg <<= 1) {
+      init(len);
+      for (int i = 0; i < deg; i++) F.f[i] = f[i];
+      for (int i = deg; i < len; i++) F.f[i] = 0;
+      F.dft(1), g.dft(1);
+      for (int i = 0; i < len; i++)
+        g.f[i] = (2ll * g.f[i] % mod - 1ll * g.f[i] * g.f[i] % mod * F.f[i] % mod + mod) % mod;
+      g.dft(-1);
+      for (int i = deg; i < len; i++) g.f[i] = 0;
+    }
+    return g;
   }
-  Pinv(deg + 1 >> 1, f, g), init(deg);
-  for (int i = 0; i < deg; i++) F[i] = f[i];
-  for (int i = deg; i < len; i++) F[i] = 0;
-  dft(F, 1), dft(g, 1);
-  for (int i = 0; i < len; i++)
-    g[i] = (2ll * g[i] % mod - 1ll * g[i] * g[i] % mod * F[i] % mod + mod) % mod;
-  dft(g, -1);
-  for (int i = deg; i < len; i++) g[i] = 0;
-}
+};
+
+poly a;
+
+namespace Input {
 void main() {
-  Pinv(n, a, ans);
-  for (int i = 0; i < n; i++) printf("%d ", ans[i]);
+  n = read();
+  for (int i = 0; i < n; i++) a.f[i] = read();
+}
+}  // namespace Input
+
+namespace Solve {
+void main() {
+  poly ans = a.inv(n);
+  for (int i = 0; i < n; i++) printf("%d ", ans.f[i]);
 }
 }  // namespace Solve
 

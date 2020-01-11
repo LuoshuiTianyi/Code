@@ -41,7 +41,7 @@ struct poly {
   poly() {
     for (int i = 0; i < Max_n; i++) f[i] = 0;
   }
-  void dft(int t, int n) {
+  void dft(int t) {
     for (int i = 0; i < len; i++)
       if (rev[i] > i) swap(f[rev[i]], f[i]);
     for (int l = 1; l < len; l <<= 1) {
@@ -76,8 +76,13 @@ struct poly {
       init(len);
       for (int i = 0; i < deg; i++) F.f[i] = f[i];
       for (int i = deg; i < len; i++) F.f[i] = 0;
-      
+      F.dft(1), g.dft(1);
+      for (int i = 0; i < len; i++)
+        g.f[i] = (2ll * g.f[i] % mod - 1ll * g.f[i] * g.f[i] % mod * F.f[i] % mod + mod) % mod;
+      g.dft(-1);
+      for (int i = deg; i < len; i++) g.f[i] = 0;
     }
+    return g;
   }
 };
 
