@@ -40,7 +40,8 @@ int ksm(int a, int b = mod - 2) {
 }
 void init(int deg) {
   len = 1 << (bit = log2(deg * 3) + 1);
-  for (int i = 0; i < len; i++) rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1));
+  for (int i = 0; i < len; i++)
+    rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1));
 }
 void dft(int *f, int t) {
   for (int i = 0; i < len; i++)
