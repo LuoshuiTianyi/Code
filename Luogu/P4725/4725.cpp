@@ -30,13 +30,18 @@ int ksm(int a, int b = mod - 2) {
     if (b & 1) res = 1ll * res * a % mod;
   return res;
 }
+void init(int n) {
+  len = 1 << (bit = log2(n) + 1);
+  for (int i = 0; i < len; i++)
+    if (rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1)) > i)
+      swap(f[rev[i]], f[i]);
+}
 struct poly {
   int f[Max_n];
-  void dft(int t, int n) {
-    len = 1 << (bit = log2(n) + 1);
-    for (int i = 0; i < len; i++)
-      if (rev[i] = rev[i >> 1] >> 1 | ((i & 1) << (bit - 1)) > i)
-        swap(f[rev[i]], f[i]);
+  poly() {
+    for (int i = 0; i < Max_n; i++) f[i] = 0;
+  }
+  void dft(int t, int n, int len, int *rev) {
     for (int l = 1; l < len; l <<= 1) {
       int Wn = ksm(G, (mod - 1) / (l << 1));
       for (int i = 0; i < len; i += l << 1) {
@@ -63,7 +68,11 @@ struct poly {
     return res;
   }
   poly inv(int n) {
-    poly g;
+    poly g, F;
+    g.f[0] = ksm(f[0]);
+    for (int len = 2; len < (n << 1); len <<= 1) {
+      for (int 
+    }
   }
 };
 
