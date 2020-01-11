@@ -38,6 +38,9 @@ void init(int n) {
 struct poly {
   int f[Max_n];
   poly() {
+    Init();
+  }
+  void Init() {
     for (int i = 0; i < Max_n; i++) f[i] = 0;
   }
   void dft(int t) {
