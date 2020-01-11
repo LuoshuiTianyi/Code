@@ -33,7 +33,7 @@ void main() {
 
 namespace Solve {
 int bit, len, rev[Max_n];
-int F[Max_n], inv[Max_n], ln[Max_n];
+int F[Max_n], inv[Max_n], sqr[Max_n];
 void init(int n) {
   len = 1 << (bit = log2(n * 3) + 1);
   for (int i = 0; i < len; i++)
@@ -54,17 +54,27 @@ void dft(int *f, int t) {
     }
   }
   if (t == -1)
-    for (int inv = ksm(len), i = 0; i < len; i++)
-      f[i] = 1ll * f[i] * inv % mod;
+    for (int inv = ksm(len), i = 0; i < len; i++) f[i] = 1ll * f[i] * inv % mod;
 }
 void Pinv(int deg, int *f, int *g) {
   if (deg == 1) g[0] = ksm(f[0]);
   Pinv(deg + 1 >> 1, f, g), init(deg);
+  for (int i = 0; i < deg; i++) F[i] = f[i];
+  for (int i = deg; i < len; i++) F[i] = 0;
+  dft(F, 1), dft(g, 1);
+  for (int i = 0; i < len; i++)
+    g[i] = (2ll * g[i] % mod - 1ll * g[i] * g[i] % mod * F[i] % mod + mod) % mod;
+  dft(g, -1);
+  for (int i = deg; i < len; i++) g[i] = 0;
 }
-void Pln(int deg, int *f, int *g) {
+void Psqr(int deg, int *f, int *g) {
+  if (deg == 1) g[0] = 1;
+  Psqr(deg + 1 >> 1, f, g), init(deg);
+  for (int i = 0; i < deg; i++) F[i] = f[i];
+  for (int i = deg; i < len; i++) F[i] = 0;
+  dft(F, 1), dft(g, 1), Pinv(deg, g, inv);
 }
-void main() {
-  Pln(n, a, ln);
+void main() { 
 }
 }  // namespace Solve
 
