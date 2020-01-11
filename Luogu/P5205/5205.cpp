@@ -76,7 +76,7 @@ struct poly {
     poly g, F, Inv;
     g.f[0] = 1;
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
-      Inv = g.inv(deg), init(deg * 3);
+      Inv = g.inv(deg);//, init(deg * 3);
       //for (int i = 0; i < deg; i++) F.f[i] = f[i];
       //for (int i = deg; i < len; i++) F.f[i] = 0;
       //F.dft(1), g.dft(1), Inv.dft(1);
