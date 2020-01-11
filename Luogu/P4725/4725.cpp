@@ -71,6 +71,7 @@ struct poly {
     poly g, F;
     g.f[0] = ksm(f[0]);
     for (int len = 2; len < (n << 1); len <<= 1) {
+      init(len);
       for (int 
     }
   }
