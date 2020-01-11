@@ -38,6 +38,9 @@ void init(int n) {
 struct poly {
   int f[Max_n];
   poly() {
+    Init();
+  }
+  void Init() {
     for (int i = 0; i < Max_n; i++) f[i] = 0;
   }
   void dft(int t) {
@@ -58,7 +61,8 @@ struct poly {
       for (int i = 0, Inv = ksm(len); i < len; i++) f[i] = 1ll * f[i] * Inv % mod;
   }
   poly inv(int n) {
-    poly g, F;
+    static poly g, F;
+    g.Init(), F.Init();
     g.f[0] = ksm(f[0]);
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
       init(deg * 3);
@@ -73,19 +77,19 @@ struct poly {
     return g;
   }
   poly sqrt(int n) {
-    cerr << n << endl;
-    poly g, F, Inv;
+    static poly g, F, Inv;
+    g.Init(), F.Init(), Inv.Init();
     g.f[0] = 1;
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
-      Inv = g.inv(deg);//, init(deg * 3);
-      //for (int i = 0; i < deg; i++) F.f[i] = f[i];
-      //for (int i = deg; i < len; i++) F.f[i] = 0;
-      //F.dft(1), g.dft(1), Inv.dft(1);
-      //for (int i = 0; i < len; i++)
-      //  g.f[i] = 1ll * Inv.f[i] * (1ll * g.f[i] * g.f[i] % mod + F.f[i]) % mod;
-      //g.dft(-1);
-      //for (int i = 0, iv = ksm(2); i < deg; i++) g.f[i] = 1ll * g.f[i] * iv % mod;
-      //for (int i = deg; i < len; i++) g.f[i] = 0;
+      Inv = g.inv(deg), init(deg * 3);
+      for (int i = 0; i < deg; i++) F.f[i] = f[i];
+      for (int i = deg; i < len; i++) F.f[i] = 0;
+      F.dft(1), g.dft(1), Inv.dft(1);
+      for (int i = 0; i < len; i++)
+        g.f[i] = 1ll * Inv.f[i] * (1ll * g.f[i] * g.f[i] % mod + F.f[i]) % mod;
+      g.dft(-1);
+      for (int i = 0, iv = ksm(2); i < deg; i++) g.f[i] = 1ll * g.f[i] * iv % mod;
+      for (int i = deg; i < len; i++) g.f[i] = 0;
     }
     return g;
   }
