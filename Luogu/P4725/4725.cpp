@@ -19,19 +19,19 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 1e5 + 5;
+const int Max_n = 6e5 + 5;
 int n;
 
 namespace Input {
-void main() {}
+void main() {
+  n = read();
+  for (int i = 0; i < n; i++) a[i] = read();
+}
 }  // namespace Input
 
-namespace Init {
-void main() {}
-}  // namespace Init
-
 namespace Solve {
-void main() {}
+void main() {
+}
 }  // namespace Solve
 
 int main() {
@@ -40,6 +40,5 @@ int main() {
   freopen("4725.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
