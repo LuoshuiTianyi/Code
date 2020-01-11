@@ -73,6 +73,7 @@ struct poly {
     return g;
   }
   poly sqrt(int n) {
+    cerr << n << endl;
     poly g, F, Inv;
     g.f[0] = 1;
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
