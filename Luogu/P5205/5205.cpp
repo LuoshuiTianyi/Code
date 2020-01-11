@@ -83,12 +83,17 @@ void Psqr(int deg, int *f, int *g) {
   }
   Psqr(deg + 1 >> 1, f, g), Pinv(deg, g, inv), init(deg);
   for (int i = 0; i < deg; i++) sqrF[i] = f[i];
-  for (int i = deg; i < len; i++) sqrF[i] = 0;
+  for (int i = 0; i < deg; i++) cout << inv[i] << " ";
+  cout << endl;
   dft(sqrF, 1), dft(g, 1), dft(inv, 1);
   for (int i = 0; i < len; i++)
     g[i] = 1ll * (1ll * g[i] * g[i] % mod + sqrF[i]) * inv[i] % mod;
   dft(g, -1);
-  for (int i = 0, Inv = ksm(2); i < deg; i++) g[i] = 1ll * g[i] * Inv % mod;
+  for (int i = 0, Inv = ksm(2); i < deg; i++) {
+    g[i] = 1ll * g[i] * Inv % mod;
+    //cout << g[i] << " ";
+  }
+  //cout << endl;
   for (int i = deg; i < len; i++) g[i] = 0;
 }
 void main() { 
