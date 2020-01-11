@@ -81,8 +81,12 @@ void Psqr(int deg, int *f, int *g) {
     g[0] = 1;
     return;
   }
-  Psqr(deg + 1 >> 1, f, g), Pinv(deg, g, inv), init(deg);
+  Psqr(deg + 1 >> 1, f, g);
+  for (int i = 0; i < deg << 1; i++) inv[i] = 0;
+  Pinv(deg, g, inv);
   for (int i = 0; i < deg; i++) sqrF[i] = f[i];
+  for (int i = 0; i < deg; i++) cout << sqrF[i] << " ";
+  cout << endl;
   for (int i = 0; i < deg; i++) cout << inv[i] << " ";
   cout << endl;
   dft(sqrF, 1), dft(g, 1), dft(inv, 1);
@@ -91,16 +95,16 @@ void Psqr(int deg, int *f, int *g) {
   dft(g, -1);
   for (int i = 0, Inv = ksm(2); i < deg; i++) {
     g[i] = 1ll * g[i] * Inv % mod;
-    //cout << g[i] << " ";
+    cout << g[i] << " ";
   }
-  //cout << endl;
+  cout << endl;
   for (int i = deg; i < len; i++) g[i] = 0;
 }
 void main() { 
   Psqr(n, a, sqr);
-  init(n), dft(sqr, 1);
-  for (int i = 0; i < len; i++) sqr[i] = 1ll * sqr[i] * sqr[i] % mod;
-  dft(sqr, -1);
+  //init(n), dft(sqr, 1);
+  //for (int i = 0; i < len; i++) sqr[i] = 1ll * sqr[i] * sqr[i] % mod;
+  //dft(sqr, -1);
   for (int i = 0; i < n; i++) printf("%d ", sqr[i]);
 }
 }  // namespace Solve

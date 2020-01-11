@@ -91,14 +91,20 @@ void getsqrt(int *a, int *b, int len) {
   getrev(l, L);
   rep(i, 0, len - 1) D[i] = a[i];
   rep(i, len, l - 1) D[i] = 0;
+  for (int i = 0; i < len; i++) cout << D[i] << " ";
+  cout << endl;
+  for (int i = 0; i < len; i++) cout << F[i] << " ";
+  cout << endl;
   NTT(D, l, 1), NTT(b, l, 1), NTT(F, l, 1);
   rep(i, 0, l - 1) b[i] = mul(inc(b[i], mul(D[i], F[i])), inv2);
   NTT(b, l, 0);
+  for (int i = 0; i < len; i++) cout << b[i] << " ";
+  cout << endl;
   rep(i, len, l - 1) b[i] = 0;
 }
 int main() {
   freopen("5205.in", "r", stdin);
-  freopen("5205.out", "w", stdout);
+  freopen("5205.ans", "w", stdout);
   n = read(), inv2 = qpow(2, mod - 2);
   rep(i, 0, n - 1) A[i] = read();
   getsqrt(A, B, n);
