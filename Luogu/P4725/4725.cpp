@@ -47,6 +47,23 @@ struct poly {
         }
       }
     }
+    if (t == -1)
+      for (int i = 0, Inv = ksm(len); i < len; i++) f[i] = 1ll * f[i] * Inv % mod;
+  }
+  poly dva(int n) {
+    poly res;
+    for (int i = 0; i < n; i++) res.f[i] = 1ll * f[i + 1] * (i + 1) % mod;
+    res.f[len - 1] = 0;
+    return res;
+  }
+  poly itg(int n) {
+    poly res;
+    for (int i = 1; i < len; i++) res.f[i] = 1ll * f[i - 1] * ksm(i) % mod;
+    res.f[0] = 0;
+    return res;
+  }
+  poly inv(int n) {
+    poly g;
   }
 };
 
