@@ -31,6 +31,7 @@ void main() {
 
 namespace Solve {
 int bit, len, rev[Max_n];
+int F[Max_n], g[Max_n];
 int ksm(int a, int b = mod - 2) {
   int res = 1;
   for (; b; b >>= 1, a = 1ll * a * a % mod)
@@ -64,6 +65,11 @@ void Pinv(int deg, int *f, int *g) {
     g[0] = ksm(f[0]);
     return;
   }
+  Pinv(deg + 1 >> 1, f, g), init(deg);
+  for (int i = 0; i < deg; i++) F[i] = f[i];
+  for (int i = deg; i < len; i++) F[i] = 0;
+  dft(F, 1), dft(g, 1);
+  for (int i = 
 }
 void main() {
 }
