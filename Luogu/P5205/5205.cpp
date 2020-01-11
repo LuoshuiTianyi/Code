@@ -22,7 +22,6 @@ inline LL read() {
 
 const int Max_n = 6e5 + 5, mod = 998244353, G = 3;
 int n;
-int a[Max_n];
 
 int len, bit, rev[Max_n];
 int ksm(int a, int b = mod - 2) {
@@ -74,22 +73,36 @@ struct poly {
     return g;
   }
   poly sqrt(int n) {
-    poly g, F, inv;
+    poly g, F, Inv;
     g.f[0] = 1;
-    for (int deg = 2; deg < (n << 1); deg <<= 1) {
-      init(deg * 3);
-    }
+    //for (int deg = 2; deg < (n << 1); deg <<= 1) {
+    //  Inv = g.inv(deg), init(deg * 3);
+    //  for (int i = 0; i < deg; i++) F.f[i] = f[i];
+    //  for (int i = deg; i < len; i++) F.f[i] = 0;
+    //  F.dft(1), g.dft(1), Inv.dft(1);
+    //  for (int i = 0; i < len; i++)
+    //    g.f[i] = 1ll * Inv.f[i] * (1ll * g.f[i] * g.f[i] % mod + F.f[i]) % mod;
+    //  g.dft(-1);
+    //  for (int i = 0, iv = ksm(2); i < deg; i++) g.f[i] = 1ll * g.f[i] * iv % mod;
+    //  for (int i = deg; i < len; i++) g.f[i] = 0;
+    //}
+    return g;
   }
 };
+
+poly a, ans;
 
 namespace Input {
 void main() {
   n = read();
+  for (int i = 0; i < n; i++) a.f[i] = read();
 }
 }  // namespace Input
 
 namespace Solve {
-void main() { 
+void main() {
+  ans = a.sqrt(n);
+  //for (int i = 0; i < n; i++) printf("%d ", ans.f[i]);
 }
 }  // namespace Solve
 
