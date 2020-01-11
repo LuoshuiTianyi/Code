@@ -33,7 +33,7 @@ void main() {
 
 namespace Solve {
 int bit, len, rev[Max_n];
-int F[Max_n], inv[Max_n], sqr[Max_n];
+int invF[Max_n], sqrF[Max_n], inv[Max_n], sqr[Max_n];
 int ksm(int a, int b = mod - 2) {
   int res = 1;
   for (; b; b >>= 1, a = 1ll * a * a % mod)
@@ -68,11 +68,11 @@ void Pinv(int deg, int *f, int *g) {
     return;
   }
   Pinv(deg + 1 >> 1, f, g), init(deg);
-  for (int i = 0; i < deg; i++) F[i] = f[i];
-  for (int i = deg; i < len; i++) F[i] = 0;
-  dft(F, 1), dft(g, 1);
+  for (int i = 0; i < deg; i++) invF[i] = f[i];
+  for (int i = deg; i < len; i++) invF[i] = 0;
+  dft(invF, 1), dft(g, 1);
   for (int i = 0; i < len; i++)
-    g[i] = (2ll * g[i] % mod - 1ll * g[i] * g[i] % mod * F[i] % mod + mod) % mod;
+    g[i] = (2ll * g[i] % mod - 1ll * g[i] * g[i] % mod * invF[i] % mod + mod) % mod;
   dft(g, -1);
   for (int i = deg; i < len; i++) g[i] = 0;
 }
@@ -81,17 +81,22 @@ void Psqr(int deg, int *f, int *g) {
     g[0] = 1;
     return;
   }
-  Psqr(deg + 1 >> 1, f, g), Pinv(1 << (int)(log2(deg * 3) + 1), g, inv), init(deg);
-  for (int i = 0; i < deg; i++) F[i] = f[i];
-  for (int i = deg; i < len; i++) F[i] = 0;
-  dft(F, 1), dft(g, 1);
+  Psqr(deg + 1 >> 1, f, g);
+  Pinv(1 << (int)log2(deg * 3), g, inv), init(deg);
+  for (int i = 0; i < deg; i++) sqrF[i] = f[i];
+  for (int i = deg; i < len; i++) sqrF[i] = 0;
+  dft(sqrF, 1), dft(g, 1);
   for (int i = 0; i < len; i++)
-    g[i] = 1ll * (1ll * g[i] * g[i] % mod + F[i]) * inv[i] % mod;
+    g[i] = 1ll * (1ll * g[i] * g[i] % mod + sqrF[i]) * inv[i] % mod;
   dft(g, -1);
+  for (int i = 0, Inv = ksm(2); i < deg; i++) g[i] = 1ll * g[i] * Inv % mod;
   for (int i = deg; i < len; i++) g[i] = 0;
 }
 void main() { 
   Psqr(n, a, sqr);
+  init(n), dft(sqr, 1);
+  for (int i = 0; i < len; i++) sqr[i] = 1ll * sqr[i] * sqr[i] % mod;
+  dft(sqr, -1);
   for (int i = 0; i < n; i++) printf("%d ", sqr[i]);
 }
 }  // namespace Solve
