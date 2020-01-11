@@ -51,7 +51,7 @@ void dft(int *f, int t) {
     for (int i = 0; i < len; i += l << 1) {
       int Wnk = 1;
       for (int k = i; k < i + l; k++, Wnk = 1ll * Wnk * Wn % mod) {
-        int x = f[k], y = f[k + l];
+        int x = f[k], y = 1ll * f[k + l] * Wnk % mod;
         f[k] = (x + y) % mod, f[k + l] = (x - y + mod) % mod;
       }
     }
