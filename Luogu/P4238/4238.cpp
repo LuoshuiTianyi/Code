@@ -70,8 +70,7 @@ void Pinv(int deg, int *f, int *g) {
   for (int i = deg; i < len; i++) F[i] = 0;
   dft(F, 1), dft(g, 1);
   for (int i = 0; i < len; i++)
-    g[i] =
-        (2ll * g[i] % mod - 1ll * g[i] * g[i] % mod * F[i] % mod + mod) % mod;
+    g[i] = (2ll * g[i] % mod - 1ll * g[i] * g[i] % mod * F[i] % mod + mod) % mod;
   dft(g, -1);
   for (int i = deg; i < len; i++) g[i] = 0;
 }

@@ -81,11 +81,10 @@ void Psqr(int deg, int *f, int *g) {
     g[0] = 1;
     return;
   }
-  Psqr(deg + 1 >> 1, f, g);
-  Pinv(1 << (int)log2(deg * 3), g, inv), init(deg);
+  Psqr(deg + 1 >> 1, f, g), Pinv(deg, g, inv), init(deg);
   for (int i = 0; i < deg; i++) sqrF[i] = f[i];
   for (int i = deg; i < len; i++) sqrF[i] = 0;
-  dft(sqrF, 1), dft(g, 1);
+  dft(sqrF, 1), dft(g, 1), dft(inv, 1);
   for (int i = 0; i < len; i++)
     g[i] = 1ll * (1ll * g[i] * g[i] % mod + sqrF[i]) * inv[i] % mod;
   dft(g, -1);
