@@ -32,34 +32,40 @@ int ksm(int a, int b = mod - 2) {
 
 namespace Poly {
 int bit, len, rev[Max_n];
-typedef int poly[Max_n];
-void Init(int *f) {
-  for (int i = 0; i < Max_n; i++) f[i] = 0;
-}
+int Gp[Max_n], iG[Max_n];
+struct poly {
+  int f[Max_n];
+  inline int& operator[](int x) {
+    return f[x];
+  }
+  void Init() {
+    for (int i = 0; i < Max_n; i++) f[i] = 0;
+  }
+  void dft(int t) {
+    for (int i = 0; i < len; i++)
+      if (rev[i] > i) swap(f[i], f[rev[i]]);
+    for (int l = 1; l < len; l <<= 1) {
+      int Wn = (mod - 1) / (l << 1);
+      if (t == -1) Wn = ksm(Wn);
+      for (int i = 0; i < len; i += l << 1) {
+        int Wnk = 1;
+        for (int k = i; k < i + l; k++, Wnk = 1ll * Wnk * Wn % mod) {
+          int x = f[k], y = 1ll * f[k + l] * Wnk % mod;
+          f[k] = (x + y) % mod, f[k + l] = (x - y + mod) % mod;
+        }
+      }
+    }
+    if (t == -1)
+      for (int i = 0, Inv = ksm(len); i < len; i++) 
+        f[i] = 1ll * f[i] * Inv % mod;
+  }
+};
 void init(int n) {
   len = 1 << (bit = log2(n) + 1);
   for (int i = 0; i < len; i++)
     rev[i] = rev[i >> 1] >> 1 | ((i & 1) << bit - 1);
 }
-void dft(int *f, int t) {
-  for (int i = 0; i < len; i++)
-    if (rev[i] > i) swap(f[i], f[rev[i]]);
-  for (int l = 1; l < len; l <<= 1) {
-    int Wn = ksm(G, (mod - 1) / (l << 1));
-    if (t == -1) Wn = ksm(Wn);
-    for (int i = 0; i < len; i += l << 1) {
-      int Wnk = 1;
-      for (int k = i; k < i + l; k++, Wnk = 1ll * Wnk * Wn % mod) {
-        int x = f[k], y = 1ll * f[k + l] * Wnk % mod;
-        f[k] = (x + y) % mod, f[k + l] = (x - y + mod) % mod;
-      }
-    }
-  }
-  if (t == -1)
-    for (int i = 0, Inv = ksm(len); i < len; i++) 
-      f[i] = 1ll * f[i] * Inv % mod;
-}
-void inv(int n, int *f, int *g) {
+void inv(int n, poly f, poly &g) {
   static poly F;
   F.Init(), g.Init();
   g[0] = ksm(f[0]);
@@ -116,6 +122,13 @@ void main() {
 }
 }  // namespace Input
 
+namespace Init {
+void main() {
+  Gp[0] = 1;
+  for (int i = 1; i < Max_n; i++) Gp[i] = 1ll * Gp[i - 1] * G % mod;
+}
+}
+
 namespace Solve {
 void main() {
   exp(n, a, ans);
@@ -129,5 +142,6 @@ int main() {
   freopen("4726.out", "w", stdout);
 #endif
   Input::main();
+  Init::main();
   Solve::main();
 }
