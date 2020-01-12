@@ -60,9 +60,19 @@ struct poly {
     if (t == -1)
       for (int i = 0, Inv = ksm(len); i < len; i++) f[i] = 1ll * f[i] * Inv % mod;
   }
+  poly dat(int n) {
+    poly g;
+    for (int i = 0; i < n - 1; i++) g.f[i] = 1ll * (i + 1) * f[i + 1] % mod;
+    return g;
+  }
+  poly itg(int n) {
+    poly g;
+    for (int i = 1; i < n; i++) g.f[i] = 1ll * f[i - 1] * ksm(i) % mod;
+    return g;
+  }
   poly inv(int n) {
-    poly g, F;
-    g.f[0] = ksm(f[0]);
+    static poly g, F;
+    g.Init(), F.Init(), g.f[0] = ksm(f[0]);
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
       init(deg * 3);
       for (int i = 0; i < deg; i++) F.f[i] = f[i];
