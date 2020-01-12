@@ -61,6 +61,12 @@ struct poly {
   poly inv(int n) {
     static poly g, F;
     g.init(), F.init();
+    g.f[0] = ksm(f[0]);
+    for (int deg = 2; deg < (n << 1); deg++) {
+      init(deg * 3);
+      for (int i = 0; i < deg; i++) F.f[i] = f[i];
+      for (int i = deg; i < len; i++) F.f[i] = 0;
+    }
   }
   poly dat(int n) {
     static poly g;
