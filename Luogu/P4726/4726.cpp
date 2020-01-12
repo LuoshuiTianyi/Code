@@ -32,7 +32,7 @@ int ksm(int a, int b = mod - 2) {
 
 namespace Poly {
 int bit, len, rev[Max_n];
-int gp[Max_n];
+int gp[Max_n], Inv[Max_n];
 struct poly {
   int f[Max_n];
   inline int& operator[](int x) {
@@ -48,7 +48,8 @@ struct poly {
       int Wn = Len / (l << 1);
       for (int i = 0; i < len; i += l << 1) {
         for (int k = i; k < i + l; k++) {
-          int x = f[k], y = 1ll * f[k + l] * Wnk % mod;
+          int x = f[k], p = (k - i) * Wn;
+          int y = 1ll * f[k + l] * (t == -1 ? gp[Len - p] : gp[p]) % mod;
           f[k] = (x + y) % mod, f[k + l] = (x - y + mod) % mod;
         }
       }
@@ -122,9 +123,10 @@ void main() {
 
 namespace Init {
 void main() {
-  gp[0] = 1;
+  Inv[0] = gp[0] = 1;
   int g = ksm(G, (mod - 1) / Len);
   for (int i = 1; i <= Len; i++) gp[i] = 1ll * gp[i - 1] * g % mod;
+  for (int i = 1; i < Max_n; i++) Inv[i] = -1ll * (mod / i) * inv[mod % i] % mod;
 }
 }
 
