@@ -19,7 +19,21 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 1e5 + 5;
+const int Max_n = 6e5 + 5, mod = 998244353, G = 3;
+int n;
+
+int bit, len, rev[Max_n];
+int ksm(int a, int b = mod - 2) {
+}
+struct poly {
+  int f[Max_n];
+  void init() {
+    for (int i = 0; i < Max_n; i++) f[i] = 0;
+  }
+  void dft(int t) {
+    
+  }
+};
 
 namespace Input {
 void main() {}
