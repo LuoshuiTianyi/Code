@@ -1,3 +1,4 @@
+#include <cmath>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -24,6 +25,15 @@ int n;
 
 int bit, len, rev[Max_n];
 int ksm(int a, int b = mod - 2) {
+  int res = 1;
+  for (; b; b >>= 1, a = 1ll * a * a % mod)
+    if (b & 1) res = 1ll * res * a % mod;
+  return res;
+}
+void init(int n) {
+  len = 1 << (bit = log2(n) + 1);
+  for (int i = 0; i < len; i++) 
+    rev[i] = rev[i >> 1] >> 1 | ((i & 1) << bit - 1);
 }
 struct poly {
   int f[Max_n];
@@ -31,7 +41,11 @@ struct poly {
     for (int i = 0; i < Max_n; i++) f[i] = 0;
   }
   void dft(int t) {
-    
+    for (int i = 0; i < len; i++)
+      if (rev[i] > i) swap(f[i], f[rev[i]]);
+    for (int l = 1; l < len; l++) {
+      int Wn = ksm(G, (mod - 1) / (l << 1));
+    }
   }
 };
 
@@ -52,6 +66,7 @@ int main() {
   freopen("4726.in", "r", stdin);
   freopen("4726.out", "w", stdout);
 #endif
+  int i = 0;
   Input::main();
   Init::main();
   Solve::main();
