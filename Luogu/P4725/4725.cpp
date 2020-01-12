@@ -3,8 +3,6 @@
 #include <iostream>
 using namespace std;
 #define LL long long
-#define go(G, x, i, v) \
-  for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 #define inline __inline__ __attribute__((always_inline))
 inline LL read() {
   LL x = 0, w = 1;
@@ -85,17 +83,30 @@ struct poly {
     }
     return g;
   }
+  poly ln(int n) {
+    static poly g, df, Inv;
+    g.Init(), Inv.Init();
+    df = dat(n), Inv = inv(n), init(n * 2);
+    df.dft(1), Inv.dft(1);
+    for (int i = 0; i < len; i++) g.f[i] = 1ll * df.f[i] * Inv.f[i] % mod;
+    g.dft(-1);
+    return g.itg(n);
+  }
 };
+
+poly a, ans;
 
 namespace Input {
 void main() {
   n = read();
-  for (int i = 0; i < n; i++) a[i] = read();
+  for (int i = 0; i < n; i++) a.f[i] = read();
 }
 }  // namespace Input
 
 namespace Solve {
 void main() {
+  ans = a.ln(n);
+  for (int i = 0; i < n; i++) printf("%d ", ans.f[i]);
 }
 }  // namespace Solve
 
