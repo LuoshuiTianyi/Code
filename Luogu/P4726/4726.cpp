@@ -58,6 +58,10 @@ struct poly {
       for (int i = 0, Inv = ksm(len); i < len; i++) 
         f[i] = 1ll * f[i] * Inv % mod;
   }
+  poly inv(int n) {
+    static poly g, F;
+    g.init(), F.init();
+  }
   poly dat(int n) {
     static poly g;
     g.init();
