@@ -44,7 +44,7 @@ struct poly {
   void dft(int t) {
     for (int i = 0; i < len; i++)
       if (rev[i] > i) swap(f[i], f[rev[i]]);
-    for (int l = 1; l < len; l++) {
+    for (int l = 1; l < len; l <<= 1) {
       int Wn = ksm(G, (mod - 1) / (l << 1));
       if (t == -1) Wn = ksm(Wn);
       for (int i = 0; i < len; i += (l << 1)) {
@@ -73,16 +73,19 @@ struct poly {
       g.dft(-1);
       for (int i = deg; i < len; i++) g[i] = 0;
     }
+    return g;
   }
   poly dat(int n) {
     static poly g;
     g.Init();
-    for (int i = 0; i < n - 1; i++) g[i] = 1ll * (i + 1) * f[i] % mod;
+    for (int i = 0; i < n - 1; i++) g[i] = 1ll * (i + 1) * f[i + 1] % mod;
+    return g;
   }
   poly itg(int n) {
     static poly g;
     g.Init();
     for (int i = 1; i < n; i++) g[i] = 1ll * ksm(i) * f[i - 1] % mod;
+    return g;
   }
   poly ln(int n) {
     static poly df, g, Inv;
@@ -105,6 +108,7 @@ struct poly {
       g.dft(-1);
       for (int i = deg; i < len; i++) g[i] = 0;
     }
+    return g;
   }
 };
 
