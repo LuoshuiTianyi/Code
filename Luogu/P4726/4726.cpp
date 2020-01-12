@@ -37,7 +37,7 @@ void init(int n) {
 }
 struct poly {
   int f[Max_n];
-  inline int operator[](int x) { return f[x]; }
+  inline int& operator[](int x) { return f[x]; }
   void Init() {
     for (int i = 0; i < Max_n; i++) f[i] = 0;
   }
@@ -62,42 +62,51 @@ struct poly {
   poly inv(int n) {
     static poly g, F;
     g.Init(), F.Init();
-    g(0) = ksm(f[0]);
-    for (int deg = 2; deg < (n << 1); deg++) {
+    g[0] = ksm(f[0]);
+    for (int deg = 2; deg < (n << 1); deg <<= 1) {
       init(deg * 3);
-      for (int i = 0; i < deg; i++) F.f[i] = f[i];
-      for (int i = deg; i < len; i++) F.f[i] = 0;
+      for (int i = 0; i < deg; i++) F[i] = f[i];
+      for (int i = deg; i < len; i++) F[i] = 0;
       F.dft(1), g.dft(1);
       for (int i = 0; i < len; i++)
-        g.f[i] = (2ll * g.f[i] - 1ll * g.f[i] * g.f[i] % mod * F.f[i] % mod + mod) % mod;
+        g[i] = (2ll * g[i] - 1ll * g[i] * g[i] % mod * F[i] % mod + mod) % mod;
       g.dft(-1);
-      for (int i = deg; i < len; i++) g.f[i] = 0;
+      for (int i = deg; i < len; i++) g[i] = 0;
     }
   }
   poly dat(int n) {
     static poly g;
     g.Init();
-    for (int i = 0; i < n - 1; i++) g.f[i] = 1ll * (i + 1) * f[i] % mod;
+    for (int i = 0; i < n - 1; i++) g[i] = 1ll * (i + 1) * f[i] % mod;
   }
   poly itg(int n) {
     static poly g;
     g.Init();
-    for (int i = 1; i < n; i++) g.f[i] = 1ll * ksm(i) * f[i - 1] % mod;
+    for (int i = 1; i < n; i++) g[i] = 1ll * ksm(i) * f[i - 1] % mod;
   }
   poly ln(int n) {
     static poly df, g, Inv;
     df = dat(n), Inv = inv(n), g.Init(), init(n * 2);
     df.dft(1), Inv.dft(1);
-    for (int i = 0; i < len; i++) g.f[i] = 1ll * df.f[i] * Inv.f[i] % mod;
+    for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * Inv[i] % mod;
     g.dft(-1);
     return g.itg(n);
   }
   poly exp(int n) {
+    static poly Ln, g;
+    g[0] = 1;
+    for (int deg = 2; deg < (n << 1); deg <<= 1) {
+      
+    }
   }
 };
 
+poly a;
+
 namespace Input {
-void main() {}
+void main() {
+  a[0] = read();
+}
 }  // namespace Input
 
 namespace Init {
