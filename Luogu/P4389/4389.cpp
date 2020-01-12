@@ -119,8 +119,8 @@ poly a, ans;
 
 namespace Input {
 void main() {
-  n = read(), m = read();
-  for (int i = 1; i <= n; i++) exi[read()] = 1;
+  n = read();//, m = read();
+  for (int i = 0; i < n; i++) a[i] = read();// exi[read()] = 1;
 }
 }  // namespace Input
 
@@ -135,8 +135,8 @@ void main() {
 
 namespace Solve {
 void main() {
-  ans = a.exp(m);
-  for (int i = 1; i <= m; i++)
+  ans = a.exp(n);
+  for (int i = 0; i < n; i++)
     printf("%d\n", ans[i]);
 }
 }  // namespace Solve
@@ -147,6 +147,6 @@ int main() {
   freopen("4389.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
+  //Init::main();
   Solve::main();
 }
