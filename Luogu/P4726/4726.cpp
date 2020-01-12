@@ -103,6 +103,7 @@ struct poly {
       Ln = g.ln(deg), init(deg * 2);
       for (int i = 0; i < deg; i++) F[i] = f[i];
       for (int i = deg; i < len; i++) F[i] = 0;
+      Ln.dft(1), F.dft(1), g.dft(1);
       for (int i = 0; i < len; i++)
         g[i] = 1ll * g[i] * (1 - Ln[i] + F[i] + mod) % mod;
       g.dft(-1);
