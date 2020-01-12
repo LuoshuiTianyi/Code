@@ -37,7 +37,8 @@ void init(int n) {
 }
 struct poly {
   int f[Max_n];
-  void init() {
+  inline int operator[](int x) { return f[x]; }
+  void Init() {
     for (int i = 0; i < Max_n; i++) f[i] = 0;
   }
   void dft(int t) {
@@ -60,8 +61,8 @@ struct poly {
   }
   poly inv(int n) {
     static poly g, F;
-    g.init(), F.init();
-    g.f[0] = ksm(f[0]);
+    g.Init(), F.Init();
+    g(0) = ksm(f[0]);
     for (int deg = 2; deg < (n << 1); deg++) {
       init(deg * 3);
       for (int i = 0; i < deg; i++) F.f[i] = f[i];
@@ -75,17 +76,23 @@ struct poly {
   }
   poly dat(int n) {
     static poly g;
-    g.init();
+    g.Init();
     for (int i = 0; i < n - 1; i++) g.f[i] = 1ll * (i + 1) * f[i] % mod;
   }
   poly itg(int n) {
     static poly g;
-    g.init();
+    g.Init();
     for (int i = 1; i < n; i++) g.f[i] = 1ll * ksm(i) * f[i - 1] % mod;
   }
   poly ln(int n) {
-    static poly df, g;
-    df = dat(n), g.init();
+    static poly df, g, Inv;
+    df = dat(n), Inv = inv(n), g.Init(), init(n * 2);
+    df.dft(1), Inv.dft(1);
+    for (int i = 0; i < len; i++) g.f[i] = 1ll * df.f[i] * Inv.f[i] % mod;
+    g.dft(-1);
+    return g.itg(n);
+  }
+  poly exp(int n) {
   }
 };
 
