@@ -67,6 +67,8 @@ struct poly {
       for (int i = 0; i < deg; i++) F.f[i] = f[i];
       for (int i = deg; i < len; i++) F.f[i] = 0;
       F.dft(1), g.dft(1);
+      for (int i = 0; i < len; i++)
+        g.f[i] = 1ll * 
     }
   }
   poly dat(int n) {
