@@ -22,18 +22,15 @@ inline LL read() {
 
 const int Max_n = 6e5 + 5, mod = 998244353, G = 3;
 
-int bit, len, rev[Max_n];
 int ksm(int a, int b = mod - 2) {
   int res = 1;
   for (; b; b >>= 1, a = 1ll * a * a % mod)
     if (b & 1) res = 1ll * res * a % mod;
   return res;
 }
-void init(int n) {
-  len = 1 << (bit = log2(n) + 1);
-  for (int i = 0; i < len; i++)
-    rev[i] = rev[i >> 1] >> 1 | ((i & 1) << bit - 1);
-}
+
+namespace Poly {
+int bit, len, rev[Max_n];
 struct poly {
   int f[Max_n];
   inline int& operator[](int x) {
@@ -60,58 +57,65 @@ struct poly {
       for (int i = 0, Inv = ksm(len); i < len; i++) 
         f[i] = 1ll * f[i] * Inv % mod;
   }
-  void inv(int n, poly &G) {
-    static poly F, g;
-    F.Init(), g.Init();
-    g[0] = ksm(f[0]);
-    for (int deg = 2; deg < (n << 1); deg <<= 1) {
-      init(deg * 3);
-      for (int i = 0; i < deg; i++) F[i] = f[i];
-      for (int i = deg; i < len; i++) F[i] = 0;
-      g.dft(1), F.dft(1);
-      for (int i = 0; i < len; i++)
-        g[i] = 1ll * g[i] * (2 - 1ll * g[i] * F[i] % mod + mod) % mod;
-      g.dft(-1);
-      for (int i = deg; i < len; i++) g[i] = 0;
-    }
-    G = g;
-  }
-  void der(int n, poly &G) {
-    static poly g;
-    g.Init();
-    for (int i = 0; i < n - 1; i++) g[i] = 1ll * f[i + 1] * (i + 1) % mod;
-    G = g;
-  }
-  void itg(int n, poly &G) {
-    static poly g;
-    g.Init();
-    for (int i = 1; i < n; i++) g[i] = 1ll * f[i - 1] * ksm(i) % mod;
-    G = g;
-  }
-  void ln(int n, poly &G) {
-    static poly df, Inv, g;
-    der(n, df), inv(n, Inv), g.Init(), init(n * 2);
-    df.dft(1), Inv.dft(1);
-    for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * Inv[i] % mod;
-    g.dft(-1), g.itg(n, G);
-  }
-  void exp(int n, poly &G) {
-    static poly Ln, F, g;
-    g.Init(), F.Init();
-    g[0] = 1;
-    for (int deg = 2; deg < (n << 1); deg <<= 1) {
-      g.ln(deg, Ln), init(deg * 2);
-      for (int i = 0; i < deg; i++) F[i] = f[i];
-      for (int i = deg; i < len; i++) F[i] = 0;
-      g.dft(1), F.dft(1), Ln.dft(1);
-      for (int i = 0; i < len; i++) 
-        g[i] = 1ll * g[i] * (1 - Ln[i] + F[i] + mod) % mod;
-      g.dft(-1);
-      for (int i = deg; i < len; i++) g[i] = 0;
-    }
-    G = g;
-  }
 };
+void init(int n) {
+  len = 1 << (bit = log2(n) + 1);
+  for (int i = 0; i < len; i++)
+    rev[i] = rev[i >> 1] >> 1 | ((i & 1) << bit - 1);
+}
+void inv(int n, poly f, poly &G) {
+  static poly F, g;
+  F.Init(), g.Init();
+  g[0] = ksm(f[0]);
+  for (int deg = 2; deg < (n << 1); deg <<= 1) {
+    init(deg * 3);
+    for (int i = 0; i < deg; i++) F[i] = f[i];
+    for (int i = deg; i < len; i++) F[i] = 0;
+    g.dft(1), F.dft(1);
+    for (int i = 0; i < len; i++)
+      g[i] = 1ll * g[i] * (2 - 1ll * g[i] * F[i] % mod + mod) % mod;
+    g.dft(-1);
+    for (int i = deg; i < len; i++) g[i] = 0;
+  }
+  G = g;
+}
+void der(int n, poly f, poly &G) {
+  static poly g;
+  g.Init();
+  for (int i = 0; i < n - 1; i++) g[i] = 1ll * f[i + 1] * (i + 1) % mod;
+  G = g;
+}
+void itg(int n, poly f, poly &G) {
+  static poly g;
+  g.Init();
+  for (int i = 1; i < n; i++) g[i] = 1ll * f[i - 1] * ksm(i) % mod;
+  G = g;
+}
+void ln(int n, poly f, poly &G) {
+  static poly df, Inv, g;
+  der(n, f, df), inv(n, f, Inv), g.Init(), init(n * 2);
+  df.dft(1), Inv.dft(1);
+  for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * Inv[i] % mod;
+  g.dft(-1), itg(n, g, G);
+}
+void exp(int n, poly f, poly &G) {
+  static poly Ln, F, g;
+  g.Init(), F.Init();
+  g[0] = 1;
+  for (int deg = 2; deg < (n << 1); deg <<= 1) {
+    ln(deg, g, Ln), init(deg * 2);
+    for (int i = 0; i < deg; i++) F[i] = f[i];
+    for (int i = deg; i < len; i++) F[i] = 0;
+    g.dft(1), F.dft(1), Ln.dft(1);
+    for (int i = 0; i < len; i++) 
+      g[i] = 1ll * g[i] * (1 - Ln[i] + F[i] + mod) % mod;
+    g.dft(-1);
+    for (int i = deg; i < len; i++) g[i] = 0;
+  }
+  G = g;
+}
+}
+using namespace Poly;
 
 int n, m, exi[Max_n];
 poly a, ans;
@@ -127,17 +131,15 @@ namespace Init {
 void main() {
   for (int i = 1; i <= n; i++)
     if (exi[i])
-      for (int j = 1; j * i <= m; j++) {
-        cout << i << " " << j << endl;
+      for (int j = 1; j * i <= m; j++)
         (a[j * i] += 1ll * exi[i] * ksm(j) % mod) %= mod;
-      }
 }
 }  // namespace Init
 
 namespace Solve {
 void main() {
-  a.exp(m, ans);
-  for (int i = 0; i < m; i++) printf("%d\n", ans[i]);
+  exp(m + 1, a, ans);
+  for (int i = 1; i <= m; i++) printf("%d\n", ans[i]);
 }
 }  // namespace Solve
 
