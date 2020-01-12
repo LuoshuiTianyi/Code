@@ -68,7 +68,9 @@ struct poly {
       for (int i = deg; i < len; i++) F.f[i] = 0;
       F.dft(1), g.dft(1);
       for (int i = 0; i < len; i++)
-        g.f[i] = 1ll * 
+        g.f[i] = (2ll * g.f[i] - 1ll * g.f[i] * g.f[i] % mod * F.f[i] % mod + mod) % mod;
+      g.dft(-1);
+      for (int i = deg; i < len; i++) g.f[i] = 0;
     }
   }
   poly dat(int n) {
@@ -76,10 +78,14 @@ struct poly {
     g.init();
     for (int i = 0; i < n - 1; i++) g.f[i] = 1ll * (i + 1) * f[i] % mod;
   }
-  poly ltg(int n) {
+  poly itg(int n) {
     static poly g;
     g.init();
     for (int i = 1; i < n; i++) g.f[i] = 1ll * ksm(i) * f[i - 1] % mod;
+  }
+  poly ln(int n) {
+    static poly df, g;
+    df = dat(n), g.init();
   }
 };
 
