@@ -59,8 +59,8 @@ struct poly {
       for (int i = 0, Inv = ksm(len); i < len; i++) 
         f[i] = 1ll * f[i] * Inv % mod;
   }
-  void inv(int n, poly &g) {
-    static poly F;
+  void inv(int n, poly &G) {
+    static poly F, g;
     g.Init(), F.Init();
     g[0] = ksm(f[0]);
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
@@ -73,24 +73,29 @@ struct poly {
       g.dft(-1);
       for (int i = deg; i < len; i++) g[i] = 0;
     }
+    G = g;
   }
-  void dat(int n) {
-    for (int i = 0; i < n - 1; i++) f[i] = 1ll * (i + 1) * f[i + 1] % mod;
-    f[n - 1] = 0;
+  void dat(int n, poly &G) {
+    static poly g;
+    g.Init();
+    for (int i = 0; i < n - 1; i++) g[i] = 1ll * (i + 1) * f[i + 1] % mod;
+    G = g;
   }
-  void itg(int n) {
-    for (int i = n - 1; i; i--) f[i] = 1ll * ksm(i) * f[i - 1] % mod;
-    f[0] = 0;
+  void itg(int n, poly &G) {
+    static poly g;
+    g.Init();
+    for (int i = n - 1; i; i--) g[i] = 1ll * ksm(i) * f[i - 1] % mod;
+    G = g;
   }
-  void ln(int n, poly &g) {
-    static poly df = *this, Inv;
-    df.dat(n), inv(n, Inv), g.Init(), init(n * 2);
+  void ln(int n, poly &G) {
+    static poly df, Inv, g;
+    dat(n, df), inv(n, Inv), g.Init(), init(n * 2);
     df.dft(1), Inv.dft(1);
     for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * Inv[i] % mod;
-    g.dft(-1), g.itg(n);
+    g.dft(-1), g.itg(n, G);
   }
-  void exp(int n, poly &g) {
-    static poly Ln, F;
+  void exp(int n, poly &G) {
+    static poly Ln, F, g;
     g.Init(), F.Init();
     g[0] = 1;
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
@@ -103,6 +108,7 @@ struct poly {
       g.dft(-1);
       for (int i = deg; i < len; i++) g[i] = 0;
     }
+    G = g;
   }
 };
 

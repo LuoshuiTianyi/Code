@@ -60,7 +60,7 @@ struct poly {
       for (int i = 0, Inv = ksm(len); i < len; i++) 
         f[i] = 1ll * f[i] * Inv % mod;
   }
-  poly inv(int n) {
+  void inv(int n, poly &G) {
     static poly F, g;
     F.Init(), g.Init();
     g[0] = ksm(f[0]);
@@ -74,29 +74,28 @@ struct poly {
       g.dft(-1);
       for (int i = deg; i < len; i++) g[i] = 0;
     }
-    return g;
+    G = g;
   }
-  poly der(int n) {
+  void der(int n, poly &G) {
     static poly g;
     g.Init();
     for (int i = 0; i < n - 1; i++) g[i] = 1ll * f[i + 1] * (i + 1) % mod;
-    return g;
+    G = g;
   }
-  poly itg(int n) {
+  void itg(int n, poly &G) {
     static poly g;
     g.Init();
     for (int i = 1; i < n; i++) g[i] = 1ll * f[i - 1] * i % mod;
-    return g;
+    G = g;
   }
-  poly ln(int n) {
+  void ln(int n, poly &G) {
     static poly df, Inv, g;
-    df = der(n), Inv = inv(n), init(n * 2);
+    der(n, df),inv(n, Inv), init(n * 2);
     df.dft(1), Inv.dft(1);
     for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * Inv[i] % mod;
-    g.dft(-1);
-    return g.itg(n);
+    g.dft(-1), g.itg(n, G);
   }
-  poly exp(int n) {
+  void exp(int n, poly &G) {
     static poly Ln, F, g;
     g.Init(), F.Init();
     g[0] = 1;
@@ -110,7 +109,7 @@ struct poly {
       g.dft(-1);
       for (int i = deg; i < len; i++) g[i] = 0;
     }
-    return g;
+    G = g;
   }
 };
 
@@ -135,7 +134,7 @@ void main() {
 
 namespace Solve {
 void main() {
-  ans = a.exp(n);
+  a.exp(n, ans);
   for (int i = 0; i < n; i++)
     printf("%d\n", ans[i]);
 }
