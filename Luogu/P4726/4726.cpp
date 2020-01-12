@@ -32,7 +32,6 @@ int ksm(int a, int b = mod - 2) {
 
 namespace Poly {
 int bit, len, rev[Max_n];
-int Gp[Max_n], iG[Max_n];
 struct poly {
   int f[Max_n];
   inline int& operator[](int x) {
@@ -45,7 +44,7 @@ struct poly {
     for (int i = 0; i < len; i++)
       if (rev[i] > i) swap(f[i], f[rev[i]]);
     for (int l = 1; l < len; l <<= 1) {
-      int Wn = (mod - 1) / (l << 1);
+      int Wn = ksm(G, (mod - 1) / (l << 1));
       if (t == -1) Wn = ksm(Wn);
       for (int i = 0; i < len; i += l << 1) {
         int Wnk = 1;
@@ -65,7 +64,7 @@ void init(int n) {
   for (int i = 0; i < len; i++)
     rev[i] = rev[i >> 1] >> 1 | ((i & 1) << bit - 1);
 }
-void inv(int n, poly f, poly &g) {
+void inv(int n, poly &f, poly &g) {
   static poly F;
   F.Init(), g.Init();
   g[0] = ksm(f[0]);
@@ -80,7 +79,7 @@ void inv(int n, poly f, poly &g) {
     for (int i = deg; i < len; i++) g[i] = 0;
   }
 }
-void der(int n, poly f, poly &g) {
+void der(int n, poly &f, poly &g) {
   g.Init();
   for (int i = 0; i < n - 1; i++) g[i] = 1ll * f[i + 1] * (i + 1) % mod;
 }
@@ -88,14 +87,14 @@ void itg(int n, poly f, poly &g) {
   g.Init();
   for (int i = 1; i < n; i++) g[i] = 1ll * f[i - 1] * ksm(i) % mod;
 }
-void ln(int n, poly f, poly &G) {
+void ln(int n, poly &f, poly &G) {
   static poly df, Inv, g;
   der(n, f, df), inv(n, f, Inv), g.Init(), init(n * 2);
   df.dft(1), Inv.dft(1);
   for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * Inv[i] % mod;
   g.dft(-1), itg(n, g, G);
 }
-void exp(int n, poly f, poly &g) {
+void exp(int n, poly &f, poly &g) {
   static poly Ln, F;
   g.Init(), F.Init();
   g[0] = 1;
@@ -122,13 +121,6 @@ void main() {
 }
 }  // namespace Input
 
-namespace Init {
-void main() {
-  Gp[0] = 1;
-  for (int i = 1; i < Max_n; i++) Gp[i] = 1ll * Gp[i - 1] * G % mod;
-}
-}
-
 namespace Solve {
 void main() {
   exp(n, a, ans);
@@ -142,6 +134,5 @@ int main() {
   freopen("4726.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
