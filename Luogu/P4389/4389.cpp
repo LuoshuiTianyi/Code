@@ -89,31 +89,56 @@ struct poly {
     return g;
   }
   poly ln(int n) {
-    static poly df, inv, g;
-    df = der(n), inv = inv(n), init(n * 2);
-    df.dft(1), inv.dft(1);
-    for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * inv[i] % mod;
+    static poly df, Inv, g;
+    df = der(n), Inv = inv(n), init(n * 2);
+    df.dft(1), Inv.dft(1);
+    for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * Inv[i] % mod;
     g.dft(-1);
     return g.itg(n);
   }
   poly exp(int n) {
     static poly Ln, F, g;
-    g.init(), F.init();
+    g.Init(), F.Init();
     g[0] = 1;
-    for (int deg = 
+    for (int deg = 2; deg < (n << 1); deg <<= 1) {
+      Ln = g.ln(deg), init(deg * 2);
+      for (int i = 0; i < deg; i++) F[i] = f[i];
+      for (int i = deg; i < len; i++) F[i] = 0;
+      g.dft(1), F.dft(1), Ln.dft(1);
+      for (int i = 0; i < len; i++) 
+        g[i] = 1ll * g[i] * (1 - Ln[i] + F[i] + mod) % mod;
+      g.dft(-1);
+      for (int i = deg; i < len; i++) g[i] = 0;
+    }
+    return g;
   }
 };
 
+int n, m, exi[Max_n];
+poly a, ans;
+
 namespace Input {
-void main() {}
+void main() {
+  n = read(), m = read();
+  for (int i = 1; i <= n; i++) exi[read()] = 1;
+}
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  for (int i = 1; i <= n; i++)
+    if (exi[i])
+      for (int j = 1; j * i <= m; j++)
+        (a[j * i] += ksm(j)) %= mod;
+}
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  ans = a.exp(m);
+  for (int i = 1; i <= m; i++)
+    printf("%d\n", ans[i]);
+}
 }  // namespace Solve
 
 int main() {
