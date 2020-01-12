@@ -31,7 +31,7 @@ int ksm(int a, int b = mod - 2) {
 
 namespace Poly {
 int bit, len, rev[Max_n];
-int gp[Max_n];
+int gp[Max_n], invn[Max_n];
 struct poly {
   int f[Max_n];
   inline int& operator[](int x) {
@@ -78,20 +78,16 @@ void inv(int n, poly &f, poly &g) {
     for (int i = deg; i < len; i++) g[i] = 0;
   }
 }
-void der(int n, poly &f, poly &g) {
-  g.Init();
-  for (int i = 0; i < n - 1; i++) g[i] = 1ll * f[i + 1] * (i + 1) % mod;
-}
-void itg(int n, poly f, poly &g) {
-  g.Init();
-  for (int i = 1; i < n; i++) g[i] = 1ll * f[i - 1] * ksm(i) % mod;
-}
-void ln(int n, poly &f, poly &G) {
-  static poly df, Inv, g;
-  der(n, f, df), inv(n, f, Inv), g.Init(), init(n * 2);
+void ln(int n, poly &f, poly &g) {
+  static poly df, Inv;
+  df.Init();
+  for (int i = 0; i < n - 1; i++) df[i] = 1ll * f[i + 1] * (i + 1) % mod;
+  inv(n, f, Inv), g.Init(), init(n * 2);
   df.dft(1), Inv.dft(1);
   for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * Inv[i] % mod;
-  g.dft(-1), itg(n, g, G);
+  g.dft(-1);
+  for (int i = n - 1; i; i--) g[i] = 1ll * g[i - 1] * invn[i] % mod;
+  g[0] = 0;
 }
 void exp(int n, poly &f, poly &g) {
   static poly Ln, F;
@@ -127,9 +123,10 @@ void main() {
     if (exi[i])
       for (int j = 1; j * i <= m; j++)
         (a[j * i] += 1ll * exi[i] * ksm(j) % mod) %= mod;
-  gp[0] = 1;
+  invn[0] = gp[0] = 1;
   int g = ksm(G, (mod - 1) / Len);
   for (int i = 1; i <= Len; i++) gp[i] = 1ll * gp[i - 1] * g % mod;
+  for (int i = 1; i < Max_n; i++) invn[i] = ksm(i);
 }
 }  // namespace Init
 
