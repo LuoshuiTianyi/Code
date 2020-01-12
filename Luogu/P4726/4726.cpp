@@ -32,6 +32,7 @@ int ksm(int a, int b = mod - 2) {
 
 namespace Poly {
 int bit, len, rev[Max_n];
+int Gp[Max_n], iG[Max_n];
 struct poly {
   int f[Max_n];
   inline int& operator[](int x) {
@@ -44,12 +45,11 @@ struct poly {
     for (int i = 0; i < len; i++)
       if (rev[i] > i) swap(f[i], f[rev[i]]);
     for (int l = 1; l < len; l <<= 1) {
-      int Wn = ksm(G, (mod - 1) / (l << 1));
-      if (t == -1) Wn = ksm(Wn);
+      int Wn = (mod - 1) / (l << 1);
       for (int i = 0; i < len; i += l << 1) {
-        int Wnk = 1;
-        for (int k = i; k < i + l; k++, Wnk = 1ll * Wnk * Wn % mod) {
-          int x = f[k], y = 1ll * f[k + l] * Wnk % mod;
+        for (int k = 0; k < l; k++) {
+          int x = f[k + i];
+          int y = 1ll * f[k + i + l] * (t == -1 ? iG[Wn * k]) % mod;
           f[k] = (x + y) % mod, f[k + l] = (x - y + mod) % mod;
         }
       }
@@ -120,6 +120,15 @@ void main() {
   for (int i = 0; i < n; i++) a[i] = read();
 }
 }  // namespace Input
+
+namespace Init {
+void main() {
+  Gp[0] = 1;
+  for (int i = 1; i < Max_n; i++) Gp[i] = 1ll * Gp[i - 1] * G % mod;
+  iG[Max_n - 1] = ksm(Gp[Max_n - 1]);
+  for (int i = Max_n - 2; ~i; i--) iG[i] = 1ll * iG[i + 1] * G % mod;
+}
+}
 
 namespace Solve {
 void main() {
