@@ -62,7 +62,7 @@ struct poly {
   }
   poly inv(int n) {
     static poly F, g;
-    F.init(), g.init();
+    F.Init(), g.Init();
     g[0] = ksm(f[0]);
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
       init(deg * 3);
@@ -74,6 +74,22 @@ struct poly {
       g.dft(-1);
       for (int i = deg; i < len; i++) g[i] = 0;
     }
+    return g;
+  }
+  poly der(int n) {
+    static poly g;
+    g.Init();
+    for (int i = 0; i < n - 1; i++) g[i] = 1ll * f[i + 1] * (i + 1) % mod;
+    return g;
+  }
+  poly itg(int n) {
+    static poly g;
+    g.Init();
+    for (int i = 1; i < n; i++) g[i] = 1ll * f[i - 1] * i % mod;
+    return g;
+  }
+  poly ln(int n) {
+    static poly 
   }
 };
 
