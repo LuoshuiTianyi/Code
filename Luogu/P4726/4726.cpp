@@ -76,23 +76,25 @@ struct poly {
   }
   void dat(int n) {
     for (int i = 0; i < n - 1; i++) f[i] = 1ll * (i + 1) * f[i + 1] % mod;
+    f[n - 1] = 0;
   }
   void itg(int n) {
     for (int i = n - 1; i; i--) f[i] = 1ll * ksm(i) * f[i - 1] % mod;
+    f[0] = 0;
   }
   void ln(int n, poly &g) {
-    static poly df, Inv;
-    dat(n, df), inv(n, Inv), g.Init(), init(n * 2);
+    static poly df = *this, Inv;
+    df.dat(n), inv(n, Inv), g.Init(), init(n * 2);
     df.dft(1), Inv.dft(1);
     for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * Inv[i] % mod;
-    g.dft(-1), g.itg(n, g);
+    g.dft(-1), g.itg(n);
   }
   void exp(int n, poly &g) {
     static poly Ln, F;
     g.Init(), F.Init();
     g[0] = 1;
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
-      Ln = g.ln(deg), init(deg * 2);
+      g.ln(deg, Ln), init(deg * 2);
       for (int i = 0; i < deg; i++) F[i] = f[i];
       for (int i = deg; i < len; i++) F[i] = 0;
       Ln.dft(1), F.dft(1), g.dft(1);
@@ -115,7 +117,7 @@ void main() {
 
 namespace Solve {
 void main() {
-  ans = a.exp(n, ans);
+  a.exp(n, ans);
   for (int i = 0; i < n; i++) printf("%d ", ans[i]);
 }
 }  // namespace Solve
