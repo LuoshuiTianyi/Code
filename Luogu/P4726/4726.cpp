@@ -38,9 +38,6 @@ struct poly {
   inline int& operator[](int x) {
     return f[x];
   }
-  void Init() {
-    for (int i = 0; i < Max_n; i++) f[i] = 0;
-  }
   void dft(int t) {
     for (int i = 0; i < len; i++)
       if (rev[i] > i) swap(f[i], f[rev[i]]);
@@ -66,12 +63,11 @@ void init(int n) {
 }
 void inv(int n, poly &f, poly &g) {
   static poly F;
-  F.Init(), g.Init();
   g[0] = ksm(f[0]);
   for (int deg = 2; deg < (n << 1); deg <<= 1) {
     init(deg * 3);
     for (int i = 0; i < deg; i++) F[i] = f[i];
-    for (int i = deg; i < len; i++) F[i] = 0;
+    for (int i = deg; i < len; i++) F[i] = g[i] = 0;
     g.dft(1), F.dft(1);
     for (int i = 0; i < len; i++)
       g[i] = 1ll * g[i] * (2 - 1ll * g[i] * F[i] % mod + mod) % mod;
@@ -81,9 +77,10 @@ void inv(int n, poly &f, poly &g) {
 }
 void ln(int n, poly &f, poly &g) {
   static poly df, Inv;
-  df.Init();
   for (int i = 0; i < n - 1; i++) df[i] = 1ll * f[i + 1] * (i + 1) % mod;
-  inv(n, f, Inv), init(n * 2);
+  df[n - 1] = 0, inv(n, f, Inv), init(n * 2);
+  for (int i = n; i < len; i++) df[i] = 0;
+  for (int i = 0; i < len; i++) g[i] = 0;
   df.dft(1), Inv.dft(1);
   for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * Inv[i] % mod;
   g.dft(-1);
@@ -101,6 +98,7 @@ void exp(int n, poly &f, poly &g) {
     for (int i = 0; i < len; i++) 
       g[i] = 1ll * g[i] * (1 - Ln[i] + F[i] + mod) % mod;
     g.dft(-1);
+    for (int i = deg; i < len; i++) g[i] = 0;
   }
 }
 }
