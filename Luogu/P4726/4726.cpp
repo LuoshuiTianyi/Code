@@ -20,7 +20,7 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 6e5 + 5, mod = 998244353, G = 3;
+const int Max_n = 6e5 + 5, mod = 998244353, G = 3, Len = 1 << 19;
 int n;
 
 int ksm(int a, int b = mod - 2) {
@@ -32,7 +32,7 @@ int ksm(int a, int b = mod - 2) {
 
 namespace Poly {
 int bit, len, rev[Max_n];
-int Gp[Max_n], iG[Max_n];
+int gp[Max_n];
 struct poly {
   int f[Max_n];
   inline int& operator[](int x) {
@@ -45,11 +45,10 @@ struct poly {
     for (int i = 0; i < len; i++)
       if (rev[i] > i) swap(f[i], f[rev[i]]);
     for (int l = 1; l < len; l <<= 1) {
-      int Wn = (mod - 1) / (l << 1);
+      int Wn = Len / (l << 1);
       for (int i = 0; i < len; i += l << 1) {
-        for (int k = 0; k < l; k++) {
-          int x = f[k + i];
-          int y = 1ll * f[k + i + l] * (t == -1 ? iG[Wn * k]) % mod;
+        for (int k = i; k < i + l; k++) {
+          int x = f[k], y = 1ll * f[k + l] * Wnk % mod;
           f[k] = (x + y) % mod, f[k + l] = (x - y + mod) % mod;
         }
       }
@@ -99,7 +98,7 @@ void exp(int n, poly &f, poly &g) {
   g.Init(), F.Init();
   g[0] = 1;
   for (int deg = 2; deg < (n << 1); deg <<= 1) {
-    ln(deg, g, Ln), init(deg * 2);
+    ln(deg, g, Ln), init(deg);
     for (int i = 0; i < deg; i++) F[i] = f[i];
     for (int i = deg; i < len; i++) F[i] = 0;
     g.dft(1), F.dft(1), Ln.dft(1);
@@ -123,10 +122,9 @@ void main() {
 
 namespace Init {
 void main() {
-  Gp[0] = 1;
-  for (int i = 1; i < Max_n; i++) Gp[i] = 1ll * Gp[i - 1] * G % mod;
-  iG[Max_n - 1] = ksm(Gp[Max_n - 1]);
-  for (int i = Max_n - 2; ~i; i--) iG[i] = 1ll * iG[i + 1] * G % mod;
+  gp[0] = 1;
+  int g = ksm(G, (mod - 1) / Len);
+  for (int i = 1; i <= Len; i++) gp[i] = 1ll * gp[i - 1] * g % mod;
 }
 }
 
@@ -143,5 +141,6 @@ int main() {
   freopen("4726.out", "w", stdout);
 #endif
   Input::main();
+  Init::main();
   Solve::main();
 }
