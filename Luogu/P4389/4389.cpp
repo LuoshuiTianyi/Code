@@ -89,7 +89,18 @@ struct poly {
     return g;
   }
   poly ln(int n) {
-    static poly 
+    static poly df, inv, g;
+    df = der(n), inv = inv(n), init(n * 2);
+    df.dft(1), inv.dft(1);
+    for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * inv[i] % mod;
+    g.dft(-1);
+    return g.itg(n);
+  }
+  poly exp(int n) {
+    static poly Ln, F, g;
+    g.init(), F.init();
+    g[0] = 1;
+    for (int deg = 
   }
 };
 
