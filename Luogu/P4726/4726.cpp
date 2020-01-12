@@ -59,8 +59,8 @@ struct poly {
       for (int i = 0, Inv = ksm(len); i < len; i++) 
         f[i] = 1ll * f[i] * Inv % mod;
   }
-  poly inv(int n) {
-    static poly g, F;
+  void inv(int n, poly &g) {
+    static poly F;
     g.Init(), F.Init();
     g[0] = ksm(f[0]);
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
@@ -73,44 +73,34 @@ struct poly {
       g.dft(-1);
       for (int i = deg; i < len; i++) g[i] = 0;
     }
-    return g;
   }
-  poly dat(int n) {
-    static poly g;
-    g.Init();
-    for (int i = 0; i < n - 1; i++) g[i] = 1ll * (i + 1) * f[i + 1] % mod;
-    return g;
+  void dat(int n) {
+    for (int i = 0; i < n - 1; i++) f[i] = 1ll * (i + 1) * f[i + 1] % mod;
   }
-  poly itg(int n) {
-    static poly g;
-    g.Init();
-    for (int i = 1; i < n; i++) g[i] = 1ll * ksm(i) * f[i - 1] % mod;
-    return g;
+  void itg(int n) {
+    for (int i = n - 1; i; i--) f[i] = 1ll * ksm(i) * f[i - 1] % mod;
   }
-  poly ln(int n) {
-    static poly df, g, Inv;
-    df = dat(n);
-    //Inv = inv(n), g.Init(), init(n * 2);
-    //df.dft(1), Inv.dft(1);
-    //for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * Inv[i] % mod;
-    //g.dft(-1);
-    return g.itg(n);
+  void ln(int n, poly &g) {
+    static poly df, Inv;
+    dat(n, df), inv(n, Inv), g.Init(), init(n * 2);
+    df.dft(1), Inv.dft(1);
+    for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * Inv[i] % mod;
+    g.dft(-1), g.itg(n, g);
   }
-  poly exp(int n) {
-    static poly Ln, g, F;
+  void exp(int n, poly &g) {
+    static poly Ln, F;
     g.Init(), F.Init();
     g[0] = 1;
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
-      Ln = g.ln(deg);//, init(deg * 2);
-      //for (int i = 0; i < deg; i++) F[i] = f[i];
-      //for (int i = deg; i < len; i++) F[i] = 0;
-      //Ln.dft(1), F.dft(1), g.dft(1);
-      //for (int i = 0; i < len; i++)
-      //  g[i] = 1ll * g[i] * (1 - Ln[i] + F[i] + mod) % mod;
-      //g.dft(-1);
-      //for (int i = deg; i < len; i++) g[i] = 0;
+      Ln = g.ln(deg), init(deg * 2);
+      for (int i = 0; i < deg; i++) F[i] = f[i];
+      for (int i = deg; i < len; i++) F[i] = 0;
+      Ln.dft(1), F.dft(1), g.dft(1);
+      for (int i = 0; i < len; i++)
+        g[i] = 1ll * g[i] * (1 - Ln[i] + F[i] + mod) % mod;
+      g.dft(-1);
+      for (int i = deg; i < len; i++) g[i] = 0;
     }
-    return g;
   }
 };
 
@@ -125,7 +115,7 @@ void main() {
 
 namespace Solve {
 void main() {
-  ans = a.exp(n);
+  ans = a.exp(n, ans);
   for (int i = 0; i < n; i++) printf("%d ", ans[i]);
 }
 }  // namespace Solve
