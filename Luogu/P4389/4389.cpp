@@ -52,7 +52,7 @@ struct poly {
         int Wnk = 1;
         for (int k = i; k < i + l; k++, Wnk = 1ll * Wnk * Wn % mod) {
           int x = f[k], y = 1ll * f[k + l] * Wnk % mod;
-          f[k] = (x + y) % mod, f[k + l] = (x - y + 1) % mod;
+          f[k] = (x + y) % mod, f[k + l] = (x - y + mod) % mod;
         }
       }
     }
@@ -85,12 +85,12 @@ struct poly {
   void itg(int n, poly &G) {
     static poly g;
     g.Init();
-    for (int i = 1; i < n; i++) g[i] = 1ll * f[i - 1] * i % mod;
+    for (int i = 1; i < n; i++) g[i] = 1ll * f[i - 1] * ksm(i) % mod;
     G = g;
   }
   void ln(int n, poly &G) {
     static poly df, Inv, g;
-    der(n, df),inv(n, Inv), init(n * 2);
+    der(n, df), inv(n, Inv), g.Init(), init(n * 2);
     df.dft(1), Inv.dft(1);
     for (int i = 0; i < len; i++) g[i] = 1ll * df[i] * Inv[i] % mod;
     g.dft(-1), g.itg(n, G);
@@ -100,7 +100,7 @@ struct poly {
     g.Init(), F.Init();
     g[0] = 1;
     for (int deg = 2; deg < (n << 1); deg <<= 1) {
-      Ln = g.ln(deg), init(deg * 2);
+      g.ln(deg, Ln), init(deg * 2);
       for (int i = 0; i < deg; i++) F[i] = f[i];
       for (int i = deg; i < len; i++) F[i] = 0;
       g.dft(1), F.dft(1), Ln.dft(1);
@@ -118,8 +118,8 @@ poly a, ans;
 
 namespace Input {
 void main() {
-  n = read();//, m = read();
-  for (int i = 0; i < n; i++) a[i] = read();// exi[read()] = 1;
+  n = read(), m = read();
+  for (int i = 0; i < n; i++) exi[read()]++;
 }
 }  // namespace Input
 
@@ -127,16 +127,17 @@ namespace Init {
 void main() {
   for (int i = 1; i <= n; i++)
     if (exi[i])
-      for (int j = 1; j * i <= m; j++)
-        (a[j * i] += ksm(j)) %= mod;
+      for (int j = 1; j * i <= m; j++) {
+        cout << i << " " << j << endl;
+        (a[j * i] += 1ll * exi[i] * ksm(j) % mod) %= mod;
+      }
 }
 }  // namespace Init
 
 namespace Solve {
 void main() {
-  a.exp(n, ans);
-  for (int i = 0; i < n; i++)
-    printf("%d\n", ans[i]);
+  a.exp(m, ans);
+  for (int i = 0; i < m; i++) printf("%d\n", ans[i]);
 }
 }  // namespace Solve
 
@@ -146,6 +147,6 @@ int main() {
   freopen("4389.out", "w", stdout);
 #endif
   Input::main();
-  //Init::main();
+  Init::main();
   Solve::main();
 }
