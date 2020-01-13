@@ -118,7 +118,7 @@ void main() {
   invn[0] = invn[1] = gp[0] = 1;
   int g = ksm(G, (mod - 1) / Len);
   for (int i = 1; i <= Len; i++) gp[i] = 1ll * gp[i - 1] * g % mod;
-  for (int i = 2; i < Len; i++) invn[i] = 1ll * (mod - mod / i) * invn[mod % i] % mod;
+  for (int i = 2; i <= Len; i++) invn[i] = 1ll * (mod - mod / i) * invn[mod % i] % mod;
 }
 }
 

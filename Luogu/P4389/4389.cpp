@@ -123,10 +123,10 @@ void main() {
     if (exi[i])
       for (int j = 1; j * i <= m; j++)
         (a[j * i] += 1ll * exi[i] * ksm(j) % mod) %= mod;
-  invn[0] = gp[0] = 1;
+  invn[0] = invn[1] = gp[0] = 1;
   int g = ksm(G, (mod - 1) / Len);
   for (int i = 1; i <= Len; i++) gp[i] = 1ll * gp[i - 1] * g % mod;
-  for (int i = 1; i < Max_n; i++) invn[i] = ksm(i);
+  for (int i = 2; i < Len; i++) invn[i] = 1ll * (mod - mod / i) * invn[mod % i] % mod;
 }
 }  // namespace Init
 
