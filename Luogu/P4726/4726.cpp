@@ -52,7 +52,7 @@ struct poly {
       }
     }
     if (t == -1)
-      for (int i = 0, Inv = ksm(len); i < len; i++) 
+      for (int i = 0, Inv = invn[len]; i < len; i++) 
         f[i] = 1ll * f[i] * Inv % mod;
   }
 };
