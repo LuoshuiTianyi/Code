@@ -21,15 +21,25 @@ inline LL read() {
 
 const int Max_n = 101;
 int n, m;
-int b[Max_n][Max_n];
+int b[Max_n][Max_n], dx[5] = {0, 1, -1, 0, 0}, dy[5] = {0, 0, 0, 1, -1};
 char a[Max_n][Max_n];
-
 namespace Input {
 void main() {
   n = read(), m = read();
   for (int i = 1; i <= n; i++) scanf("%s", a[i] + 1);
 }
 }  // namespace Input
+
+namespace Init {
+void main() {
+  for (int i = 1; i <= n; i++)
+    for (int j = 1; j <= m; j++)
+      for (int k = 1; k <= 4; k++) {
+        int x = i + dx[k], y = j + dy[k];
+        if (x < 1 || x > n || y < 1 || y > m) continue;
+      }
+}
+}
 
 namespace Solve {
 void main() {}
