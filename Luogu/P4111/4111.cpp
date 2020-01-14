@@ -19,7 +19,7 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 101;
+const int Max_n = 101, mod = 1e9;
 int n, m;
 int b[Max_n][Max_n], dx[5] = {0, 1, -1, 0, 0}, dy[5] = {0, 0, 0, 1, -1};
 int cntd, id[Max_n][Max_n];
@@ -55,8 +55,12 @@ int Guess(int n) {
     for (int k = i + 1; k <= n; k++)
       while (b[k][i]) {
         int d = b[i][i] / b[k][i];
+        for (int j = i; j <= n; j++) (b[i][j] -= 1ll * d * b[k][j] % mod) %= mod;
+        swap(b[k], b[i]), ans = -ans;
       }
+    ans = 1ll * ans * b[i][i] % mod;
   }
+  return (ans + mod) % mod;
 }
 void main() {
   cout << Guess(cntd - 1);
