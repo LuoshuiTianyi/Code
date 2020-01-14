@@ -22,7 +22,9 @@ inline LL read() {
 const int Max_n = 101;
 int n, m;
 int b[Max_n][Max_n], dx[5] = {0, 1, -1, 0, 0}, dy[5] = {0, 0, 0, 1, -1};
+int cntd, id[Max_n][Max_n];
 char a[Max_n][Max_n];
+
 namespace Input {
 void main() {
   n = read(), m = read();
@@ -34,15 +36,31 @@ namespace Init {
 void main() {
   for (int i = 1; i <= n; i++)
     for (int j = 1; j <= m; j++)
+      if (a[i][j] != '*') id[i][j] = cntd++;
+  for (int i = 1; i <= n; i++)
+    for (int j = 1; j <= m; j++)
       for (int k = 1; k <= 4; k++) {
+        if (a[i][j] == '*') continue;
         int x = i + dx[k], y = j + dy[k];
-        if (x < 1 || x > n || y < 1 || y > m) continue;
+        if (x < 1 || x > n || y < 1 || y > m || a[x][y] == '*') continue;
+        b[id[i][j]][id[i][j]]++, b[id[i][j]][id[x][y]]--;
       }
 }
 }
 
 namespace Solve {
-void main() {}
+int Guess(int n) {
+  int ans = 1;
+  for (int i = 1; i <= n; i++) {
+    for (int k = i + 1; k <= n; k++)
+      while (b[k][i]) {
+        int d = b[i][i] / b[k][i];
+      }
+  }
+}
+void main() {
+  cout << Guess(cntd - 1);
+}
 }  // namespace Solve
 
 int main() {
