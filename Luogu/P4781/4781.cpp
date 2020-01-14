@@ -31,7 +31,25 @@ void main() {
 }  // namespace Input
 
 namespace Solve {
-void main() {}
+int ksm(int a, int b = mod - 2) {
+  int res = 1;
+  for (; b; b >>= 1, a = 1ll * a * a % mod)
+    if (b & 1) res = 1ll * res * a % mod;
+  return res;
+}
+void main() {
+  int ans = 0;
+  for (int i = 1; i <= n; i++) {
+    int s = 1;
+    for (int j = 1; j <= n; j++)
+      if (i != j) s = 1ll * s * (x[i] - x[j] + mod) % mod;
+    s = ksm(s);
+    for (int j = 1; j <= n; j++)
+      if (i != j) s = 1ll * s * (K - x[j] + mod) % mod;
+    (ans += 1ll * s * y[i] % mod) %= mod;
+  }
+  cout << ans;
+}
 }  // namespace Solve
 
 int main() {
@@ -40,6 +58,5 @@ int main() {
   freopen("4781.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
