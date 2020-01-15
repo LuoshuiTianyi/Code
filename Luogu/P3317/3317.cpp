@@ -30,11 +30,20 @@ void main() {
   for (int i = 1; i <= n; i++)
     for (int j = 1; j <= n; j++) {
       scanf("%lf", &b[i][j]);
-      ans *= (1.0 - b[i][j]);
+      if (j > i) ans *= (1.0 - b[i][j]);
       if (b[i][j] > 1 - eps) b[i][j] = 1 - eps;
-      b[i][j] = -(b[i][j] / (1.0 - b[i][j]));
-      if (i == j) b[i][j] += 1.0;
+      b[i][j] = b[i][j] / (1.0 - b[i][j]);
     }
+  for (int i = 1; i <= n; i++) {
+    b[i][i] = 0;
+    for (int j = 1; j <= n; j++)
+      if (i != j) b[i][i] -= b[i][j];
+  }
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++)
+      printf("%.2lf ", b[i][j]);
+    cout << endl;
+  }
 }
 }  // namespace Input
 
@@ -49,11 +58,16 @@ double Guess(int n) {
     if (b[i][i] < eps || b[i][i] > 1 - eps) return 0;
     for (int j = i + 1; j <= n; j++) {
       double d = b[j][i] / b[i][i];
+      for (int k = i; k <= n; k++) 
+        b[j][k] -= b[i][k] * d;
     }
+    ans *= b[i][i];
   }
+  return ans;
 }
 void main() {
   ans *= Guess(n - 1);
+  printf("%.5lf", ans);
 }
 }  // namespace Solve
 
