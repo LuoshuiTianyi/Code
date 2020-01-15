@@ -1,3 +1,4 @@
+#include <cmath>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -26,24 +27,24 @@ double ans, b[Max_n][Max_n];
 
 namespace Input {
 void main() {
-  n = read();
+  n = read(), ans = 1;
   for (int i = 1; i <= n; i++)
     for (int j = 1; j <= n; j++) {
       scanf("%lf", &b[i][j]);
-      if (j > i) ans *= (1.0 - b[i][j]);
       if (b[i][j] > 1 - eps) b[i][j] = 1 - eps;
+      if (j > i) ans *= (1.0 - b[i][j]);
       b[i][j] = b[i][j] / (1.0 - b[i][j]);
     }
   for (int i = 1; i <= n; i++) {
     b[i][i] = 0;
     for (int j = 1; j <= n; j++)
-      if (i != j) b[i][i] -= b[i][j];
+      if (i != j) b[i][i] += b[i][j], b[i][j] = -b[i][j];
   }
-  for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= n; j++)
-      printf("%.2lf ", b[i][j]);
-    cout << endl;
-  }
+  //for (int i = 1; i <= n; i++) {
+  //  for (int j = 1; j <= n; j++)
+  //    printf("%.2lf ", b[i][j]);
+  //  cout << endl;
+  //}
 }
 }  // namespace Input
 
@@ -55,7 +56,7 @@ double Guess(int n) {
     for (int j = i + 1; j <= n; j++)
       if (b[j][i] > b[mx][i]) mx = j;
     if (mx != i) swap(b[i], b[mx]), ans = -ans;
-    if (b[i][i] < eps || b[i][i] > 1 - eps) return 0;
+    if (abs(b[i][i]) < eps) return 0;
     for (int j = i + 1; j <= n; j++) {
       double d = b[j][i] / b[i][i];
       for (int k = i; k <= n; k++) 
