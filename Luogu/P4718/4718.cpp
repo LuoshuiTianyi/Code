@@ -35,6 +35,12 @@ bool MR(LL n) {
   if (n == 2 || n == 3 || n == 5 || n == 7 || n == 11 || n == 13) return 1;
   if (!(n % 2) || !(n % 3) || !(n % 5) || !(n % 7) || !(n % 11) || !(n % 13)) return 0;
   
+  LL b = n - 1, k = 0;
+  while (!(b & 1)) b >>= 1, k++;
+  int t = 5;
+  while (t--) {
+    LL a = rand()
+  }
 }
 void main() {}
 }  // namespace Solve
