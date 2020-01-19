@@ -64,7 +64,14 @@ LL find(LL n, LL c) {
     if (a == b) return 0;
     k = (__int128)abs(b - a) * k % n;
     if (!k) return 0;
+    p++;
+    if (!(p % 127) || __builtin_popcount(p) == 1) {
+      LL now = __gcd(k, n);
+      if (now > 1 && now < n) return now;
+    }
+    a = f(a, n, c), b = f(b, n, c);
   }
+  return 0;
 }
 }
 
