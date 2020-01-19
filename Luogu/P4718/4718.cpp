@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <cstdio>
 #include <iostream>
-#include <map>
 using namespace std;
 #define LL long long
 #define inline __inline__ __attribute__((always_inline))
@@ -39,7 +38,7 @@ LL ksm(LL a, LL b, LL mod) {
 bool Mr(LL n) {
   if (n == 1) return 0;
   if (n == 2 || n == 3 || n == 5 || n == 7 || n == 11 || n == 13) return 1;
-  if (!(n % 2) || !(n % 3) || !(n % 5) || !(n % 7) || !(n % 11) || !(n % 13)) return 0;
+  if (n % 2 == 0 || n % 3 == 0 || n % 5 == 0 || n % 7 == 0 || n % 11 == 0 || n % 13 == 0) return 0;
   
   LL b = n - 1, k = 0;
   while (!(b & 1)) b >>= 1, k++;
@@ -56,7 +55,7 @@ bool Mr(LL n) {
   }
   return 1;
 }
-LL f(LL x, LL p, LL c) { return (__int128)(x * x + c) % p; }
+LL f(LL x, LL p, LL c) { return ((__int128)x * x + c) % p; }
 LL find(LL n, LL c) {
   LL a = rand() % (n - 1) + 1, b = a;
   LL k = 1;
@@ -79,7 +78,7 @@ void Pr(LL n) {
   if (n == 1 || n <= ans) return;
   if (Mr(n)) return (void)(ans = n);
 
-  LL now = 0, c = 20030101;
+  LL now = 0, c = 19260817;
   while (!now) now = find(n, c--);
   Pr(now), Pr(n / now);
 }
