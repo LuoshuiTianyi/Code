@@ -2,8 +2,6 @@
 #include <iostream>
 using namespace std;
 #define LL long long
-#define go(G, x, i, v) \
-  for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 #define inline __inline__ __attribute__((always_inline))
 inline LL read() {
   LL x = 0, w = 1;
@@ -19,11 +17,17 @@ inline LL read() {
   return x * w;
 }
 
+int T;
+LL n;
+
 namespace Input {
-void main() {}
+void main() {
+  n = read();
+  srand(time(0));
+}
 }  // namespace Input
 
-namespace Solve {
+namespace PR {
 LL ksm(LL a, LL b, LL mod) {
   LL res = 1;
   for (; b; b >>= 1, a = (__int128)a * a % mod)
@@ -39,10 +43,35 @@ bool MR(LL n) {
   while (!(b & 1)) b >>= 1, k++;
   int t = 5;
   while (t--) {
-    LL a = rand()
+    LL a = rand() % (n - 1) + 1;
+    a = ksm(a, b, n);
+    for (int i = 1; i <= k; i++) {
+      LL c = (__int128)a * a % n;
+      if (c == 1 && a != 1 && a != n - 1) return 0;
+      a = c;
+    }
+    if (a != 1) return 0;
+  }
+  return 1;
+}
+LL f(LL x, LL p, LL c) { return (__int128)(x * x + c) % p; }
+LL find(LL n, LL c) {
+  LL a = rand() % (n - 1) + 1, b = a;
+  LL k = 1;
+  int p = 0;
+  while (1) {
+    b = f(b, n, c);
+    if (a == b) return 0;
+    k = (__int128)abs(b - a) * k % n;
+    if (!k) return 0;
   }
 }
-void main() {}
+}
+
+namespace Solve {
+
+void main() {
+}
 }  // namespace Solve
 
 int main() {
@@ -50,7 +79,9 @@ int main() {
   freopen("4718.in", "r", stdin);
   freopen("4718.out", "w", stdout);
 #endif
-  Input::main();
-  Init::main();
-  Solve::main();
+  T = read();
+  while (T--) {
+    Input::main();
+    Solve::main();
+  }
 }
