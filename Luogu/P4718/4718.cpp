@@ -1,5 +1,7 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
+#include <map>
 using namespace std;
 #define LL long long
 #define inline __inline__ __attribute__((always_inline))
@@ -18,11 +20,11 @@ inline LL read() {
 }
 
 int T;
-LL n;
+LL n, ans;
 
 namespace Input {
 void main() {
-  n = read();
+  n = read(), ans = 0;
   srand(time(0));
 }
 }  // namespace Input
@@ -34,7 +36,7 @@ LL ksm(LL a, LL b, LL mod) {
     if (b & 1) res = (__int128)res * a % mod;
   return res;
 }
-bool MR(LL n) {
+bool Mr(LL n) {
   if (n == 1) return 0;
   if (n == 2 || n == 3 || n == 5 || n == 7 || n == 11 || n == 13) return 1;
   if (!(n % 2) || !(n % 3) || !(n % 5) || !(n % 7) || !(n % 11) || !(n % 13)) return 0;
@@ -73,11 +75,21 @@ LL find(LL n, LL c) {
   }
   return 0;
 }
+void Pr(LL n) {
+  if (n == 1 || n <= ans) return;
+  if (Mr(n)) return (void)(ans = n);
+
+  LL now = 0, c = 20030101;
+  while (!now) now = find(n, c--);
+  Pr(now), Pr(n / now);
+}
 }
 
 namespace Solve {
-
 void main() {
+  PR::Pr(n);
+  if (ans == n) puts("Prime");
+  else cout << ans << endl;
 }
 }  // namespace Solve
 
