@@ -37,6 +37,10 @@ void init(int n) {
 }
 struct poly {
   int f[Max_n];
+  int& operator[](int x) { return f[x]; }
+  void init() {
+    memset(f, 0, sizeof f);
+  }
   void dft(int t) {
     for (int i = 0; i < len; i++)
       if (rev[i] > i) swap(f[rev[i]], f[i]);
@@ -63,21 +67,36 @@ void Mul(poly &f, poly &g, int N) {
   f.dft(1), g.dft(1);
 }
 void Inv(poly &f, poly &g, int N) {
-  static poly tp, F;
-  tp.init(), tp[0] = ksm(f[0]);
+  static poly F;
+  g.init(), g[0] = ksm(f[0]);
   for (int deg = 2; deg < (N << 1); deg <<= 1) {
     init(deg * 3);
-    g = tp, tp.init();
+    for (int i = 0; i < deg; i++) F[i] = f[i];
+    for (int i = deg; i < len; i++) F[i] = 0;
+    F.dft(0), g.dft(0);
+    for (int i = 0; i < len; i++) 
+      g[i] = (2ll * g[i] % mod + mod - (LL)g[i] * g[i] % mod * F[i] % mod) % mod;
+    g.dft(-1);
+    for (int i = deg; i < len; i++) g[i] = 0;
   }
 }
 }  // namespace Poly
+using namespace Poly;
+
+poly f, ans;
 
 namespace Input {
-void main() { n = read(); }
+void main() { 
+  n = read(); 
+  for (int i = 0; i < n; i++) f[i] = read();
+}
 }  // namespace Input
 
 namespace Solve {
-void main() {}
+void main() {
+  Inv(f, ans, n);
+  for (int i = 0; i < n; i++) printf("%d ", ans[i]);
+}
 }  // namespace Solve
 
 int main() {
