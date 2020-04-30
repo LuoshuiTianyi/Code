@@ -1,5 +1,6 @@
 #include <cmath>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 using namespace std;
 #define LL long long
@@ -38,11 +39,14 @@ void init(int n) {
 struct poly {
   int f[Max_n];
   int& operator[](int x) { return f[x]; }
+  void init() {
+    memset(f, 0, sizeof (f));
+  }
   void dft(int t) {
     for (int i = 0; i < len; i++)
       if (rev[i] > i) swap(f[i], f[rev[i]]);
     for (int l = 1; l < len; l <<= 1) {
-      int Wn = ksm(3, G / (l << 1));
+      int Wn = ksm(3, (mod - 1) / (l << 1));
       if (t) Wn = ksm(Wn);
       for (int i = 0; i < len; i += l << 1) {
         int Wnk = 1;
@@ -59,6 +63,8 @@ struct poly {
 }  // namespace Poly
 using namespace Poly;
 
+poly f, g;
+
 void Mul(poly &f, poly &g, int N) {
   init(N);
   f.dft(0), g.dft(0);
@@ -69,12 +75,16 @@ void Mul(poly &f, poly &g, int N) {
 namespace Input {
 void main() { 
   n = read(), m = read(); 
-  for (int i = 0; i <= n; i++)
+  for (int i = 0; i <= n; i++) f[i] = read();
+  for (int i = 0; i <= m; i++) g[i] = read();
 }
 }  // namespace Input
 
 namespace Solve {
-void main() {}
+void main() {
+  Mul(f, g, n + m + 2);
+  for (int i = 0; i <= n + m; i++) printf("%d ", f[i]);
+}
 }  // namespace Solve
 
 int main() {
