@@ -51,7 +51,7 @@ struct poly {
       for (int i = 0; i < len; i += l << 1) {
         int Wnk = 1;
         for (int j = i; j < i + l; j++, Wnk = (LL)Wnk * Wn % mod) {
-          int x = f[j], y = f[j + l];
+          int x = f[j], y = (LL)f[j + l] * Wnk % mod;
           f[j] = (x + y) % mod, f[j + l] = (x - y + mod) % mod;
         }
       }
