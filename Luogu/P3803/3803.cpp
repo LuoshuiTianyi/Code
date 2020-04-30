@@ -42,6 +42,13 @@ struct poly {
   }
   void dft(int t) {
     for (int l = 1; l < len; l <<= 1) {
+      int Wn = ksm(3, G / (l << 1));
+      for (int i = 0; i < len; i += l << 1) {
+        int Wnk = 1;
+        for (int j = i; j < i + l; j++, Wnk = (LL)Wnk * Wn % mod) {
+          
+        }
+      }
     }
   }
 };
