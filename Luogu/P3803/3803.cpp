@@ -69,7 +69,7 @@ void Mul(poly &f, poly &g, int N) {
 namespace Input {
 void main() { 
   n = read(), m = read(); 
-  
+  for (int i = 0; i <= n; i++)
 }
 }  // namespace Input
 
