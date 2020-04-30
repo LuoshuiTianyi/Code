@@ -37,32 +37,44 @@ void init(int n) {
 }
 struct poly {
   int f[Max_n];
-  int& operator[](int x) {
-    return f[x];
-  }
+  int& operator[](int x) { return f[x]; }
   void dft(int t) {
+    for (int i = 0; i < len; i++)
+      if (rev[i] > i) swap(f[i], f[rev[i]]);
     for (int l = 1; l < len; l <<= 1) {
       int Wn = ksm(3, G / (l << 1));
+      if (t) Wn = ksm(Wn);
       for (int i = 0; i < len; i += l << 1) {
         int Wnk = 1;
         for (int j = i; j < i + l; j++, Wnk = (LL)Wnk * Wn % mod) {
-          
+          int x = f[j], y = f[j + l];
+          f[j] = (x + y) % mod, f[j + l] = (x - y + mod) % mod;
         }
       }
     }
+    if (t)
+      for (int i = 0, Inv = ksm(len); i < len; i++) f[i] = (LL)f[i] * Inv % mod;
   }
 };
+}  // namespace Poly
+using namespace Poly;
+
+void Mul(poly &f, poly &g, int N) {
+  init(N);
+  f.dft(0), g.dft(0);
+  for (int i = 0; i < len; i++) f[i] = (LL)f[i] * g[i] % mod;
+  f.dft(1), g.dft(1);
 }
 
 namespace Input {
-void main() {
-  n = read(), m = read();
+void main() { 
+  n = read(), m = read(); 
+  
 }
 }  // namespace Input
 
 namespace Solve {
-void main() {
-}
+void main() {}
 }  // namespace Solve
 
 int main() {
