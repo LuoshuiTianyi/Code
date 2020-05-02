@@ -98,6 +98,10 @@ void exp(poly &f, poly &g, int N) {
     for (int i = 0; i < deg; i++) F[i] = f[i];
     for (int i = deg; i < len; i++) F[i] = 0;
     g.dft(0), ln.dft(0), F.dft(0);
+    for (int i = 0; i < len; i++)
+      g[i] = (LL)g[i] * (1 - ln[i] + F[i] + mod) % mod;
+    g.dft(1);
+    for (int i = deg; i < len; i++) g[i] = 0;
   }
 }
 }  // namespace Poly
@@ -114,7 +118,7 @@ void main() {
 
 namespace Solve {
 void main() {
-  Ln(f, ans, n);
+  exp(f, ans, n);
   for (int i = 0; i < n; i++) printf("%d ", ans[i]);
 }
 }  // namespace Solve
