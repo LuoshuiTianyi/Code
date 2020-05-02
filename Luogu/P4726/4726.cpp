@@ -94,7 +94,10 @@ void exp(poly &f, poly &g, int N) {
   static poly F, ln;
   g.init(), g[0] = 1;
   for (int deg = 2; deg < (N << 1); deg <<= 1) {
-    Ln(g, ln, deg)
+    Ln(g, ln, deg), init(deg << 1);
+    for (int i = 0; i < deg; i++) F[i] = f[i];
+    for (int i = deg; i < len; i++) F[i] = 0;
+    g.dft(0), ln.dft(0), F.dft(0);
   }
 }
 }  // namespace Poly
