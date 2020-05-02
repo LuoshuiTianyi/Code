@@ -81,11 +81,18 @@ void Inv(poly &f, poly &g, int N) {
   }
 }
 void Sqrt(poly &f, poly &g, int N) {
-  static poly inv;
-  g.init(), g[0] = 1;
+  static poly inv, F;
+  g.init(), inv.init(), g[0] = 1;
   for (int deg = 2; deg < (N << 1); deg <<= 1) {
-    Inv(f, inv, deg);
-    init(deg * 3);
+    Inv(g, inv, deg), init(deg * 3);
+    for (int i = 0; i < deg; i++) F[i] = f[i];
+    for (int i = deg; i < len; i++) F[i] = 0;
+    g.dft(0), inv.dft(0), F.dft(0);
+    for (int i = 0; i < len; i++)
+      g[i] = (LL)inv[i] * ((LL)g[i] * g[i] % mod + mod - F[i]) % mod;
+    g.dft(1);
+    for (int i = 0, iv = ksm(2); i < deg; i++) g[i] = (LL)iv * g[i] % mod;
+    for (int i = deg; i < len; i++) g[i] = 0;
   }
 }
 }  // namespace Poly
@@ -102,7 +109,7 @@ void main() {
 
 namespace Solve {
 void main() {
-  Inv(f, ans, n);
+  Sqrt(f, ans, n);
   for (int i = 0; i < n; i++) printf("%d ", ans[i]);
 }
 }  // namespace Solve
