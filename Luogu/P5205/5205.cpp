@@ -19,7 +19,7 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 6e5 + 5, mod = 998244353, G = 3;
+const int Max_n = 6e5 + 5, mod = 998244353;
 int n;
 int ksm(int a, int b = mod - 2) {
   int res = 1;
@@ -89,7 +89,7 @@ void Sqrt(poly &f, poly &g, int N) {
     for (int i = deg; i < len; i++) F[i] = 0;
     g.dft(0), inv.dft(0), F.dft(0);
     for (int i = 0; i < len; i++)
-      g[i] = (LL)inv[i] * ((LL)g[i] * g[i] % mod + mod - F[i]) % mod;
+      g[i] = (LL)inv[i] * ((LL)g[i] * g[i] % mod + F[i]) % mod;
     g.dft(1);
     for (int i = 0, iv = ksm(2); i < deg; i++) g[i] = (LL)iv * g[i] % mod;
     for (int i = deg; i < len; i++) g[i] = 0;
