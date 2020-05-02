@@ -1,10 +1,9 @@
 #include <cmath>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 using namespace std;
 #define LL long long
-#define go(G, x, i, v) \
-  for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 #define inline __inline__ __attribute__((always_inline))
 inline LL read() {
   LL x = 0, w = 1;
@@ -22,14 +21,15 @@ inline LL read() {
 
 const int Max_n = 6e5 + 5, mod = 998244353, G = 3;
 int n;
-
-int len, bit, rev[Max_n];
 int ksm(int a, int b = mod - 2) {
   int res = 1;
   for (; b; b >>= 1, a = 1ll * a * a % mod)
     if (b & 1) res = 1ll * res * a % mod;
   return res;
 }
+
+namespace Poly {
+int len, bit, rev[Max_n];
 void init(int n) {
   len = 1 << (bit = log2(n) + 1);
   for (int i = 0; i < len; i++)
@@ -37,18 +37,16 @@ void init(int n) {
 }
 struct poly {
   int f[Max_n];
-  poly() {
-    Init();
-  }
-  void Init() {
-    for (int i = 0; i < Max_n; i++) f[i] = 0;
+  int& operator[](int x) { return f[x]; }
+  void init() {
+    memset(f, 0, sizeof f);
   }
   void dft(int t) {
     for (int i = 0; i < len; i++)
       if (rev[i] > i) swap(f[rev[i]], f[i]);
     for (int l = 1; l < len; l <<= 1) {
-      int Wn = ksm(G, (mod - 1) / (l << 1));
-      if (t == -1) Wn = ksm(Wn);
+      int Wn = ksm(3, (mod - 1) / (l << 1));
+      if (t) Wn = ksm(Wn);
       for (int i = 0; i < len; i += l << 1) {
         int Wnk = 1;
         for (int k = i; k < i + l; k++, Wnk = 1ll * Wnk * Wn % mod) {
@@ -57,57 +55,55 @@ struct poly {
         }
       }
     }
-    if (t == -1)
-      for (int i = 0, Inv = ksm(len); i < len; i++) f[i] = 1ll * f[i] * Inv % mod;
-  }
-  poly inv(int n) {
-    static poly g, F;
-    g.Init(), F.Init();
-    g.f[0] = ksm(f[0]);
-    for (int deg = 2; deg < (n << 1); deg <<= 1) {
-      init(deg * 3);
-      for (int i = 0; i < deg; i++) F.f[i] = f[i];
-      for (int i = deg; i < len; i++) F.f[i] = 0;
-      F.dft(1), g.dft(1);
-      for (int i = 0; i < len; i++)
-        g.f[i] = (2ll * g.f[i] % mod - 1ll * g.f[i] * g.f[i] % mod * F.f[i] % mod + mod) % mod;
-      g.dft(-1);
-      for (int i = deg; i < len; i++) g.f[i] = 0;
-    }
-    return g;
-  }
-  poly sqrt(int n) {
-    static poly g, F, Inv;
-    g.Init(), F.Init(), Inv.Init();
-    g.f[0] = 1;
-    for (int deg = 2; deg < (n << 1); deg <<= 1) {
-      Inv = g.inv(deg), init(deg * 3);
-      for (int i = 0; i < deg; i++) F.f[i] = f[i];
-      for (int i = deg; i < len; i++) F.f[i] = 0;
-      F.dft(1), g.dft(1), Inv.dft(1);
-      for (int i = 0; i < len; i++)
-        g.f[i] = 1ll * Inv.f[i] * (1ll * g.f[i] * g.f[i] % mod + F.f[i]) % mod;
-      g.dft(-1);
-      for (int i = 0, iv = ksm(2); i < deg; i++) g.f[i] = 1ll * g.f[i] * iv % mod;
-      for (int i = deg; i < len; i++) g.f[i] = 0;
-    }
-    return g;
+    if (t)
+      for (int i = 0, Inv = ksm(len); i < len; i++)
+        f[i] = 1ll * f[i] * Inv % mod;
   }
 };
+void Mul(poly &f, poly &g, int N) {
+  init(N);
+  f.dft(0), g.dft(0);
+  for (int i = 0; i < len; i++) f[i] = (LL)f[i] * g[i] % mod;
+  f.dft(1), g.dft(1);
+}
+void Inv(poly &f, poly &g, int N) {
+  static poly F;
+  g.init(), g[0] = ksm(f[0]);
+  for (int deg = 2; deg < (N << 1); deg <<= 1) {
+    init(deg * 3);
+    for (int i = 0; i < deg; i++) F[i] = f[i];
+    for (int i = deg; i < len; i++) F[i] = 0;
+    F.dft(0), g.dft(0);
+    for (int i = 0; i < len; i++) 
+      g[i] = (2ll * g[i] % mod + mod - (LL)g[i] * g[i] % mod * F[i] % mod) % mod;
+    g.dft(-1);
+    for (int i = deg; i < len; i++) g[i] = 0;
+  }
+}
+void Sqrt(poly &f, poly &g, int N) {
+  static poly inv;
+  g.init(), g[0] = 1;
+  for (int deg = 2; deg < (N << 1); deg <<= 1) {
+    Inv(f, inv, deg);
+    init(deg * 3);
+  }
+}
+}  // namespace Poly
+using namespace Poly;
 
-poly a, ans;
+poly f, ans;
 
 namespace Input {
-void main() {
-  n = read();
-  for (int i = 0; i < n; i++) a.f[i] = read();
+void main() { 
+  n = read(); 
+  for (int i = 0; i < n; i++) f[i] = read();
 }
 }  // namespace Input
 
 namespace Solve {
 void main() {
-  ans = a.sqrt(n);
-  for (int i = 0; i < n; i++) printf("%d ", ans.f[i]);
+  Inv(f, ans, n);
+  for (int i = 0; i < n; i++) printf("%d ", ans[i]);
 }
 }  // namespace Solve
 
@@ -119,3 +115,4 @@ int main() {
   Input::main();
   Solve::main();
 }
+
