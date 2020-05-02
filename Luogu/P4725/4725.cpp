@@ -81,7 +81,7 @@ void Inv(poly &f, poly &g, int N) {
   }
 }
 void Ln(poly &f, poly &g, int N) {
-  static F;
+  static F = f;
 }
 }  // namespace Poly
 using namespace Poly;
@@ -97,7 +97,7 @@ void main() {
 
 namespace Solve {
 void main() {
-  (f, ans, n);
+  Ln(f, ans, n);
   for (int i = 0; i < n; i++) printf("%d ", ans[i]);
 }
 }  // namespace Solve
