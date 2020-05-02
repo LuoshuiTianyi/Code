@@ -81,7 +81,13 @@ void Inv(poly &f, poly &g, int N) {
   }
 }
 void Ln(poly &f, poly &g, int N) {
-  static F = f;
+  static poly inv = f, df;
+  for (int i = 0; i < N; i++) df[i] = (LL)df[i + 1] * (i + 1) % mod;
+  df[N] = 0;
+  Inv(f, inv, N);
+  Mul(df, f, N + N);
+  for (int i = N; i; i--) df[i] = (LL)df[i - 1] * ksm(i) % mod;
+  df[0] = 0;
 }
 }  // namespace Poly
 using namespace Poly;
@@ -90,8 +96,9 @@ poly f, ans;
 
 namespace Input {
 void main() { 
-  n = read(); 
-  for (int i = 0; i < n; i++) f[i] = read();
+  read();
+  //n = read(); 
+  //for (int i = 0; i < n; i++) f[i] = read();
 }
 }  // namespace Input
 
@@ -108,5 +115,5 @@ int main() {
   freopen("4238.out", "w", stdout);
 #endif
   Input::main();
-  Solve::main();
+  //Solve::main();
 }
