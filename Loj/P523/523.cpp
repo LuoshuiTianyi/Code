@@ -22,8 +22,21 @@ inline LL read() {
 const int Max_n = 5e5 + 5;
 int n, m, T, ans;
 int a[Max_n], b[Max_n];
-int u[Max_n], v[Max_n], s[Max_n];
+int u[Max_n], v[Max_n], v1[Max_n], v2[Max_n], s[Max_n];
 int cntd, dfn[Max_n], sz[Max_n];
+struct graph {
+  int hd[Max_n];
+  int cntr, nx[Max_n << 1], to[Max_n << 1];
+  void addr(int u, int v) {
+    cntr++;
+    nx[cntr] = hd[u], to[cntr] = v;
+    hd[u] = cntr;
+  }
+} G;
+
+int find(int x) {
+  ;
+}
 
 namespace Input {
 void main() {
@@ -32,6 +45,7 @@ void main() {
   for (int i = 1; i <= n; i++) {
     b[i] = read();
     s[i] = s[i - 1] + 2 - ((u[i] = (a[i] + b[i]) % n + 1) == (v[i] = (a[i] - b[i] + n) % n + 1));
+    G.addr(u[i], v[i]);
   }
 }
 }  // namespace Input
