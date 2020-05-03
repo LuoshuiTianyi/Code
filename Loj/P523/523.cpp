@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -35,7 +36,7 @@ struct graph {
 } G;
 
 int find(int x) {
-  ;
+  return;
 }
 
 namespace Input {
