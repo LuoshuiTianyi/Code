@@ -26,7 +26,7 @@ int a[Max_n], b[Max_n];
 int u[Max_n], v[Max_n], v1[Max_n], v2[Max_n], s[Max_n];
 
 int cntd, dfn[Max_n], sz[Max_n];
-int cntt, bel[Max_n], up[Max_n], dn[Max_n], V1[Max_n], V2[Max_n];
+int cntt, rt[Max_n], bel[Max_n], up[Max_n], dn[Max_n], V1[Max_n], V2[Max_n];
 bool vis[Max_n], ty[Max_n];
 struct graph {
   int hd[Max_n];
@@ -80,22 +80,22 @@ void add(int o, int l, int r) {
 }  // namespace SEG_Tree
 
 namespace Init {
-int U, V;
+int U, V, id;
 void dfs(int x, int fa) {
-  bel[x] = cntt;
+  bel[x] = cntt, dfn[x] = ++cntd;
   go(G, x, i, v) if (i != fa) {
     if (vis[v]) {
-      U = x, V = v;
-      
+      U = x, V = v, id = i;
       return;
     }
+    up[v] = G.w[i ^ 1], dn[v] = G.w[i];
     dfs(v, i);
   }
 }
 void main() {
   for (int i = 1; i <= n; i++)
     if (!vis[i]) {
-      cntt++, U = V = 0, dfs(i, 0);
+      rt[++cntt] = i, U = V = 0, dfs(i, 0);
       if (!U) {
       } else {
       }
