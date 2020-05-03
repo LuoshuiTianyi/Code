@@ -51,6 +51,31 @@ void main() {
 }
 }  // namespace Input
 
+namespace SEG_Tree {
+int Max[Max_n << 1], tag[Max_n << 1];
+int L, R, x, ans;
+#define ls (o << 1)
+#define rs (o << 1 | 1)
+#define mid (l + r >> 1)
+void pushdown(int o) {
+  tag[ls] += tag[o], tag[rs] += tag[o];
+  Max[ls] += tag[o], Max[rs] += tag[o];
+  tag[o] = 0;
+}
+void pushup(int o) {
+  Max[o] = max(Max[ls], Max[rs]);
+}
+void add(int o, int l, int r) {
+  if (l >= L && r <= R) {
+    Max[o] += x, tag[o] += x;
+    return;
+  }
+  pushdown(o);
+  if (mid >= L) add(ls, l, mid);
+  if (mid < R) add(rs, mid + 1, r);
+}
+}
+
 namespace Init {
 void main() {
   
