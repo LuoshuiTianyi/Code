@@ -24,7 +24,10 @@ const int Max_n = 5e5 + 5;
 int n, m, T, ans;
 int a[Max_n], b[Max_n];
 int u[Max_n], v[Max_n], v1[Max_n], v2[Max_n], s[Max_n];
+
 int cntd, dfn[Max_n], sz[Max_n];
+int cntt, bel[Max_n], V1[Max_n], V2[Max_n];
+bool vis[Max_n], ty[Max_n];
 struct graph {
   int hd[Max_n];
   int cntr, nx[Max_n << 1], to[Max_n << 1];
@@ -77,8 +80,16 @@ void add(int o, int l, int r) {
 }
 
 namespace Init {
+int U, V;
+void dfs(int x, int fa) {
+  go(G, x, i, v) if (v != fa) {
+    if (v == 
+    dfs(v, x);
+  }
+}
 void main() {
-  
+  for (int i = 1; i <= n; i++)
+    if (!vis[i]) dfs(i, 0);
 }
 }  // namespace Init
 
