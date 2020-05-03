@@ -31,7 +31,7 @@ bool vis[Max_n], ty[Max_n];
 struct graph {
   int hd[Max_n];
   int cntr, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
-  void addr(int u, int v, W) {
+  void addr(int u, int v, int W) {
     cntr++;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;;
     hd[u] = cntr;
@@ -48,7 +48,7 @@ void main() {
   for (int i = 1; i <= n; i++) a[i] = read();
   for (int i = 1; i <= n; i++) {
     b[i] = read();
-    s[i] = s[i - 1] + 2 - ((u[i] = (a[i] + b[i]) % n + 1) == (v[i] = (a[i] - b[i] + n) % n + 1));
+    u[i] = (a[i] + b[i]) % n + 1, v[i] = (a[i] - b[i] + n) % n + 1;
   }
 }
 }  // namespace Input
@@ -94,13 +94,15 @@ void main() {
   for (int i = 1; i <= n; i++)
     if (!vis[i]) {
       cntt++, U = V = 0, dfs(i, 0);
-      ty[
+      ty[cntt] = !U;
     }
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  
+}
 }  // namespace Solve
 
 int main() {
