@@ -20,10 +20,12 @@ inline LL read() {
 }
 
 const int Max_n = 5e5 + 5;
-int n, m;
+int n, m, ans;
 
 namespace Input {
-void main() {}
+void main() {
+  n = read(), m = read(), T = read();
+}
 }  // namespace Input
 
 namespace Init {
