@@ -34,7 +34,6 @@ struct graph {
   void addr(int u, int v, int W) {
     cntr++;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
-    ;
     hd[u] = cntr;
   }
 } G;
