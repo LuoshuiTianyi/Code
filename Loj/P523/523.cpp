@@ -26,14 +26,14 @@ int a[Max_n], b[Max_n];
 int u[Max_n], v[Max_n], v1[Max_n], v2[Max_n], s[Max_n];
 
 int cntd, dfn[Max_n], sz[Max_n];
-int cntt, bel[Max_n], V1[Max_n], V2[Max_n];
+int cntt, bel[Max_n], up[Max_n], dn[Max_n], V1[Max_n], V2[Max_n];
 bool vis[Max_n], ty[Max_n];
 struct graph {
   int hd[Max_n];
-  int cntr, nx[Max_n << 1], to[Max_n << 1];
-  void addr(int u, int v) {
+  int cntr, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
+  void addr(int u, int v, W) {
     cntr++;
-    nx[cntr] = hd[u], to[cntr] = v;
+    nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;;
     hd[u] = cntr;
   }
 } G;
@@ -49,7 +49,6 @@ void main() {
   for (int i = 1; i <= n; i++) {
     b[i] = read();
     s[i] = s[i - 1] + 2 - ((u[i] = (a[i] + b[i]) % n + 1) == (v[i] = (a[i] - b[i] + n) % n + 1));
-    G.addr(u[i], v[i]);
   }
 }
 }  // namespace Input
@@ -82,14 +81,21 @@ void add(int o, int l, int r) {
 namespace Init {
 int U, V;
 void dfs(int x, int fa) {
+  bel[x] = cntt;
   go(G, x, i, v) if (v != fa) {
-    if (v == 
+    if (vis[v]) {
+      U = x, V = v;
+      return;
+    }
     dfs(v, x);
   }
 }
 void main() {
   for (int i = 1; i <= n; i++)
-    if (!vis[i]) dfs(i, 0);
+    if (!vis[i]) {
+      cntt++, U = V = 0, dfs(i, 0);
+      ty[
+    }
 }
 }  // namespace Init
 
