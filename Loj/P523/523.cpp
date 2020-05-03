@@ -52,7 +52,9 @@ void main() {
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  
+}
 }  // namespace Init
 
 namespace Solve {
