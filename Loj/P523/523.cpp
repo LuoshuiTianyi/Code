@@ -97,6 +97,7 @@ void main() {
     if (!vis[i]) {
       rt[++cntt] = i, U = V = 0, dfs(i, 0);
       if (!U) {
+        
       } else {
       }
     }
