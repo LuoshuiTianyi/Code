@@ -36,7 +36,7 @@ struct graph {
 } G;
 
 int find(int x) {
-  return;
+  return lower_bound(s + 1, s + n + 1, x) - s;
 }
 
 namespace Input {
