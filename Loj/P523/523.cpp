@@ -26,7 +26,7 @@ int a[Max_n], b[Max_n];
 int u[Max_n], v[Max_n], v1[Max_n], v2[Max_n], s[Max_n];
 
 int cntd, dfn[Max_n], sz[Max_n];
-int cntt, rt[Max_n], bel[Max_n], up[Max_n], dn[Max_n], V1[Max_n], V2[Max_n];
+int cntt, rt[Max_n], bel[Max_n], up[Max_n], dn[Max_n], V1[Max_n], V2[Max_n], tot[Max_n];
 bool vis[Max_n], ty[Max_n];
 struct graph {
   int hd[Max_n];
@@ -92,12 +92,20 @@ void dfs(int x, int fa) {
     dfs(v, i);
   }
 }
+void build1(int x, int fa, int sum1, sum2) {
+  tot[cntt] += dn[x], sz[x] = 1;
+  go(G, x, i, v) if (v != fa) build1(v, x, sum1 + up[v], sum2 + dn[v]), sz[x] += sz[v];
+}
+void build2(int x, int fa) {
+  tot[cntt] += dn[x], sz[x] = 1;
+  go(G, x, i, v) if (v != fa) build2(v, x), sz[x] += sz[v];
+}
 void main() {
   for (int i = 1; i <= n; i++)
     if (!vis[i]) {
       rt[++cntt] = i, U = V = 0, dfs(i, 0);
       if (!U) {
-        
+        build1(i, 0, 0, 0);
       } else {
       }
     }
