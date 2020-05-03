@@ -25,7 +25,7 @@ int n, m, T, ans;
 int a[Max_n], b[Max_n];
 int u[Max_n], v[Max_n], v1[Max_n], v2[Max_n], s[Max_n];
 
-int cntd, dfn[Max_n], sz[Max_n];
+int cntd, dfn[Max_n], sz[Max_n], f[Max_n];
 int cntt, rt[Max_n], bel[Max_n], up[Max_n], dn[Max_n], V1[Max_n], V2[Max_n], tot[Max_n];
 bool vis[Max_n], ty[Max_n];
 struct graph {
@@ -106,6 +106,7 @@ void main() {
       if (!U) {
         build1(i, 0, 0, 0);
       } else {
+        int x = U;
       }
     }
 }
