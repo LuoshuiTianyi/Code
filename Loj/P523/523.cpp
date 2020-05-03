@@ -30,17 +30,16 @@ int cntt, bel[Max_n], up[Max_n], dn[Max_n], V1[Max_n], V2[Max_n];
 bool vis[Max_n], ty[Max_n];
 struct graph {
   int hd[Max_n];
-  int cntr, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
+  int cntr = 1, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
   void addr(int u, int v, int W) {
     cntr++;
-    nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;;
+    nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
+    ;
     hd[u] = cntr;
   }
 } G;
 
-int find(int x) {
-  return lower_bound(s + 1, s + n + 1, x) - s;
-}
+int find(int x) { return lower_bound(s + 1, s + n + 1, x) - s; }
 
 namespace Input {
 void main() {
@@ -49,6 +48,10 @@ void main() {
   for (int i = 1; i <= n; i++) {
     b[i] = read();
     u[i] = (a[i] + b[i]) % n + 1, v[i] = (a[i] - b[i] + n) % n + 1;
+  }
+  for (int i = 1; i <= n; i++) {
+    G.addr(v[i], u[i], read());
+    if (u[i] != v[i]) G.addr(u[i], v[i], read());
   }
 }
 }  // namespace Input
@@ -64,9 +67,7 @@ void pushdown(int o) {
   Max[ls] += tag[o], Max[rs] += tag[o];
   tag[o] = 0;
 }
-void pushup(int o) {
-  Max[o] = max(Max[ls], Max[rs]);
-}
+void pushup(int o) { Max[o] = max(Max[ls], Max[rs]); }
 void add(int o, int l, int r) {
   if (l >= L && r <= R) {
     Max[o] += x, tag[o] += x;
@@ -76,33 +77,34 @@ void add(int o, int l, int r) {
   if (mid >= L) add(ls, l, mid);
   if (mid < R) add(rs, mid + 1, r);
 }
-}
+}  // namespace SEG_Tree
 
 namespace Init {
 int U, V;
 void dfs(int x, int fa) {
   bel[x] = cntt;
-  go(G, x, i, v) if (v != fa) {
+  go(G, x, i, v) if (i != fa) {
     if (vis[v]) {
       U = x, V = v;
+      
       return;
     }
-    dfs(v, x);
+    dfs(v, i);
   }
 }
 void main() {
   for (int i = 1; i <= n; i++)
     if (!vis[i]) {
       cntt++, U = V = 0, dfs(i, 0);
-      ty[cntt] = !U;
+      if (!U) {
+      } else {
+      }
     }
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {
-  
-}
+void main() {}
 }  // namespace Solve
 
 int main() {
