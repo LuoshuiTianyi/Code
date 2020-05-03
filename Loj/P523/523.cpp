@@ -20,11 +20,19 @@ inline LL read() {
 }
 
 const int Max_n = 5e5 + 5;
-int n, m, ans;
+int n, m, T, ans;
+int a[Max_n], b[Max_n];
+int u[Max_n], v[Max_n], s[Max_n];
+int cntd, dfn[Max_n], sz[Max_n];
 
 namespace Input {
 void main() {
   n = read(), m = read(), T = read();
+  for (int i = 1; i <= n; i++) a[i] = read();
+  for (int i = 1; i <= n; i++) {
+    b[i] = read();
+    s[i] = s[i - 1] + 2 - ((u[i] = (a[i] + b[i]) % n + 1) == (v[i] = (a[i] - b[i] + n) % n + 1));
+  }
 }
 }  // namespace Input
 
