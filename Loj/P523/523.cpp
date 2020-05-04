@@ -35,7 +35,7 @@ struct graph {
   int cntr = 1, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
   void addr(int u, int v, int W) {
     cntr++;
-    // cout << u << " " << v << " " << W << endl;
+    cout << u << " " << v << " " << W << endl;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
     hd[u] = cntr;
   }
@@ -50,6 +50,7 @@ void main() {
   for (int i = 1; i <= n; i++) {
     b[i] = read();
     u[i] = (a[i] + b[i]) % m + 1, v[i] = (a[i] - b[i] + m) % m + 1;
+    s[i] = s[i - 1] + 2 - (u[i] == v[i]);
     if (u[i] > v[i]) swap(u[i], v[i]);
   }
   for (int i = 1; i <= n; i++) {
@@ -162,27 +163,35 @@ void main() {
     int a = u[y], b = v[y], c = 0;
     int now = bel[a];
     if (G.to[z] == a) swap(a, b);
+    cout << z << endl;
     if (ty[now]) {
       ans -= Qry(now);
-      if (cir[a] && cir[b]) {
-        if (Fa(a) == b)
-          c = 1;
-        else if (Fa(b) == a)
-          c = 0;
-        else if (z == key[now])
-          c = 0;
-        else
-          c = 1;
-        if (c == 0) V1[now] -= G.w[z], V1[now] += (G.w[z] = V);
-        else V2[now] -= G.w[z], V2[now] += (G.w[z] = V);
-      }
-      if (cir[a] && !cir[b]) tot[now] -= G.w[z], tot[now] += (G.w[z] = V);
+      //if (cir[a] && cir[b]) {
+      //  if (Fa(a) == b)
+      //    c = 1;
+      //  else if (Fa(b) == a)
+      //    c = 0;
+      //  else if (z == key[now])
+      //    c = 0;
+      //  else
+      //    c = 1;
+      //  if (c == 0) V1[now] -= G.w[z], V1[now] += (G.w[z] = V);
+      //  else V2[now] -= G.w[z], V2[now] += (G.w[z] = V);
+      //}
+      //if (cir[a] && !cir[b]) tot[now] -= G.w[z], tot[now] += (G.w[z] = V);
       ans += Qry(now);
     } else {
-      ans -= Qry(now);
-      
+      ans -= Qry(now), X = V - G.w[z];
+      if (Fa(a) == b) {
+        L = dfn[a], R = dfn[a] + sz[a] - 1, add(1, 1, m);
+      } else {
+        L = dfn[rt[now]], R = dfn[a] - 1, add(1, 1, m);
+        L = dfn[a] + sz[a], R = dfn[rt[now]] + sz[rt[now]] - 1, add(1, 1, m);
+      }
+      G.w[z] = V;
       ans += Qry(now);
     }
+    printf("%d\n", ans);
   }
 }
 }  // namespace Solve
