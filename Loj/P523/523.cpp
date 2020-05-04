@@ -170,9 +170,9 @@ void main() {
         else if (Fa(b) == a)
           c = 1;
         else if (z == key[now])
-          c = 0;
-        else
           c = 1;
+        else
+          c = 0;
         if (!c) V1[now] -= G.w[z], V1[now] += (G.w[z] = V);
         else V2[now] -= G.w[z], V2[now] += (G.w[z] = V);
       }
@@ -183,8 +183,8 @@ void main() {
       if (Fa(a) == b) {
         L = dfn[a], R = dfn[a] + sz[a] - 1, add(1, 1, m);
       } else {
-        L = dfn[rt[now]], R = dfn[a] - 1, add(1, 1, m);
-        L = dfn[a] + sz[a], R = dfn[rt[now]] + sz[rt[now]] - 1, add(1, 1, m);
+        L = dfn[rt[now]], R = dfn[b] - 1, add(1, 1, m);
+        L = dfn[b] + sz[b], R = dfn[rt[now]] + sz[rt[now]] - 1, add(1, 1, m);
       }
       G.w[z] = V;
       Ans += Qry(now);
