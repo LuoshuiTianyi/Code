@@ -157,9 +157,13 @@ void main() {
     x = read(), V = read();
     X -= ans * T, V -= ans * T;
     int y = find(x), z = X - s[y - 1] + (y - 1) * 2;
-    if (ty[bel[y]]) {
-      ans -= Qry(bel[y]);
-      
+    int a = u[y], b = v[y], c = 0;
+    
+    if (ty[bel[a]]) {
+      ans -= Qry(bel[a]);
+      if (cir[a] && cir[b])
+        if (Fa(a) == b) c = 1;
+        else if (Fa(b) == a) c = 0;
     } else {
     }
   }
