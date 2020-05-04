@@ -106,8 +106,7 @@ void main() {
       if (!U) {
         build1(i, 0, 0, 0);
       } else {
-        int x = U;
-        
+        for (int x = U; x != V; x = f[x])
       }
     }
 }
