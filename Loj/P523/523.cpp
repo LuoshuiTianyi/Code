@@ -35,7 +35,7 @@ struct graph {
   int cntr = 1, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
   void addr(int u, int v, int W) {
     cntr++;
-    cout << u << " " << v << " " << W << endl;
+    //cout << u << " " << v << " " << W << endl;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
     hd[u] = cntr;
   }
@@ -102,7 +102,7 @@ void dfs(int x, int fa) {
   bel[x] = cntt, dfn[x] = ++cntd, f[x] = fa, vis[x] = 1;
   go(G, x, i, v) if (i != fa) {
     if (vis[v]) {
-      U = x, V = v, key[cntt] = i, ty[cntt] = 1;
+      if (!U) U = x, V = v, key[cntt] = i, ty[cntt] = 1;
       continue;
     }
     up[v] = G.w[i ^ 1], dn[v] = G.w[i];
@@ -129,7 +129,6 @@ void main() {
         build1(i, 0);
         Count(i, 0, 0, 0);
       } else {
-        swap(U, V);
         int x = U;
         for (; x != V; x = Fa(x)) cir[x] = 1, V1[cntt] += up[x];
         cir[x] = 1, V1[cntt] += G.w[key[cntt] ^ 1];
@@ -158,30 +157,30 @@ void main() {
   int x, V;
   while (Q--) {
     x = read(), V = read();
-    X -= ans * T, V -= ans * T;
-    int y = find(x), z = X - s[y - 1] + (y - 1) * 2;
-    int a = u[y], b = v[y], c = 0;
+    x -= Ans * T, V -= Ans * T;
+    int y = find(x), z = x - s[y - 1] + (y - 1) * 2 + 1;
+    int a = u[y], b = v[y], c;
     int now = bel[a];
+    cout << a << " " << b << endl;
     if (G.to[z] == a) swap(a, b);
-    cout << z << endl;
     if (ty[now]) {
-      ans -= Qry(now);
-      //if (cir[a] && cir[b]) {
-      //  if (Fa(a) == b)
-      //    c = 1;
-      //  else if (Fa(b) == a)
-      //    c = 0;
-      //  else if (z == key[now])
-      //    c = 0;
-      //  else
-      //    c = 1;
-      //  if (c == 0) V1[now] -= G.w[z], V1[now] += (G.w[z] = V);
-      //  else V2[now] -= G.w[z], V2[now] += (G.w[z] = V);
-      //}
-      //if (cir[a] && !cir[b]) tot[now] -= G.w[z], tot[now] += (G.w[z] = V);
-      ans += Qry(now);
+      Ans -= Qry(now);
+      if (cir[a] && cir[b]) {
+        if (Fa(a) == b)
+          c = 1;
+        else if (Fa(b) == a)
+          c = 0;
+        else if (z == key[now])
+          c = 0;
+        else
+          c = 1;
+        if (!c) V1[now] -= G.w[z], V1[now] += (G.w[z] = V);
+        else V2[now] -= G.w[z], V2[now] += (G.w[z] = V);
+      }
+      if (cir[a] && !cir[b]) tot[now] -= G.w[z], tot[now] += (G.w[z] = V);
+      Ans += Qry(now);
     } else {
-      ans -= Qry(now), X = V - G.w[z];
+      Ans -= Qry(now), X = V - G.w[z];
       if (Fa(a) == b) {
         L = dfn[a], R = dfn[a] + sz[a] - 1, add(1, 1, m);
       } else {
@@ -189,9 +188,9 @@ void main() {
         L = dfn[a] + sz[a], R = dfn[rt[now]] + sz[rt[now]] - 1, add(1, 1, m);
       }
       G.w[z] = V;
-      ans += Qry(now);
+      Ans += Qry(now);
     }
-    printf("%d\n", ans);
+    printf("%d\n", Ans);
   }
 }
 }  // namespace Solve
