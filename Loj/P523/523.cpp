@@ -35,7 +35,7 @@ struct graph {
   int cntr = 1, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
   void addr(int u, int v, int W) {
     cntr++;
-    cout << u << " " << v << " " << W << endl;
+    //cout << u << " " << v << " " << W << endl;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
     hd[u] = cntr;
   }
@@ -118,8 +118,8 @@ void Count(int x, int fa, int sum1, int sum2) {
   go(G, x, i, v) if (v != fa) Count(v, x, sum1 + up[v], sum2 + dn[v]);
 }
 void build2(int x, int fa) {
-  tot[cntt] += dn[x] * !cir[x], F[x] = fa;
-  go(G, x, i, v) if (v != fa && !cir[v]) build2(v, x), sz[x] += sz[v];
+  F[x] = fa;
+  go(G, x, i, v) if (v != fa && !cir[v]) build2(v, x), sz[x] += sz[v], tot[cntt] += G.w[i];
 }
 void main() {
   for (int i = 1; i <= m; i++)
@@ -152,6 +152,7 @@ int Qry(int x) {
 }
 void main() {
   for (int i = 1; i <= cntt; i++) Ans += Qry(i);
+  cout << Ans << endl;
   int Q = read();
   int x, V;
   while (Q--) {
@@ -164,18 +165,23 @@ void main() {
     if (ty[now]) {
       Ans -= Qry(now);
       if (cir[a] && cir[b]) {
-        if (f[a] == z)
-          c = 0;
-        else if (f[b] == z)
-          c = 1;
-        else if (z == key[now])
-          c = 1;
-        else
-          c = 0;
-        if (!c)
+        if (a == b) {
           V1[now] -= G.w[z], V1[now] += (G.w[z] = V);
-        else
-          V2[now] -= G.w[z], V2[now] += (G.w[z] = V);
+          V2[now] -= G.w[z ^ 1], V2[now] += (G.w[z ^ 1] = V);
+        } else {
+          if (f[a] == z)
+            c = 0;
+          else if (f[b] == z)
+            c = 1;
+          else if (z == key[now])
+            c = 1;
+          else
+            c = 0;
+          if (!c)
+            V1[now] -= G.w[z], V1[now] += (G.w[z] = V);
+          else
+            V2[now] -= G.w[z], V2[now] += (G.w[z] = V);
+        }
       } else if (F[b] == a) {
         tot[now] -= G.w[z], tot[now] += (G.w[z] = V);
       }
