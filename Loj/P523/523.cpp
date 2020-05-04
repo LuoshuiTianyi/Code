@@ -151,7 +151,6 @@ int Qry(int x) {
   }
 }
 void main() {
-  cout << V2[1] << endl;
   for (int i = 1; i <= cntt; i++) Ans += Qry(i);
   cout << Ans << endl;
   int Q = read();
@@ -172,12 +171,13 @@ void main() {
         } else {
           if (f[a] == z)
             c = 0;
-          else if (f[b] == z)
+          else if (f[b] == z ^ 1)
             c = 1;
           else if (z == key[now])
             c = 1;
           else
             c = 0;
+          //cout << a << " " << b << " " << c << endl;
           if (!c)
             V1[now] -= G.w[z], V1[now] += (G.w[z] = V);
           else
