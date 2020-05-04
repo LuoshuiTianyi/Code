@@ -26,7 +26,7 @@ int n, m, T, Ans;
 int a[Max_n], b[Max_n];
 int u[Max_n], v[Max_n], v1[Max_n], v2[Max_n], s[Max_n];
 
-int cntd, dfn[Max_n], sz[Max_n], f[Max_n];
+int cntd, dfn[Max_n], sz[Max_n], f[Max_n], F[Max_n];
 int cntt, rt[Max_n], bel[Max_n], up[Max_n], dn[Max_n], V1[Max_n], V2[Max_n],
     tot[Max_n], key[Max_n];
 bool vis[Max_n], ty[Max_n], cir[Max_n];
@@ -35,7 +35,7 @@ struct graph {
   int cntr = 1, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
   void addr(int u, int v, int W) {
     cntr++;
-    //cout << u << " " << v << " " << W << endl;
+    // cout << u << " " << v << " " << W << endl;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
     hd[u] = cntr;
   }
@@ -118,7 +118,7 @@ void Count(int x, int fa, int sum1, int sum2) {
   go(G, x, i, v) if (v != fa) Count(v, x, sum1 + up[v], sum2 + dn[v]);
 }
 void build2(int x, int fa) {
-  tot[cntt] += dn[x] * !cir[x];
+  tot[cntt] += dn[x] * !cir[x], F[x] = fa;
   go(G, x, i, v) if (v != fa && !cir[v]) build2(v, x), sz[x] += sz[v];
 }
 void main() {
@@ -173,10 +173,13 @@ void main() {
           c = 1;
         else
           c = 0;
-        if (!c) V1[now] -= G.w[z], V1[now] += (G.w[z] = V);
-        else V2[now] -= G.w[z], V2[now] += (G.w[z] = V);
+        if (!c)
+          V1[now] -= G.w[z], V1[now] += (G.w[z] = V);
+        else
+          V2[now] -= G.w[z], V2[now] += (G.w[z] = V);
+      } else if (F[b] == a) {
+        tot[now] -= G.w[z], tot[now] += (G.w[z] = V);
       }
-      if (cir[a] && !cir[b]) tot[now] -= G.w[z], tot[now] += (G.w[z] = V);
       Ans += Qry(now);
     } else {
       Ans -= Qry(now), X = V - G.w[z];
