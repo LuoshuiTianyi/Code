@@ -34,7 +34,7 @@ struct graph {
   int cntr = 1, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
   void addr(int u, int v, int W) {
     cntr++;
-    cout << u << " " << v << " " << W << endl;
+    //cout << u << " " << v << " " << W << endl;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
     hd[u] = cntr;
   }
@@ -126,6 +126,7 @@ void main() {
         build1(i, 0);
         Count(i, 0, 0, 0);
       } else {
+        swap(U, V);
         int x = U;
         for (; x != V; x = Fa(x)) cir[x] = 1, V1[cntt] += up[x];
         cir[x] = 1, V1[cntt] += G.w[key[cntt] ^ 1];
@@ -150,6 +151,18 @@ int Qry(int x) {
 void main() {
   for (int i = 1; i <= cntt; i++) Ans += Qry(i);
   cout << Ans << endl;
+  int Q = read();
+  int x, V;
+  while (Q--) {
+    x = read(), V = read();
+    X -= ans * T, V -= ans * T;
+    int y = find(x), z = X - s[y - 1] + (y - 1) * 2;
+    if (ty[bel[y]]) {
+      ans -= Qry(bel[y]);
+      
+    } else {
+    }
+  }
 }
 }  // namespace Solve
 
