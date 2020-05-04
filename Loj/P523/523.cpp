@@ -27,14 +27,15 @@ int a[Max_n], b[Max_n];
 int u[Max_n], v[Max_n], v1[Max_n], v2[Max_n], s[Max_n];
 
 int cntd, dfn[Max_n], sz[Max_n], f[Max_n];
-int cntt, rt[Max_n], bel[Max_n], up[Max_n], dn[Max_n], V1[Max_n], V2[Max_n], tot[Max_n], key[Max_n];
+int cntt, rt[Max_n], bel[Max_n], up[Max_n], dn[Max_n], V1[Max_n], V2[Max_n],
+    tot[Max_n], key[Max_n];
 bool vis[Max_n], ty[Max_n], cir[Max_n];
 struct graph {
   int hd[Max_n];
   int cntr = 1, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
   void addr(int u, int v, int W) {
     cntr++;
-    //cout << u << " " << v << " " << W << endl;
+    // cout << u << " " << v << " " << W << endl;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
     hd[u] = cntr;
   }
@@ -71,6 +72,7 @@ void pushdown(int o) {
 }
 void pushup(int o) { Max[o] = max(Max[ls], Max[rs]); }
 void add(int o, int l, int r) {
+  if (R < L) return;
   if (l >= L && r <= R) {
     Max[o] += X, tag[o] += X;
     return;
@@ -158,13 +160,28 @@ void main() {
     X -= ans * T, V -= ans * T;
     int y = find(x), z = X - s[y - 1] + (y - 1) * 2;
     int a = u[y], b = v[y], c = 0;
-    
-    if (ty[bel[a]]) {
-      ans -= Qry(bel[a]);
-      if (cir[a] && cir[b])
-        if (Fa(a) == b) c = 1;
-        else if (Fa(b) == a) c = 0;
+    int now = bel[a];
+    if (G.to[z] == a) swap(a, b);
+    if (ty[now]) {
+      ans -= Qry(now);
+      if (cir[a] && cir[b]) {
+        if (Fa(a) == b)
+          c = 1;
+        else if (Fa(b) == a)
+          c = 0;
+        else if (z == key[now])
+          c = 0;
+        else
+          c = 1;
+        if (c == 0) V1[now] -= G.w[z], V1[now] += (G.w[z] = V);
+        else V2[now] -= G.w[z], V2[now] += (G.w[z] = V);
+      }
+      if (cir[a] && !cir[b]) tot[now] -= G.w[z], tot[now] += (G.w[z] = V);
+      ans += Qry(now);
     } else {
+      ans -= Qry(now);
+      
+      ans += Qry(now);
     }
   }
 }
