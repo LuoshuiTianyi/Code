@@ -35,7 +35,6 @@ struct graph {
   int cntr = 1, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
   void addr(int u, int v, int W) {
     cntr++;
-    cout << u << " " << v << " " << W << endl;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
     hd[u] = cntr;
   }
@@ -61,7 +60,7 @@ void main() {
 }  // namespace Input
 
 namespace SEG_Tree {
-int Max[Max_n << 1], tag[Max_n << 1];
+int Max[Max_n << 2], tag[Max_n << 2];
 int L, R, X, ans;
 #define ls (o << 1)
 #define rs (o << 1 | 1)
@@ -171,13 +170,12 @@ void main() {
         } else {
           if (f[a] == z)
             c = 0;
-          else if (f[b] == z ^ 1)
+          else if (f[b] == (z ^ 1))
             c = 1;
           else if (z == key[now])
             c = 1;
           else
             c = 0;
-          //cout << a << " " << b << " " << c << endl;
           if (!c)
             V1[now] -= G.w[z], V1[now] += (G.w[z] = V);
           else
