@@ -81,17 +81,17 @@ void add(int o, int l, int r) {
 namespace Init {
 int U, V, id;
 void dfs(int x, int fa) {
-  bel[x] = cntt, dfn[x] = ++cntd;
+  bel[x] = cntt, dfn[x] = ++cntd, f[x] = fa;
   go(G, x, i, v) if (i != fa) {
     if (vis[v]) {
       U = x, V = v, id = i;
       return;
     }
     up[v] = G.w[i ^ 1], dn[v] = G.w[i];
-    dfs(v, i);
+    dfs(v, i ^ 1);
   }
 }
-void build1(int x, int fa, int sum1, sum2) {
+void build1(int x, int fa, int sum1, int sum2) {
   tot[cntt] += dn[x], sz[x] = 1;
   go(G, x, i, v) if (v != fa) build1(v, x, sum1 + up[v], sum2 + dn[v]), sz[x] += sz[v];
 }
@@ -106,7 +106,9 @@ void main() {
       if (!U) {
         build1(i, 0, 0, 0);
       } else {
-        for (int x = U; x != V; x = f[x])
+        int x = U;
+        for (; x != V; x = G.to[f[x]]) vis[x] = 0, V1[cntt] += ;
+        vis[x] = 0;
       }
     }
 }
