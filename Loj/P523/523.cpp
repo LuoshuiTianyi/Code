@@ -22,7 +22,7 @@ inline LL read() {
 }
 
 const int Max_n = 5e5 + 5;
-int n, m, T, ans;
+int n, m, T, Ans;
 int a[Max_n], b[Max_n];
 int u[Max_n], v[Max_n], v1[Max_n], v2[Max_n], s[Max_n];
 
@@ -47,7 +47,7 @@ void main() {
   for (int i = 1; i <= n; i++) a[i] = read();
   for (int i = 1; i <= n; i++) {
     b[i] = read();
-    u[i] = (a[i] + b[i]) % n + 1, v[i] = (a[i] - b[i] + n) % n + 1;
+    u[i] = (a[i] + b[i]) % m + 1, v[i] = (a[i] - b[i] + m) % m + 1;
   }
   for (int i = 1; i <= n; i++) {
     G.addr(v[i], u[i], read());
@@ -58,7 +58,7 @@ void main() {
 
 namespace SEG_Tree {
 int Max[Max_n << 1], tag[Max_n << 1];
-int L, R, x, ans;
+int L, R, X, ans;
 #define ls (o << 1)
 #define rs (o << 1 | 1)
 #define mid (l + r >> 1)
@@ -70,7 +70,7 @@ void pushdown(int o) {
 void pushup(int o) { Max[o] = max(Max[ls], Max[rs]); }
 void add(int o, int l, int r) {
   if (l >= L && r <= R) {
-    Max[o] += x, tag[o] += x;
+    Max[o] += X, tag[o] += X;
     return;
   }
   pushdown(o);
@@ -89,6 +89,7 @@ void query(int o, int l, int r) {
   pushup(o);
 }
 }  // namespace SEG_Tree
+using namespace SEG_Tree;
 
 namespace Init {
 int U, V;
@@ -96,16 +97,20 @@ void dfs(int x, int fa) {
   bel[x] = cntt, dfn[x] = ++cntd, f[x] = fa;
   go(G, x, i, v) if (i != fa) {
     if (vis[v]) {
-      U = x, V = v, key[cntt] = i;
-      return;
+      U = x, V = v, key[cntt] = i, ty[cntt] = 1;
+      continue;
     }
     up[v] = G.w[i ^ 1], dn[v] = G.w[i];
     dfs(v, i ^ 1);
   }
 }
-void build1(int x, int fa, int sum1, int sum2) {
+void build1(int x, int fa) {
   tot[cntt] += dn[x], sz[x] = 1;
-  go(G, x, i, v) if (v != fa) build1(v, x, sum1 + up[v], sum2 + dn[v]), sz[x] += sz[v];
+  go(G, x, i, v) if (v != fa) build1(v, x), sz[x] += sz[v];
+}
+void Count(int x, int fa, int sum1, int sum2) {
+  L = dfn[x], R = dfn[x], X = tot[cntt] - sum2 + sum1, add(1, 1, n);
+  go(G, x, i, v) if (v != fa) Count(v, x, sum1 + up[v], sum2 + dn[v]);
 }
 void build2(int x, int fa) {
   tot[cntt] += dn[x] * vis[x];
@@ -115,26 +120,34 @@ void main() {
   for (int i = 1; i <= n; i++)
     if (!vis[i]) {
       rt[++cntt] = i, U = V = 0, dfs(i, 0);
-      if (!U) {
-        build1(i, 0, 0, 0);
-      } else {
-        int x = U;
-        for (; x != V; x = Fa(x)) vis[x] = 0, V1[cntt] += up[x];
-        vis[x] = 0, V1[cntt] += G.w[key[cntt] ^ 1];
-        for (int x = U; x != V; x = Fa(x)) V2[cntt] += dn[x];
-        V2[cntt] += G.w[key[cntt]];
-        for (int x = U; x != V; x = Fa(x)) build2(x, 0);
-        build2(V, 0);
-      }
+      //if (!U) {
+      //  build1(i, 0);
+      //  Count(i, 0, 0, 0);
+      //} else {
+      //  int x = U;
+      //  for (; x != V; x = Fa(x)) vis[x] = 0, V1[cntt] += up[x];
+      //  vis[x] = 0, V1[cntt] += G.w[key[cntt] ^ 1];
+      //  for (int x = U; x != V; x = Fa(x)) V2[cntt] += dn[x];
+      //  V2[cntt] += G.w[key[cntt]];
+      //  for (int x = U; x != V; x = Fa(x)) build2(x, 0);
+      //  build2(V, 0);
+      //}
     }
 }
 }  // namespace Init
 
 namespace Solve {
 int Qry(int x) {
-  if (
+  if (ty[x]) {
+    return tot[x] + max(V1[x], V2[x]);
+  } else {
+    L = dfn[rt[x]], R = dfn[rt[x]] + sz[rt[x]] - 1, ans = 0, query(1, 1, n);
+    return ans;
+  }
 }
 void main() {
+  for (int i = 1; i <= cntt; i++) Ans += Qry(i);
+  cout << Ans << endl;
 }
 }  // namespace Solve
 
@@ -145,5 +158,5 @@ int main() {
 #endif
   Input::main();
   Init::main();
-  Solve::main();
+  //Solve::main();
 }
