@@ -161,15 +161,14 @@ void main() {
     int y = find(x), z = x - s[y - 1] + (y - 1) * 2 + 1;
     int a = u[y], b = v[y], c;
     int now = bel[a];
-    cout << a << " " << b << endl;
     if (G.to[z] == a) swap(a, b);
     if (ty[now]) {
       Ans -= Qry(now);
       if (cir[a] && cir[b]) {
         if (Fa(a) == b)
-          c = 1;
-        else if (Fa(b) == a)
           c = 0;
+        else if (Fa(b) == a)
+          c = 1;
         else if (z == key[now])
           c = 0;
         else
