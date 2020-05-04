@@ -33,8 +33,8 @@ struct graph {
   int hd[Max_n];
   int cntr = 1, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
   void addr(int u, int v, int W) {
-    //cout << cntr << " " << u << " " << v << " " << W << endl;
     cntr++;
+    cout << u << " " << v << " " << W << endl;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
     hd[u] = cntr;
   }
@@ -71,10 +71,8 @@ void pushdown(int o) {
 }
 void pushup(int o) { Max[o] = max(Max[ls], Max[rs]); }
 void add(int o, int l, int r) {
-  //cout << l << " " << r << endl;
   if (l >= L && r <= R) {
     Max[o] += X, tag[o] += X;
-    //cout << X << " " << L << " " << R << " " << Max[o] << endl;
     return;
   }
   pushdown(o);
@@ -146,7 +144,6 @@ int Qry(int x) {
     return tot[x] + max(V1[x], V2[x]);
   } else {
     L = dfn[rt[x]], R = dfn[rt[x]] + sz[rt[x]] - 1, ans = 0, query(1, 1, m);
-    //cout << L << " " << R << " " << ans << endl;
     return ans;
   }
 }
