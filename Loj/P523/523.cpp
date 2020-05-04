@@ -3,6 +3,7 @@
 #include <iostream>
 using namespace std;
 #define LL long long
+#define Fa(x) G.to[f[x]]
 #define go(G, x, i, v) \
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 #define inline __inline__ __attribute__((always_inline))
@@ -26,7 +27,7 @@ int a[Max_n], b[Max_n];
 int u[Max_n], v[Max_n], v1[Max_n], v2[Max_n], s[Max_n];
 
 int cntd, dfn[Max_n], sz[Max_n], f[Max_n];
-int cntt, rt[Max_n], bel[Max_n], up[Max_n], dn[Max_n], V1[Max_n], V2[Max_n], tot[Max_n];
+int cntt, rt[Max_n], bel[Max_n], up[Max_n], dn[Max_n], V1[Max_n], V2[Max_n], tot[Max_n], key[Max_n];
 bool vis[Max_n], ty[Max_n];
 struct graph {
   int hd[Max_n];
@@ -75,16 +76,27 @@ void add(int o, int l, int r) {
   pushdown(o);
   if (mid >= L) add(ls, l, mid);
   if (mid < R) add(rs, mid + 1, r);
+  pushup(o);
+}
+void query(int o, int l, int r) {
+  if (l >= L && r <= R) {
+    ans = max(ans, Max[o]);
+    return;
+  }
+  pushdown(o);
+  if (mid >= L) query(ls, l, mid);
+  if (mid < R) query(rs, mid + 1, r);
+  pushup(o);
 }
 }  // namespace SEG_Tree
 
 namespace Init {
-int U, V, id;
+int U, V;
 void dfs(int x, int fa) {
   bel[x] = cntt, dfn[x] = ++cntd, f[x] = fa;
   go(G, x, i, v) if (i != fa) {
     if (vis[v]) {
-      U = x, V = v, id = i;
+      U = x, V = v, key[cntt] = i;
       return;
     }
     up[v] = G.w[i ^ 1], dn[v] = G.w[i];
@@ -96,8 +108,8 @@ void build1(int x, int fa, int sum1, int sum2) {
   go(G, x, i, v) if (v != fa) build1(v, x, sum1 + up[v], sum2 + dn[v]), sz[x] += sz[v];
 }
 void build2(int x, int fa) {
-  tot[cntt] += dn[x], sz[x] = 1;
-  go(G, x, i, v) if (v != fa) build2(v, x), sz[x] += sz[v];
+  tot[cntt] += dn[x] * vis[x];
+  go(G, x, i, v) if (v != fa && vis[v]) build2(v, x), sz[x] += sz[v];
 }
 void main() {
   for (int i = 1; i <= n; i++)
@@ -107,15 +119,23 @@ void main() {
         build1(i, 0, 0, 0);
       } else {
         int x = U;
-        for (; x != V; x = G.to[f[x]]) vis[x] = 0, V1[cntt] += ;
-        vis[x] = 0;
+        for (; x != V; x = Fa(x)) vis[x] = 0, V1[cntt] += up[x];
+        vis[x] = 0, V1[cntt] += G.w[key[cntt] ^ 1];
+        for (int x = U; x != V; x = Fa(x)) V2[cntt] += dn[x];
+        V2[cntt] += G.w[key[cntt]];
+        for (int x = U; x != V; x = Fa(x)) build2(x, 0);
+        build2(V, 0);
       }
     }
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+int Qry(int x) {
+  if (
+}
+void main() {
+}
 }  // namespace Solve
 
 int main() {
