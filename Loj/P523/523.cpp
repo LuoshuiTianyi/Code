@@ -35,7 +35,7 @@ struct graph {
   int cntr = 1, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
   void addr(int u, int v, int W) {
     cntr++;
-    //cout << u << " " << v << " " << W << endl;
+    cout << u << " " << v << " " << W << endl;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
     hd[u] = cntr;
   }
@@ -152,7 +152,6 @@ int Qry(int x) {
 }
 void main() {
   for (int i = 1; i <= cntt; i++) Ans += Qry(i);
-  cout << Ans << endl;
   int Q = read();
   int x, V;
   while (Q--) {
