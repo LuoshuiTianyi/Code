@@ -28,11 +28,12 @@ int u[Max_n], v[Max_n], v1[Max_n], v2[Max_n], s[Max_n];
 
 int cntd, dfn[Max_n], sz[Max_n], f[Max_n];
 int cntt, rt[Max_n], bel[Max_n], up[Max_n], dn[Max_n], V1[Max_n], V2[Max_n], tot[Max_n], key[Max_n];
-bool vis[Max_n], ty[Max_n];
+bool vis[Max_n], ty[Max_n], cir[Max_n];
 struct graph {
   int hd[Max_n];
   int cntr = 1, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
   void addr(int u, int v, int W) {
+    //cout << cntr << " " << u << " " << v << " " << W << endl;
     cntr++;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
     hd[u] = cntr;
@@ -50,8 +51,9 @@ void main() {
     u[i] = (a[i] + b[i]) % m + 1, v[i] = (a[i] - b[i] + m) % m + 1;
   }
   for (int i = 1; i <= n; i++) {
+    cout << u[i] << " " << v[i] << endl;
     G.addr(v[i], u[i], read());
-    if (u[i] != v[i]) G.addr(u[i], v[i], read());
+    G.addr(u[i], v[i], u[i] != v[i] ? read() : G.w[G.cntr]);
   }
 }
 }  // namespace Input
@@ -94,7 +96,7 @@ using namespace SEG_Tree;
 namespace Init {
 int U, V;
 void dfs(int x, int fa) {
-  bel[x] = cntt, dfn[x] = ++cntd, f[x] = fa;
+  bel[x] = cntt, dfn[x] = ++cntd, f[x] = fa, vis[x] = 1;
   go(G, x, i, v) if (i != fa) {
     if (vis[v]) {
       U = x, V = v, key[cntt] = i, ty[cntt] = 1;
@@ -113,25 +115,25 @@ void Count(int x, int fa, int sum1, int sum2) {
   go(G, x, i, v) if (v != fa) Count(v, x, sum1 + up[v], sum2 + dn[v]);
 }
 void build2(int x, int fa) {
-  tot[cntt] += dn[x] * vis[x];
-  go(G, x, i, v) if (v != fa && vis[v]) build2(v, x), sz[x] += sz[v];
+  tot[cntt] += dn[x] * !cir[x];
+  go(G, x, i, v) if (v != fa && !cir[v]) build2(v, x), sz[x] += sz[v];
 }
 void main() {
   for (int i = 1; i <= n; i++)
     if (!vis[i]) {
       rt[++cntt] = i, U = V = 0, dfs(i, 0);
-      //if (!U) {
-      //  build1(i, 0);
-      //  Count(i, 0, 0, 0);
-      //} else {
-      //  int x = U;
-      //  for (; x != V; x = Fa(x)) vis[x] = 0, V1[cntt] += up[x];
-      //  vis[x] = 0, V1[cntt] += G.w[key[cntt] ^ 1];
-      //  for (int x = U; x != V; x = Fa(x)) V2[cntt] += dn[x];
-      //  V2[cntt] += G.w[key[cntt]];
-      //  for (int x = U; x != V; x = Fa(x)) build2(x, 0);
-      //  build2(V, 0);
-      //}
+      if (!U) {
+        build1(i, 0);
+        Count(i, 0, 0, 0);
+      } else {
+        int x = U;
+        for (; x != V; x = Fa(x)) cir[x] = 1, V1[cntt] += up[x];
+        cir[x] = 1, V1[cntt] += G.w[key[cntt] ^ 1];
+        for (int x = U; x != V; x = Fa(x)) V2[cntt] += dn[x];
+        V2[cntt] += G.w[key[cntt]];
+        for (int x = U; x != V; x = Fa(x)) build2(x, 0);
+        build2(V, 0);
+      }
     }
 }
 }  // namespace Init
@@ -147,7 +149,6 @@ int Qry(int x) {
 }
 void main() {
   for (int i = 1; i <= cntt; i++) Ans += Qry(i);
-  cout << Ans << endl;
 }
 }  // namespace Solve
 
@@ -158,5 +159,5 @@ int main() {
 #endif
   Input::main();
   Init::main();
-  //Solve::main();
+  Solve::main();
 }
