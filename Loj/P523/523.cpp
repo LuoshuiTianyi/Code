@@ -49,9 +49,9 @@ void main() {
   for (int i = 1; i <= n; i++) {
     b[i] = read();
     u[i] = (a[i] + b[i]) % m + 1, v[i] = (a[i] - b[i] + m) % m + 1;
+    if (u[i] > v[i]) swap(u[i], v[i]);
   }
   for (int i = 1; i <= n; i++) {
-    cout << u[i] << " " << v[i] << endl;
     G.addr(v[i], u[i], read());
     G.addr(u[i], v[i], u[i] != v[i] ? read() : G.w[G.cntr]);
   }
@@ -71,8 +71,10 @@ void pushdown(int o) {
 }
 void pushup(int o) { Max[o] = max(Max[ls], Max[rs]); }
 void add(int o, int l, int r) {
+  //cout << l << " " << r << endl;
   if (l >= L && r <= R) {
     Max[o] += X, tag[o] += X;
+    //cout << X << " " << L << " " << R << " " << Max[o] << endl;
     return;
   }
   pushdown(o);
@@ -111,7 +113,7 @@ void build1(int x, int fa) {
   go(G, x, i, v) if (v != fa) build1(v, x), sz[x] += sz[v];
 }
 void Count(int x, int fa, int sum1, int sum2) {
-  L = dfn[x], R = dfn[x], X = tot[cntt] - sum2 + sum1, add(1, 1, n);
+  L = dfn[x], R = dfn[x], X = tot[cntt] - sum2 + sum1, add(1, 1, m);
   go(G, x, i, v) if (v != fa) Count(v, x, sum1 + up[v], sum2 + dn[v]);
 }
 void build2(int x, int fa) {
@@ -119,7 +121,7 @@ void build2(int x, int fa) {
   go(G, x, i, v) if (v != fa && !cir[v]) build2(v, x), sz[x] += sz[v];
 }
 void main() {
-  for (int i = 1; i <= n; i++)
+  for (int i = 1; i <= m; i++)
     if (!vis[i]) {
       rt[++cntt] = i, U = V = 0, dfs(i, 0);
       if (!U) {
@@ -143,12 +145,14 @@ int Qry(int x) {
   if (ty[x]) {
     return tot[x] + max(V1[x], V2[x]);
   } else {
-    L = dfn[rt[x]], R = dfn[rt[x]] + sz[rt[x]] - 1, ans = 0, query(1, 1, n);
+    L = dfn[rt[x]], R = dfn[rt[x]] + sz[rt[x]] - 1, ans = 0, query(1, 1, m);
+    //cout << L << " " << R << " " << ans << endl;
     return ans;
   }
 }
 void main() {
   for (int i = 1; i <= cntt; i++) Ans += Qry(i);
+  cout << Ans << endl;
 }
 }  // namespace Solve
 
