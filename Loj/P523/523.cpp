@@ -35,7 +35,7 @@ struct graph {
   int cntr = 1, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
   void addr(int u, int v, int W) {
     cntr++;
-    // cout << u << " " << v << " " << W << endl;
+    //cout << u << " " << v << " " << W << endl;
     nx[cntr] = hd[u], to[cntr] = v, w[cntr] = W;
     hd[u] = cntr;
   }
@@ -165,9 +165,9 @@ void main() {
     if (ty[now]) {
       Ans -= Qry(now);
       if (cir[a] && cir[b]) {
-        if (Fa(a) == b)
+        if (f[a] == z)
           c = 0;
-        else if (Fa(b) == a)
+        else if (f[b] == z)
           c = 1;
         else if (z == key[now])
           c = 1;
