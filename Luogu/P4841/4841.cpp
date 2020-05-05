@@ -60,19 +60,39 @@ void Mul(int *f, int *g, int N) {
   for (int i = 0; i < len; i++) f[i] = (LL)f[i] * g[i] % mod;
   dft(g, 1), dft(f, 1);
 }
-
 }  // namespace Poly
 
 namespace Input {
-void main() {}
+void main() {
+  n = read();
+}
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  for (int i = 0; i <= n; i++) G[i] = ksm(2, (LL)n * (n - 1) / 2 % (mod - 1));
+}
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void Solve(int l, int r) {
+  if (l == r) {
+    F[l] = (G[l] + mod - F[l]) % mod;
+    return;
+  }
+  int mid = l + r >> 1;
+  Solve(l, mid);
+  int l1 = 0, l2 = 0;
+  for (int i = l; i <= mid; i++) f[l1++] = F[i];
+  for (int i = 1; i <= r - l; i++) g[l2++] = G[i];
+  for (int i = l1; i < len; i++) f[i] = 0;
+  for (int i = l2; i < len; i++) g[i] = 0;
+  Mul(f, g, l1 + l2);
+  Solve(mid + 1, r);
+}
+void main() {
+  Solve(1, n);
+}
 }  // namespace Solve
 
 int main() {
