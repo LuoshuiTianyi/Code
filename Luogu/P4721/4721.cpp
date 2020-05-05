@@ -74,15 +74,19 @@ void main() {
 
 namespace Solve {
 void Solve(int l, int r) {
-  if (l == r) {
-    F[l] += G[l];
-    return;
-  }
+  if (l == r) return;
   int mid = l + r >> 1;
   Solve(l, mid);
   int l1 = 0, l2 = 0;
-  for (int i = l; i <= mid; i++) f[l1++] = F[i];
-  for (int i = 1; i <= r - l; i++) g[l2++] = G[i];
+  cout << l << " " << r << endl;
+  for (int i = l; i <= mid; i++) {
+    f[l1++] = F[i];
+    cout << "f[" << i << "]: " << F[i] << endl;
+  }
+  for (int i = 1; i <= r - l; i++) {
+    g[l2++] = G[i];
+    cout << "g[" << i << "]: " << G[i] << endl;
+  }
   for (int i = l1; i < len; i++) f[i] = 0;
   for (int i = l2; i < len; i++) g[i] = 0;
   Mul(f, g, l1 + l2);
