@@ -76,6 +76,7 @@ namespace Solve {
 void Solve(int l, int r) {
   if (l == r) {
     F[l] += G[l];
+    return;
   }
   int mid = l + r >> 1;
   Solve(l, mid);
@@ -90,6 +91,7 @@ void Solve(int l, int r) {
 }
 void main() {
   Solve(1, n);
+  for (int i = 0; i < n; i++) printf("%d ", F[i]);
 }
 }  // namespace Solve
 
