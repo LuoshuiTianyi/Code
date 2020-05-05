@@ -1,3 +1,4 @@
+#include <cmath>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -28,9 +29,17 @@ int ksm(int a, int b = mod - 2) {
     if (b & 1) a = (LL)a * a % mod;
   return res;
 }
+int len, bit, rev[Max_n];
+void init(int n) {
+  len = 1 << (bit = log2(n) + 1);
+  for (int i = 0; i < len; i++)
+    rev[i] = rev[i >> 1] >> 1 | ((i & 1) << bit - 1);
+}
 void dft(int *f, int t) {
+  for (int i = 0; i < len; i++)
+    if (rev[i] > i) swap(f[rev[i]], f[i]);
 }
-}
+}  // namespace Poly
 
 namespace Input {
 void main() {}
