@@ -22,6 +22,9 @@ inline LL read() {
 
 const int Max_n = 4e5 + 5, Mod = 998244353;
 
+int n;
+int f[Max_n], g[Max_n];
+
 namespace Poly {
 int ksm(int a, int b = mod - 2) {
   int res = 1;
@@ -62,15 +65,15 @@ void Mul(int *f, int *g, int N) {
 
 namespace Input {
 void main() {
+  n = read();
+  for (int i = 1; i < n; i++) g[i] = read();
+  f[0] = 1;
 }
 }  // namespace Input
 
-namespace Init {
-void main() {}
-}  // namespace Init
-
 namespace Solve {
-void main() {}
+void main() {
+}
 }  // namespace Solve
 
 int main() {
