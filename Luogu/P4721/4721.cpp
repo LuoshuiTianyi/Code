@@ -40,6 +40,7 @@ void dft(int *f, int t) {
     if (rev[i] > i) swap(f[rev[i]], f[i]);
   for (int l = 1; l < len; l++) {
     int Wn = ksm(3, (mod - 1) / (l << 1));
+    if (t) Wn = ksm(Wn);
     for (int i = 0; i < len; i += l << 1) {
       int Wnk = 1;
       for (int j = i; j < i + l; j++, Wnk = (LL)Wnk * Wn % mod) {
@@ -48,11 +49,20 @@ void dft(int *f, int t) {
       }
     }
   }
+  if (t)
+    for (int i = 0, Inv = ksm(len); i < len; i++) f[i] = (LL)f[i] * Inv % mod;
+}
+void Mul(int *f, int *g, int N) {
+  init(N);
+  dft(f, 0), dft(g, 0);
+  for (int i = 0; i < len; i++) f[i] = (LL)f[i] * g[i] % mod;
+  dft(f, 1), dft(g, 1);
 }
 }  // namespace Poly
 
 namespace Input {
-void main() {}
+void main() {
+}
 }  // namespace Input
 
 namespace Init {
