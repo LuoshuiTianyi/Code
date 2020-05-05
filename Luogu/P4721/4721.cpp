@@ -72,7 +72,11 @@ void main() {
 }  // namespace Input
 
 namespace Solve {
+void Solve(int l, int r) {
+  
+}
 void main() {
+  Solve(1, n);
 }
 }  // namespace Solve
 
