@@ -73,7 +73,13 @@ void main() {
 
 namespace Solve {
 void Solve(int l, int r) {
+  if (l == r) {
+    f[l] += g[l];
+  }
+  int mid = l + r >> 1;
+  Solve(l, mid);
   
+  Solve(mid + 1, r);
 }
 void main() {
   Solve(1, n);
