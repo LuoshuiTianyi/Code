@@ -36,12 +36,12 @@ int len, bit, rev[Max_n];
 void init(int n) {
   len = 1 << (bit = log2(n) + 1);
   for (int i = 0; i < len; i++)
-    rev[i] = rev[i >> 1] >> 1 | ((i & 1) << bit - 1);
+    rev[i] = (rev[i >> 1] >> 1) | ((i & 1) << bit - 1);
 }
 void dft(int *f, int t) {
   for (int i = 0; i < len; i++)
-    if (rev[i] > i) swap(f[rev[i]], f[i]);
-  for (int l = 1; l < len; l++) {
+    if (rev[i] > i) swap(f[i], f[rev[i]]);
+  for (int l = 1; l < len; l <<= 1) {
     int Wn = ksm(3, (mod - 1) / (l << 1));
     if (t) Wn = ksm(Wn);
     for (int i = 0; i < len; i += l << 1) {
@@ -74,7 +74,10 @@ void main() {
 
 namespace Solve {
 void Solve(int l, int r) {
-  if (l == r) return;
+  if (l == r) {
+    F[l] += G[l];
+    return;
+  }
   int mid = l + r >> 1;
   Solve(l, mid);
   int l1 = 0, l2 = 0;
@@ -90,7 +93,8 @@ void Solve(int l, int r) {
   for (int i = l1; i < len; i++) f[i] = 0;
   for (int i = l2; i < len; i++) g[i] = 0;
   Mul(f, g, l1 + l2);
-  for (int i = l1; i < l1 + r - mid; i++) F[mid + i + 1 - l1] += f[i];
+  cout << f[0] << endl;
+  for (int i = 0; i < r - mid; i++) F[mid + i + 1] += f[i];
   Solve(mid + 1, r);
 }
 void main() {
@@ -105,5 +109,8 @@ int main() {
   freopen("4721.out", "w", stdout);
 #endif
   Input::main();
-  Solve::main();
+  f[0] = 1, g[0] = 1;
+  Mul(f, g, 2);
+  cout << f[0];
+  //Solve::main();
 }
