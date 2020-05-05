@@ -19,6 +19,19 @@ inline LL read() {
   return x * w;
 }
 
+const int Max_n = 4e5 + 5, Mod = 998244353;
+
+namespace Poly {
+int ksm(int a, int b = mod - 2) {
+  int res = 1;
+  for (; b; b >>= 1, a = (LL)a * a % mod)
+    if (b & 1) a = (LL)a * a % mod;
+  return res;
+}
+void dft(int *f, int t) {
+}
+}
+
 namespace Input {
 void main() {}
 }  // namespace Input
