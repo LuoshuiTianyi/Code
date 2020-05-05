@@ -22,6 +22,7 @@ inline LL read() {
 
 const int Max_n = 130000 << 2, mod = 1004535809;
 int n;
+int fac[Max_n], ifac[Max_n];
 int F[Max_n], G[Max_n], f[Max_n], g[Max_n];
 
 namespace Poly {
@@ -61,6 +62,7 @@ void Mul(int *f, int *g, int N) {
   dft(g, 1), dft(f, 1);
 }
 }  // namespace Poly
+using namespace Poly;
 
 namespace Input {
 void main() {
@@ -70,28 +72,35 @@ void main() {
 
 namespace Init {
 void main() {
-  for (int i = 0; i <= n; i++) G[i] = ksm(2, (LL)n * (n - 1) / 2 % (mod - 1));
+  for (int i = 0; i <= n; i++) G[i] = ksm(2, (LL)i * (i - 1) / 2 % (mod - 1));
+  fac[0] = 1;
+  for (int i = 1; i <= n; i++) fac[i] = (LL)fac[i - 1] * i % mod;
+  ifac[n] = ksm(fac[n]);
+  for (int i = n; i; i--) ifac[i - 1] = (LL)ifac[i] * i % mod;
 }
 }  // namespace Init
 
 namespace Solve {
 void Solve(int l, int r) {
   if (l == r) {
-    F[l] = (G[l] + mod - F[l]) % mod;
+    //cout << l << " " << F[l] << endl;
+    F[l] = (G[l] + mod - (LL)F[l] * fac[l - 1] % mod) % mod;
     return;
   }
   int mid = l + r >> 1;
   Solve(l, mid);
   int l1 = 0, l2 = 0;
-  for (int i = l; i <= mid; i++) f[l1++] = F[i];
-  for (int i = 1; i <= r - l; i++) g[l2++] = G[i];
+  for (int i = l; i <= mid; i++) f[l1++] = (LL)F[i] * ifac[i - 1] % mod;
+  for (int i = 1; i <= r - l; i++) g[l2++] = (LL)G[i] * ifac[i] % mod;
   for (int i = l1; i < len; i++) f[i] = 0;
   for (int i = l2; i < len; i++) g[i] = 0;
   Mul(f, g, l1 + l2);
+  for (int i = l1 - 1, j = mid + 1; j <= r; i++, j++) (F[j] += f[i]) %= mod;
   Solve(mid + 1, r);
 }
 void main() {
   Solve(1, n);
+  cout << F[n] << endl;
 }
 }  // namespace Solve
 
