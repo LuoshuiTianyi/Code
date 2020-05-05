@@ -20,10 +20,10 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 4e5 + 5, Mod = 998244353;
+const int Max_n = 4e5 + 5, mod = 998244353;
 
 int n;
-int f[Max_n], g[Max_n];
+int F[Max_n], G[Max_n], f[Max_n], g[Max_n];
 
 namespace Poly {
 int ksm(int a, int b = mod - 2) {
@@ -62,23 +62,30 @@ void Mul(int *f, int *g, int N) {
   dft(f, 1), dft(g, 1);
 }
 }  // namespace Poly
+using namespace Poly;
 
 namespace Input {
 void main() {
   n = read();
-  for (int i = 1; i < n; i++) g[i] = read();
-  f[0] = 1;
+  for (int i = 1; i < n; i++) G[i] = read();
+  F[0] = 1;
 }
 }  // namespace Input
 
 namespace Solve {
 void Solve(int l, int r) {
   if (l == r) {
-    f[l] += g[l];
+    F[l] += G[l];
   }
   int mid = l + r >> 1;
   Solve(l, mid);
-  
+  int l1 = 0, l2 = 0;
+  for (int i = l; i <= mid; i++) f[l1++] = F[i];
+  for (int i = 1; i <= r - l; i++) g[l2++] = G[i];
+  for (int i = l1; i < len; i++) f[i] = 0;
+  for (int i = l2; i < len; i++) g[i] = 0;
+  Mul(f, g, l1 + l2);
+  for (int i = l1; i < l1 + r - mid; i++) F[mid + i + 1 - l1] += f[i];
   Solve(mid + 1, r);
 }
 void main() {
@@ -92,6 +99,5 @@ int main() {
   freopen("4721.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
