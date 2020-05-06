@@ -1,5 +1,6 @@
 #include <cmath>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 using namespace std;
 #define LL long long
@@ -33,6 +34,9 @@ int ksm(int a, int b = mod - 2) {
   return res;
 }
 int len, bit, rev[Max_n];
+void Init(int *f) {
+  memset(f, 0, sizeof f);
+}
 void init(int n) {
   len = 1 << (bit = log2(n) + 1);
   for (int i = 0; i < len; i++)
@@ -61,6 +65,17 @@ void Mul(int *f, int *g, int N) {
   for (int i = 0; i < len; i++) f[i] = (LL)f[i] * g[i] % mod;
   dft(g, 1), dft(f, 1);
 }
+void Inv(int *f, int *g, int N) {
+  static int F[Max_n];
+  Init(g), g[0] = ksm(f[0]);
+  for (int deg = 2; deg < (N << 1); deg <<= 1) {
+    init(deg * 3);
+    for (int i = 0; i < deg; i++) F[i] = f[i];
+    for (int i = deg; i < len; i++) F[i] = 0;
+    dft(g, 0), dft(f, 0);
+    for (int i = 0; i < len; i++)
+  }
+}
 }  // namespace Poly
 using namespace Poly;
 
@@ -81,25 +96,7 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
-void Solve(int l, int r) {
-  if (l == r) {
-    F[l] = (G[l] + mod - (LL)F[l] * fac[l - 1] % mod) % mod;
-    return;
-  }
-  int mid = l + r >> 1;
-  Solve(l, mid);
-  int l1 = 0, l2 = 0;
-  for (int i = l; i <= mid; i++) f[l1++] = (LL)F[i] * ifac[i - 1] % mod;
-  for (int i = 1; i <= r - l; i++) g[l2++] = (LL)G[i] * ifac[i] % mod;
-  for (int i = l1; i < len; i++) f[i] = 0;
-  for (int i = l2; i < len; i++) g[i] = 0;
-  Mul(f, g, l1 + l2);
-  for (int i = l1 - 1, j = mid + 1; j <= r; i++, j++) (F[j] += f[i]) %= mod;
-  Solve(mid + 1, r);
-}
 void main() {
-  Solve(1, n);
-  cout << F[n] << endl;
 }
 }  // namespace Solve
 
