@@ -83,7 +83,6 @@ void main() {
 namespace Solve {
 void Solve(int l, int r) {
   if (l == r) {
-    //cout << l << " " << F[l] << endl;
     F[l] = (G[l] + mod - (LL)F[l] * fac[l - 1] % mod) % mod;
     return;
   }
