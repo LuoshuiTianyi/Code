@@ -21,10 +21,10 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 130000 << 2, mod = 1004535809;
+const int Max_n = 130000 << 3, mod = 1004535809;
 int n;
 int fac[Max_n], ifac[Max_n];
-int f[Max_n], g[Max_n], G[Max_n], h[Max_n];
+int f[Max_n], g[Max_n], h[Max_n];
 
 namespace Poly {
 int ksm(int a, int b = mod - 2) {
@@ -72,7 +72,7 @@ void Inv(int *f, int *g, int N) {
     init(deg * 3);
     for (int i = 0; i < deg; i++) F[i] = f[i];
     for (int i = deg; i < len; i++) F[i] = 0;
-    dft(g, 0), dft(f, 0);
+    dft(g, 0), dft(F, 0);
     for (int i = 0; i < len; i++)
       g[i] = (LL)g[i] * (2ll - (LL)g[i] * F[i] % mod + mod) % mod;
     dft(g, 1);
@@ -100,8 +100,10 @@ void main() {
 namespace Solve {
 void main() {
   for (int i = 1; i <= n; i++) h[i] = (LL)ifac[i - 1] * ksm(2, (LL)i * (i - 1) / 2 % (mod - 1)) % mod;
-  for (int i = 1; i <= n; i++) g[i] = (LL)ifac[i] * ksm(2, (LL)i * (i - 1) / 2 % (mod - 1)) % mod;
-  Inv(g, G, n);
+  for (int i = 0; i <= n; i++) g[i] = (LL)ifac[i] * ksm(2, (LL)i * (i - 1) / 2 % (mod - 1)) % mod;
+  Inv(g, f, n);
+  Mul(f, h, n * 2);
+  cout << (LL)f[n] * fac[n - 1] % mod << endl;
 }
 }  // namespace Solve
 
