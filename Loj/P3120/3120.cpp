@@ -22,6 +22,15 @@ inline LL read() {
 
 const int Max_n = 8e5 + 5, mod = 998244353;
 
+int D, n, m;
+
+int ksm(int a, int b = mod - 2) {
+  int res = 1;
+  for (; b; b >>= 1, a = (LL)a * a % mod)
+    if (b & 1) res = (LL)res * a % mod;
+  return res;
+}
+
 namespace Poly {
 int len, bit, rev[Max_n];
 void init(int n) {
@@ -32,9 +41,27 @@ void init(int n) {
 void dft(int *f, bool t) {
   for (int i = 0; i < len; i++)
     if (rev[i] > i) swap(f[i], f[rev[i]]);
-  for (int i = 
+  for (int l = 1; l < len; l <<= 1) {
+    int Wn = ksm(3, (mod - 1) / (l << 1));
+    if (t) Wn = ksm(Wn);
+    for (int i = 0; i < len; i += l << 1) {
+      int Wnk = 1;
+      for (int j = i; j < i + l; j++, Wnk = (LL)Wnk * Wn % mod) {
+        int x = f[j], y = (LL)f[j + l] * Wnk % mod;
+        f[j] = (x + y) % mod, f[j + l] = (x - y + mod) % mod;
+      }
+    }
+  }
+  if (t)
+    for (int i = 0, Inv = ksm(len); i < len; i++) f[i] = (LL)f[i] * Inv % mod;
 }
+void Mul(int *f, int *g, int N) {
+  init(N);
+  dft(f, 0), dft(g, 0);
+  for (int i = 0; i < len; i++) f[i] = (LL)f[i] * g[i] % mod;
+  dft(f, 1), dft(g, 1);
 }
+}  // namespace Poly
 
 namespace Input {
 void main() {}
