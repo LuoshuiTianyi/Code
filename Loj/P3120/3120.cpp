@@ -86,8 +86,13 @@ int C(int n, int m) {
   return (LL)fac[n] * ifac[m] % mod * ifac[n - m] % mod;
 }
 void main() {
-  for (int i = 0, t = 1; i <= D; i++, t *= -1)
-    G[i] = ifac[i], g[i] = (LL)(t + mod) * ksm((D - 2 * i + mod) % mod, n);
+  for (int i = 0, t = 1; i <= D; i++, t *= -1) {
+    G[i] = ifac[i];
+    g[i] = (LL)(t + mod) * ksm((D - 2 * i + mod) % mod, n) % mod * ifac[i] % mod;
+  }
+  Mul(G, g, D + 1 << 1);
+  for (int i = 0; i <= D; i++) G[i] = (LL)ksm(ksm(2, i)) * G[i] % mod;
+  for (int i = 
 }
 }  // namespace Solve
 
