@@ -24,7 +24,7 @@ const int Max_n = 8e5 + 5, mod = 998244353;
 
 int D, n, m;
 int fac[Max_n], ifac[Max_n];
-int f[Max_n], g[Max_n];
+int f[Max_n], g[Max_n], G[Max_n];
 
 int ksm(int a, int b = mod - 2) {
   int res = 1;
@@ -81,8 +81,13 @@ void main() {
 }
 
 namespace Solve {
+int C(int n, int m) {
+  if (n < m || m < 0) return 0;
+  return (LL)fac[n] * ifac[m] % mod * ifac[n - m] % mod;
+}
 void main() {
-  
+  for (int i = 0, t = 1; i <= D; i++, t *= -1)
+    G[i] = ifac[i], g[i] = (LL)(t + mod) * ksm((D - 2 * i + mod) % mod, n);
 }
 }  // namespace Solve
 
