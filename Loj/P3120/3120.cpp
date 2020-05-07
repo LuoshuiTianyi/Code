@@ -23,6 +23,8 @@ inline LL read() {
 const int Max_n = 8e5 + 5, mod = 998244353;
 
 int D, n, m;
+int fac[Max_n], ifac[Max_n];
+int f[Max_n], g[Max_n];
 
 int ksm(int a, int b = mod - 2) {
   int res = 1;
@@ -64,15 +66,24 @@ void Mul(int *f, int *g, int N) {
 }  // namespace Poly
 
 namespace Input {
-void main() {}
+void main() {
+  D = read(), n = read(), m = read();
+}
 }  // namespace Input
 
 namespace Init {
-void main() {}
-}  // namespace Init
+void main() {
+  fac[0] = 1;
+  for (int i = 1; i <= D; i++) fac[i] = (LL)fac[i - 1] * i % mod;
+  ifac[D] = ksm(fac[D]);
+  for (int i = D; i; i--) ifac[i - 1] = (LL)ifac[i] * i % mod;
+}
+}
 
 namespace Solve {
-void main() {}
+void main() {
+  
+}
 }  // namespace Solve
 
 int main() {
