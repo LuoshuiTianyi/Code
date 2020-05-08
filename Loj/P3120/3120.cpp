@@ -92,7 +92,6 @@ void main() {
   }
   Mul(G, g, D + 1 << 1);
   for (int i = 0; i <= D; i++) G[i] = (LL)ksm(ksm(2, i)) * G[i] % mod;
-  for (int i = 
 }
 }  // namespace Solve
 
