@@ -80,6 +80,10 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
+int C(int n, int m) {
+  if (n < m || m < 0) return 0;
+  return (LL)fac[n] * ifac[m] % mod * ifac[n - m] % mod;
+}
 void main() {
   if (2 * m > n) {
     puts("0");
@@ -95,7 +99,7 @@ void main() {
         (LL)(t + mod) * ksm((D - 2 * i + mod) % mod, n) % mod * ifac[i] % mod;
   }
   Mul(G, g, D + 1 << 1);
-  for (int i = 0; i <= D; i++) G[i] = (LL)ksm(ksm(2, i)) * G[i] % mod;
+  for (int i = 0; i <= D; i++) G[i] = (LL)ksm(ksm(2, i)) * G[i] % mod * fac[i] % mod * C(D, i) % mod;
   for (int i = 0, t = 1; i <= D; i++, t *= -1) {
     g[i] = (LL)G[D - i] * fac[D - i] % mod;
     f[i] = (LL)(t + mod) * ifac[i] % mod;
