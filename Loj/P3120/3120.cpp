@@ -82,10 +82,6 @@ void main() {
 }
 
 namespace Solve {
-int C(int n, int m) {
-  if (n < m || m < 0) return 0;
-  return (LL)fac[n] * ifac[m] % mod * ifac[n - m] % mod;
-}
 void main() {
   for (int i = 0, t = 1; i <= D; i++, t *= -1) {
     G[i] = ifac[i];
@@ -93,6 +89,15 @@ void main() {
   }
   Mul(G, g, D + 1 << 1);
   for (int i = 0; i <= D; i++) G[i] = (LL)ksm(ksm(2, i)) * G[i] % mod;
+  for (int i = 0, t = 1; i <= D; i++, t *= -1) {
+    g[i] = (LL)G[D - i] * fac[D - i] % mod;
+    f[i] = (LL)(t + mod) * ifac[i] % mod;
+  }
+  Mul(f, g, D + 1 << 1);
+  int ans = 0;
+  for (int i = 0; i <= n - 2 * m; i++)
+    (ans += (LL)f[D - i] * ifac[i] % mod) %= mod;
+  cout << ans << endl;
 }
 }  // namespace Solve
 
