@@ -64,6 +64,7 @@ void Mul(int *f, int *g, int N) {
   dft(f, 1), dft(g, 1);
 }
 }  // namespace Poly
+using namespace Poly;
 
 namespace Input {
 void main() {
