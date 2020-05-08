@@ -67,9 +67,7 @@ void Mul(int *f, int *g, int N) {
 using namespace Poly;
 
 namespace Input {
-void main() {
-  D = read(), n = read(), m = read();
-}
+void main() { D = read(), n = read(), m = read(); }
 }  // namespace Input
 
 namespace Init {
@@ -79,13 +77,22 @@ void main() {
   ifac[D] = ksm(fac[D]);
   for (int i = D; i; i--) ifac[i - 1] = (LL)ifac[i] * i % mod;
 }
-}
+}  // namespace Init
 
 namespace Solve {
 void main() {
+  if (2 * m > n) {
+    puts("0");
+    return;
+  }
+  if (D <= n - 2 * m) {
+    printf("%d\n", ksm(D, n));
+    return;
+  }
   for (int i = 0, t = 1; i <= D; i++, t *= -1) {
     G[i] = ifac[i];
-    g[i] = (LL)(t + mod) * ksm((D - 2 * i + mod) % mod, n) % mod * ifac[i] % mod;
+    g[i] =
+        (LL)(t + mod) * ksm((D - 2 * i + mod) % mod, n) % mod * ifac[i] % mod;
   }
   Mul(G, g, D + 1 << 1);
   for (int i = 0; i <= D; i++) G[i] = (LL)ksm(ksm(2, i)) * G[i] % mod;
