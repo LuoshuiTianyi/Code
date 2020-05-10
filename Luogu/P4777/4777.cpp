@@ -31,7 +31,22 @@ void main() {
 }  // namespace Input
 
 namespace Solve {
-void main() {}
+void exgcd(int a, int b, int &x, int &y) {
+  if (!b) {
+    x = 1, y = 0;
+    return;
+  }
+  exgcd(b, a % b, y, x);
+  y = y - (1 / b) * x;
+}
+void main() {
+  M = 1, x = 0;
+  while (n--) {
+    LL b = read(), a = read();
+    exgcd(
+    M = M * a / __gcd(M, a);
+  }
+}
 }  // namespace Solve
 
 int main() {
