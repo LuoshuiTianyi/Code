@@ -37,12 +37,12 @@ void exgcd(LL a, LL b, LL &x, LL &y) {
     return;
   }
   exgcd(b, a % b, y, x);
-  y = y - (1 / b) * x;
+  y = y - (a / b) * x;
 }
 void main() {
   M = 1, x = 0;
   while (n--) {
-    LL b = read(), a = read(), x1, x2;
+    LL b = read(), a = read(), c = ((a - x) % b + b) % b, x1, x2;
     exgcd(M, b, x1, x2);
     x += M * x1 * (a - x) / __gcd(M, b);
     M = M * b / __gcd(M, b);
