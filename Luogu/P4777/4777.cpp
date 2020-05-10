@@ -31,7 +31,7 @@ void main() {
 }  // namespace Input
 
 namespace Solve {
-void exgcd(int a, int b, int &x, int &y) {
+void exgcd(LL a, LL b, LL &x, LL &y) {
   if (!b) {
     x = 1, y = 0;
     return;
@@ -42,10 +42,13 @@ void exgcd(int a, int b, int &x, int &y) {
 void main() {
   M = 1, x = 0;
   while (n--) {
-    LL b = read(), a = read();
-    exgcd(
-    M = M * a / __gcd(M, a);
+    LL b = read(), a = read(), x1, x2;
+    exgcd(M, b, x1, x2);
+    x += M * x1 * (a - x) / __gcd(M, b);
+    M = M * b / __gcd(M, b);
+    x = (x % M + M) % M;
   }
+  cout << x;
 }
 }  // namespace Solve
 
