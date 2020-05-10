@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -19,15 +20,15 @@ inline LL read() {
   return x * w;
 }
 
-
+const int Max_n = 1e5 + 5;
+int n;
+LL x, M;
 
 namespace Input {
-void main() {}
+void main() {
+  n = read();
+}
 }  // namespace Input
-
-namespace Init {
-void main() {}
-}  // namespace Init
 
 namespace Solve {
 void main() {}
@@ -39,6 +40,5 @@ int main() {
   freopen("4777.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
