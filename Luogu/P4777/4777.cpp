@@ -40,8 +40,8 @@ void Mod(LL &x, LL mod) { x = x >= mod ? x - mod : x; }
 LL Mul(LL a, LL b, LL mod) {
   LL res = 0;
   a %= mod;
-  for (; b; b >>= 1, Mod(a <<= 1, mod))
-    if (b & 1) Mod(res += a, mod);
+  for (; b; b >>= 1ll, (a += a) %= mod)
+    if (b & 1) (res += a) %= mod;
   return res;
 }
 void main() {
@@ -50,7 +50,7 @@ void main() {
     LL b = read(), a = read(), c = (a - x % b + b) % b, x1, x2;
     LL gcd = __gcd(M, b);
     exgcd(M, b, x1, x2);
-    x += (__int128)x1 * (c / gcd) % (b / gcd) * M;
+    x += Mul(x1, c / gcd, b / gcd) * M;
     M = M * (b / gcd);
     x = (x % M + M) % M;
   }
