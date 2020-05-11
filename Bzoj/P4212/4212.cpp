@@ -19,10 +19,16 @@ inline LL read() {
   return x * w;
 }
 
+const int Max_n = 2e6 + 5, M = 26;
 int n, m;
+char s[Max_n];
 
 namespace Trie {
+int rt[200000], cntr, cntn;
 void merge(int x, int y) {
+  
+}
+void add(int x, int i, int len) {
   
 }
 }
