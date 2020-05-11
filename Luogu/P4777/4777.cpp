@@ -39,9 +39,9 @@ void exgcd(LL a, LL b, LL &x, LL &y) {
 void Mod(LL &x, LL mod) { x = x >= mod ? x - mod : x; }
 LL Mul(LL a, LL b, LL mod) {
   LL res = 0;
-  a %= mod;
-  for (; b; b >>= 1ll, (a += a) %= mod)
-    if (b & 1) (res += a) %= mod;
+  ((a %= mod) += mod) %= mod;
+  for (; b; b >>= 1, Mod(a <<= 1, mod))
+    if (b & 1) Mod(res += a, mod);
   return res;
 }
 void main() {
