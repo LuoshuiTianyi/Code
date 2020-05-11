@@ -59,7 +59,7 @@ void access(int x) {
 void makert(int x) { access(x), splay(x), roll(x); }
 int findrt(int x) {
   access(x), splay(x);
-  while(ls(x)) x = ls(x);
+  while (ls(x)) x = ls(x);
   splay(x);
   return x;
 }
@@ -80,7 +80,7 @@ using namespace LCT;
 
 namespace Input {
 void main() {
-  n = read(), m = read(); 
+  n = read(), m = read();
   for (int i = 1; i <= n; i++) k[i].v = read();
 }
 }  // namespace Input
@@ -89,12 +89,19 @@ namespace Solve {
 void main() {
   while (m--) {
     int opt = read(), u = read(), v = read();
-    switch(opt) {
-    case 0:
-      printf("%d\n", query(u, v));
-      break;
-    case 1:
-      
+    switch (opt) {
+      case 0:
+        printf("%d\n", query(u, v));
+        break;
+      case 1:
+        link(u, v);
+        break;
+      case 2:
+        cut(u, v);
+        break;
+      default:
+        splay(u), k[u].v = v;
+        break;
     }
   }
 }
