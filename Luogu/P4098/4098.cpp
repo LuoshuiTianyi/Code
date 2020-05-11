@@ -22,7 +22,7 @@ inline LL read() {
 const int Max_n = 5e4 + 5;
 int n;
 int a[Max_n], id[Max_n];
-int bf[Max_n], nx[Max_n];
+int bf[Max_n], nx[Max_n], L1[Max_n], L2[Max_n], R1[Max_n], R2[Max_n];
 int stk[Max_n];
 
 namespace Trie {
@@ -34,8 +34,7 @@ void add(int now, int &o, int dep) {
     return;
   }
   ch[o][0] = ch[now][0], ch[o][1] = ch[now][1];
-  int to = stk[dep];
-  add(ch[now][to], ch[o][to], dep - 1);
+  add(ch[now][stk[dep]], ch[o][stk[dep]], dep - 1);
 }
 }  // namespace Trie
 using namespace Trie;
@@ -48,17 +47,38 @@ void main() {
 }  // namespace Input
 
 namespace Init {
+bool cmp(int x, int y) { return a[x] < a[y]; }
 void main() {
   for (int i = 1; i <= n; i++) {
     for (int j = 0, x = a[i]; j <= 30; j++, x >>= 1) stk[j] = x & 1;
     add(rt[i - 1], rt[i], 30);
   }
-  for (int i = 1; i <= n; i++)
+  for (int i = 1; i <= n; i++) nx[i] = i + 1, bf[i] = i - 1, id[i] = i;
+  sort(id + 1, id + n + 1, cmp);
+  for (int i = 1; i <= n; i++) {
+    int x = id[i];
+    L1[x] = bf[x], L2[x] = bf[bf[x]];
+    R1[x] = nx[x], R2[x] = nx[nx[x]];
+    bf[nx[x]] = bf[x], nx[bf[x]] = nx[x];
+  }
 }
 }  // namespace Init
 
 namespace Solve {
+int ans;
+void dfs(int x1, int x2, int dep) {
+  int to = stk[dep] ^ 1;
+  if (tot[ch[x2][to]] - tot[ch[x1][to]])
+}
+int Qry(int L, int R) {
+  dfs(rt[L - 1], rt[R], 30);
+}
 void main() {
+  for (int i = 1; i <= n; i++) {
+    for (int j = 0, x = a[i]; j <= 30; j++, x >>= 1) stk[j] = x & 1;
+    if (L1[i]) {
+    }
+  }
 }
 }  // namespace Solve
 
