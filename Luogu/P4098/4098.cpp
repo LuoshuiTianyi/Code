@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -35,6 +36,7 @@ void add(int now, int &o, int dep) {
   }
   ch[o][0] = ch[now][0], ch[o][1] = ch[now][1];
   add(ch[now][stk[dep]], ch[o][stk[dep]], dep - 1);
+  tot[o] = tot[ch[o][0]] + tot[ch[o][1]];
 }
 }  // namespace Trie
 using namespace Trie;
@@ -67,18 +69,28 @@ void main() {
 namespace Solve {
 int ans;
 void dfs(int x1, int x2, int dep) {
+  if (dep < 0) return;
   int to = stk[dep] ^ 1;
-  if (tot[ch[x2][to]] - tot[ch[x1][to]])
+  if (tot[ch[x2][to]] - tot[ch[x1][to]]) {
+    ans += 1 << dep;
+    dfs(ch[x1][to], ch[x2][to], dep - 1);
+  } else {
+    dfs(ch[x1][to ^ 1], ch[x2][to ^ 1], dep - 1);
+  }
 }
 int Qry(int L, int R) {
+  ans = 0;
   dfs(rt[L - 1], rt[R], 30);
+  return ans;
 }
 void main() {
+  int ans = 0;
   for (int i = 1; i <= n; i++) {
     for (int j = 0, x = a[i]; j <= 30; j++, x >>= 1) stk[j] = x & 1;
-    if (L1[i]) {
-    }
+    if (L1[i]) ans = max(ans, Qry(L2[i] + 1, R1[i] - 1));
+    if (R1[i] <= n) ans = max(ans, Qry(L1[i] + 1, R2[i] - 1));
   }
+  cout << ans << endl;
 }
 }  // namespace Solve
 
