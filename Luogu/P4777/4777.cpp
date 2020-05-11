@@ -44,6 +44,7 @@ void Mod(LL &x, LL mod) {
 }
 LL Mul(LL a, LL b, LL mod) {
   LL res = 0;
+  a %= mod;
   for (; b; b >>= 1, Mod(a <<= 1, mod))
     if (b & 1) Mod(res += a, mod);
   return res;
