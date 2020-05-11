@@ -60,7 +60,6 @@ lt excrt() {
     ans += x * M;  //更新前k个方程组的答案
     M *= bg;       // M为前k个m的lcm
     ans = (ans % M + M) % M;
-    //cout << ans << endl;
   }
   return (ans % M + M) % M;
 }

@@ -1,5 +1,5 @@
 from random import randint
-n = int(50)
+n = int(40)
 V = int(1e18)
 X = randint(1, V)
 M = 1

@@ -39,13 +39,23 @@ void exgcd(LL a, LL b, LL &x, LL &y) {
   exgcd(b, a % b, y, x);
   y = y - (a / b) * x;
 }
+void Mod(LL &x, LL mod) {
+  x = x >= mod ? x - mod : x;
+}
+LL Mul(LL a, LL b, LL mod) {
+  LL res = 0;
+  for (; b; b >>= 1, Mod(a <<= 1, mod))
+    if (b & 1) Mod(res += a, mod);
+  return res;
+}
 void main() {
   M = 1, x = 0;
   while (n--) {
     LL b = read(), a = read(), c = (a - x % b + b) % b, x1, x2;
     exgcd(M, b, x1, x2);
-    x += M * x1 * c / __gcd(M, b);
-    M = M * b / __gcd(M, b);
+    x1 = Mul(x1, c / __gcd(M, b), b / __gcd(M, b));
+    x += x1 * M;
+    M = M * (b / __gcd(M, b));
     x = (x % M + M) % M;
   }
   cout << x;
