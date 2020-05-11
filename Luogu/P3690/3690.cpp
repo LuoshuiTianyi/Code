@@ -21,8 +21,8 @@ const int Max_n = 1e5 + 5;
 int n, m;
 
 namespace LCT {
-#define ls s[0]
-#define rs s[1]
+#define ls(x) k[x].s[0]
+#define rs(x) k[x].s[1]
 struct node {
   int fa, s[2], v, tag, xs;
 } k[Max_n];
@@ -57,8 +57,26 @@ void access(int x) {
   for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y;
 }
 void makert(int x) { access(x), splay(x), roll(x); }
-
+int findrt(int x) {
+  access(x), splay(x);
+  while(ls(x)) x = ls(x);
+  splay(x);
+  return x;
+}
+int query(int x, int y) {
+  makert(x), access(y), splay(y);
+  return k[y].xs;
+}
+void link(int x, int y) {
+  makert(x);
+  if (findrt(y) != x) k[x].fa = y;
+}
+void cut(int x, int y) {
+  makert(x);
+  if (findrt(y) == x && k[y].fa == x && !ls(y)) k[y].fa = rs(x) = 0, upd(x);
+}
 }  // namespace LCT
+using namespace LCT;
 
 namespace Input {
 void main() {
@@ -68,7 +86,18 @@ void main() {
 }  // namespace Input
 
 namespace Solve {
-void main() {}
+void main() {
+  while (m--) {
+    int opt = read(), u = read(), v = read();
+    switch(opt) {
+    case 0:
+      printf("%d\n", query(u, v));
+      break;
+    case 1:
+      
+    }
+  }
+}
 }  // namespace Solve
 
 int main() {
