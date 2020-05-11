@@ -43,12 +43,25 @@ void rotate(int x) {
   if (s2) k[s2].fa = y;
   k[x].fa = z, k[y].fa = x, upd(y);
 }
-void splay(int x, int to) {
+void Push(int x) {
+  if (nrt(x)) Push(k[x].fa);
+  pushdown(x);
 }
+void splay(int x) {
+  Push(x);
+  for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
+    if (nrt(fa)) rotate(kd(fa) ^ kd(x) ? x : fa);
+  upd(x);
+}
+void access(int x) {
+  for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y;
+}
+void makert(int x) { access(x), splay(x), roll(x); }
+
 }  // namespace LCT
 
 namespace Input {
-void main() { 
+void main() {
   n = read(), m = read(); 
   for (int i = 1; i <= n; i++) k[i].v = read();
 }
