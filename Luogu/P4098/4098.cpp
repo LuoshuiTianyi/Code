@@ -22,10 +22,12 @@ inline LL read() {
 const int Max_n = 5e4 + 5;
 int n;
 int a[Max_n];
+int top, stk[Max_n];
 
 namespace Trie {
 int rt[Max_n], ch[Max_n * 31][2];
-void add(int now, ) {
+void add(int now, int dep) {
+  
 }
 }
 
