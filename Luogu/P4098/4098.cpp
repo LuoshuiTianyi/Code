@@ -24,10 +24,13 @@ int n;
 int a[Max_n];
 
 namespace Trie {
-};
+int rt[Max_n], ch[Max_n * 31][2];
+void add(int now, ) {
+}
+}
 
 namespace Input {
-void main() {}
+void main() { n = read(); }
 }  // namespace Input
 
 namespace Init {
