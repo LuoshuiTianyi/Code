@@ -21,18 +21,19 @@ inline LL read() {
 
 const int Max_n = 5e4 + 5;
 int n;
-int a[Max_n];
+int a[Max_n], id[Max_n];
 int top, stk[Max_n];
 
 namespace Trie {
 int rt[Max_n], ch[Max_n * 31][2];
-void add(int now, int dep) {
-  
-}
-}
+void add(int now, int dep) {}
+}  // namespace Trie
 
 namespace Input {
-void main() { n = read(); }
+void main() { 
+  n = read(); 
+  for (int i = 1; i <= n; i++) a[i] = read();
+}
 }  // namespace Input
 
 namespace Init {
