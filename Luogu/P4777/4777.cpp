@@ -50,7 +50,7 @@ void main() {
     LL b = read(), a = read(), c = (a - x % b + b) % b, x1, x2;
     LL gcd = __gcd(M, b);
     exgcd(M, b, x1, x2);
-    x += Mul(x1, c / gcd, b / gcd) * M;
+    x += (__int128)x1 * (c / gcd) % (b / gcd) * M;
     M = M * (b / gcd);
     x = (x % M + M) % M;
   }
