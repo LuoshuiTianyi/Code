@@ -19,9 +19,10 @@ inline LL read() {
   return x * w;
 }
 
-struct Trie {
+
+namespace Trie {
   
-};
+}
 
 namespace Input {
 void main() {}
