@@ -19,9 +19,12 @@ inline LL read() {
   return x * w;
 }
 
+int n, m;
 
 namespace Trie {
+void merge(int x, int y) {
   
+}
 }
 
 namespace Input {
