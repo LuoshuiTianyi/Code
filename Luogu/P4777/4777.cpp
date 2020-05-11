@@ -25,9 +25,7 @@ int n;
 LL x, M;
 
 namespace Input {
-void main() {
-  n = read();
-}
+void main() { n = read(); }
 }  // namespace Input
 
 namespace Solve {
@@ -36,12 +34,9 @@ void exgcd(LL a, LL b, LL &x, LL &y) {
     x = 1, y = 0;
     return;
   }
-  exgcd(b, a % b, y, x);
-  y = y - (a / b) * x;
+  exgcd(b, a % b, y, x), y = y - (a / b) * x;
 }
-void Mod(LL &x, LL mod) {
-  x = x >= mod ? x - mod : x;
-}
+void Mod(LL &x, LL mod) { x = x >= mod ? x - mod : x; }
 LL Mul(LL a, LL b, LL mod) {
   LL res = 0;
   a %= mod;
@@ -53,10 +48,10 @@ void main() {
   M = 1, x = 0;
   while (n--) {
     LL b = read(), a = read(), c = (a - x % b + b) % b, x1, x2;
+    LL gcd = __gcd(M, b);
     exgcd(M, b, x1, x2);
-    x1 = Mul(x1, c / __gcd(M, b), b / __gcd(M, b));
-    x += x1 * M;
-    M = M * (b / __gcd(M, b));
+    x += Mul(x1, c / gcd, b / gcd) * M;
+    M = M * (b / gcd);
     x = (x % M + M) % M;
   }
   cout << x;
