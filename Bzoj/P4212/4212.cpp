@@ -14,20 +14,17 @@ int cntd, top, dfn[Max_n], sz[Max_n], bel[Max_n], nu[Max_n];
 int inc[Max_n << 1], f[Max_n << 1];
 void add(int x, int &o, int dep, string &s) {
   f[o = ++cnt] = -1;
-  if (dep < 0) {
-    inc[o] = 1;
-    return;
-  }
   inc[o] = inc[x];
+  if (dep < 0) return;
   for (int i = 0; i < M; i++) ch[o][i] = ch[x][i];
   add(ch[x][s[dep] - 'a'], ch[o][s[dep] - 'a'], dep - 1, s);
 }
 void build(int x) {
   dfn[x] = ++cntd, sz[x] = 1;
-  if (bel[x]) {
-    top++;
-    add(rt[top - 1], rt[top], s[bel[x]].length() - 1, s[bel[x]]);
-  }
+  if (bel[x])
+    add(rt[cntd - 1], rt[cntd], s[bel[x]].length() - 1, s[bel[x]]), inc[cnt] = nu[x];
+  else
+    rt[cntd] = rt[cntd - 1];
   for (int i = 0; i < M; i++)
     if (ch[x][i]) build(ch[x][i]), sz[x] += sz[ch[x][i]];
 }
