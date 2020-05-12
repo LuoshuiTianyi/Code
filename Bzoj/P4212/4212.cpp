@@ -21,7 +21,7 @@ inline LL read() {
 }
 
 const int Max_n = 2e6 + 5, M = 26;
-int n, m, ans, node[Max_n];
+int n, m, ans;
 string s[2005];
 char S[Max_n];
 
@@ -89,9 +89,10 @@ void main() {
     int now = 1, len = strlen(S + 1);
     for (int i = 1; i <= len; i++) now = ch[now][S[i] - 'a'];
     int L = dfn[now], R = dfn[now] + sz[now] - 1;
-    scanf("%s", S + 1);
-    len = strlen(S + 1);
-    
+    scanf("%s", S + 1), len = strlen(S + 1);
+    int x1 = rt[L - 1], x2 = rt[R];
+    for  (int i = len; i; i--) x1 = ch[x1][S[i] - 'a'], x2 = ch[x2][S[i] - 'a'];
+    ans = DP(x2) - DP(x1);
   }
 }
 }  // namespace Solve
