@@ -20,21 +20,20 @@ inline LL read() {
 }
 
 const int Max_n = 2e6 + 5, M = 26;
-int n, m;
+int n, m, node[Max_n];
 char s[Max_n];
 
 namespace Trie {
-int rt[200000], cntr, cntn;
-void merge(int x, int y) {
-  
-}
+int rt[200000], ch[Max_n][M], cnt;
 void add(int x, int i, int len) {
   
 }
 }
 
 namespace Input {
-void main() {}
+void main() {
+  n = read();
+}
 }  // namespace Input
 
 namespace Init {
