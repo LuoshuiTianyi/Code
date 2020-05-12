@@ -13,7 +13,7 @@ int rt[200000], ch[Max_n << 1][M], cnt;
 int cntd, top, dfn[Max_n], sz[Max_n], bel[Max_n], nu[Max_n];
 int inc[Max_n << 1], f[Max_n << 1];
 void add(int x, int &o, int dep, string &s) {
-  o = ++cnt;
+  f[o = ++cnt] = -1;
   if (dep < 0) {
     inc[o] = 1;
     return;
