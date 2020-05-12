@@ -73,7 +73,9 @@ void main() { build(1); }
 namespace Solve {
 void main() {
   while (m--) {
-    scanf(
+    scanf("%s", S + 1);
+    int now = 1, len = strlen(S + 1);
+    for (int i = 1; i <= len; i++) now = ch[now][S[i] - 'a'];
   }
 }
 }  // namespace Solve
