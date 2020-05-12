@@ -22,6 +22,8 @@ inline LL read() {
 
 const int Max_n = 2e6 + 5, M = 26;
 int n, m, node[Max_n];
+string s[2005];
+char S[Max_n];
 
 namespace Trie {
 int rt[200000], ch[Max_n << 1][M], cnt;
@@ -37,9 +39,13 @@ using namespace Trie;
 
 namespace Input {
 void main() { 
-  n = read();
+  ios::sync_with_stdio(false);
+  n = read(), cnt = 1;
   for (int i = 1; i <= n; i++) {
-    scanf("", );
+    cin >> s[i];
+    int now = 1;
+    for (int j = 0; j < s[i].len(); j++) {
+    }
   }
 }
 }  // namespace Input
