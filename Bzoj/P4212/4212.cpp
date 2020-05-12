@@ -2,23 +2,6 @@
 #include <cstring>
 #include <iostream>
 using namespace std;
-#define LL long long
-#define go(G, x, i, v) \
-  for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
-#define inline __inline__ __attribute__((always_inline))
-inline LL read() {
-  LL x = 0, w = 1;
-  char ch = getchar();
-  while (!isdigit(ch)) {
-    if (ch == '-') w = -1;
-    ch = getchar();
-  }
-  while (isdigit(ch)) {
-    x = (x << 3) + (x << 1) + ch - '0';
-    ch = getchar();
-  }
-  return x * w;
-}
 
 const int Max_n = 2e6 + 5, M = 26;
 int n, m, ans;
@@ -62,7 +45,7 @@ using namespace Trie;
 namespace Input {
 void main() {
   ios::sync_with_stdio(false);
-  n = read(), cnt = 1;
+  cin >> n, cnt = 1;
   for (int i = 1; i <= n; i++) {
     cin >> s[i];
     int now = 1;
@@ -83,16 +66,24 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
+void Rev(char *s) {
+  int len = strlen(s + 1);
+  for (int i = 1; i <= len; i++)
+    s[i] = (s[i] - 'a' + ans) % 26 + 'a';
+}
 void main() {
+  cin >> m;
   while (m--) {
     scanf("%s", S + 1);
     int now = 1, len = strlen(S + 1);
+    Rev(S);
     for (int i = 1; i <= len; i++) now = ch[now][S[i] - 'a'];
     int L = dfn[now], R = dfn[now] + sz[now] - 1;
-    scanf("%s", S + 1), len = strlen(S + 1);
+    scanf("%s", S + 1), len = strlen(S + 1), Rev(S);
     int x1 = rt[L - 1], x2 = rt[R];
     for  (int i = len; i; i--) x1 = ch[x1][S[i] - 'a'], x2 = ch[x2][S[i] - 'a'];
     ans = DP(x2) - DP(x1);
+    printf("%d\n", ans);
   }
 }
 }  // namespace Solve
