@@ -52,6 +52,9 @@ int DP(int x) {
   int &res = f[x];
   if (res != -1) return res;
   res = inc[x];
+  for (int i = 0; i < M; i++)
+    if (ch[x][i]) res += DP(ch[x][i]);
+  return res;
 }
 }  // namespace Trie
 using namespace Trie;
@@ -86,6 +89,9 @@ void main() {
     int now = 1, len = strlen(S + 1);
     for (int i = 1; i <= len; i++) now = ch[now][S[i] - 'a'];
     int L = dfn[now], R = dfn[now] + sz[now] - 1;
+    scanf("%s", S + 1);
+    len = strlen(S + 1);
+    
   }
 }
 }  // namespace Solve
