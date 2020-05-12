@@ -25,15 +25,15 @@ char s[Max_n];
 
 namespace Trie {
 int rt[200000], ch[Max_n][M], cnt;
-void add(int x, int i, int len) {
-  
+int cntd, dfn[Max_n], sz[Max_n];
+void add(int x, int i, int len) {}
+void build(int x) {
+  // dfn[x] =
 }
-}
+}  // namespace Trie
 
 namespace Input {
-void main() {
-  n = read();
-}
+void main() { n = read(); }
 }  // namespace Input
 
 namespace Init {
