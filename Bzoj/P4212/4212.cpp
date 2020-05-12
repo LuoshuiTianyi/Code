@@ -44,8 +44,12 @@ void main() {
   for (int i = 1; i <= n; i++) {
     cin >> s[i];
     int now = 1;
-    for (int j = 0; j < s[i].len(); j++) {
+    for (int j = 0; j < s[i].length(); j++) {
+      int to = s[i][j] - 'a';
+      if (!ch[now][to]) ch[now][to] = ++cnt;
+      now = ch[now][to];
     }
+    bel[now] = i;
   }
 }
 }  // namespace Input
