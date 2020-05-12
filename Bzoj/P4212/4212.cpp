@@ -29,7 +29,7 @@ void build(int x) {
     add(rt[top - 1], rt[top], s[bel[x]].length() - 1, s[bel[x]]);
   }
   for (int i = 0; i < M; i++)
-    if (ch[x][i]) build(ch[x][i]), sz[x] += ch[x][i];
+    if (ch[x][i]) build(ch[x][i]), sz[x] += sz[ch[x][i]];
 }
 int DP(int x) {
   int &res = f[x];
@@ -74,12 +74,12 @@ void Rev(char *s) {
 void main() {
   cin >> m;
   while (m--) {
-    scanf("%s", S + 1);
+    cin >> S + 1;
     int now = 1, len = strlen(S + 1);
     Rev(S);
     for (int i = 1; i <= len; i++) now = ch[now][S[i] - 'a'];
     int L = dfn[now], R = dfn[now] + sz[now] - 1;
-    scanf("%s", S + 1), len = strlen(S + 1), Rev(S);
+    cin >> S + 1, len = strlen(S + 1), Rev(S);
     int x1 = rt[L - 1], x2 = rt[R];
     for  (int i = len; i; i--) x1 = ch[x1][S[i] - 'a'], x2 = ch[x2][S[i] - 'a'];
     ans = DP(x2) - DP(x1);
