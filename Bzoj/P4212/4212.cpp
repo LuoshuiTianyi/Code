@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 using namespace std;
 #define LL long long
@@ -21,7 +22,6 @@ inline LL read() {
 
 const int Max_n = 2e6 + 5, M = 26;
 int n, m, node[Max_n];
-char s[Max_n];
 
 namespace Trie {
 int rt[200000], ch[Max_n << 1][M], cnt;
