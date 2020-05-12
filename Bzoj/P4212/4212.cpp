@@ -27,13 +27,15 @@ char S[Max_n];
 
 namespace Trie {
 int rt[200000], ch[Max_n << 1][M], cnt;
-int cntd, top, dfn[Max_n], sz[Max_n], bel[Max_n], nu[Max_n], f[Max_n << 1];
+int cntd, top, dfn[Max_n], sz[Max_n], bel[Max_n], nu[Max_n];
+int inc[Max_n << 1], f[Max_n << 1];
 void add(int x, int &o, int dep, string &s) {
   o = ++cnt;
   if (dep < 0) {
-    f[o] = 1;
+    inc[o] = 1;
     return;
   }
+  inc[o] = inc[x];
   for (int i = 0; i < M; i++) ch[o][i] = ch[x][i];
   add(ch[x][s[dep] - 'a'], ch[o][s[dep] - 'a'], dep - 1, s);
 }
@@ -45,6 +47,11 @@ void build(int x) {
   }
   for (int i = 0; i < M; i++)
     if (ch[x][i]) build(ch[x][i]), sz[x] += ch[x][i];
+}
+int DP(int x) {
+  int &res = f[x];
+  if (res != -1) return res;
+  res = inc[x];
 }
 }  // namespace Trie
 using namespace Trie;
@@ -67,7 +74,9 @@ void main() {
 }  // namespace Input
 
 namespace Init {
-void main() { build(1); }
+void main() { 
+  build(1); 
+}
 }  // namespace Init
 
 namespace Solve {
@@ -76,6 +85,7 @@ void main() {
     scanf("%s", S + 1);
     int now = 1, len = strlen(S + 1);
     for (int i = 1; i <= len; i++) now = ch[now][S[i] - 'a'];
+    int L = dfn[now], R = dfn[now] + sz[now] - 1;
   }
 }
 }  // namespace Solve
