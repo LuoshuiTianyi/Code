@@ -27,6 +27,7 @@ namespace Trie {
 int rt[200000], ch[Max_n << 1][M], cnt;
 int cntd, dfn[Max_n], sz[Max_n], bel[Max_n];
 void add(int x, int &o, int dep) {
+  
 }
 void build(int x) {
   dfn[x] = ++cntd;
