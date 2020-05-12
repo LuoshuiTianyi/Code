@@ -9,7 +9,7 @@ string s[2005];
 char S[Max_n];
 
 namespace Trie {
-int rt[200000], ch[Max_n << 1][M], cnt;
+int rt[Max_n], ch[Max_n << 1][M], cnt;
 int cntd, top, dfn[Max_n], sz[Max_n], bel[Max_n], nu[Max_n];
 int inc[Max_n << 1], f[Max_n << 1];
 void add(int x, int &o, int dep, string &s) {
