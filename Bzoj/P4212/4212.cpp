@@ -36,7 +36,10 @@ using namespace Trie;
 
 namespace Input {
 void main() { 
-  n = read(); 
+  n = read();
+  for (int i = 1; i <= n; i++) {
+    scanf("", );
+  }
 }
 }  // namespace Input
 
