@@ -24,7 +24,7 @@ inline LL read() {
 const int Max_n = 1.6e6 + 5, mod = 998244353;
 int T;
 int n, cnt, a[Max_n];
-vector<int> f[800000], ans;
+vector<int> f[1000000], ans;
 
 namespace Input {
 void main() {
@@ -65,9 +65,9 @@ void dft(vector<int> &f, bool t) {
 }
 void Resize(vector<int> &f, int len) {
   f.resize(len);
-  for (int i = 0; i < len; i++) f[i] = len;
+  for (int i = 0; i < len; i++) f[i] = 0;
 }
-void Mul(vector<int> &f, vector<int> &g, vector<int> &res, int N) {
+void Mul(vector<int> f, vector<int> &g, vector<int> &res, int N) {
   init(N);
   //if (N == 4) {
   //  cout << f[0] << " " << mod - f[1] << " " << f[2] << endl;
@@ -75,7 +75,6 @@ void Mul(vector<int> &f, vector<int> &g, vector<int> &res, int N) {
   //}
   static vector<int> G;
   Resize(res, len), Resize(G, len);
-  for (int i = 0; i < len; i++) res[i] = G[i] = 0;
   for (int i = 0; i < f.size(); i++) res[i] = f[i];
   for (int i = 0; i < g.size(); i++) G[i] = g[i];
   dft(res, 0), dft(G, 0);
@@ -104,8 +103,9 @@ void Ln(vector<int> &f, vector<int> &res, int N) {
   res = f;
   for (int i = 0; i < N; i++) res[i] = (LL)res[i + 1] * (i + 1) % mod;
   res[N] = 0, Inv(f, inv, N);
-  Mul(f, res, res, N + N);
-  res[0] = 0;
+  Mul(res, inv, res, N + N);
+  //for (int i = N; i; i--) res[i] = (LL)res[i - 1] * ksm(i) % mod;
+  //res[0] = 0;
 }
 }  // namespace Poly
 using namespace Poly;
@@ -126,8 +126,9 @@ void Solve(int o, int l, int r) {
 void main() {
   Solve(1, 1, n);
   for (int i = n + 1; i < len; i++) f[1][i] = 0;
-  cout << f[1][1] << endl;
+  //cout << f[1][2] << endl;
   Ln(f[1], ans, n + 1);
+  //cout << ans[3] << endl;
   int Ans = 0;
   for (int i = 0; i < n; i++) Ans ^= (-ans[i] + mod) % mod;
   cout << Ans << endl;
