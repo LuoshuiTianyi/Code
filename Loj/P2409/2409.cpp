@@ -21,7 +21,7 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 2e6 + 5, mod = 998244353;
+const int Max_n = 4e6 + 5, mod = 998244353;
 int T;
 bool fl;
 int n, cnt, a[Max_n];
@@ -70,21 +70,16 @@ void Resize(vector<int> &f, int len) {
 }
 void Mul(vector<int> f, vector<int> &g, vector<int> &res, int N) {
   init(N);
-  //if (N == 4) {
-  //  cout << f[0] << " " << mod - f[1] << " " << f[2] << endl;
-  //  cout << g[0] << " " << mod - g[1] << " " << g[2] << endl;
-  //}
   static vector<int> G;
   Resize(res, len), Resize(G, len);
-  for (int i = 0; i < f.size(); i++) res[i] = f[i];
-  if (fl) cerr<<"!";
-  for (int i = 0; i < g.size(); i++) G[i] = g[i];
+  for (int i = 0; i < min((int)f.size(), len); i++) res[i] = f[i];
+  for (int i = 0; i < min((int)g.size(), len); i++) G[i] = g[i];
   dft(res, 0), dft(G, 0);
   for (int i = 0; i < len; i++) res[i] = (LL)res[i] * G[i] % mod;
   dft(res, 1);
 }
 void Inv(vector<int> &f, vector<int> &res, int N) {
-  init(N * 3);
+  init(N * 6);
   Resize(res, len);
   static vector<int> F;
   Resize(F, len);
@@ -106,8 +101,6 @@ void Ln(vector<int> &f, vector<int> &res, int N) {
   for (int i = 0; i < N; i++) res[i] = (LL)res[i + 1] * (i + 1) % mod;
   res[N] = 0, Inv(f, inv, N);
   Mul(res, inv, res, N + N);
-  //for (int i = N; i; i--) res[i] = (LL)res[i - 1] * ksm(i) % mod;
-  //res[0] = 0;
 }
 }  // namespace Poly
 using namespace Poly;
@@ -117,21 +110,17 @@ void Solve(int o, int l, int r) {
   if (l == r) {
     f[o].resize(2);
     f[o][0] = 1, f[o][1] = (-a[l] % mod + mod) % mod;
-    //cout << l << " " << r << " " << mod - f[o][1] << endl;
     return;
   }
   int mid = l + r >> 1;
   Solve(o << 1, l, mid), Solve(o << 1 | 1, mid + 1, r);
   Mul(f[o << 1], f[o << 1 | 1], f[o], r - l + 2);
-  //cout << l << " " << r << " " << f[o][2] << endl;
 }
 void main() {
   Solve(1, 1, n);
-  for (int i = n + 1; i < len; i++) f[1][i] = 0;
-  //cout << f[1][2] << endl;
-  fl = 1;
-  Ln(f[1], ans, n + 1);
-  ////cout << ans[3] << endl;
+  //for (int i = n + 1; i < len; i++) f[1][i] = 0;
+  //fl = 1;
+  //Ln(f[1], ans, n + 1);
   //int Ans = 0;
   //for (int i = 0; i < n; i++) Ans ^= (-ans[i] + mod) % mod;
   //cout << Ans << endl;
