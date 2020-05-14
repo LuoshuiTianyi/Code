@@ -1,3 +1,5 @@
+#pragma GCC optimize(3)
+
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -23,22 +25,6 @@ const int Max_n = 3e4 + 5;
 int T, mod, n;
 int f[Max_n], g[Max_n], h[Max_n];
 
-namespace FastMod {
-typedef unsigned long long ull;
-typedef __uint128_t L;
-ull b, m;
-void init(ull x) {
-  b = x;
-  m = ull((L(1) << 64) / b);
-}
-ull Mod(ull x) {
-  ull q = L(m) * x >> 64;
-  ull res = x - q * b;
-  return res >= b ? res - b : res;
-}
-}
-using namespace FastMod;
-
 namespace Init {
 int ksm(int a, int b = mod - 2) {
   int res = 1;
@@ -49,12 +35,14 @@ int ksm(int a, int b = mod - 2) {
 void main() {
   n = 23333;
   for (int i = 1; i <= n; i++) {
-    for (int j = 1; j < i; j++) f[i] = Mod((ull)f[j] * h[i - j] + f[i]);
-    f[i] = Mod(2ull * f[i] * ksm(i));
-    g[i] = Mod((ull)ksm(2) * f[i]) + (i == 1), f[i] += (i == 1);
+    __int128 t = 0;
+    for (int j = 1; j < i; j++) t += (LL)f[j] * h[i - j];
+    f[i] = t % mod;
+    f[i] = 2ll * (t % mod) * ksm(i) % mod;
+    g[i] = (LL)ksm(2) * f[i] % mod + (i == 1), f[i] += (i == 1);
     for (int j = i; j <= n; j += i) {
-      h[j] = Mod((ull)i * g[i] + h[j]);
-      if (j > i) f[j] = Mod((ull)i * g[i] + f[j]);
+      (h[j] += (LL)i * g[i] % mod) %= mod;
+      if (j > i) (f[j] += (LL)i * g[i] % mod) %= mod;
     }
   }
 }
@@ -65,7 +53,7 @@ int main() {
   freopen("6389.in", "r", stdin);
   freopen("6389.out", "w", stdout);
 #endif
-  T = read(), init(mod = read());
+  T = read(), mod = read();
   Init::main();
   while(T--) {
     n = read();
