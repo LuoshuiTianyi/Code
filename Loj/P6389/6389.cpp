@@ -1,5 +1,3 @@
-#pragma GCC optimize(3)
-
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -37,8 +35,7 @@ void main() {
   for (int i = 1; i <= n; i++) {
     __int128 t = 0;
     for (int j = 1; j < i; j++) t += (LL)f[j] * h[i - j];
-    f[i] = t % mod;
-    f[i] = 2ll * (t % mod) * ksm(i) % mod;
+    f[i] = 2ll * (f[i] + t % mod) * ksm(i) % mod;
     g[i] = (LL)ksm(2) * f[i] % mod + (i == 1), f[i] += (i == 1);
     for (int j = i; j <= n; j += i) {
       (h[j] += (LL)i * g[i] % mod) %= mod;
