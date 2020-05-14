@@ -48,7 +48,7 @@ void init(int n) {
 }
 void dft(vector<int> &f, bool t) {
   for (int i = 0; i < len; i++)
-    if (rev[i] > i) swap(f[i], rev[i]);
+    if (rev[i] > i) swap(f[i], f[rev[i]]);
   for (int l = 1; l < len; l <<= 1) {
     int Wn = ksm(3, (mod - 1) / (l << 1));
     if (t) Wn = ksm(Wn);
@@ -64,7 +64,7 @@ void dft(vector<int> &f, bool t) {
     for (int i = 0, Inv = ksm(len); i < len; i++) f[i] = (LL)f[i] * Inv % mod;
 }
 void Mul(vector<int> &f, vector<int> &g, vector<int> &res, int N) {
-  init(N + 1);
+  init(N);
   static vector<int> G;
   res.resize(len, 0), G.resize(len, 0);
   for (int i = 0; i < f.size(); i++) res[i] = f[i];
