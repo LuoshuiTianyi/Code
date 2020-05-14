@@ -19,18 +19,32 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = ;
+const int Max_n = 55;
+int n, mod, k, r;
+int a[Max_n], ans[Max_n];
 
 namespace Input {
-void main() {}
+void main() {
+  n = read(), mod = read(), k = read(), r = read();
+}
 }  // namespace Input
 
-namespace Init {
-void main() {}
-}  // namespace Init
-
 namespace Solve {
-void main() {}
+void mul(int *a, int b[]) {
+  int res[Max_n] = {0};
+  for (int i = 0; i < k; i++)
+    for (int j = 0; j < k; j++)
+      (res[(i + j) % k] += (LL)a[i] * b[j] % mod) %= mod;
+  for (int i = 0; i < k; i++) a[i] = res[i];
+}
+void main() {
+  LL N = (LL)n * k;
+  a[0] = a[1] = 1, ans[0] = 1;
+  if (k == 1) a[0] = 2 % mod, a[1] = 0;
+  for (; N; N >>= 1, mul(a, a))
+    if (N & 1) mul(ans, a);
+  cout << ans[r] << endl;
+}
 }  // namespace Solve
 
 int main() {
@@ -39,6 +53,5 @@ int main() {
   freopen("2143.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
