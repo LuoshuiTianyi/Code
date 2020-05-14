@@ -63,10 +63,19 @@ void dft(vector<int> &f, bool t) {
   if (t)
     for (int i = 0, Inv = ksm(len); i < len; i++) f[i] = (LL)f[i] * Inv % mod;
 }
+void Resize(vector<int> &f, int len) {
+  f.resize(len);
+  for (int i = 0; i < len; i++) f[i] = len;
+}
 void Mul(vector<int> &f, vector<int> &g, vector<int> &res, int N) {
   init(N);
+  //if (N == 4) {
+  //  cout << f[0] << " " << mod - f[1] << " " << f[2] << endl;
+  //  cout << g[0] << " " << mod - g[1] << " " << g[2] << endl;
+  //}
   static vector<int> G;
-  res.resize(len, 0), G.resize(len, 0);
+  Resize(res, len), Resize(G, len);
+  for (int i = 0; i < len; i++) res[i] = G[i] = 0;
   for (int i = 0; i < f.size(); i++) res[i] = f[i];
   for (int i = 0; i < g.size(); i++) G[i] = g[i];
   dft(res, 0), dft(G, 0);
@@ -75,9 +84,9 @@ void Mul(vector<int> &f, vector<int> &g, vector<int> &res, int N) {
 }
 void Inv(vector<int> &f, vector<int> &res, int N) {
   init(N * 3);
-  res.resize(len, 0);
+  Resize(res, len);
   static vector<int> F;
-  F.resize(len, 0);
+  Resize(F, len);
   res[0] = ksm(f[0]);
   for (int deg = 2; deg < (N << 1); deg <<= 1) {
     init(deg * 3);
@@ -96,7 +105,6 @@ void Ln(vector<int> &f, vector<int> &res, int N) {
   for (int i = 0; i < N; i++) res[i] = (LL)res[i + 1] * (i + 1) % mod;
   res[N] = 0, Inv(f, inv, N);
   Mul(f, res, res, N + N);
-  for (int i = N; i; i--) res[i] = (LL)res[i - 1] * ksm(i) % mod;
   res[0] = 0;
 }
 }  // namespace Poly
@@ -117,9 +125,9 @@ void Solve(int o, int l, int r) {
 }
 void main() {
   Solve(1, 1, n);
-  cout << f[1][2] << endl;
   for (int i = n + 1; i < len; i++) f[1][i] = 0;
-  Ln(f[1], ans, 2);
+  cout << f[1][1] << endl;
+  Ln(f[1], ans, n + 1);
   int Ans = 0;
   for (int i = 0; i < n; i++) Ans ^= (-ans[i] + mod) % mod;
   cout << Ans << endl;
