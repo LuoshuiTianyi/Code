@@ -23,7 +23,7 @@ inline LL read() {
 
 const int Max_n = 1.6e6 + 5, mod = 998244353;
 int T;
-int n, a[Max_n];
+int n, cnt, a[Max_n], ans[Max_n];
 vector<int> f[800000];
 
 namespace Input {
@@ -81,13 +81,39 @@ void Inv(vector<int> &f, vector<int> &res, int N) {
   res[0] = ksm(f[0]);
   for (int deg = 2; deg < (N << 1); deg <<= 1) {
     init(deg * 3);
-    for (int i = 0; i < min(deg, ); i++) F[i] = f[i];
+    for (int i = 0; i < min(deg, (int)f.size()); i++) F[i] = f[i];
+    for (int i = min(deg, (int)f.size()); i < len; i++) F[i] = 0;
+    dft(F, 0), dft(res, 0);
+    for (int i = 0; i < len; i++)
+      res[i] = (2ll * res[i] % mod + mod - (LL)res[i] * res[i] % mod * F[i] % mod) % mod;
+    dft(res, 1);
+    for (int i = deg; i < len; i++) res[i] = 0;
   }
 }
+void Ln(vector<int> &f, vector<int> &res, int N) {
+  static vector<int> inv = f;
+  res = f;
+  for (int i = 0; i < N; i++) res[i] = (LL)res[i + 1] * (i + 1) % mod;
+  res[N] = 0, Inv(f, inv, N);
+  Mul(f, res, res, N + N);
+}
 }  // namespace Poly
+using namespace Poly;
 
 namespace Solve {
-void main() {}
+void Solve(int o, int l, int r) {
+  if (l == r) {
+    f[o].resize(2);
+    f[o][0] = 1, f[o][1] = (-a[l] % mod + mod) % mod;
+  }
+  int mid = l + r >> 1;
+  Solve(o << 1, l, mid), Solve(o << 1 | 1, mid + 1, r);
+  Mul(f[o << 1], f[o << 1 | 1], f[o], r - l + 2);
+}
+void main() {
+  Solve(1, 1, n);
+  
+}
 }  // namespace Solve
 
 int main() {
