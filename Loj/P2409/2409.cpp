@@ -91,7 +91,7 @@ void Inv(vector<int> &f, vector<int> &res, int N) {
   }
 }
 void Ln(vector<int> &f, vector<int> &res, int N) {
-  static vector<int> inv = f;
+  static vector<int> inv;
   res = f;
   for (int i = 0; i < N; i++) res[i] = (LL)res[i + 1] * (i + 1) % mod;
   res[N] = 0, Inv(f, inv, N);
@@ -113,7 +113,9 @@ void Solve(int o, int l, int r) {
 }
 void main() {
   Solve(1, 1, n);
-  Ln(f[1], ans, n);
+  for (int i = n; i < len; i++) f[1][i] = 0;
+  //Ln(f[1], ans, n + 1);
+  cout << mod - ans[1] << endl;
   int Ans = 0;
   for (int i = 0; i < n; i++) Ans ^= (-ans[i] + mod) % mod;
   cout << Ans << endl;

@@ -81,7 +81,7 @@ void Inv(poly &f, poly &g, int N) {
   }
 }
 void Ln(poly &f, poly &g, int N) {
-  static poly inv = f;
+  static poly inv;
   g = f;
   for (int i = 0; i < N; i++) g[i] = (LL)g[i + 1] * (i + 1) % mod;
   g[N] = 0;
