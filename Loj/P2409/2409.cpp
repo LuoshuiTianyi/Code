@@ -23,8 +23,8 @@ inline LL read() {
 
 const int Max_n = 1.6e6 + 5, mod = 998244353;
 int T;
-int n, cnt, a[Max_n], ans[Max_n];
-vector<int> f[800000];
+int n, cnt, a[Max_n];
+vector<int> f[800000], ans;
 
 namespace Input {
 void main() {
@@ -105,6 +105,7 @@ void Solve(int o, int l, int r) {
   if (l == r) {
     f[o].resize(2);
     f[o][0] = 1, f[o][1] = (-a[l] % mod + mod) % mod;
+    return;
   }
   int mid = l + r >> 1;
   Solve(o << 1, l, mid), Solve(o << 1 | 1, mid + 1, r);
@@ -112,7 +113,10 @@ void Solve(int o, int l, int r) {
 }
 void main() {
   Solve(1, 1, n);
-  
+  Ln(f[1], ans, n);
+  int Ans = 0;
+  for (int i = 0; i < n; i++) Ans ^= (-ans[i] + mod) % mod;
+  cout << Ans << endl;
 }
 }  // namespace Solve
 
@@ -121,9 +125,9 @@ int main() {
   freopen("2409.in", "r", stdin);
   freopen("2409.out", "w", stdout);
 #endif
-  //T = read();
-  //while (T--) {
-  //  Input::main();
-  //  Solve::main();
-  //}
+  T = read();
+  while (T--) {
+    Input::main();
+    Solve::main();
+  }
 }
