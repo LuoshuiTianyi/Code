@@ -118,12 +118,12 @@ void Solve(int o, int l, int r) {
 }
 void main() {
   Solve(1, 1, n);
-  //for (int i = n + 1; i < len; i++) f[1][i] = 0;
-  //fl = 1;
-  //Ln(f[1], ans, n + 1);
-  //int Ans = 0;
-  //for (int i = 0; i < n; i++) Ans ^= (-ans[i] + mod) % mod;
-  //cout << Ans << endl;
+  for (int i = n + 1; i < len; i++) f[1][i] = 0;
+  fl = 1;
+  Ln(f[1], ans, n + 1);
+  int Ans = 0;
+  for (int i = 0; i < n; i++) Ans ^= (-ans[i] + mod) % mod;
+  cout << Ans << endl;
 }
 }  // namespace Solve
 
