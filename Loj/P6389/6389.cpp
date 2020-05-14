@@ -49,8 +49,9 @@ int ksm(int a, int b = mod - 2) {
 void main() {
   n = 23333;
   for (int i = 1; i <= n; i++) {
-    for (int j = 1; j < i; j++) f[i] = Mod(f[i] + Mod((ull)f[j] * h[i - j]));
+    for (int j = 1; j < i; j++) f[i] = Mod((ull)f[j] * h[i - j] + f[i]);
     f[i] = Mod(2ull * f[i] * ksm(i));
+    g[i] = Mod((ull)ksm(2) * f[i]) + (i == 1), f[i] += (i == 1);
     for (int j = i; j <= n; j += i) {
       h[j] = Mod((ull)i * g[i] + h[j]);
       if (j > i) f[j] = Mod((ull)i * g[i] + f[j]);
@@ -59,22 +60,15 @@ void main() {
 }
 }  // namespace Init
 
-namespace Input {
-void main() {
-}
-}  // namespace Input
-
-namespace Solve {
-void main() {}
-}  // namespace Solve
-
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("6389.in", "r", stdin);
   freopen("6389.out", "w", stdout);
 #endif
-  T = read(), mod = read();
+  T = read(), init(mod = read());
   Init::main();
-  Input::main();
-  Solve::main();
+  while(T--) {
+    n = read();
+    printf("%d\n", f[n]);
+  }
 }
