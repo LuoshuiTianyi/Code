@@ -1,6 +1,7 @@
 #include <cmath>
 #include <cstdio>
 #include <iostream>
+#include <vector>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
@@ -23,7 +24,7 @@ inline LL read() {
 const int Max_n = 8e5 + 5, mod = 998244353;
 int T;
 int n, a[Max_n];
-vector<int> f[;
+vector<int> f[Max_n];
 
 namespace Input {
 void main() {
@@ -45,10 +46,36 @@ void init(int n) {
   for (int i = 0; i < len; i++)
     rev[i] = rev[i >> 1] >> 1 | ((i & 1) << bit - 1);
 }
-void dft(int *f, bool t) {
+void dft(vector<int> &f, bool t) {
   for (int i = 0; i < len; i++)
     if (rev[i] > i) swap(f[i], rev[i]);
-  for (int i = 
+  for (int l = 1; l < len; l <<= 1) {
+    int Wn = ksm(3, (mod - 1) / (l << 1));
+    if (t) Wn = ksm(Wn);
+    for (int i = 0; i < len; i += l << 1) {
+      int Wnk = 1;
+      for (int j = i; j < i + l; j++, Wnk = (LL)Wnk * Wn % mod) {
+        int x = f[j], y = (LL)f[j + l] * Wnk % mod;
+        f[j] = (x + y) % mod, f[j + l] = (x - y + mod) % mod;
+      }
+    }
+  }
+  if (t)
+    for (int i = 0, Inv = ksm(len); i < len; i++) f[i] = (LL)f[i] * Inv % mod;
+}
+void Mul(vector<int> &f, vector<int> &g, vector<int> &res, int N) {
+  init(N + 1);
+  static vector<int> G;
+  res.resize(len, 0), G.resize(len, 0);
+  for (int i = 0; i < f.size(); i++) res[i] = f[i];
+  for (int i = 0; i < g.size(); i++) G[i] = g[i];
+  dft(res, 0), dft(G, 0);
+  for (int i = 0; i < len; i++) res[i] = (LL)res[i] * G[i] % mod;
+  dft(res, 1);
+}
+void Inv(vector<int> &f, vector<int> &res, int N) {
+  static vector<int> F;
+  for (int 
 }
 }  // namespace Poly
 
