@@ -21,8 +21,9 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 1.6e6 + 5, mod = 998244353;
+const int Max_n = 2e6 + 5, mod = 998244353;
 int T;
+bool fl;
 int n, cnt, a[Max_n];
 vector<int> f[1000000], ans;
 
@@ -76,6 +77,7 @@ void Mul(vector<int> f, vector<int> &g, vector<int> &res, int N) {
   static vector<int> G;
   Resize(res, len), Resize(G, len);
   for (int i = 0; i < f.size(); i++) res[i] = f[i];
+  if (fl) cerr<<"!";
   for (int i = 0; i < g.size(); i++) G[i] = g[i];
   dft(res, 0), dft(G, 0);
   for (int i = 0; i < len; i++) res[i] = (LL)res[i] * G[i] % mod;
@@ -127,11 +129,12 @@ void main() {
   Solve(1, 1, n);
   for (int i = n + 1; i < len; i++) f[1][i] = 0;
   //cout << f[1][2] << endl;
+  fl = 1;
   Ln(f[1], ans, n + 1);
-  //cout << ans[3] << endl;
-  int Ans = 0;
-  for (int i = 0; i < n; i++) Ans ^= (-ans[i] + mod) % mod;
-  cout << Ans << endl;
+  ////cout << ans[3] << endl;
+  //int Ans = 0;
+  //for (int i = 0; i < n; i++) Ans ^= (-ans[i] + mod) % mod;
+  //cout << Ans << endl;
 }
 }  // namespace Solve
 
