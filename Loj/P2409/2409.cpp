@@ -96,6 +96,8 @@ void Ln(vector<int> &f, vector<int> &res, int N) {
   for (int i = 0; i < N; i++) res[i] = (LL)res[i + 1] * (i + 1) % mod;
   res[N] = 0, Inv(f, inv, N);
   Mul(f, res, res, N + N);
+  for (int i = N; i; i--) res[i] = (LL)res[i - 1] * ksm(i) % mod;
+  res[0] = 0;
 }
 }  // namespace Poly
 using namespace Poly;
@@ -105,17 +107,19 @@ void Solve(int o, int l, int r) {
   if (l == r) {
     f[o].resize(2);
     f[o][0] = 1, f[o][1] = (-a[l] % mod + mod) % mod;
+    //cout << l << " " << r << " " << mod - f[o][1] << endl;
     return;
   }
   int mid = l + r >> 1;
   Solve(o << 1, l, mid), Solve(o << 1 | 1, mid + 1, r);
   Mul(f[o << 1], f[o << 1 | 1], f[o], r - l + 2);
+  //cout << l << " " << r << " " << f[o][2] << endl;
 }
 void main() {
   Solve(1, 1, n);
-  for (int i = n; i < len; i++) f[1][i] = 0;
-  //Ln(f[1], ans, n + 1);
-  cout << mod - ans[1] << endl;
+  cout << f[1][2] << endl;
+  for (int i = n + 1; i < len; i++) f[1][i] = 0;
+  Ln(f[1], ans, 2);
   int Ans = 0;
   for (int i = 0; i < n; i++) Ans ^= (-ans[i] + mod) % mod;
   cout << Ans << endl;
