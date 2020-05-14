@@ -20,14 +20,27 @@ inline LL read() {
 }
 
 const int Max_n = 3e4 + 5;
-
-namespace Input {
-void main() {}
-}  // namespace Input
+int T, mod, n;
+int f[Max_n], g[Max_n], h[Max_n];
 
 namespace Init {
-void main() {}
+int ksm(int a, int b = mod - 2) {
+  int res = 1;
+  for (; b; b >>= 1, a = (LL)a * a % mod)
+    if (b & 1) res = (LL) res * a % mod;
+  return res;
+}
+void main() {
+  n = 23333;
+  for (int i = 1; i <= n; i++)
+    
+}
 }  // namespace Init
+
+namespace Input {
+void main() {
+}
+}  // namespace Input
 
 namespace Solve {
 void main() {}
@@ -38,7 +51,8 @@ int main() {
   freopen("6389.in", "r", stdin);
   freopen("6389.out", "w", stdout);
 #endif
-  Input::main();
+  T = read(), mod = read();
   Init::main();
+  Input::main();
   Solve::main();
 }
