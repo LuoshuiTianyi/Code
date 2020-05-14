@@ -21,10 +21,10 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 8e5 + 5, mod = 998244353;
+const int Max_n = 1.6e6 + 5, mod = 998244353;
 int T;
 int n, a[Max_n];
-vector<int> f[Max_n];
+vector<int> f[800000];
 
 namespace Input {
 void main() {
@@ -74,8 +74,15 @@ void Mul(vector<int> &f, vector<int> &g, vector<int> &res, int N) {
   dft(res, 1);
 }
 void Inv(vector<int> &f, vector<int> &res, int N) {
+  init(N * 3);
+  res.resize(len, 0);
   static vector<int> F;
-  for (int 
+  F.resize(len, 0);
+  res[0] = ksm(f[0]);
+  for (int deg = 2; deg < (N << 1); deg <<= 1) {
+    init(deg * 3);
+    for (int i = 0; i < min(deg, ); i++) F[i] = f[i];
+  }
 }
 }  // namespace Poly
 
@@ -88,9 +95,9 @@ int main() {
   freopen("2409.in", "r", stdin);
   freopen("2409.out", "w", stdout);
 #endif
-  T = read();
-  while (T--) {
-    Input::main();
-    Solve::main();
-  }
+  //T = read();
+  //while (T--) {
+  //  Input::main();
+  //  Solve::main();
+  //}
 }
