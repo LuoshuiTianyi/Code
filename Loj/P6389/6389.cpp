@@ -32,8 +32,10 @@ int ksm(int a, int b = mod - 2) {
 }
 void main() {
   n = 23333;
-  for (int i = 1; i <= n; i++)
-    
+  for (int i = 1; i <= n; i++) {
+    ;
+  }
+
 }
 }  // namespace Init
 
