@@ -23,6 +23,17 @@ const int Max_n = 3e4 + 5;
 int T, mod, n;
 int f[Max_n], g[Max_n], h[Max_n];
 
+namespace FastMod {
+typedef unsigned long long ull;
+typedef __uint128_t L;
+ull mod, m;
+void init(ull x) {
+  mod = x;
+  m = ull(L(1) << 64);
+}
+}
+using namespace FastMod;
+
 namespace Init {
 int ksm(int a, int b = mod - 2) {
   int res = 1;
@@ -33,9 +44,13 @@ int ksm(int a, int b = mod - 2) {
 void main() {
   n = 23333;
   for (int i = 1; i <= n; i++) {
-    ;
+    for (int j = 1; j < i; j++) (f[i] += (LL)f[j] * h[i - j] % mod) %= mod;
+    f[i] = 2ll * f[i] * ksm(i) % mod;
+    for (int j = i; j <= n; j += i) {
+      (h[j] += (LL)i * g[i] % mod) %= mod;
+      if (j > i) (f[j] += (LL)i * g[i] % mod) %= mod;
+    }
   }
-
 }
 }  // namespace Init
 
