@@ -64,10 +64,14 @@ void main() {
 
 namespace Solve {
 void DP(int x) {
+  
+  F(x, 1);
+  F(x, -1);
 }
 void main() {
   for (int s = 1; s <= m; s += n) {
     for (int i = 1; i <= n; i++) id[i] = s + i - 1;
+    for (int i = 1; i <= L; i++) f[i] = g[i] = 0;
     DP(1);
   }
 }
