@@ -1,7 +1,3 @@
-#pragma GCC optimize(3)
-#pragma GCC optimize("Ofast")
-#pragma GCC optimize("inline")
-
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -31,7 +27,7 @@ int f1[Max_n], f2[Max_n], g1[Max_n], g2[Max_n];
 int w[Max_n], nx[Max_n], v[Max_n << 2];
 struct graph {
   int hd[Max_n];
-  int cntr, nx[Max_n << 1], to[Max_n << 1];
+  int cntr, nx[Max_n], to[Max_n];
   void addr(int u, int v) {
     cntr++;
     nx[cntr] = hd[u], to[cntr] = v;
