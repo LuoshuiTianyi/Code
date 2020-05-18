@@ -37,11 +37,8 @@ inline void dfs(int u){
  
 int main()
 {
-  
-#ifndef ONLINE_JUDGE
-    freopen("tree.in","r",stdin);
-    freopen("tree.ans","w",stdout);
-#endif
+    freopen("B.in","r",stdin);
+    freopen("B.ans","w",stdout);
   
     fread(s,1,1<<25,stdin);
     read(n);read(m);read(L);

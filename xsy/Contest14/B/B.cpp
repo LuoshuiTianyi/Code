@@ -1,5 +1,3 @@
-#pragma GCC optimize(3)
-
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -16,6 +14,17 @@ inline LL read() {
     ch = getchar();
   }
   return x;
+}
+
+char s[1<<25],*S=s;
+#define getchar() (*S++)
+
+template < typename tp >
+inline void read ( tp & dig ) {
+    char ch=getchar();int flag=0;dig=0;
+    while(!isdigit(ch)){if(ch=='-')flag=1;ch=getchar();}
+    while(isdigit(ch))dig=dig*10+ch-'0',ch=getchar();
+    if(flag)dig=-dig;
 }
 
 const int Max_n = 1e6 + 5, mod = 1e9 + 7;
@@ -38,11 +47,12 @@ struct graph {
 
 namespace Input {
 void main() {
-  n = read(), m = read(), L = read(), f[0] = g[L + 1] = 1;
-  for (int i = 2; i <= n; i++) fa[i] = read();
+  ios::sync_with_stdio(false);
+  cin >> n >> m >> L, f[0] = g[L + 1] = 1;
+  for (int i = 2; i <= n; i++) cin >> fa[i];
   for (int i = n; i >= 2; i--) Gr.addr(fa[i], i);
-  for (int i = 1; i <= n; i++) w[i] = read();
-  for (int i = 1; i <= m; i++) v[i] = read();
+  for (int i = 1; i <= n; i++) cin >> w[i];
+  for (int i = 1; i <= m; i++) cin >> v[i];
 }
 }  // namespace Input
 
