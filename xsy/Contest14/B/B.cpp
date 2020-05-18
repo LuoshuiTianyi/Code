@@ -21,10 +21,10 @@ inline LL read() {
 
 const int Max_n = 1e6 + 5, mod = 1e9 + 7;
 int n, m, L, ans, Ans;
-int fa[Max_n], id[Max_n];
+int fa[Max_n];
 int f[Max_n], g[Max_n];
 int f1[Max_n], f2[Max_n], g1[Max_n], g2[Max_n];
-int w[Max_n], v[Max_n << 2];
+int w[Max_n], nx[Max_n], v[Max_n << 2];
 struct graph {
   int hd[Max_n];
   int cntr, nx[Max_n << 1], to[Max_n << 1];
@@ -46,8 +46,9 @@ void main() {
 }  // namespace Input
 
 void Mod(int &x) { x = x >= mod ? x - mod : x; }
-void F(int x, int t) {
-  Mod(f[x] += t * f[x - 1] + (t == -1 ? mod : 0));
+void F(int x, bool t) {
+  if (t) Mod(f[x] += mod - f[x - 1]);
+  else Mod(f[x] += f[x - 1]);
 }
 
 namespace Init {
@@ -64,24 +65,22 @@ void main() {
 
 namespace Solve {
 void DP(int x) {
-  int t = v[id[x]], t1 = g[w[x] + 1] - (w[x] == L), t2 = g[t + 1] - (t == L);
-  f1[x] = f[w[x] - 1], f2[x] = f[t - 1];
-  F(t, 1);
+  g1[x] = g[w[x] + 1] - (w[x] == L), g2[x] = g[nx[x] + 1] - (nx[x] == L);
+  f1[x] = f[w[x] - 1], f2[x] = f[nx[x] - 1];
+  F(nx[x], 0);
   go(Gr, x, i, v) DP(v);
-  //cout << x << " " << t << " " << g[1] << " " << g[2] << endl;
-  Mod(g1[x] = g[w[x] + 1] - t1 + mod), Mod(g2[x] = g[t + 1] - t2 + mod);
-  Mod(g[w[x]] += t1), F(w[x] = t, -1);
+  Mod(g1[x] = g[w[x] + 1] - g1[x] + mod), Mod(g2[x] = g[nx[x] + 1] - g2[x] + mod);
+  Mod(g[w[x]] += g1[x]), F(w[x] = nx[x], 1);
 }
 void main() {
   for (int i = m + 1; i <= m + n; i++) v[i] = v[i - n];
   for (int s = 1; s <= m; s += n) {
-    for (int i = 1; i <= n; i++) id[i] = s + i - 1;
+    for (int i = 1; i <= n; i++) nx[i] = v[s + i - 1];
     for (int i = 1; i <= L; i++) f[i] = g[i] = 0;
     DP(1);
     for (int i = 1; i <= n; i++) {
       Mod(ans += mod - (LL)f1[i] * g1[i] % mod);
       Mod(ans += (LL)f2[i] * g2[i] % mod);
-      //cout << f1[i] << " " << g1[i] << " " << f2[i] << " " << g2[i] << endl;
       if (s + i - 1 <= m)
         Mod(Ans += (LL)ans * (s + i - 1) % mod);
     }
