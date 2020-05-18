@@ -38,7 +38,7 @@ void main() {
   n = 1e7;
   int ans = 0;
   for (int i = 1; i <= n; i++) {
-    ans += !vis[(int)((int)sqrt(n) / (int)sqrt(i))];
+    //ans += !vis[(int)((int)sqrt(n) / (int)sqrt(i))];
     //vis[(int)sqrt(n / i)] = 1;
   }
   cout << ans;
