@@ -32,12 +32,12 @@ struct graph {
     nx[cntr] = hd[u], to[cntr] = v;
     hd[u] = cntr;
   }
-} G;
+} Gr;
 
 namespace Input {
 void main() {
   n = read(), m = read(), L = read(), f[0] = g[L + 1] = 1;
-  for (int i = 2; i <= n; i++) G.addr(read(), i);
+  for (int i = 2; i <= n; i++) Gr.addr(read(), i);
   for (int i = 1; i <= n; i++) w[i] = read();
 }
 }  // namespace Input
@@ -54,7 +54,7 @@ namespace Init {
 void build(int x) {
   if (w[x] == L) Mod(ans += f[L - 1]);
   F(x, 1);
-  go(G, x, i, v) build(v);
+  go(Gr, x, i, v) build(v);
   F(x, -1);
 }
 void main() {
@@ -63,7 +63,9 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  
+}
 }  // namespace Solve
 
 int main() {
