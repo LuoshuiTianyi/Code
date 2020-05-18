@@ -46,9 +46,6 @@ void Mod(int &x) { x = x >= mod ? x - mod : x; }
 void F(int x, int t) {
   Mod(f[x] += t * f[x - 1] + (t == -1 ? mod : 0));
 }
-void G(int x) {
-  Mod(g[x] += g[x + 1]);
-}
 
 namespace Init {
 void build(int x) {
@@ -66,12 +63,13 @@ namespace Solve {
 void DP(int x) {
   int t = v[id[x]], t1 = g[w[x] + 1], t2 = g[t + 1];
   F(t, 1);
-  go(Gr, x, i, v) DP(v);
+  //go(Gr, x, i, v) DP(v);
+  cout << x << " " << w[x] << " " << ans << endl;
   Mod(t1 = g[w[x] + 1] - t1 + mod), Mod(t2 = g[t + 1] - t2 + mod);
   Mod(ans += mod - (LL)t1 * f[w[x] - 1] % mod);
   Mod(ans += (LL)t2 * f[t - 1] % mod);
-  G(w[x]), F(w[x] = t, -1);
-  
+  Mod(g[w[x]] += t1), F(w[x] = t, -1);
+  Mod(Ans += (LL)id[x] * ans % mod);
 }
 void main() {
   for (int s = 1; s <= m; s += n) {
@@ -79,6 +77,7 @@ void main() {
     for (int i = 1; i <= L; i++) f[i] = g[i] = 0;
     DP(1);
   }
+  cout << Ans << endl;
 }
 }  // namespace Solve
 
