@@ -20,8 +20,6 @@ void read(T &x) {
   if (fl) x = -x;
 }
 
-
-
 namespace Input {
 void main() { fread(s, 1, 1 << 25, stdin); }
 }  // namespace Input
