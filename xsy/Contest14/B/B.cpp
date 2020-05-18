@@ -43,16 +43,19 @@ void main() {
 }  // namespace Input
 
 void Mod(int &x) { x = x >= mod ? x - mod : x; }
-void F(int x) {
-  Mod(f[x] += f[x - 1]);
+void F(int x, int t) {
+  Mod(f[x] += t * f[x - 1] + (t == -1 ? mod : 0));
 }
-void G(int x) {
-  Mod(g[x] += g[x + 1]);
+void G(int x, int t) {
+  Mod(g[x] += t * g[x + 1] + (t == -1 ? mod : 0));
 }
 
 namespace Init {
 void build(int x) {
+  if (w[x] == L) Mod(ans += f[L - 1]);
+  F(x, 1);
   go(G, x, i, v) build(v);
+  F(x, -1);
 }
 void main() {
   build(1);
