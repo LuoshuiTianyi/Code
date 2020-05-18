@@ -63,8 +63,13 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
+void DP(int x) {
+}
 void main() {
-  
+  for (int s = 1; s <= m; s += n) {
+    for (int i = 1; i <= n; i++) id[i] = s + i - 1;
+    DP(1);
+  }
 }
 }  // namespace Solve
 
