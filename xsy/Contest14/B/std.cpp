@@ -56,13 +56,13 @@ int main(){
         memset(f,0,(L+1)<<2);
         memset(g,0,(L+1)<<2);
         f[0]=g[L+1]=1,Dfs(1);
-        int now=g[1];
-        for(int i=1;i<=K;++i){
-            now=sub(now,f1[i]*1ll*g1[i]%MOD);
-            now=add(now,f2[i]*1ll*g2[i]%MOD);
-            ans=add(ans,now*1ll*(++T)%MOD);
-            w[i]=v[i];
-        }
+        //int now=g[1];
+        //for(int i=1;i<=K;++i){
+        //    now=sub(now,f1[i]*1ll*g1[i]%MOD);
+        //    now=add(now,f2[i]*1ll*g2[i]%MOD);
+        //    ans=add(ans,now*1ll*(++T)%MOD);
+        //    w[i]=v[i];
+        //}
     }printf("%d\n",ans);
     return 0;
 }
