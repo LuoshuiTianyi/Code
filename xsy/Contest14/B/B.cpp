@@ -66,12 +66,12 @@ void main() {
     for (int i = 1; i <= n; i++) nx[i] = v[s + i - 1];
     for (int i = 1; i <= L; i++) f[i] = g[i] = 0;
     DP(1), ans = g[1];
-    //for (int i = 1; i <= n; i++) {
-    //  Mod(ans += mod - (LL)f1[i] * g1[i] % mod);
-    //  Mod(ans += (LL)f2[i] * g2[i] % mod);
-    //  if (s + i - 1 <= m)
-    //    Mod(Ans += (LL)ans * (s + i - 1) % mod);
-    //}
+    for (int i = 1; i <= n; i++) {
+      Mod(ans += mod - (LL)f1[i] * g1[i] % mod);
+      Mod(ans += (LL)f2[i] * g2[i] % mod);
+      if (s + i - 1 <= m)
+        Mod(Ans += (LL)ans * (s + i - 1) % mod);
+    }
   }
   cout << Ans << endl;
 }
