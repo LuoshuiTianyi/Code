@@ -1,3 +1,7 @@
+#pragma GCC optimize(3)
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("inline")
+
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -51,18 +55,6 @@ void F(int x, bool t) {
   else Mod(f[x] += f[x - 1]);
 }
 
-namespace Init {
-void build(int x) {
-  if (w[x] == L) Mod(ans += f[L - 1]);
-  F(w[x], 1);
-  go(Gr, x, i, v) build(v);
-  F(w[x], -1);
-}
-void main() {
-  build(1);
-}
-}  // namespace Init
-
 namespace Solve {
 void DP(int x) {
   g1[x] = g[w[x] + 1] - (w[x] == L), g2[x] = g[nx[x] + 1] - (nx[x] == L);
@@ -77,7 +69,7 @@ void main() {
   for (int s = 1; s <= m; s += n) {
     for (int i = 1; i <= n; i++) nx[i] = v[s + i - 1];
     for (int i = 1; i <= L; i++) f[i] = g[i] = 0;
-    DP(1);
+    DP(1), ans = g[1];
     for (int i = 1; i <= n; i++) {
       Mod(ans += mod - (LL)f1[i] * g1[i] % mod);
       Mod(ans += (LL)f2[i] * g2[i] % mod);
@@ -95,6 +87,5 @@ int main() {
   freopen("B.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
