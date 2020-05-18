@@ -20,12 +20,33 @@ void read(T &x) {
   if (fl) x = -x;
 }
 
+const int Max_n = 1e7 + 5;
+LL n;
+int cnt, pri[Max_n], phi[Max_n];
+bool vis[Max_n];
+
 namespace Input {
-void main() { fread(s, 1, 1 << 25, stdin); }
+void main() {
+  fread(s, 1, 1 << 25, stdin);
+  read(n);
+}
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  phi[1] = 1;
+  for (int i = 2; i <= 1e7; i++) {
+    if (!vis[i]) pri[++cnt] = i, phi[i] = i - 1;
+    for (int j = 1; j <= cnt && pri[j] * i <= 1e7; j++) {
+      vis[i * pri[j]] = 1;
+      phi[i * pri[j]] = phi[i] * (pri[j] - 1);
+      if (i % pri[j] == 0) {
+        phi[i * pri[j]] = phi[i] * pri[j];
+        break;
+      }
+    }
+  }
+}
 }  // namespace Init
 
 namespace Solve {
