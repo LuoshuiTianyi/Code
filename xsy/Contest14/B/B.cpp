@@ -19,11 +19,12 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 2e6 + 5, mod = 1e9 + 7;
+const int Max_n = 1e6 + 5, mod = 1e9 + 7;
 int n, m, L, ans, Ans;
-int id[Max_n];
+int fa[Max_n], id[Max_n];
 int f[Max_n], g[Max_n];
-int w[Max_n], v[Max_n];
+int f1[Max_n], f2[Max_n], g1[Max_n], g2[Max_n];
+int w[Max_n], v[Max_n << 2];
 struct graph {
   int hd[Max_n];
   int cntr, nx[Max_n << 1], to[Max_n << 1];
@@ -37,7 +38,8 @@ struct graph {
 namespace Input {
 void main() {
   n = read(), m = read(), L = read(), f[0] = g[L + 1] = 1;
-  for (int i = 2; i <= n; i++) Gr.addr(read(), i);
+  for (int i = 2; i <= n; i++) fa[i] = read();
+  for (int i = n; i >= 2; i--) Gr.addr(fa[i], i);
   for (int i = 1; i <= n; i++) w[i] = read();
 }
 }  // namespace Input
@@ -62,20 +64,25 @@ void main() {
 namespace Solve {
 void DP(int x) {
   int t = v[id[x]], t1 = g[w[x] + 1], t2 = g[t + 1];
+  f1[x] = f[w[x] - 1], f2[x] = f[t - 1];
   F(t, 1);
-  //go(Gr, x, i, v) DP(v);
-  cout << x << " " << w[x] << " " << ans << endl;
-  Mod(t1 = g[w[x] + 1] - t1 + mod), Mod(t2 = g[t + 1] - t2 + mod);
-  Mod(ans += mod - (LL)t1 * f[w[x] - 1] % mod);
-  Mod(ans += (LL)t2 * f[t - 1] % mod);
+  go(Gr, x, i, v) DP(v);
+  Mod(g1[x] = g[w[x] + 1] - t1 + mod), Mod(g2[x] = g[t + 1] - t2 + mod);
   Mod(g[w[x]] += t1), F(w[x] = t, -1);
-  Mod(Ans += (LL)id[x] * ans % mod);
 }
 void main() {
+  for (int i = m + 1; i <= m + n; i++) v[i] = v[i - n];
   for (int s = 1; s <= m; s += n) {
     for (int i = 1; i <= n; i++) id[i] = s + i - 1;
     for (int i = 1; i <= L; i++) f[i] = g[i] = 0;
     DP(1);
+    for (int i = 1; i <= n; i++) {
+      Mod(ans += mod - (LL)f1[i] * g1[i] % mod);
+      Mod(ans += (LL)f2[i] * g2[i] % mod);
+      cout << f1[i] << " " << g1[i] << " " << f2[i] << " " << g2[i] << endl;
+      if (s + i - 1 <= m)
+        Mod(Ans += (LL)ans * (s + i - 1) % mod);
+    }
   }
   cout << Ans << endl;
 }
