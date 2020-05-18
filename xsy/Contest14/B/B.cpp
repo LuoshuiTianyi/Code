@@ -54,26 +54,41 @@ void F(int x, bool t) {
 }
 
 namespace Init {
-
+void build(int x) {
+  stk[++cnt] = x;
+  go(Gr, x, i, v) build(v);
+  stk[++cnt] = x;
+}
 void main() {
+  build(1);
 }
 }
 
 namespace Solve {
-void DP(int x) {
-  g1[x] = g[w[x] + 1] - (w[x] == L), g2[x] = g[nx[x] + 1] - (nx[x] == L);
-  f1[x] = f[w[x] - 1], f2[x] = f[nx[x] - 1];
-  F(nx[x], 0);
-  go(Gr, x, i, v) DP(v);
-  Mod(g1[x] = g[w[x] + 1] - g1[x] + mod), Mod(g2[x] = g[nx[x] + 1] - g2[x] + mod);
-  Mod(g[w[x]] += g1[x]), F(w[x] = nx[x], 1);
-}
+//void DP(int x) {
+//  g1[x] = g[w[x] + 1] - (w[x] == L), g2[x] = g[nx[x] + 1] - (nx[x] == L);
+//  f1[x] = f[w[x] - 1], f2[x] = f[nx[x] - 1], Mod(f[nx[x]] += f[nx[x] - 1]);
+//  go(Gr, x, i, v) DP(v);
+//  Mod(g1[x] = g[w[x] + 1] - g1[x] + mod), Mod(g2[x] = g[nx[x] + 1] - g2[x] + mod);
+//  Mod(g[w[x]] += g1[x]), Mod(f[w[x] = nx[x]] += mod - f[nx[x] - 1]);
+//}
 void main() {
   for (int i = m + 1; i <= m + n; i++) v[i] = v[i - n];
   for (int s = 1; s <= m; s += n) {
     for (int i = 1; i <= n; i++) nx[i] = v[s + i - 1];
     for (int i = 1; i <= L; i++) f[i] = g[i] = 0;
-    DP(1), ans = g[1];
+    for (int i = 1; i <= cnt; i++) {
+      int x = stk[i];
+      if (!vis[x]) {
+        g1[x] = g[w[x] + 1] - (w[x] == L), g2[x] = g[nx[x] + 1] - (nx[x] == L);
+        f1[x] = f[w[x] - 1], f2[x] = f[nx[x] - 1], Mod(f[nx[x]] += f[nx[x] - 1]);
+      } else {
+        Mod(g1[x] = g[w[x] + 1] - g1[x] + mod), Mod(g2[x] = g[nx[x] + 1] - g2[x] + mod);
+        Mod(g[w[x]] += g1[x]), Mod(f[w[x] = nx[x]] += mod - f[nx[x] - 1]);
+      }
+      vis[x] ^= 1;
+    }
+    ans = g[1];
     for (int i = 1; i <= n; i++) {
       Mod(ans += mod - (LL)f1[i] * g1[i] % mod);
       Mod(ans += (LL)f2[i] * g2[i] % mod);
@@ -91,5 +106,6 @@ int main() {
   freopen("B.out", "w", stdout);
 #endif
   Input::main();
+  Init::main();
   Solve::main();
 }
