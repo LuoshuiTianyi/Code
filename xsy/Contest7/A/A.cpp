@@ -38,10 +38,14 @@ void main() {
   n = 1e7;
   int ans = 0;
   for (int i = 1; i <= n; i++) {
-    //ans += !vis[(int)((int)sqrt(n) / (int)sqrt(i))];
-    //vis[(int)sqrt(n / i)] = 1;
+    if (!vis[(int)(sqrt(n) / sqrt(i))]) {
+      cout << i << endl;
+    }
+    vis[(int)sqrt(n / i)] = 1;
   }
-  cout << ans;
+  for (int i = 1; i * i <= n; i++) {
+    int r = n / i * i;
+  }
   //phi[1] = 1;
   //for (int i = 2; i <= 1e7; i++) {
   //  if (!vis[i]) pri[++cnt] = i, phi[i] = i - 1;
