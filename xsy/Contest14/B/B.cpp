@@ -5,26 +5,20 @@ using namespace std;
 #define go(G, x, i, v) \
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 #define inline __inline__ __attribute__((always_inline))
-inline LL read() {
-  int x = 0;
+
+char s[1 << 25], *S = s;
+#define getchar() (*S++)
+template <typename tp>
+inline void read(tp &dig) {
   char ch = getchar();
-  while (!isdigit(ch)) ch = getchar();
-  while (isdigit(ch)) {
-    x = (x << 3) + (x << 1) + ch - '0';
+  int flag = 0;
+  dig = 0;
+  while (!isdigit(ch)) {
+    if (ch == '-') flag = 1;
     ch = getchar();
   }
-  return x;
-}
-
-char s[1<<25],*S=s;
-#define getchar() (*S++)
-
-template < typename tp >
-inline void read ( tp & dig ) {
-    char ch=getchar();int flag=0;dig=0;
-    while(!isdigit(ch)){if(ch=='-')flag=1;ch=getchar();}
-    while(isdigit(ch))dig=dig*10+ch-'0',ch=getchar();
-    if(flag)dig=-dig;
+  while (isdigit(ch)) dig = dig * 10 + ch - '0', ch = getchar();
+  if (flag) dig = -dig;
 }
 
 const int Max_n = 1e6 + 5, mod = 1e9 + 7;
@@ -47,12 +41,12 @@ struct graph {
 
 namespace Input {
 void main() {
-  ios::sync_with_stdio(false);
-  cin >> n >> m >> L, f[0] = g[L + 1] = 1;
-  for (int i = 2; i <= n; i++) cin >> fa[i];
+  fread(s, 1, 1 << 25, stdin);
+  read(n), read(m), read(L), f[0] = g[L + 1] = 1;
+  for (int i = 2; i <= n; i++) read(fa[i]);
   for (int i = n; i >= 2; i--) Gr.addr(fa[i], i);
-  for (int i = 1; i <= n; i++) cin >> w[i];
-  for (int i = 1; i <= m; i++) cin >> v[i];
+  for (int i = 1; i <= n; i++) read(w[i]);
+  for (int i = 1; i <= m; i++) read(v[i]);
 }
 }  // namespace Input
 
@@ -64,10 +58,8 @@ void build(int x) {
   go(Gr, x, i, v) build(v);
   stk[++cnt] = x;
 }
-void main() {
-  build(1);
-}
-}
+void main() { build(1); }
+}  // namespace Init
 
 namespace Solve {
 void main() {
@@ -79,9 +71,11 @@ void main() {
       int x = stk[i];
       if (!vis[x]) {
         g1[x] = g[w[x] + 1] - (w[x] == L), g2[x] = g[nx[x] + 1] - (nx[x] == L);
-        f1[x] = f[w[x] - 1], f2[x] = f[nx[x] - 1], Mod(f[nx[x]] += f[nx[x] - 1]);
+        f1[x] = f[w[x] - 1], f2[x] = f[nx[x] - 1],
+        Mod(f[nx[x]] += f[nx[x] - 1]);
       } else {
-        Mod(g1[x] = g[w[x] + 1] - g1[x] + mod), Mod(g2[x] = g[nx[x] + 1] - g2[x] + mod);
+        Mod(g1[x] = g[w[x] + 1] - g1[x] + mod),
+            Mod(g2[x] = g[nx[x] + 1] - g2[x] + mod);
         Mod(g[w[x]] += g1[x]), Mod(f[w[x] = nx[x]] += mod - f[nx[x] - 1]);
       }
       vis[x] ^= 1;
@@ -90,8 +84,7 @@ void main() {
     for (int i = 1; i <= n; i++) {
       Mod(ans += mod - (LL)f1[i] * g1[i] % mod);
       Mod(ans += (LL)f2[i] * g2[i] % mod);
-      if (s + i - 1 <= m)
-        Mod(Ans += (LL)ans * (s + i - 1) % mod);
+      if (s + i - 1 <= m) Mod(Ans += (LL)ans * (s + i - 1) % mod);
     }
   }
   cout << Ans << endl;
