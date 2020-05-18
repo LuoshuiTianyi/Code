@@ -24,6 +24,8 @@ int n, m, L, ans, Ans;
 int fa[Max_n];
 int f[Max_n], g[Max_n];
 int f1[Max_n], f2[Max_n], g1[Max_n], g2[Max_n];
+int cnt, stk[Max_n];
+bool vis[Max_n];
 int w[Max_n], nx[Max_n], v[Max_n << 2];
 struct graph {
   int hd[Max_n];
@@ -49,6 +51,12 @@ void Mod(int &x) { x = x >= mod ? x - mod : x; }
 void F(int x, bool t) {
   if (t) Mod(f[x] += mod - f[x - 1]);
   else Mod(f[x] += f[x - 1]);
+}
+
+namespace Init {
+
+void main() {
+}
 }
 
 namespace Solve {
