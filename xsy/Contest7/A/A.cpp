@@ -36,28 +36,18 @@ void main() {
 namespace Init {
 void main() {
   n = 1e7;
-  int ans = 0;
-  for (int i = 1; i <= n; i++) {
-    if (!vis[(int)(sqrt(n) / sqrt(i))]) {
-      cout << i << endl;
+  phi[1] = 1;
+  for (int i = 2; i <= 1e7; i++) {
+    if (!vis[i]) pri[++cnt] = i, phi[i] = i - 1;
+    for (int j = 1; j <= cnt && pri[j] * i <= 1e7; j++) {
+      vis[i * pri[j]] = 1;
+      phi[i * pri[j]] = phi[i] * (pri[j] - 1);
+      if (i % pri[j] == 0) {
+        phi[i * pri[j]] = phi[i] * pri[j];
+        break;
+      }
     }
-    vis[(int)sqrt(n / i)] = 1;
   }
-  for (int i = 1; i * i <= n; i++) {
-    int r = n / i * i;
-  }
-  //phi[1] = 1;
-  //for (int i = 2; i <= 1e7; i++) {
-  //  if (!vis[i]) pri[++cnt] = i, phi[i] = i - 1;
-  //  for (int j = 1; j <= cnt && pri[j] * i <= 1e7; j++) {
-  //    vis[i * pri[j]] = 1;
-  //    phi[i * pri[j]] = phi[i] * (pri[j] - 1);
-  //    if (i % pri[j] == 0) {
-  //      phi[i * pri[j]] = phi[i] * pri[j];
-  //      break;
-  //    }
-  //  }
-  //}
 }
 }  // namespace Init
 
