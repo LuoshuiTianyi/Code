@@ -41,6 +41,7 @@ void main() {
   for (int i = 2; i <= n; i++) fa[i] = read();
   for (int i = n; i >= 2; i--) Gr.addr(fa[i], i);
   for (int i = 1; i <= n; i++) w[i] = read();
+  for (int i = 1; i <= m; i++) v[i] = read();
 }
 }  // namespace Input
 
@@ -63,10 +64,11 @@ void main() {
 
 namespace Solve {
 void DP(int x) {
-  int t = v[id[x]], t1 = g[w[x] + 1], t2 = g[t + 1];
+  int t = v[id[x]], t1 = g[w[x] + 1] - (w[x] == L), t2 = g[t + 1] - (t == L);
   f1[x] = f[w[x] - 1], f2[x] = f[t - 1];
   F(t, 1);
   go(Gr, x, i, v) DP(v);
+  //cout << x << " " << t << " " << g[1] << " " << g[2] << endl;
   Mod(g1[x] = g[w[x] + 1] - t1 + mod), Mod(g2[x] = g[t + 1] - t2 + mod);
   Mod(g[w[x]] += t1), F(w[x] = t, -1);
 }
@@ -79,7 +81,7 @@ void main() {
     for (int i = 1; i <= n; i++) {
       Mod(ans += mod - (LL)f1[i] * g1[i] % mod);
       Mod(ans += (LL)f2[i] * g2[i] % mod);
-      cout << f1[i] << " " << g1[i] << " " << f2[i] << " " << g2[i] << endl;
+      //cout << f1[i] << " " << g1[i] << " " << f2[i] << " " << g2[i] << endl;
       if (s + i - 1 <= m)
         Mod(Ans += (LL)ans * (s + i - 1) % mod);
     }
