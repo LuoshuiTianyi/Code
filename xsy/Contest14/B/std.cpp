@@ -1,68 +1,68 @@
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <algorithm>
-const int maxn=1e6+7;
-const int MOD=1e9+7;
-struct Edge{
-    int to;
-    int last;
-}a[maxn];
-int tot;
-int n,m,L;
-int w[maxn];
-int v[maxn];
-int f[maxn];
-int g[maxn];
-int f1[maxn];
-int f2[maxn];
-int g1[maxn];
-int g2[maxn];
-int head[maxn];
-inline int add(int x,int y){return (x+=y)>=MOD ? x-MOD : x;}
-inline int sub(int x,int y){return (x-=y)<  0  ? x+MOD : x;}
-inline void HA(int x,int y){a[++tot]=(Edge){y,head[x]};head[x]=tot;}
-#define y a[i].to
-inline void Dfs(int x){
-    f1[x]=f[w[x]-1],f2[x]=f[v[x]-1];
-    f[v[x]]=add(f[v[x]],f[v[x]-1]);
-    int temp1=g[w[x]+1],temp2=g[v[x]+1];
-    for(int i=head[x];i;i=a[i].last)Dfs(a[i].to);
-    f[v[x]]=sub(f[v[x]],f[v[x]-1]);
-    g1[x]=sub(g[w[x]+1],w[x]<L ? temp1 : 0);
-    g2[x]=sub(g[v[x]+1],v[x]<L ? temp2 : 0);
-    g[w[x]]=add(g[w[x]],g1[x]);
+#include<bits/stdc++.h>
+using namespace std;
+#define maxn 1000010
+#define ll long long
+const int mod=1000000007;
+ 
+char s[1<<25],*S=s;
+#define getchar() (*S++)
+ 
+template < typename tp >
+inline void read ( tp & dig ) {
+    char ch=getchar();int flag=0;dig=0;
+    while(!isdigit(ch)){if(ch=='-')flag=1;ch=getchar();}
+    while(isdigit(ch))dig=dig*10+ch-'0',ch=getchar();
+    if(flag)dig=-dig;
 }
-#undef y
-char s[1<<25],*sS=s;
-#define getchar() (*sS++)
-inline void I(int &x){
-    register int ch;
-    while(ch=getchar(),ch<'/');x=ch-'0';
-    while(ch=getchar(),ch>'/')x=x*10+ch-'0';
+  
+int f[maxn],g[maxn],f1[maxn],f2[maxn],g1[maxn],g2[maxn],ans[maxn];
+int lnum,fst[maxn<<1],nxt[maxn<<1],to[maxn<<1];
+int n,m,L,cnt,a[maxn],b[maxn],fa[maxn];
+  
+inline int F(ll x){return x>=mod?x-mod:x;}
+inline void add_edge(int u,int v){
+    nxt[++lnum]=fst[u];fst[u]=lnum;to[lnum]=v;
 }
-int main(){
-//  freopen("in","r",stdin);
-  freopen("B.in", "r", stdin);
-  freopen("B.ans", "w", stdout);
-    fread(s,1,1<<25,stdin),I(n),I(m),I(L);
-    for(int i=2,x;i<=n;++i)I(x),HA(x,i);
-    for(int i=1;i<=n;++i)I(w[i]);
-    int ans=0,T=0;
-    while(m>0){
-        int K=std::min(n,m);m-=K;
-        for(int i=1;i<=K;++i)I(v[i]);
-        for(int i=K+1;i<=n;++i)v[i]=w[i];
-        memset(f,0,(L+1)<<2);
-        memset(g,0,(L+1)<<2);
-        f[0]=g[L+1]=1,Dfs(1);
-        //int now=g[1];
-        //for(int i=1;i<=K;++i){
-        //    now=sub(now,f1[i]*1ll*g1[i]%MOD);
-        //    now=add(now,f2[i]*1ll*g2[i]%MOD);
-        //    ans=add(ans,now*1ll*(++T)%MOD);
-        //    w[i]=v[i];
-        //}
-    }printf("%d\n",ans);
+ 
+inline void dfs(int u){
+    f1[u]=f[a[u]-1];f2[u]=f[b[u]-1];
+    f[b[u]]=F(f[b[u]]+f[b[u]-1]);
+    int t1=g[a[u]+1],t2=g[b[u]+1];
+    for(int i=fst[u];i;i=nxt[i])dfs(to[i]);
+    f[b[u]]=F(f[b[u]]+mod-f[b[u]-1]);
+    g1[u]=F(g[a[u]+1]-t1*(a[u]<L)+mod);
+    g2[u]=F(g[b[u]+1]-t2*(b[u]<L)+mod);
+    g[a[u]]=F(g[a[u]]+g1[u]);
+}
+ 
+int main()
+{
+  
+#ifndef ONLINE_JUDGE
+    freopen("tree.in","r",stdin);
+    freopen("tree.ans","w",stdout);
+#endif
+  
+    fread(s,1,1<<25,stdin);
+    read(n);read(m);read(L);
+    for(int i=2;i<=n;++i)
+        read(fa[i]),add_edge(fa[i],i);
+    for(int i=1;i<=n;++i)read(a[i]);
+    while(m){
+        int lim=min(n,m);m-=lim;
+        for(int i=1;i<=lim;++i)read(b[i]);
+        for(int i=lim+1;i<=n;++i)b[i]=a[i];
+        for(int i=1;i<=L;++i)f[i]=g[i]=0;
+        f[0]=g[L+1]=1;dfs(1);int now=g[1];
+        for(int i=1;i<=lim;++i){
+            now=F(now-1LL*f1[i]*g1[i]%mod+mod);
+            now=F(now+1LL*f2[i]*g2[i]%mod);
+            ans[++cnt]=now;a[i]=b[i];
+        }
+    }int res=0;
+    for(int i=1;i<=cnt;++i)
+        res=(1LL*i*ans[i]+res)%mod;
+    printf("%d\n",res);
     return 0;
+  
 }

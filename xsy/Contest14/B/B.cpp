@@ -1,3 +1,5 @@
+#pragma GCC optimize(3)
+
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -6,17 +8,14 @@ using namespace std;
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 #define inline __inline__ __attribute__((always_inline))
 inline LL read() {
-  LL x = 0, w = 1;
+  int x = 0;
   char ch = getchar();
-  while (!isdigit(ch)) {
-    if (ch == '-') w = -1;
-    ch = getchar();
-  }
+  while (!isdigit(ch)) ch = getchar();
   while (isdigit(ch)) {
     x = (x << 3) + (x << 1) + ch - '0';
     ch = getchar();
   }
-  return x * w;
+  return x;
 }
 
 const int Max_n = 1e6 + 5, mod = 1e9 + 7;
@@ -24,7 +23,7 @@ int n, m, L, ans, Ans;
 int fa[Max_n];
 int f[Max_n], g[Max_n];
 int f1[Max_n], f2[Max_n], g1[Max_n], g2[Max_n];
-int cnt, stk[Max_n];
+int cnt, stk[Max_n << 1];
 bool vis[Max_n];
 int w[Max_n], nx[Max_n], v[Max_n << 2];
 struct graph {
@@ -48,10 +47,6 @@ void main() {
 }  // namespace Input
 
 void Mod(int &x) { x = x >= mod ? x - mod : x; }
-void F(int x, bool t) {
-  if (t) Mod(f[x] += mod - f[x - 1]);
-  else Mod(f[x] += f[x - 1]);
-}
 
 namespace Init {
 void build(int x) {
@@ -65,13 +60,6 @@ void main() {
 }
 
 namespace Solve {
-//void DP(int x) {
-//  g1[x] = g[w[x] + 1] - (w[x] == L), g2[x] = g[nx[x] + 1] - (nx[x] == L);
-//  f1[x] = f[w[x] - 1], f2[x] = f[nx[x] - 1], Mod(f[nx[x]] += f[nx[x] - 1]);
-//  go(Gr, x, i, v) DP(v);
-//  Mod(g1[x] = g[w[x] + 1] - g1[x] + mod), Mod(g2[x] = g[nx[x] + 1] - g2[x] + mod);
-//  Mod(g[w[x]] += g1[x]), Mod(f[w[x] = nx[x]] += mod - f[nx[x] - 1]);
-//}
 void main() {
   for (int i = m + 1; i <= m + n; i++) v[i] = v[i - n];
   for (int s = 1; s <= m; s += n) {

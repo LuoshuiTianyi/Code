@@ -9,5 +9,5 @@ for i in range(1, n + 1):
     print(randint(1, min(i, L)), end = " ")
 print()
 for i in range(m):
-    print(randint(1, L), end = " ")
+    print(randint(1, min((m - 1) % n + 1, L)), end = " ")
 print()
