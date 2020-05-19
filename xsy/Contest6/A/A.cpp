@@ -31,7 +31,7 @@ vector<int> M[(V << 2) + 10];
 namespace Input {
 void main() {
   fread(s, 1, 1 << 25, stdin); 
-  read(n), read(m), ans = n + 1;
+  read(n), read(m), ans;
   for (int i = 1; i <= m; i++)
     read(e[i].u), read(e[i].v), read(e[i].w);
 }
@@ -53,9 +53,9 @@ void add(int o, int l, int r) {
 }
 void main() {
   for (int i = 1; i <= m; i++) {
-    x = i;
-    L = 1, R = e[i].w - 1, add(1, 1, V);
-    L = e[i].w + 1, R = V, add(1, 1, V);
+    x = i, ans = max(ans, e[i].w);
+    L = 0, R = e[i].w - 1, add(1, 0, V);
+    L = e[i].w + 1, R = V, add(1, 0, V);
   }
 }
 }  // namespace Init
@@ -63,14 +63,29 @@ void main() {
 namespace Solve {
 int fa[Max_n], sz[Max_n];
 int top, stk[Max_n];
-void dfs(int x, int l, int r) {
+int find(int x) { return fa[x] == x ? x : find(fa[x]); }
+void merge(int id) {
+  int u = k[id].u, v = k[id].v;
+  u = find(u), v = find(v);
+  if (find(u) == find(v)) return;
+  stk[++top] = id;
+  fa[u] = v, sz[v] += sz[u];
+}
+void Enter(int o) {
+  
+}
+void dfs(int o, int l, int r) {
+  Enter(o);
   if (l == r) {
+    if (sz[find(1)] == n) ans = min(ans, l);
+    Back(o);
     return;
   }
 }
 void main() {
+  ans++;
   for (int i = 1; i <= n; i++) fa[i] = i, sz[i] = 1;
-  dfs(1, 1, V);
+  dfs(1, 0, V);
 }
 }  // namespace Solve
 
