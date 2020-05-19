@@ -61,11 +61,11 @@ void divid(int id) {
   sz[y[top]] -= sz[x[top]], fa[x[top]] = x[top];
   top--;
 }
-void Enter(int o) {
-  for (int i = M[o].size() - 1; ~i; i--) merge(M[o][i]);
+void Enter(int x) {
+  for (int i = M[x].size() - 1; ~i; i--) merge(M[x][i]);
 }
-void Back(int o) {
-  for (int i = 0; i < M[o].size(); i++) divid(M[o][i]);
+void Back(int x) {
+  for (int i = 0; i < M[x].size(); i++) divid(M[x][i]);
 }
 void dfs(int l, int r) {
   if (l == r) {
@@ -77,12 +77,15 @@ void dfs(int l, int r) {
   }
   int mid = l + r >> 1;
   for (int i = mid + 1; i <= r; i++) Enter(i);
-  dfs(l, mid), dfs(mid + 1, r);
+  dfs(l, mid);
+  for (int i = r; i > mid; i--) Back(i);
+  for (int i = l; i <= mid; i++) Enter(i);
+  dfs(mid + 1, r);
 }
 void main() {
   ans++;
   for (int i = 1; i <= n; i++) fa[i] = i, sz[i] = 1;
-  dfs(1, 0, V);
+  dfs(0, V);
   cout << ans << endl;
 }
 }  // namespace Solve

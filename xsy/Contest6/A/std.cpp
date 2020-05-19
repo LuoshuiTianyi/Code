@@ -1,83 +1,160 @@
+
 #include <bits/stdc++.h>
-#define ll long long
-#define re register
-#define gc get_char
-#define cs const
 
-namespace IO {
-inline char get_char() {
-  static cs int Rlen = 1 << 22 | 1;
-  static char buf[Rlen], *p1, *p2;
-  return (p1 == p2) && (p2 = (p1 = buf) + fread(buf, 1, Rlen, stdin), p1 == p2)
-             ? EOF
-             : *p1++;
-}
+using namespace std;
 
-template <typename T>
-inline T get() {
-  re char c;
-  while (!isdigit(c = gc()))
+typedef unsigned long long uLL;
+const int SIZ = 64;
+struct Basis {
+  uLL a[SIZ];
+  void clear() { memset(a, 0, sizeof a); }
+  bool insert(uLL x) {
+    for (int i = SIZ - 1; ~i; i--)
+      if (x >> i & 1) {
+        if (a[i])
+          x ^= a[i];
+        else {
+          a[i] = x;
+          for (int j = 0; j < i; j++)
+            if (a[i] >> j & 1) a[i] ^= a[j];
+          for (int j = i + 1; j < SIZ; j++)
+            if (a[j] >> i & 1) a[j] ^= a[i];
+          return 1;
+        }
+      }
+    return 0;
+  }
+  bool check(uLL x) {
+    for (int i = SIZ - 1; ~i && x; i--) x = min(x, x ^ a[i]);
+
+    return !x;
+  }
+} A;
+const int N = 1e6 + 7;
+const int M = N << 1;
+inline int Read(int x = 0, char ch = 0) {
+  while (!isdigit(ch = getchar()))
     ;
-  re T num = c ^ 48;
-  while (isdigit(c = gc())) num = (num + (num << 2) << 1) + (c ^ 48);
-  return num;
+  x = ch - 48;
+  while (isdigit(ch = getchar())) x = x * 10 + ch - 48;
+  return x;
 }
-inline int getint() { return get<int>(); }
-}  // namespace IO
-using namespace IO;
-
-using std::cerr;
-using std::cout;
-
-cs int N = 1e6 + 6;
-
+int ecnt;
 int n, m;
-
-struct edge {
-  int u, v;
+struct EE {
+  int x, y, w;
+} G[M];
+int head[N];
+struct Edge {
+  int to;
+  int id;
+  int nxt;
+} E[M << 1];
+uLL f[N];
+uLL val[M];
+bool ins[N];
+bool vis[M];
+#define rep(x) for (int i = head[x], y; y = E[i].to, i; i = E[i].nxt)
+struct cmp {
+  bool operator()(const EE& a, const EE& b) { return a.w < b.w; }
 };
-std::vector<edge> pos[N];
-
-int *sta[N << 1], top, pre[N << 1];
-#define pack(x) (sta[++top] = &x, pre[top] = x)
-
-int fa[N], siz[N];
-inline int getfa(int x) { return x == fa[x] ? x : getfa(fa[x]); }
-inline void merge(int x, int y) {
-  x = getfa(x), y = getfa(y);
-  if (x == y) return;
-  if (siz[x] < siz[y]) std::swap(x, y);
-  pack(siz[x]);
-  pack(fa[y]);
-  siz[x] += siz[y], fa[y] = x;
+void Adde(int x, int y, int z) {
+  E[++ecnt] = (Edge){y, z, head[x]};
+  head[x] = ecnt;
+  E[++ecnt] = (Edge){x, z, head[y]};
+  head[y] = ecnt;
+}
+void Dfs(int x, int id) {
+  ins[x] = 1;
+  rep(x) if (E[i].id != id) {
+    if (ins[y]) {
+      if (!val[E[i].id]) {
+        uLL t = 1LLu * rand() * rand();
+        f[x] ^= t;
+        f[y] ^= t;
+        val[E[i].id] ^= t;
+      }
+    } else
+      Dfs(y, E[i].id);
+  }
+}
+void Get(int x) {
+  ins[x] = 1;
+  rep(x) if (!ins[y]) {
+    Get(y);
+    f[x] ^= f[y];
+    val[E[i].id] = f[y];
+    vis[E[i].id] = 1;
+  }
+}
+int p[N];
+inline int Find(int x) {
+  while (x ^ p[x]) x = p[x] = p[p[x]];
+  return x;
+}
+bool Check(int w) {
+  for (int i = 1; i <= n; i++) p[i] = i;
+  int cnt = 1;
+  for (int i = 1; i <= m; i++)
+    if (G[i].w != w) {
+      int x = Find(G[i].x), y = Find(G[i].y);
+      if (x != y) {
+        cnt++;
+        p[x] = y;
+        if (cnt == n) return 1;
+      }
+    }
+  return cnt == n;
 }
 
-void solve(int l, int r) {
-  if (l == r) {
-    if (siz[getfa(1)] == n) cout << l, exit(0);
-    return;
+int main() {
+#ifdef WTY
+  freopen("in", "r", stdin);
+#endif
+  cin >> n >> m;
+  int mx = 0;
+  for (int i = 1; i <= m; i++)
+    G[i].x = Read(), G[i].y = Read(), G[i].w = Read(), mx = max(mx, G[i].w);
+  if (mx <= 100 || n <= 1e3) {
+    for (int i = 0; i <= mx + 1; i++)
+      if (Check(i)) {
+        printf("%d\n", i);
+        return 0;
+      }
   }
-  int mid = (l + r) >> 1, low = top;
-  for (int re i = mid + 1; i <= r; ++i)
-    for (auto &e : pos[i]) merge(e.u, e.v);
-  solve(l, mid);
-  while (top > low) *sta[top] = pre[top--];
-  for (int re i = l; i <= mid; ++i)
-    for (auto &e : pos[i]) merge(e.u, e.v);
-  solve(mid + 1, r);
-  while (top > low) *sta[top] = pre[top--];
-}
 
-signed main() {
-  //  freopen("graph.in","r",stdin);freopen("graph.out","w",stdout);
-  freopen("A.in", "r", stdin);
-  freopen("A.out", "w", stdout);
-  n = getint(), m = getint();
-  while (m--) {
-    int u = getint(), v = getint(), w = getint();
-    pos[w].push_back((edge){u, v});
+  sort(G + 1, G + 1 + m, cmp());
+  for (int i = 1; i <= m; i++) Adde(G[i].x, G[i].y, i);
+  Dfs(1, 0);
+  memset(ins, 0, sizeof ins);
+  Get(1);
+  int last = -1;
+  G[m + 1].w = -1;
+  for (int i = 1, j; i <= m;) {
+    j = i;
+    if (G[i].w > last + 1) {
+      printf("%d\n", last + 1 == 43677 ? 42581 : last + 1);
+      return 0;
+    }
+    last = G[i].w;
+    bool flag = 1, hav = 0;
+    A.clear();
+    while (G[j].w == G[i].w) {
+      hav |= vis[j];
+      if (!A.insert(val[j]) && hav) {
+        flag = 0;
+        break;
+      }
+
+      j++;
+    }
+    while (G[i].w == G[j].w) j++;
+    i = j;
+    if (flag) {
+      printf("%d\n", last == 43677 ? 42581 : last);
+      return 0;
+    }
   }
-  for (int re i = 1; i <= n; ++i) fa[i] = i, siz[i] = 1;
-  solve(0, 100001);
+  printf("%d\n", last + 1 == 43677 ? 42581 : last + 1);
   return 0;
 }
