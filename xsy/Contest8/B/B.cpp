@@ -23,8 +23,8 @@ void read(T &x) {
 void rstr(char *s) {
   char *x = s;
   char ch = getchar();
-  while (ch != '(' && ch != ')') ch = getchar();
-  while (ch == '(' || ch == ')') {
+  while (ch == ' ' || ch == '\n' || ch == '\r') ch = getchar();
+  while (ch != ' ' && ch != '\n' && ch != '\r') {
     *x++ = ch;
     ch = getchar();
   }
@@ -33,7 +33,7 @@ void rstr(char *s) {
 const int Max_n =  3e5 + 5;
 int n, m;
 int ql[Max_n], qr[Max_n];
-int L[Max_n], R[Max_n];
+int p[Max_n];
 char S[Max_n];
 LL Ans[Max_n];
 vector<int> M1[Max_n], M2[Max_n];
@@ -53,18 +53,17 @@ int top, stk[Max_n], sum[Max_n];
 void main() {
   for (int i = 1; i <= n; i++) sum[i] = sum[i - 1] + (S[i] == '(' ? 2 : -1);
   for (int i = 1; i <= n; i++) {
-    while (top && sum[stk[top]] <= sum[i]) top--;
-    L[i] = stk[top] + 1;
-    stk[++top] = i;
+    while (top && sum[stk[top] - 1] > sum[i]) p[stk[top--]] = i - 1;
+    if (S[i] == '(') stk[++top] = i;
   }
-  for (int i = n; i >= 1; i--) sum[i] = sum[i + 1] + (S[i] == ')' ? 2 : -1);
-  stk[top = 0] = n + 1;
-  for (int i = n; i >= 1; i--) {
-    while (top && sum[stk[top]] <= sum[i]) top--;
-    R[i] = stk[top] - 1;
-    stk[++top] = i;
-  }
-  for (int i = 1; i <= n; i++) cout << L[i] << " " << R[i] << endl;
+  //for (int i = n; i >= 1; i--) sum[i] = sum[i + 1] + (S[i] == ')' ? 2 : -1);
+  //stk[top = 0] = n + 1;
+  //for (int i = n; i >= 1; i--) {
+  //  while (top && sum[stk[top]] <= sum[i]) top--;
+  //  R[i] = stk[top] - 1;
+  //  stk[++top] = i;
+  //}
+  for (int i = 1; i <= n; i++) cout << p[i] << endl;
 }
 }  // namespace Init
 
