@@ -22,17 +22,22 @@ void read(T &x) {
 
 const int Max_n =  3e5 + 5;
 int n, m;
+char S[Max_n];
 LL Ans[Max_n];
 struct que {
   int id, l, r;
 } q[Max_n];
 
 namespace SegTree {
-int sum[Max_n];
 }
 
 namespace Input {
-void main() { fread(s, 1, 1 << 25, stdin); }
+void main() { 
+  fread(s, 1, 1 << 25, stdin); 
+  n = read(), m = read();
+  scanf("%s", S + 1);
+  for (int i = 1; i <= m; i++) read(q[i].l), read(q[i].r), q[i].id = i;
+}
 }  // namespace Input
 
 namespace Init {
