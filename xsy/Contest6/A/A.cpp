@@ -65,6 +65,7 @@ int fa[Max_n];
 int top, stk[Max_n];
 void dfs(int x, int l, int r) {
   if (l == r) {
+    return;
   }
 }
 void main() {
