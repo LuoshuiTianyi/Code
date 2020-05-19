@@ -6,8 +6,8 @@ using namespace std;
 #define go(G, x, i, v) \
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 
-char s[1 << 25], *S = s;
-#define getchar() (*S++)
+char read_str[1 << 25], *CH = read_str;
+#define getchar() (*CH++)
 template <typename T>
 void read(T &x) {
   char ch = getchar();
@@ -27,14 +27,14 @@ int ql[Max_n], qr[Max_n];
 int L[Max_n], R[Max_n];
 char S[Max_n];
 LL Ans[Max_n];
-vector<int> M1, M2;
+vector<int> M1[Max_n], M2[Max_n];
 
 LL c1[Max_n], c2[Max_n], c3[Max_n];
 
 namespace Input {
 void main() { 
-  fread(s, 1, 1 << 25, stdin); 
-  n = read(), m = read();
+  fread(read_str, 1, 1 << 25, stdin); 
+  read(n), read(m);
   scanf("%s", S + 1);
   for (int i = 1; i <= m; i++) read(ql[i]), read(qr[i]), M2[qr[i]].push_back(i);
 }
@@ -44,7 +44,19 @@ namespace Init {
 int top, stk[Max_n], sum[Max_n];
 void main() {
   for (int i = 1; i <= n; i++) sum[i] = sum[i - 1] + (S[i] == '(' ? 2 : -1);
-  for 
+  for (int i = 1; i <= n; i++) {
+    while (top && sum[stk[top]] <= sum[i]) top--;
+    L[i] = stk[top] + 1;
+    stk[++top] = i;
+  }
+  for (int i = n; i >= 1; i--) sum[i] = sum[i + 1] + (S[i] == ')' ? 2 : -1);
+  stk[top = 0] = n + 1;
+  for (int i = n; i >= 1; i--) {
+    while (top && sum[stk[top]] <= sum[i]) top--;
+    R[i] = stk[top] - 1;
+    stk[++top] = i;
+  }
+  for (int i = 1; i <= n; i++) cout << L[i] << " " << R[i] << endl;
 }
 }  // namespace Init
 
