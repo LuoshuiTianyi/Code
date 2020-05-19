@@ -1,4 +1,3 @@
-#include <cmath>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -21,41 +20,19 @@ void read(T &x) {
   if (fl) x = -x;
 }
 
-const int Max_n = 1e7 + 5;
-LL n, ans;
-int cnt, pri[Max_n], phi[Max_n];
-bool vis[Max_n];
+const int Max_n = 1e6 + 5;
+
 
 namespace Input {
-void main() {
-  fread(s, 1, 1 << 25, stdin);
-  read(n);
-}
+void main() { fread(s, 1, 1 << 25, stdin); }
 }  // namespace Input
 
 namespace Init {
-void main() {
-  phi[1] = 1;
-  for (int i = 2; i <= 1e7; i++) {
-    if (!vis[i]) pri[++cnt] = i, phi[i] = i - 1;
-    for (int j = 1; j <= cnt && pri[j] * i <= 1e7; j++) {
-      vis[i * pri[j]] = 1;
-      phi[i * pri[j]] = phi[i] * (pri[j] - 1);
-      if (i % pri[j] == 0) {
-        phi[i * pri[j]] = phi[i] * pri[j];
-        break;
-      }
-    }
-  }
-}
+void main() {}
 }  // namespace Init
 
 namespace Solve {
-void main() {
-  for (int i = 1; i <= sqrt(n); i++) ans += (n / i / i) * phi[i];
-  ans <<= 1, ans -= n;
-  cout << ans << endl;
-}
+void main() {}
 }  // namespace Solve
 
 int main() {
