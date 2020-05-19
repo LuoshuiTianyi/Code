@@ -24,11 +24,12 @@ void read(T &x) {
 const int Max_n =  3e5 + 5;
 int n, m;
 int ql[Max_n], qr[Max_n];
+int L[Max_n], R[Max_n];
 char S[Max_n];
 LL Ans[Max_n];
 vector<int> M1, M2;
 
-int c1[Max_n], c2[Max_n], c3[Max_n];
+LL c1[Max_n], c2[Max_n], c3[Max_n];
 
 namespace Input {
 void main() { 
@@ -40,7 +41,10 @@ void main() {
 }  // namespace Input
 
 namespace Init {
+int top, stk[Max_n], sum[Max_n];
 void main() {
+  for (int i = 1; i <= n; i++) sum[i] = sum[i - 1] + (S[i] == '(' ? 2 : -1);
+  for 
 }
 }  // namespace Init
 
