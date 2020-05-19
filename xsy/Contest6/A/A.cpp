@@ -24,9 +24,8 @@ void read(T &x) {
 const int Max_n = 2e6 + 5, V = 1e5;
 int n, m, ans;
 struct graph {
-  const int Max_l = (V << 2) + 5;
-  int hd[Max_l];
-  int cntr, nx[Max_n], to[Max_n];
+  int hd[(V << 2) + 5];
+  int cntr, nx[Max_n * 17], to[Max_n * 17];
   void addr(int u, int v) {
     cntr++;
     nx[cntr] = hd[u], to[cntr] = v;
@@ -72,6 +71,7 @@ void main() {
 namespace Solve {
 int fa[Max_n], sz[Max_n];
 int top, stk[Max_n], x[Max_n], y[Max_n];
+int t, s[Max_n];
 int find(int x) { return fa[x] == x ? x : find(fa[x]); }
 void merge(int id) {
   int u = e[id].u, v = e[id].v;
@@ -87,10 +87,11 @@ void divid(int id) {
   top--;
 }
 void Enter(int o) {
-  for (int i = M[o].size() - 1; ~i; i--) merge(M[o][i]);
+  go(M, o, i, v) merge(v), s[++t] = v;
 }
 void Back(int o) {
-  for (int i = 0; i < M[o].size(); i++) divid(M[o][i]);
+  while (s[t] != M.to[M.hd[o]]) divid(s[t--]);
+  divid(s[t--]);
 }
 void dfs(int o, int l, int r) {
   Enter(o);
@@ -117,5 +118,5 @@ int main() {
 #endif
   Input::main();
   Init::main();
-  //Solve::main();
+  Solve::main();
 }
