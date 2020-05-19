@@ -23,12 +23,12 @@ void read(T &x) {
 const int Max_n = 1e5 + 5, mod = 998244353;
 int n, m;
 int f[Max_n], g[Max_n];
-int ans[Max_n][2];
+int dp[Max_n][2];
 
 namespace Input {
 void main() { 
   fread(s, 1, 1 << 25, stdin); 
-  n = read(), m = read();
+  read(n), read(m);
 }
 }  // namespace Input
 
@@ -48,7 +48,16 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  dp[0][0] = 1;
+  for (int i = 0; i < n; i++) {
+    for (int j = 1; j <= min(17, n - i); j++) {
+      (dp[i + j][(j & 1) ^ 1] += (LL)dp[i][0] * g[j] % mod) %= mod;
+      (dp[i + j][j & 1] += (LL)dp[i][1] * g[j] % mod) %= mod;
+    }
+  }
+  cout << (dp[n][0] - dp[n][1] + mod) % mod;
+}
 }  // namespace Solve
 
 int main() {
