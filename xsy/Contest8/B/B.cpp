@@ -20,6 +20,15 @@ void read(T &x) {
   while (isdigit(ch)) x = (x << 1) + (x << 3) + ch - '0', ch = getchar();
   if (fl) x = -x;
 }
+void rstr(char *s) {
+  char *x = s;
+  char ch = getchar();
+  while (ch != '(' && ch != ')') ch = getchar();
+  while (ch == '(' || ch == ')') {
+    *x++ = ch;
+    ch = getchar();
+  }
+}
 
 const int Max_n =  3e5 + 5;
 int n, m;
@@ -34,8 +43,7 @@ LL c1[Max_n], c2[Max_n], c3[Max_n];
 namespace Input {
 void main() { 
   fread(read_str, 1, 1 << 25, stdin); 
-  read(n), read(m);
-  scanf("%s", S + 1);
+  read(n), read(m), rstr(S + 1);
   for (int i = 1; i <= m; i++) read(ql[i]), read(qr[i]), M2[qr[i]].push_back(i);
 }
 }  // namespace Input
