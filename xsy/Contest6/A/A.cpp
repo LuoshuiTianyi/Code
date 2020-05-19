@@ -50,7 +50,7 @@ int top, stk[Max_n], x[Max_n], y[Max_n];
 int find(int x) { return fa[x] == x ? x : find(fa[x]); }
 void merge(int id) {
   int u = e[id].u, v = e[id].v;
-  cout << "link: " << u << ", " << v << endl;
+  //cout << "link: " << u << ", " << v << endl;
   u = find(u), v = find(v);
   if (find(u) == find(v)) return;
   if (sz[v] < sz[u]) swap(u, v);
@@ -59,7 +59,7 @@ void merge(int id) {
 }
 void divid(int id) {
   if (stk[top] != id) return;
-  cout << "cut: " << e[id].u << ", " << e[id].v << endl;
+  //cout << "cut: " << e[id].u << ", " << e[id].v << endl;
   sz[y[top]] -= sz[x[top]], fa[x[top]] = x[top];
   top--;
 }
@@ -70,7 +70,7 @@ void Back(int x) {
   for (int i = 0; i < M[x].size(); i++) divid(M[x][i]);
 }
 void dfs(int l, int r) {
-  cout << l << " " << r << endl;
+  //cout << l << " " << r << endl;
   if (l == r) {
     if (sz[find(1)] == n) {
       cout << l;
@@ -84,6 +84,7 @@ void dfs(int l, int r) {
   for (int i = r; i > mid; i--) Back(i);
   for (int i = l; i <= mid; i++) Enter(i);
   dfs(mid + 1, r);
+  for (int i = mid; i >= l; i--) Back(i);
 }
 void main() {
   ans++;
