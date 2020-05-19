@@ -33,7 +33,7 @@ void main() {
   fread(s, 1, 1 << 25, stdin); 
   n = read(), m = read();
   scanf("%s", S + 1);
-  for (int i = 1; i <= m; i++) read(ql[i]), read(qr[i]);
+  for (int i = 1; i <= m; i++) read(ql[i]), read(qr[i]), M2[qr[i]].push_back(i);
 }
 }  // namespace Input
 
