@@ -38,7 +38,7 @@ char S[Max_n];
 LL Ans[Max_n];
 vector<int> M1[Max_n], M2[Max_n];
 
-LL c1[Max_n], c2[Max_n], c3[Max_n];
+LL c1[Max_n], c2[Max_n], c3[Max_n], c4[Max_n];
 
 namespace Input {
 void main() { 
@@ -56,19 +56,24 @@ void main() {
     while (top && sum[stk[top] - 1] > sum[i]) p[stk[top--]] = i - 1;
     if (S[i] == '(') stk[++top] = i;
   }
-  //for (int i = n; i >= 1; i--) sum[i] = sum[i + 1] + (S[i] == ')' ? 2 : -1);
-  //stk[top = 0] = n + 1;
-  //for (int i = n; i >= 1; i--) {
-  //  while (top && sum[stk[top]] <= sum[i]) top--;
-  //  R[i] = stk[top] - 1;
-  //  stk[++top] = i;
-  //}
-  for (int i = 1; i <= n; i++) cout << p[i] << endl;
+  while (top) p[stk[top--]] = n;
+  for (int i = n; i >= 1; i--) sum[i] = sum[i + 1] + (S[i] == ')' ? 2 : -1);
+  stk[top = 0] = n + 1;
+  for (int i = n; i >= 1; i--) {
+    while (top && sum[stk[top] + 1] > sum[i]) p[stk[top--]] = i + 1;
+    if (S[i] == ')') stk[++top] = i;
+  }
+  while (top) p[stk[top--]] = 1;
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  for (int i = 1; i <= n; i++) if (S[i] == '(') M1[p[i]].push_back();
+  for (int i = 1; i <= n; i++) {
+    
+  }
+}
 }  // namespace Solve
 
 int main() {
