@@ -61,7 +61,7 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
-int fa[Max_n];
+int fa[Max_n], sz[Max_n];
 int top, stk[Max_n];
 void dfs(int x, int l, int r) {
   if (l == r) {
@@ -69,7 +69,7 @@ void dfs(int x, int l, int r) {
   }
 }
 void main() {
-  for (int i = 1; i <= n; i++) 
+  for (int i = 1; i <= n; i++) fa[i] = i, sz[i] = 1;
   dfs(1, 1, V);
 }
 }  // namespace Solve
