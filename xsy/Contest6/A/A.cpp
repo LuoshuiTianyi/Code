@@ -62,17 +62,25 @@ void main() {
 
 namespace Solve {
 int fa[Max_n], sz[Max_n];
-int top, stk[Max_n];
+int top, stk[Max_n], x[Max_n], y[Max_n];
 int find(int x) { return fa[x] == x ? x : find(fa[x]); }
 void merge(int id) {
-  int u = k[id].u, v = k[id].v;
+  int u = e[id].u, v = e[id].v;
   u = find(u), v = find(v);
   if (find(u) == find(v)) return;
-  stk[++top] = id;
+  top++, stk[top] = id, x[top] = u, y[top] = v;
   fa[u] = v, sz[v] += sz[u];
 }
+void divid(int id) {
+  if (stk[top] != id) return;
+  sz[y[top]] -= sz[x[top]], fa[x[top]] = x[top];
+  top--;
+}
 void Enter(int o) {
-  
+  for (int i = M[o].size() - 1; ~i; i--) merge(M[o][i]);
+}
+void Back(int o) {
+  for (int i = 0; i < M[o].size(); i++) divid(M[o][i]);
 }
 void dfs(int o, int l, int r) {
   Enter(o);
@@ -81,11 +89,14 @@ void dfs(int o, int l, int r) {
     Back(o);
     return;
   }
+  dfs(ls, l, mid), dfs(rs, mid + 1, r);
+  Back(o);
 }
 void main() {
   ans++;
   for (int i = 1; i <= n; i++) fa[i] = i, sz[i] = 1;
   dfs(1, 0, V);
+  cout << ans << endl;
 }
 }  // namespace Solve
 
