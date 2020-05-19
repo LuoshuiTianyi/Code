@@ -23,18 +23,10 @@ void read(T &x) {
 
 const int Max_n = 2e6 + 5, V = 1e5;
 int n, m, ans;
-struct graph {
-  int hd[(V << 2) + 5];
-  int cntr, nx[Max_n * 17], to[Max_n * 17];
-  void addr(int u, int v) {
-    cntr++;
-    nx[cntr] = hd[u], to[cntr] = v;
-    hd[u] = cntr;
-  }
-} M;
 struct edge {
   int u, v, w;
 } e[Max_n];
+vector<int> M[(V << 2) + 10];
 
 namespace Input {
 void main() {
@@ -46,32 +38,15 @@ void main() {
 }  // namespace Input
 
 namespace Init {
-int L, R, x;
-#define ls (o << 1)
-#define rs (o << 1 | 1)
-#define mid (l + r >> 1)
-void add(int o, int l, int r) {
-  if (R < L) return;
-  if (l >= L && r <= R) {
-    M.addr(o, x);
-    return;
-  }
-  if (mid >= L) add(ls, l, mid);
-  if (mid < R) add(rs, mid + 1, r);
-}
 void main() {
-  for (int i = 1; i <= m; i++) {
-    x = i, ans = max(ans, e[i].w);
-    L = 0, R = e[i].w - 1, add(1, 0, V);
-    L = e[i].w + 1, R = V, add(1, 0, V);
-  }
+  for (int i = 1; i <= m; i++)
+    ans = max(ans, e[i].w), M[e[i].w].push_back(i);
 }
 }  // namespace Init
 
 namespace Solve {
 int fa[Max_n], sz[Max_n];
 int top, stk[Max_n], x[Max_n], y[Max_n];
-int t, s[Max_n];
 int find(int x) { return fa[x] == x ? x : find(fa[x]); }
 void merge(int id) {
   int u = e[id].u, v = e[id].v;
@@ -87,21 +62,22 @@ void divid(int id) {
   top--;
 }
 void Enter(int o) {
-  go(M, o, i, v) merge(v), s[++t] = v;
+  for (int i = M[o].size() - 1; ~i; i--) merge(M[o][i]);
 }
 void Back(int o) {
-  while (s[t] != M.to[M.hd[o]]) divid(s[t--]);
-  divid(s[t--]);
+  for (int i = 0; i < M[o].size(); i++) divid(M[o][i]);
 }
-void dfs(int o, int l, int r) {
-  Enter(o);
+void dfs(int l, int r) {
   if (l == r) {
-    if (sz[find(1)] == n) ans = min(ans, l);
-    Back(o);
+    if (sz[find(1)] == n) {
+      cout << l;
+      exit(0);
+    }
     return;
   }
-  dfs(ls, l, mid), dfs(rs, mid + 1, r);
-  Back(o);
+  int mid = l + r >> 1;
+  for (int i = mid + 1; i <= r; i++) Enter(i);
+  dfs(l, mid), dfs(mid + 1, r);
 }
 void main() {
   ans++;
