@@ -6,7 +6,7 @@ using namespace std;
 #define go(G, x, i, v) \
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 
-char s[1 << 25], *S = s;
+char s[1 << 26], *S = s;
 #define getchar() (*S++)
 template <typename T>
 void read(T &x) {
@@ -23,14 +23,23 @@ void read(T &x) {
 
 const int Max_n = 2e6 + 5, V = 1e5;
 int n, m, ans;
+struct graph {
+  const int Max_l = (V << 2) + 5;
+  int hd[Max_l];
+  int cntr, nx[Max_n], to[Max_n];
+  void addr(int u, int v) {
+    cntr++;
+    nx[cntr] = hd[u], to[cntr] = v;
+    hd[u] = cntr;
+  }
+} M;
 struct edge {
   int u, v, w;
 } e[Max_n];
-vector<int> M[(V << 2) + 10];
 
 namespace Input {
 void main() {
-  fread(s, 1, 1 << 25, stdin); 
+  fread(s, 1, 1 << 26, stdin); 
   read(n), read(m), ans;
   for (int i = 1; i <= m; i++)
     read(e[i].u), read(e[i].v), read(e[i].w);
@@ -45,7 +54,7 @@ int L, R, x;
 void add(int o, int l, int r) {
   if (R < L) return;
   if (l >= L && r <= R) {
-    M[o].push_back(x);
+    M.addr(o, x);
     return;
   }
   if (mid >= L) add(ls, l, mid);
@@ -68,6 +77,7 @@ void merge(int id) {
   int u = e[id].u, v = e[id].v;
   u = find(u), v = find(v);
   if (find(u) == find(v)) return;
+  if (sz[v] < sz[u]) swap(u, v);
   top++, stk[top] = id, x[top] = u, y[top] = v;
   fa[u] = v, sz[v] += sz[u];
 }
@@ -107,5 +117,5 @@ int main() {
 #endif
   Input::main();
   Init::main();
-  Solve::main();
+  //Solve::main();
 }
