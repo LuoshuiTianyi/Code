@@ -1,5 +1,7 @@
-
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <cstdio>
+#include <cstring>
+#include <iostream>
 
 using namespace std;
 
@@ -108,8 +110,9 @@ bool Check(int w) {
 }
 
 int main() {
-#ifdef WTY
-  freopen("in", "r", stdin);
+#ifndef ONLINE_JUDGE
+  freopen("A.in", "r", stdin);
+  freopen("A.ans", "w", stdout);
 #endif
   cin >> n >> m;
   int mx = 0;
