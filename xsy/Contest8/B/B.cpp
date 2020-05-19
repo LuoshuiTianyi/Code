@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <iostream>
+#include <vector>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
@@ -22,26 +23,23 @@ void read(T &x) {
 
 const int Max_n =  3e5 + 5;
 int n, m;
+int ql[Max_n], qr[Max_n];
 char S[Max_n];
 LL Ans[Max_n];
-struct que {
-  int id, l, r;
-} q[Max_n];
-
-namespace SegTree {
-}
+vector<int> M1, M2;
 
 namespace Input {
 void main() { 
   fread(s, 1, 1 << 25, stdin); 
   n = read(), m = read();
   scanf("%s", S + 1);
-  for (int i = 1; i <= m; i++) read(q[i].l), read(q[i].r), q[i].id = i;
+  for (int i = 1; i <= m; i++) read(ql[i]), read(qr[i]);
 }
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+}
 }  // namespace Init
 
 namespace Solve {
