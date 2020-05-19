@@ -28,6 +28,8 @@ char S[Max_n];
 LL Ans[Max_n];
 vector<int> M1, M2;
 
+int c1[Max_n], c2[Max_n], c3[Max_n];
+
 namespace Input {
 void main() { 
   fread(s, 1, 1 << 25, stdin); 
