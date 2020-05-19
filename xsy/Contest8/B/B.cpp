@@ -27,6 +27,10 @@ struct que {
   int id, l, r;
 } q[Max_n];
 
+namespace SegTree {
+int sum[Max_n];
+}
+
 namespace Input {
 void main() { fread(s, 1, 1 << 25, stdin); }
 }  // namespace Input
