@@ -22,7 +22,7 @@ void read(T &x) {
 }
 
 const int Max_n = 1e7 + 5;
-LL n;
+LL n, ans;
 int cnt, pri[Max_n], phi[Max_n];
 bool vis[Max_n];
 
@@ -48,11 +48,17 @@ void main() {
       }
     }
   }
+  cout << phi[2] << endl;
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  read(n);
+  for (int i = 1; i <= sqrt(n); i++) ans += phi[i];
+  ans <<= 1, ans -= n;
+  cout << ans << endl;
+}
 }  // namespace Solve
 
 int main() {
