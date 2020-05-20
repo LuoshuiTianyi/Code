@@ -30,7 +30,7 @@ void rstr(char *s) {
   }
 }
 
-const int Max_n =  3e5 + 5;
+const int Max_n = 3e5 + 5;
 int n, m;
 int ql[Max_n], qr[Max_n], p[Max_n];
 char S[Max_n];
@@ -38,8 +38,8 @@ LL Ans[Max_n];
 vector<int> M1[Max_n], M2[Max_n];
 
 namespace Input {
-void main() { 
-  fread(read_str, 1, 1 << 25, stdin); 
+void main() {
+  fread(read_str, 1, 1 << 25, stdin);
   read(n), read(m), rstr(S + 1);
   for (int i = 1; i <= m; i++) read(ql[i]), read(qr[i]), M2[qr[i]].push_back(i);
 }
@@ -65,9 +65,8 @@ void main() {
 }  // namespace Init
 
 namespace SegTree {
-int nu[Max_n << 2], tag[Max_n << 2];
+int L, R, x, ty, nu[Max_n << 2], tag[Max_n << 2];
 LL sum[Max_n << 2];
-int L, R;
 #define ls (o << 1)
 #define rs (o << 1 | 1)
 #define mid (l + r >> 1)
@@ -76,19 +75,43 @@ void pushdown(int o) {
   tag[ls] += tag[o], tag[rs] += tag[o];
   tag[o] = 0;
 }
-void pushup(int o) {
-  nu[o] = nu[ls] + nu[rs], sum[o] = sum[ls] + sum[rs];
-}
+void pushup(int o) { nu[o] = nu[ls] + nu[rs], sum[o] = sum[ls] + sum[rs]; }
 void add(int o, int l, int r) {
+  if (l >= L && r <= R) {
+    ty ? tag[o]++, sum[o] += nu[o] : nu[o] += x;
+    return;
+  }
+  pushdown(o);
+  if (mid >= L) add(ls, l, mid);
+  if (mid < R) add(rs, mid + 1, r);
+  pushup(o);
 }
+void query(int o, int l, int r, LL &ans) {
+  if (l >= L && r <= R) {
+    ans += sum[o];
+    return;
+  }
+  pushdown(o);
+  if (mid >= L) query(ls, l, mid, ans);
+  if (mid < R) query(rs, mid + 1, r, ans);
+  pushup(o);
 }
+}  // namespace SegTree
+using namespace SegTree;
 
 namespace Solve {
 void main() {
-  for (int i = 1; i <= n; i++) if (S[i] == '(') M1[p[i]].push_back();
+  for (int i = 1; i <= n; i++)
+    if (S[i] == '(') M1[p[i]].push_back(i);
   for (int i = 1; i <= n; i++) {
-    
+    if (S[i] == ')') L = p[i], R = i, ty = 1, add(1, 1, n);
+    if (S[i] == '(') L = R = i, ty = 0, x = 1, add(1, 1, n);
+    for (int j = M2[i].size() - 1; ~j; j--)
+      L = ql[M2[i][j]], R = i, query(1, 1, n, Ans[M2[i][j]]);
+    for (int j = M1[i].size() - 1; ~j; j--)
+      L = R = M1[i][j], ty = 0, x = -1, add(1, 1, n);
   }
+  for (int i = 1; i <= m; i++) printf("%lld\n", Ans[i]);
 }
 }  // namespace Solve
 
