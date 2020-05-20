@@ -32,10 +32,10 @@ void rstr(char *s) {
 
 const int Max_n = 2e5 + 5;
 int n, Q;
-int a[Max_n], l[Max_n], r[Max_n];
+int l[Max_n], r[Max_n];
 bool vis[Max_n];
-LL ans[Max_n];
-priority_queue<pair<int, LL> > q;
+LL a[Max_n], ans[Max_n];
+priority_queue<pair<LL, int> > q;
 
 namespace Input {
 void main() { 
