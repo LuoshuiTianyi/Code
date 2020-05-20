@@ -32,13 +32,10 @@ void rstr(char *s) {
 
 const int Max_n =  3e5 + 5;
 int n, m;
-int ql[Max_n], qr[Max_n];
-int p[Max_n];
+int ql[Max_n], qr[Max_n], p[Max_n];
 char S[Max_n];
 LL Ans[Max_n];
 vector<int> M1[Max_n], M2[Max_n];
-
-LL c1[Max_n], c2[Max_n], c3[Max_n], c4[Max_n];
 
 namespace Input {
 void main() { 
@@ -66,6 +63,25 @@ void main() {
   while (top) p[stk[top--]] = 1;
 }
 }  // namespace Init
+
+namespace SegTree {
+int nu[Max_n << 2], tag[Max_n << 2];
+LL sum[Max_n << 2];
+int L, R;
+#define ls (o << 1)
+#define rs (o << 1 | 1)
+#define mid (l + r >> 1)
+void pushdown(int o) {
+  sum[ls] += (LL)tag[o] * nu[ls], sum[rs] += (LL)tag[o] * nu[rs];
+  tag[ls] += tag[o], tag[rs] += tag[o];
+  tag[o] = 0;
+}
+void pushup(int o) {
+  nu[o] = nu[ls] + nu[rs], sum[o] = sum[ls] + sum[rs];
+}
+void add(int o, int l, int r) {
+}
+}
 
 namespace Solve {
 void main() {
