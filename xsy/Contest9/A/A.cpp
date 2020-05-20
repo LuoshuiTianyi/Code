@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <iostream>
+#include <queue>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
@@ -31,22 +32,24 @@ void rstr(char *s) {
 
 const int Max_n = 1e5 + 5;
 int n, Q;
-int a[Max_n];
+int a[Max_n], l[Max_n], r[Max_n];
+LL ans[Max_n];
+priority_queue<pair<int, int> > q;
 
 namespace Input {
 void main() { 
   fread(read_str, 1, 1 << 25, stdin); 
   read(n), read(Q);
-  for (int i = 1; i <= n; i++) a[i] = read();
+  for (int i = 1; i <= n; i++) a[i] = read(), l[i] = i - 1, r[i] = i + 1, q.push(make_pair(a[i], i));
+  r[n] = 0;
 }
 }  // namespace Input
 
-namespace Init {
-void main() {}
-}  // namespace Init
-
 namespace Solve {
-void main() {}
+void main() {
+  for (int i = 1; i <= (n + 1 >> 1); i++) {
+  }
+}
 }  // namespace Solve
 
 int main() {
@@ -55,6 +58,5 @@ int main() {
   freopen("A.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
