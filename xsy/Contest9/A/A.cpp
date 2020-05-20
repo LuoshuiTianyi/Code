@@ -31,10 +31,13 @@ void rstr(char *s) {
 
 const int Max_n = 1e5 + 5;
 int n, Q;
+int a[Max_n];
 
 namespace Input {
 void main() { 
   fread(read_str, 1, 1 << 25, stdin); 
+  read(n), read(Q);
+  for (int i = 1; i <= n; i++) a[i] = read();
 }
 }  // namespace Input
 
