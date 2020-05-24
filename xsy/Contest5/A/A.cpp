@@ -31,7 +31,7 @@ void rstr(char *s) {
 
 const int Max_n = 100, mod = 1e9 + 7;
 int n, m;
-int l[Max_n], r[Max_n];
+int l[Max_n], r[Max_n], l2[Max_n], r2[Max_n];
 int cnt, all[Max_n],fa[Max_n];
 
 namespace Input {
@@ -48,7 +48,8 @@ void main() {
   sort(all + 1, all + cnt + 1);
   cnt = unique(all + 1, all + cnt + 1) - all - 1;
   for (int i = 1; i <= m; i++) {
-    l[i] = lower_bound(all + 1, all + cnt + 1, l[i]) - 
+    l2[i] = lower_bound(all + 1, all + cnt + 1, l[i]) - all;
+    r2[i] = lower_bound(all + 1, all + cnt + 1, r[i]) - all;
   }
 }
 }  // namespace Init
