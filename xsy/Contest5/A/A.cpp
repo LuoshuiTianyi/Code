@@ -34,7 +34,7 @@ const int Max_n = 100, Max_s = 1 << 15 | 1, mod = 1e9 + 7;
 int n, m;
 int l[Max_n], r[Max_n], l2[Max_n], r2[Max_n];
 int cnt, ct, all[Max_n], fa[Max_n], id[Max_n];
-int val[Max_n], g[Max_s], f[10][Max_s];
+int val[Max_n], g[Max_s], f[11][Max_s];
 
 int ksm(int a, int b = mod - 2) {
   int res = 1;
@@ -69,13 +69,28 @@ void main() {
   for (int s = 0; s < (1 << ct); s++) {
     g[s] = 1;
     for (int i = 1; i <= cnt; i++)
-      
+      if ((s >> (id[find(i)] - 1) & 1) && (s >> (id[find(i - 1)] - 1) & 1)) 
+        g[s] = (LL)g[s] * (val[i] + 1) % mod * ksm(val[i]) % mod;
   }
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void Mod(int &x) { x = x >= mod ? x - mod : x; }
+void main() {
+  f[0][0] = 1;
+  for (int i = 1; i < 10; i++) {
+    for (int s = 0; s < (1 << ct); s++) {
+      if (!f[i - 1][s]) continue;
+      int C = ((1 << ct) - 1) ^ s;
+      for (int t = C;; t = (t - 1) ^ C) {
+        Mod(f[i][s | t] += (LL)f[i - 1][s] * g[t] % mod);
+        if (!t) break;
+      }
+    }
+  }
+  //cout << (LL)f[9][(1 << ct) - 1] * ksm(10, n - all[cnt]) % mod << endl;
+}
 }  // namespace Solve
 
 int main() {
