@@ -30,13 +30,15 @@ void rstr(char *s) {
 
 const int Max_n = 20, mod = 1e9 + 7;
 int n, m;
-int l[Max_n], r[Max_n], all[Max_n];
+int l[Max_n], r[Max_n];
+int cnt, all[Max_n];
 
 namespace Input {
 void main() { 
   fread(read_str, 1, 1 << 25, stdin); 
   n = read(), m = read();
   for (int i = 1; i <= m; i++)
+    all[++cnt] = l[i] = read(), all[++cnt] = r[i] = read();
 }
 }  // namespace Input
 
