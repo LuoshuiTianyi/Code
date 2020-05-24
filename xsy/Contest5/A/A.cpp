@@ -63,8 +63,12 @@ void main() {
     r2[i] = lower_bound(all + 1, all + cnt + 1, r[i]) - all;
     fa[find(r2[i])] = find(l2[i]);
   }
-  for (int i = 1; i <= cnt; i++) val[i] = (LL)(ksm(10, all[i] - all[i - 1]) + mod - 1) * ksm(9) % mod;
-  for (int i = 1; i <= cnt; i++)
+  for (int i = 1; i <= cnt; i++) {
+    val[i] = (LL)(ksm(10, all[i] - all[i - 1]) + mod - 1) * ksm(9) % mod;
+    if (!all[i]) val[i] = 1;
+    cout << val[i] << endl;
+  }
+  for (int i = 0; i <= cnt; i++)
     if (find(i) == i) id[i] = ++ct;
   for (int s = 0; s < (1 << ct); s++) {
     g[s] = 1;
@@ -83,13 +87,16 @@ void main() {
     for (int s = 0; s < (1 << ct); s++) {
       if (!f[i - 1][s]) continue;
       int C = ((1 << ct) - 1) ^ s;
-      for (int t = C;; t = (t - 1) ^ C) {
+      for (int t = C;; t = (t - 1) & C) {
         Mod(f[i][s | t] += (LL)f[i - 1][s] * g[t] % mod);
         if (!t) break;
       }
     }
   }
-  //cout << (LL)f[9][(1 << ct) - 1] * ksm(10, n - all[cnt]) % mod << endl;
+  int ans = f[9][(1 << ct) - 1];
+  for (int i = 1; i <= cnt; i++) ans = (LL)ans * val[i] % mod;
+  ans = (LL)ans * ksm(10, n - all[cnt]) % mod;
+  cout << ans << endl;
 }
 }  // namespace Solve
 
