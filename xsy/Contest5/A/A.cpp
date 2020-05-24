@@ -35,7 +35,6 @@ int n, m;
 int l[Max_n], r[Max_n], l2[Max_n], r2[Max_n];
 int cnt, ct, all[Max_n], fa[Max_n], id[Max_n];
 int val[Max_n], g[Max_s], f[10][Max_s];
-vector Con[Max_n];
 
 int ksm(int a, int b = mod - 2) {
   int res = 1;
@@ -49,7 +48,7 @@ void main() {
   fread(read_str, 1, 1 << 25, stdin); 
   n = read(), m = read();
   for (int i = 1; i <= m; i++)
-    all[++cnt] = l[i] = read(), all[++cnt] = r[i] = read();
+    all[++cnt] = l[i] = read() - 1, all[++cnt] = r[i] = read();
 }
 }  // namespace Input
 
@@ -64,10 +63,13 @@ void main() {
     r2[i] = lower_bound(all + 1, all + cnt + 1, r[i]) - all;
     fa[find(r2[i])] = find(l2[i]);
   }
-  for (int i = 1; i <= cnt; i++) ksm(10, all[i] - all[i - 1]);
-  for (int i = 1; i <= cnt; i++) {
+  for (int i = 1; i <= cnt; i++) val[i] = (LL)(ksm(10, all[i] - all[i - 1]) + mod - 1) * ksm(9) % mod;
+  for (int i = 1; i <= cnt; i++)
     if (find(i) == i) id[i] = ++ct;
-    Con[id[find(i)]].push_back(i);
+  for (int s = 0; s < (1 << ct); s++) {
+    g[s] = 1;
+    for (int i = 1; i <= cnt; i++)
+      
   }
 }
 }  // namespace Init
