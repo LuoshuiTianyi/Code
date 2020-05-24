@@ -43,7 +43,11 @@ void main() {
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  sort(all + 1, all + cnt + 1);
+  cnt = unique(all + 1, all + cnt + 1) - all;
+  cout << cnt << endl;
+}
 }  // namespace Init
 
 namespace Solve {
