@@ -48,6 +48,7 @@ void main() {
   sort(all + 1, all + cnt + 1);
   cnt = unique(all + 1, all + cnt + 1) - all - 1;
   for (int i = 1; i <= m; i++) {
+    
   }
 }
 }  // namespace Init
