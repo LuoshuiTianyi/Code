@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <cstdio>
 #include <iostream>
-#include <vector>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
@@ -71,15 +70,10 @@ void main() {
     if (find(i) == i) id[i] = ++ct;
   for (int s = 0; s < (1 << ct); s++) {
     g[s] = 1;
-    for (int i = 1; i <= cnt; i++)
-      if ((s >> (id[find(i)] - 1) & 1) && (s >> (id[find(i - 1)] - 1) & 1)) {
+    for (int i = 1 + !all[1]; i <= cnt; i++)
+      if ((s >> (id[find(i)] - 1) & 1) && (s >> (id[find(i - 1)] - 1) & 1))
         g[s] = (LL)g[s] * (val[i] + 1) % mod * ksm(val[i]) % mod;
-        cout << s << " " << find(i) << " " << val[i] << endl;
-      }
-    //cout << g[s] << endl;
   }
-  cout << g[3] << endl;
-  //cout << g[2] << endl;
 }
 }  // namespace Init
 
@@ -92,6 +86,7 @@ void main() {
       if (!f[i - 1][s]) continue;
       int C = ((1 << ct) - 1) ^ s;
       for (int t = C;; t = (t - 1) & C) {
+        if (i > 1 && (t & 1)) continue;
         Mod(f[i][s | t] += (LL)f[i - 1][s] * g[t] % mod);
         if (!t) break;
       }
