@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -28,10 +29,10 @@ void rstr(char *s) {
   }
 }
 
-const int Max_n = 20, mod = 1e9 + 7;
+const int Max_n = 100, mod = 1e9 + 7;
 int n, m;
 int l[Max_n], r[Max_n];
-int cnt, all[Max_n];
+int cnt, all[Max_n],fa[Max_n];
 
 namespace Input {
 void main() { 
@@ -45,8 +46,9 @@ void main() {
 namespace Init {
 void main() {
   sort(all + 1, all + cnt + 1);
-  cnt = unique(all + 1, all + cnt + 1) - all;
-  cout << cnt << endl;
+  cnt = unique(all + 1, all + cnt + 1) - all - 1;
+  for (int i = 1; i <= m; i++) {
+  }
 }
 }  // namespace Init
 
