@@ -30,7 +30,7 @@ void rstr(char *s) {
   }
 }
 
-const int Max_n = 100, Max_s = 1 << 15 | 1, mod = 1e9 + 7;
+const int Max_n = 100, Max_s = 1 << 16 | 1, mod = 1e9 + 7;
 int n, m;
 int l[Max_n], r[Max_n], l2[Max_n], r2[Max_n];
 int cnt, ct, all[Max_n], fa[Max_n], id[Max_n];
@@ -66,16 +66,20 @@ void main() {
   for (int i = 1; i <= cnt; i++) {
     val[i] = (LL)(ksm(10, all[i] - all[i - 1]) + mod - 1) * ksm(9) % mod;
     if (!all[i]) val[i] = 1;
-    cout << val[i] << endl;
   }
-  for (int i = 0; i <= cnt; i++)
+  for (int i = !all[1]; i <= cnt; i++)
     if (find(i) == i) id[i] = ++ct;
   for (int s = 0; s < (1 << ct); s++) {
     g[s] = 1;
     for (int i = 1; i <= cnt; i++)
-      if ((s >> (id[find(i)] - 1) & 1) && (s >> (id[find(i - 1)] - 1) & 1)) 
+      if ((s >> (id[find(i)] - 1) & 1) && (s >> (id[find(i - 1)] - 1) & 1)) {
         g[s] = (LL)g[s] * (val[i] + 1) % mod * ksm(val[i]) % mod;
+        cout << s << " " << find(i) << " " << val[i] << endl;
+      }
+    //cout << g[s] << endl;
   }
+  cout << g[3] << endl;
+  //cout << g[2] << endl;
 }
 }  // namespace Init
 
