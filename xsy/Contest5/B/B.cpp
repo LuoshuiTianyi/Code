@@ -33,7 +33,7 @@ const int Max_n = 1e5 + 5;
 int n, m;
 int id[Max_n], deg[Max_n];
 LL buk[Max_n], r3[Max_n], r4[Max_n], tp[Max_n];
-LL d2[Max_n], d3[Max_n], d4[Max_n];
+LL d2[Max_n], d3[Max_n];
 bool vis[Max_n];
 struct graph {
   int hd[Max_n];
@@ -86,13 +86,14 @@ void main() {
 namespace Solve {
 void main() {
   for (int i = 1; i <= n; i++) go(G, i, j, v) d2[i] += deg[v] - 1;
-  for (int i = 1; i <= n; i++) go(G, i, j, v) d3[i] += d2[v] - (deg[i] - 1);
-  for (int i = 1; i <= n; i++) go(G, i, j, v) d4[i] += d3[v] - (d2[i] - (deg[v] - 1));
   for (int i = 1; i <= n; i++) {
-    cout << i << " " << d4[i] << " " << r4[i] << endl;
-    LL ans = d4[i];
-    ans = ans - r3[i] * deg[i] - 2ll * r4[i];
-    //printf("%lld\n", ans);
+    go(G, i, j, v) d3[i] += d2[v] - (deg[i] - 1);
+    d3[i] -= 2ll * r3[i];
+  }
+  for (int i = 1; i <= n; i++) {
+    LL ans = 0;
+    go(G, x, i, v) ans += d3[v];
+    printf("%lld\n", ans);
   }
 }
 }  // namespace Solve
