@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -30,6 +31,7 @@ void rstr(char *s) {
 
 const int Max_n = 1e5 + 5;
 int n, m;
+int id[Max_n], deg[Max_n];
 struct graph {
   int hd[Max_n];
   int cntr, nx[Max_n << 1], to[Max_n << 1];
@@ -47,13 +49,16 @@ void main() {
   for (int i = 1; i <= m; i++) {
     int u = read(), v = read();
     G.addr(u, v), G.addr(v, u);
+    deg[u]++, deg[v]++;
   }
 }
 }  // namespace Input
 
 namespace Init {
-void main() {}
-}  // namespace Init
+void main() {
+  for (int i = 1; i <= n; i++) id[i] = i;
+}
+}
 
 namespace Solve {
 void main() {}
