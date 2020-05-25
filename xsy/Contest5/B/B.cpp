@@ -31,7 +31,8 @@ void rstr(char *s) {
 
 const int Max_n = 1e5 + 5;
 int n, m;
-int id[Max_n], deg[Max_n];
+int id[Max_n], deg[Max_n], buk[Max_n];
+bool vis[Max_n];
 struct graph {
   int hd[Max_n];
   int cntr, nx[Max_n << 1], to[Max_n << 1];
@@ -55,13 +56,25 @@ void main() {
 }  // namespace Input
 
 namespace Init {
+bool cmp(int a, int b) { return deg[a] > deg[b]; }
 void main() {
   for (int i = 1; i <= n; i++) id[i] = i;
+  sort(id + 1, id + n + 1, cmp);
 }
 }
 
 namespace Solve {
-void main() {}
+void main() {
+  for (int i = 1; i <= n; i++) {
+    int x = id[i];
+    go(G, x, j, v) if (!vis[v])
+      go(G, v, k, p) if (!vis[p]) buk[p]++;
+    go(G, x, j, v) if (!vis[v]) {
+      
+    }
+    vis[x] = 1;
+  }
+}
 }  // namespace Solve
 
 int main() {
