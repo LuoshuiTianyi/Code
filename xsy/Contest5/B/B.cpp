@@ -44,6 +44,10 @@ namespace Input {
 void main() { 
   fread(read_str, 1, 1 << 25, stdin); 
   n = read(), m = read();
+  for (int i = 1; i <= m; i++) {
+    int u = read(), v = read();
+    G.addr(u, v), G.addr(v, u);
+  }
 }
 }  // namespace Input
 
