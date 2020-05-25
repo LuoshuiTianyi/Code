@@ -92,7 +92,8 @@ void main() {
   }
   for (int i = 1; i <= n; i++) {
     LL ans = 0;
-    go(G, x, i, v) ans += d3[v];
+    go(G, i, j, v) ans += d3[v];
+    ans -= r3[i] * (deg[i] - 3) * 2 + r4[i] * 2 + (deg[i] - 1) * d2[i];
     printf("%lld\n", ans);
   }
 }
