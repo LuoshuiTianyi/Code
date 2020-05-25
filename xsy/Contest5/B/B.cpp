@@ -33,6 +33,7 @@ const int Max_n = 1e5 + 5;
 int n, m;
 int id[Max_n], deg[Max_n];
 LL buk[Max_n], r3[Max_n], r4[Max_n], tp[Max_n];
+LL d2[Max_n], d3[Max_n], d4[Max_n];
 bool vis[Max_n];
 struct graph {
   int hd[Max_n];
@@ -58,29 +59,40 @@ void main() {
 
 namespace Init {
 bool cmp(int a, int b) { return deg[a] > deg[b]; }
+void Push(int x) {
+  r4[x] += tp[x] / 2, tp[x] = 0;
+}
 void main() {
   for (int i = 1; i <= n; i++) id[i] = i;
   sort(id + 1, id + n + 1, cmp);
-}
-}
-
-namespace Solve {
-void Push(int x) {
-  r4[x] += 
-}
-void main() {
   for (int i = 1; i <= n; i++) {
     int x = id[i];
+    vis[x] = 1;
+    LL tmp = 0;
     go(G, x, j, v) if (!vis[v])
       go(G, v, k, p) if (!vis[p]) buk[p]++;
-    tmp = 0;
     go(G, x, j, v) if (!vis[v])
       r3[v] += buk[v], tmp += buk[v];
     r3[x] += tmp / 2;
     go(G, x, j, v) if (!vis[v])
       go(G, v, k, p) if (!vis[p]) tp[x] += buk[p] - 1, tp[p] += buk[p] - 1, r4[v] += buk[p] - 1;
     Push(x);
-    vis[x] = 1;
+    go(G, x, j, v) if (!vis[v])
+      go(G, v, k, p) if (!vis[p]) Push(p), buk[p]--;
+  }
+}
+}
+
+namespace Solve {
+void main() {
+  for (int i = 1; i <= n; i++) go(G, i, j, v) d2[i] += deg[v] - 1;
+  for (int i = 1; i <= n; i++) go(G, i, j, v) d3[i] += d2[v] - (deg[i] - 1);
+  for (int i = 1; i <= n; i++) go(G, i, j, v) d4[i] += d3[v] - (d2[i] - (deg[v] - 1));
+  for (int i = 1; i <= n; i++) {
+    cout << i << " " << d2[i] << endl;
+    LL ans = d4[i];
+    ans = ans - r3[i] * deg[i] - 2ll * r4[i];
+    //printf("%lld\n", ans);
   }
 }
 }  // namespace Solve
