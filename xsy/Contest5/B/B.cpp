@@ -89,7 +89,7 @@ void main() {
   for (int i = 1; i <= n; i++) go(G, i, j, v) d3[i] += d2[v] - (deg[i] - 1);
   for (int i = 1; i <= n; i++) go(G, i, j, v) d4[i] += d3[v] - (d2[i] - (deg[v] - 1));
   for (int i = 1; i <= n; i++) {
-    cout << i << " " << d3[i] << endl;
+    cout << i << " " << d4[i] << " " << r4[i] << endl;
     LL ans = d4[i];
     ans = ans - r3[i] * deg[i] - 2ll * r4[i];
     //printf("%lld\n", ans);
