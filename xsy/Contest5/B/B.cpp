@@ -28,10 +28,23 @@ void rstr(char *s) {
   }
 }
 
-
+const int Max_n = 1e5 + 5;
+int n, m;
+struct graph {
+  int hd[Max_n];
+  int cntr, nx[Max_n << 1], to[Max_n << 1];
+  void addr(int u, int v) {
+    cntr++;
+    nx[cntr] = hd[u], to[cntr] = v;
+    hd[u] = cntr;
+  }
+} G;
 
 namespace Input {
-void main() { fread(read_str, 1, 1 << 25, stdin); }
+void main() { 
+  fread(read_str, 1, 1 << 25, stdin); 
+  n = read(), m = read();
+}
 }  // namespace Input
 
 namespace Init {
