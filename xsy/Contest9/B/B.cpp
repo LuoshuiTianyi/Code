@@ -41,9 +41,8 @@ void main() {
   fread(read_str, 1, 1 << 25, stdin);
   n = read(), rstr(S + 1);
   Q = read();
-  for (int i = 1; i <= Q; i++) {
+  for (int i = 1; i <= Q; i++)
     l[i] = read(), M[r[i] = read()].push_back(i);
-  }
 }
 }  // namespace Input
 
@@ -52,8 +51,8 @@ int Min[Max_n << 1], tag[Max_n << 1];
 #define ls (o << 1)
 #define rs (o << 1 | 1)
 #define mid (l + r >> 1)
-void pushdown(int x) { Min[ls] += tag[x], Min[rs] += tag[x], tag[x] = 0; }
-void pushup(int x) { Min[x] = min(Min[ls], Min[rs]); }
+void pushdown(int o) { Min[ls] += tag[o], Min[rs] += tag[o], tag[o] = 0; }
+void pushup(int o) { Min[o] = min(Min[ls], Min[rs]); }
 void add(int o, int l, int r, int L, int R, int x) {
   if (l >= L && r <= R) {
     Min[o] += x, tag[o] += x;
@@ -65,11 +64,12 @@ void add(int o, int l, int r, int L, int R, int x) {
   pushup(x);
 }
 int query(int o, int l, int r, int L, int R) {
+  if (L == 0) return 0;
   int ans = 1e9;
   if (l >= L && r <= R) return Min[o];
-  pushdown(x);
-  if (mid >= L) ans = min(ans, add(ls, l, mid, L, R));
-  if (mid < R) ans = min(ans, add(rs, mid + 1, r, L, R));
+  pushdown(o);
+  if (mid >= L) ans = min(ans, query(ls, l, mid, L, R));
+  if (mid < R) ans = min(ans, query(rs, mid + 1, r, L, R));
   pushup(x);
   return ans;
 }
@@ -95,8 +95,12 @@ void main() {
     if (S[i] == 'T')
       stk[++top] = i, add(1, 1, n, i, i, -1);
     add(1, 1, n, i, i, query());
-    
+    for (int j = M[i].size() - 1; ~j; j--) {
+      int x = M[i][j];
+      Ans[x] = query(1, 1, n, l[x], i) - query(1, 1, n, l[x] - 1, l[x] - 1) + cqry(i) - cqry(l[x] - 1);
+    }
   }
+  for (int i = 1; i <= Q; i++) printf("%d\n", Ans[i]);
 }
 }  // namespace Solve
 
