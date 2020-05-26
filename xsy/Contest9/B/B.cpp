@@ -32,6 +32,7 @@ void rstr(char *s) {
 const int Max_n = 5e5 + 5;
 int n, Q, Ans[Max_n];
 int s[Max_n], l[Max_n], r[Max_n];
+int stk[Max_n];
 char S[Max_n];
 vector<int> M[Max_n];
 
@@ -39,6 +40,9 @@ namespace Input {
 void main() { 
   fread(read_str, 1, 1 << 25, stdin); 
   n = read(), rstr(S + 1);
+  Q = read();
+  for (int i = 1; i <= n; i++) {
+  }
 }
 }  // namespace Input
 
