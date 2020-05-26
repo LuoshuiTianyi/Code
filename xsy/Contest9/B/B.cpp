@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <iostream>
+#include <vector>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
@@ -29,12 +30,16 @@ void rstr(char *s) {
 }
 
 const int Max_n = 5e5 + 5;
-int n;
-int s[Max_n];
+int n, Q, Ans[Max_n];
+int s[Max_n], l[Max_n], r[Max_n];
 char S[Max_n];
+vector<int> M[Max_n];
 
 namespace Input {
-void main() { fread(read_str, 1, 1 << 25, stdin); }
+void main() { 
+  fread(read_str, 1, 1 << 25, stdin); 
+  n = read(), rstr(S + 1);
+}
 }  // namespace Input
 
 namespace Init {
