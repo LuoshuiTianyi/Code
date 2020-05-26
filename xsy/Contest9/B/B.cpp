@@ -80,7 +80,7 @@ namespace Solve {
 void main() {
   for (int i = 1; i <= n; i++) {
     if (S[i] == 'C') {
-      if (top) add(
+      if (top) add(1, 1, n, stk[top--], i - 1, 1);
     }
   }
 }
