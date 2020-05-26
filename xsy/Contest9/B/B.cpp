@@ -46,6 +46,9 @@ void main() {
 }
 }  // namespace Input
 
+namespace {
+}
+
 namespace Init {
 void main() {}
 }  // namespace Init
