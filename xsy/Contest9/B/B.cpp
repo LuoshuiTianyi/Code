@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <vector>
+#include <queue>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
@@ -35,6 +36,7 @@ int l[Max_n], r[Max_n];
 int top, stk[Max_n], c[Max_n];
 char S[Max_n];
 vector<int> M[Max_n];
+queue<int> q;
 
 namespace Input {
 void main() {
@@ -60,11 +62,10 @@ void add(int o, int l, int r, int L, int R, int x) {
     Min[o] += x, tag[o] += x;
     return;
   }
-  pushdown(x);
-  cerr << o << " " << l << " " << r << " " << L << " " << R << endl;
+  pushdown(o);
   if (mid >= L) add(ls, l, mid, L, R, x);
   if (mid < R) add(rs, mid + 1, r, L, R, x);
-  pushup(x);
+  pushup(o);
 }
 int query(int o, int l, int r, int L, int R) {
   if (L > R || R < 1) return 0;
@@ -89,17 +90,16 @@ int cqry(int k) {
   return ans;
 }
 void main() {
-  for (int i = 1; i <= (n << 2); i++) Min[i] = 1e9;
   for (int i = 1; i <= n; i++) {
     if (S[i] == 'C') {
-      if (top) add(1, 1, n, stk[top], i - 1, 1), cadd(stk[top]), top--;
+      if (top) add(1, 1, n, q.front(), i - 1, 1), cadd(q.front()), q.pop();
     }
-    if (S[i] == 'T') stk[++top] = i, add(1, 1, n, i, i, -1);
+    if (S[i] == 'T') q.push(i), add(1, 1, n, i, i, -1);
     add(1, 1, n, i, i, query(1, 1, n, i - 1, i - 1));
-    //for (int j = M[i].size() - 1; ~j; j--) {
-    //  int x = M[i][j];
-    //  Ans[x] = query(1, 1, n, l[x], i) - query(1, 1, n, l[x] - 1, l[x] - 1) + cqry(i) - cqry(l[x] - 1);
-    //}
+    for (int j = M[i].size() - 1; ~j; j--) {
+      int x = M[i][j];
+      Ans[x] = max(0, query(1, 1, n, l[x] - 1, l[x] - 1) - query(1, 1, n, l[x], i)) + cqry(i) - cqry(l[x] - 1);
+    }
   }
   for (int i = 1; i <= Q; i++) printf("%d\n", Ans[i]);
 }
