@@ -41,8 +41,9 @@ void main() {
   fread(read_str, 1, 1 << 25, stdin);
   n = read(), rstr(S + 1);
   Q = read();
-  for (int i = 1; i <= Q; i++)
+  for (int i = 1; i <= Q; i++) {
     l[i] = read(), M[r[i] = read()].push_back(i);
+  }
 }
 }  // namespace Input
 
@@ -54,6 +55,7 @@ int Min[Max_n << 1], tag[Max_n << 1];
 void pushdown(int o) { Min[ls] += tag[o], Min[rs] += tag[o], tag[o] = 0; }
 void pushup(int o) { Min[o] = min(Min[ls], Min[rs]); }
 void add(int o, int l, int r, int L, int R, int x) {
+  if (L > R || R < 1) return;
   if (l >= L && r <= R) {
     Min[o] += x, tag[o] += x;
     return;
@@ -64,13 +66,13 @@ void add(int o, int l, int r, int L, int R, int x) {
   pushup(x);
 }
 int query(int o, int l, int r, int L, int R) {
-  if (L == 0) return 0;
+  if (L > R || R < 1) return 0;
   int ans = 1e9;
   if (l >= L && r <= R) return Min[o];
   pushdown(o);
   if (mid >= L) ans = min(ans, query(ls, l, mid, L, R));
   if (mid < R) ans = min(ans, query(rs, mid + 1, r, L, R));
-  pushup(x);
+  pushup(o);
   return ans;
 }
 }  // namespace SegTree
@@ -90,11 +92,9 @@ void main() {
   for (int i = 1; i <= n; i++) {
     if (S[i] == 'C') {
       if (top) add(1, 1, n, stk[top], i - 1, 1), cadd(stk[top]), top--;
-      add(1, 1, n, i - 1, 1);
     }
-    if (S[i] == 'T')
-      stk[++top] = i, add(1, 1, n, i, i, -1);
-    add(1, 1, n, i, i, query());
+    if (S[i] == 'T') stk[++top] = i, add(1, 1, n, i, i, -1);
+    add(1, 1, n, i, i, query(1, 1, n, i - 1, i - 1));
     for (int j = M[i].size() - 1; ~j; j--) {
       int x = M[i][j];
       Ans[x] = query(1, 1, n, l[x], i) - query(1, 1, n, l[x] - 1, l[x] - 1) + cqry(i) - cqry(l[x] - 1);
@@ -110,5 +110,5 @@ int main() {
   freopen("B.out", "w", stdout);
 #endif
   Input::main();
-  Solve::main();
+  //Solve::main();
 }
