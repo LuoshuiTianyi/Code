@@ -32,7 +32,7 @@ void rstr(char *s) {
 const int Max_n = 5e5 + 5;
 int n, Q, Ans[Max_n];
 int l[Max_n], r[Max_n];
-int top, stk[Max_n];
+int top, stk[Max_n], c[Max_n];
 char S[Max_n];
 vector<int> M[Max_n];
 
@@ -77,11 +77,25 @@ int query(int o, int l, int r, int L, int R) {
 using namespace SegTree;
 
 namespace Solve {
+void cadd(int k) {
+  for (int i = k; i <= n; i += i & -i) c[i]++;
+}
+int cqry(int k) {
+  int ans = 0;
+  for (int i = k; i; i -= i & -i) ans += c[i];
+  return ans;
+}
 void main() {
+  for (int i = 1; i <= (n << 2); i++) Min[i] = 1e9;
   for (int i = 1; i <= n; i++) {
     if (S[i] == 'C') {
-      if (top) add(1, 1, n, stk[top--], i - 1, 1);
+      if (top) add(1, 1, n, stk[top], i - 1, 1), cadd(stk[top]), top--;
+      add(1, 1, n, i - 1, 1);
     }
+    if (S[i] == 'T')
+      stk[++top] = i, add(1, 1, n, i, i, -1);
+    add(1, 1, n, i, i, query());
+    
   }
 }
 }  // namespace Solve
