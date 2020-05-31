@@ -86,11 +86,14 @@ int main() {
     nth_element(h[i].begin(), h[i].begin() + tot - 1, h[i].end());
     for (int j = 0; j < tot; j++) b[h[i][j].second] = 1;
   }
+  int cnt = 0;
   for (int i = 1; i <= n; i++)
     if (b[i]) {
+      cnt++;
       for (int j = 0; j <= k; j++) g[j] = f[j];
       solve(i, 1, k, 0, k);
       for (int j = 0; j <= k; j++) f[j] = min(f[j], g[j]);
     }
+  //cout << cnt << endl;
   for (int i = 1; i <= k; i++) printf("%lld ", f[i]);
 }
