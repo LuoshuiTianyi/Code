@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 #include <vector>
@@ -31,9 +32,10 @@ void rstr(char *s) {
 
 const int Max_n = 2e6 + 5;
 int n, K;
-int m[Max_n];
+int top, stk[Max_n], m[Max_n];
 LL f[Max_n], g[Max_n];
 vector<LL> a[Max_n];
+bool vis[Max_n];
 
 namespace Input {
 void main() { 
@@ -49,8 +51,13 @@ void main() {
 }  // namespace Input
 
 namespace Init {
+bool cmp(vector<LL> a, vector<LL> b) { return a.size() < b.size(); }
+int t;
+pair<LL, int> 
 void main() {
-  for (int i = 1; i <= K; i++) {
+  sort(a + 1, a + n + 1, cmp);
+  for (int i = 1, p = 1; i <= K; i++) {
+    while (p <= n && 
   }
 }
 }  // namespace Init
