@@ -30,10 +30,10 @@ void rstr(char *s) {
   }
 }
 
-const int Max_n = 2e6 + 5;
+const int Max_n = 2e6 + 5, Max_k = 1e3 + 5;
 int n, K;
 int top, stk[Max_n], m[Max_n];
-LL f[Max_n], g[Max_n];
+LL f[Max_k], g[Max_k];
 vector<LL> a[Max_n];
 bool vis[Max_n];
 
@@ -71,14 +71,15 @@ void main() {
 
 namespace Solve {
 void Solve(int l, int r, int L, int R, int id) {
-  int mid = l + r >> 1, tot = a[id].size() - 1;
-  int best = R;
+  if (l > r) return;
+  int mid = l + r >> 1;
+  int best = mid;
   f[mid] = 2e18;
-  for (int i = max(L, mid - tot); i <= min(R, mid - 1); i++)
-    if (g[i] + a[id][mid - i] < f[mid]) 
-      f[mid] = g[i] + a[id][mid - i], best = i;
-  if (l < r)
-    Solve(l, mid - 1, L, best, id), Solve(mid + 1, r, best, R, id);
+  for (int i = L; i <= R; i++)
+    if (i < mid && mid - i <= m[id])
+      if (g[i] + a[id][mid - i] < f[mid]) 
+        f[mid] = g[i] + a[id][mid - i], best = i;
+  Solve(l, mid - 1, L, best, id), Solve(mid + 1, r, best, R, id);
 }
 void main() {
   for (int i = 1; i <= K; i++) f[i] = 2e18;
