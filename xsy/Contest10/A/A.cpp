@@ -53,11 +53,13 @@ void main() {
 namespace Init {
 bool cmp(vector<LL> a, vector<LL> b) { return a.size() < b.size(); }
 int t;
-pair<LL, int> 
+pair<LL, int> s[Max_n];
 void main() {
   sort(a + 1, a + n + 1, cmp);
   for (int i = 1, p = 1; i <= K; i++) {
-    while (p <= n && 
+    while (p <= n && m[p] < i) p++;
+    t = 0;
+    for (int j = p; j <= n; j++) s[++t] = make_pair(a[j][i], j);
   }
 }
 }  // namespace Init
