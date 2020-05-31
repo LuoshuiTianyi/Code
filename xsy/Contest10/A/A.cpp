@@ -70,8 +70,23 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
+void Solve(int l, int r, int L, int R, int id) {
+  int mid = l + r >> 1, tot = a[id].size() - 1;
+  int best = R;
+  f[mid] = 2e18;
+  for (int i = max(L, mid - tot); i <= min(R, mid); i++)
+    if (g[i] + a[id][mid - i] < f[mid]) 
+      f[mid] = g[i] + a[id][mid - i], best = i;
+  if (l < r)
+    Solve(l, mid - 1, L, best, id), Solve(mid + 1, r, best, R, id);
+}
 void main() {
-  
+  for (int i = 1; i <= K; i++) f[i] = 2e18;
+  for (int i = 1; i <= top; i++) {
+    swap(f, g);
+    Solve(1, K, 0, K, i);
+  }
+  for (int i = 1; i <= K; i++) cout << f[i] << " ";
 }
 }  // namespace Solve
 
