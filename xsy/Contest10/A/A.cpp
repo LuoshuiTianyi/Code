@@ -61,15 +61,18 @@ void main() {
     if (p > n) break;
     t = 0;
     for (int j = p; j <= n; j++) s[++t] = make_pair(a[j][i], j);
+    int tot = min(K / i, n - p);
     nth_element(s + 1, s + tot, s + t + 1);
     for (int i = 1; i <= tot; i++)
-      if (!vis[i]) 
+      if (!vis[s[i].second]) vis[stk[++top] = s[i].second] = 1;
   }
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  
+}
 }  // namespace Solve
 
 int main() {
