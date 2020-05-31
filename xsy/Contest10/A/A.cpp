@@ -58,8 +58,12 @@ void main() {
   sort(a + 1, a + n + 1, cmp);
   for (int i = 1, p = 1; i <= K; i++) {
     while (p <= n && m[p] < i) p++;
+    if (p > n) break;
     t = 0;
     for (int j = p; j <= n; j++) s[++t] = make_pair(a[j][i], j);
+    nth_element(s + 1, s + tot, s + t + 1);
+    for (int i = 1; i <= tot; i++)
+      if (!vis[i]) 
   }
 }
 }  // namespace Init
