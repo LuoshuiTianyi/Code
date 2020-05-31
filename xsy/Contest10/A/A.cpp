@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <iostream>
+#include <vector>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
@@ -28,12 +29,30 @@ void rstr(char *s) {
   }
 }
 
+const int Max_n = 2e6 + 5;
+int n, K;
+int m[Max_n];
+LL f[Max_n], g[Max_n];
+vector<LL> a[Max_n];
+
 namespace Input {
-void main() { fread(read_str, 1, 1 << 25, stdin); }
+void main() { 
+  fread(read_str, 1, 1 << 25, stdin); 
+  n = read(), K = read();
+  for (int i = 1; i <= n; i++) {
+    a[i].resize(1 + (m[i] = read()), 0);
+    for (int j = 0; j <= m[i]; j++) a[i][j + !j] += read();
+    m[i] = min(m[i], K);
+    for (int j = 2; j <= m[i]; j++) a[i][j] += a[i][j - 1];
+  }
+}
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  for (int i = 1; i <= K; i++) {
+  }
+}
 }  // namespace Init
 
 namespace Solve {
