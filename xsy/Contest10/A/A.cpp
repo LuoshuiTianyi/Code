@@ -61,7 +61,7 @@ void main() {
     if (p > n) break;
     t = 0;
     for (int j = p; j <= n; j++) s[++t] = make_pair(a[j][i], j);
-    int tot = min(K / i, n - p);
+    int tot = min(K / i, n - p + 1);
     nth_element(s + 1, s + tot, s + t + 1);
     for (int i = 1; i <= tot; i++)
       if (!vis[s[i].second]) vis[stk[++top] = s[i].second] = 1;
@@ -74,7 +74,7 @@ void Solve(int l, int r, int L, int R, int id) {
   int mid = l + r >> 1, tot = a[id].size() - 1;
   int best = R;
   f[mid] = 2e18;
-  for (int i = max(L, mid - tot); i <= min(R, mid); i++)
+  for (int i = max(L, mid - tot); i <= min(R, mid - 1); i++)
     if (g[i] + a[id][mid - i] < f[mid]) 
       f[mid] = g[i] + a[id][mid - i], best = i;
   if (l < r)
@@ -84,7 +84,8 @@ void main() {
   for (int i = 1; i <= K; i++) f[i] = 2e18;
   for (int i = 1; i <= top; i++) {
     swap(f, g);
-    Solve(1, K, 0, K, i);
+    Solve(1, K, 0, K, stk[i]);
+    for (int j = 1; j <= K; j++) f[j] = min(f[j], g[j]);
   }
   for (int i = 1; i <= K; i++) cout << f[i] << " ";
 }
