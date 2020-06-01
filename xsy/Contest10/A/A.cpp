@@ -76,7 +76,6 @@ void Solve(int l, int r, int L, int R, int id) {
   if (l > r) return;
   int mid = l + r >> 1;
   int best = mid;
-  f[mid] = 1e17;
   for (int i = L; i <= R; i++)
     if (i <= mid && mid - i <= m[id])
       if (g[i] + a[id][mid - i] < f[mid]) 
@@ -84,11 +83,10 @@ void Solve(int l, int r, int L, int R, int id) {
   Solve(l, mid - 1, L, best, id), Solve(mid + 1, r, best, R, id);
 }
 void main() {
-  for (int i = 1; i <= K; i++) f[i] = 1e14 * i;
+  for (int i = 1; i <= K; i++) f[i] = 1e18;
   for (int i = 1; i <= top; i++) {
-    swap(f, g);
+    for (int j = 0; j <= K; j++) g[j] = f[j];
     Solve(1, K, 0, K, id[stk[i]]);
-    for (int j = 0; j <= K; j++) f[j] = min(f[j], g[j]);
   }
   for (int i = 1; i <= K; i++) cout << f[i] << " ";
 }
