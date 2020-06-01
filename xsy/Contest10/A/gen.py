@@ -4,6 +4,8 @@ print(n, K)
 for i in range(n):
     m = 2
     print(m, end = " ")
+    Bef = 0
     for j in range(m + 1):
-        print(randint(1, 3), end = " ")
+        Bef = randint(Bef, 3)
+        print(Bef, end = " ")
     print()

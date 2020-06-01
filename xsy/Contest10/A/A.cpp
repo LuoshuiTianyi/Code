@@ -86,9 +86,8 @@ void main() {
   for (int i = 1; i <= top; i++) {
     for (int j = 0; j <= K; j++) g[j] = f[j];
     Solve(1, K, 0, K, stk[i]);
-    for (int i = 1; i <= K; i++) cout << f[i] << " ";
-    cout << endl;
   }
+  for (int i = 1; i <= K; i++) cout << f[i] << " ";
 }
 }  // namespace Solve
 
