@@ -32,7 +32,7 @@ void rstr(char *s) {
 
 const int Max_n = 2e6 + 5, Max_k = 1e3 + 5;
 int n, K;
-int top, stk[Max_n], m[Max_n], id[Max_n];
+int top, stk[Max_n], m[Max_n];
 LL f[Max_k], g[Max_k];
 vector<LL> a[Max_n];
 bool vis[Max_n];
@@ -51,12 +51,11 @@ void main() {
 }  // namespace Input
 
 namespace Init {
-bool cmp(int x, int y) { return m[x] < m[y]; }
+bool cmp(vector<LL> &a, vector<LL> &b) { return a.size() < b.size(); }
 int t;
 pair<LL, int> s[Max_n];
 void main() {
-  for (int i = 1; i <= n; i++) id[i] = i;
-  sort(id + 1, id + n + 1, cmp);
+  sort(a + 1, a + n + 1, cmp);
   for (int i = 1; i <= n; i++) stk[++top] = i;
   //for (int i = 1, p = 1; i <= K; i++) {
   //  while (p <= n && m[p] < i) p++;
@@ -83,12 +82,13 @@ void Solve(int l, int r, int L, int R, int id) {
   Solve(l, mid - 1, L, best, id), Solve(mid + 1, r, best, R, id);
 }
 void main() {
-  for (int i = 1; i <= K; i++) f[i] = 1e18;
+  for (int i = 1; i <= K; i++) f[i] = 2e18;
   for (int i = 1; i <= top; i++) {
     for (int j = 0; j <= K; j++) g[j] = f[j];
-    Solve(1, K, 0, K, id[stk[i]]);
+    Solve(1, K, 0, K, stk[i]);
+    for (int i = 1; i <= K; i++) cout << f[i] << " ";
+    cout << endl;
   }
-  for (int i = 1; i <= K; i++) cout << f[i] << " ";
 }
 }  // namespace Solve
 
