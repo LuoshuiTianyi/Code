@@ -73,7 +73,6 @@ void DP2(int x, int fa) {
       Mod(++g[x][i]);
     }
     Mod(ans -= ksm(1ll * f[x][L - 1] * (g[x][L] + mod - 1) % mod, K) - mod);
-    // cout << x << " " << g[x][L] << endl;
   }
   Mod(ans += ksm(1ll * f[x][L] * g[x][L] % mod, K));
   go(G, x, i, v) if (v != fa) DP2(v, x);
@@ -81,11 +80,6 @@ void DP2(int x, int fa) {
 void main() {
   for (int i = 1; i <= n; i++) f[i].resize(L + 1, 1), g[i].resize(L + 1, 1);
   DP1(1, 0), DP2(1, 0);
-  // for (int i = 1; i <= n; i++) {
-  //  for (int j = 0; j <= L; j++)
-  //    cout << g[i][j] << " ";
-  //  cout << endl;
-  //}
   cout << ans << endl;
 }
 }  // namespace Solve
