@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <cstdio>
 #include <iostream>
-#include <map>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
@@ -32,10 +31,7 @@ void rstr(char *s) {
 
 const int Max_n = 100;
 int T, N;
-LL n, t, a[Max_n * 20 * 10];
 LL f[Max_n];
-map<LL, bool> M;
-map<LL, bool>::iterator it;
 
 namespace Input {
 void main() { 
@@ -44,27 +40,13 @@ void main() {
 }  // namespace Input
 
 namespace Init {
-void Count(LL x) {
-  LL c = 1;
-  while (c / 10 <= x) {
-    for (int i = 0; i < (c == 1e18 ? 2 : 10); i++)
-      M[(x / c) * c * 10 + x % c + c * i] = 1;
-    c *= 10;
-  }
-}
 void main() {
   N = 1, f[1] = 1;
   for (N = 2;; N++) {
     f[N] = f[N - 1] + f[N - 2];
     if (f[N] >= 1e18) break;
-    M[f[N]] = 1;
-    if (f[N] <= 1e17) Count(f[N]);
+    cout << f[N] << endl;
   }
-  for (it = M.begin(); it != M.end(); it++)
-    if (it->first <= 1e18) {
-      cout << it->first << endl;
-      a[++t] = it->first;
-    }
 }
 }  // namespace Init
 
@@ -72,9 +54,7 @@ namespace Solve {
 void main() {
   T = read();
   while (T--) {
-    n = read();
-    LL ans = n + 1 - (lower_bound(a + 1, a + t + 1, n) - a);
-    printf("%lld\n", ans);
+    LL n = read();
   }
 }
 }  // namespace Solve
