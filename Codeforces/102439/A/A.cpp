@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 #define LL long long
-#define LD long double
+#define LD double
 #define go(G, x, i, v) \
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 
@@ -65,6 +65,7 @@ void main() {
 namespace Solve {
 LD v[Max_n], Ans[Max_n];
 bool check(LD t, LD v0, LD lim, LD d) {
+  if (d - v0 * t - 0.5 * a * t * t < 0) return 0;
   return pd(v0 + a * t, lim, d - v0 * t - 0.5 * a * t * t);
 }
 void main() {
@@ -77,16 +78,13 @@ void main() {
       if (check(mid, v0, v1, d)) l = ans = mid;
       else r = mid;
     }
-    //cout << check(ans, v0, v1, d) << endl;
-    cout << pd(v0 + a * ans, v1, d - v0 * ans - 0.5 * a * ans * ans) << endl;
-    //cout << ans << endl;
     Ans[i + 1] = Ans[i] + ans;
     d -= v0 * ans + 0.5 * a * ans * ans;
     v0 += ans * a;
     v[i + 1] = sqrt(v0 * v0 - 2.0 * b * d);
     Ans[i + 1] += (v0 - v[i + 1]) / b;
   }
-  printf("%.7Lf", Ans[top]);
+  printf("%.7lf", Ans[top]);
 }
 }  // namespace Solve
 
