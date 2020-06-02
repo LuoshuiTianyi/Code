@@ -79,13 +79,24 @@ void main() {
 
 namespace Solve {
 int find(int x) { return f[x] == x ? x : f[x] = find(f[x]); }
+int Lca(int u, int v) {
+  while (top[u] != top[v]) {
+    if (dep[top[u]] < dep[top[v]]) swap(u, v);
+    u = jp[top[u]];
+  }
+  return dep[u] > dep[v] ? v : u;
+}
 void main() {
   cout << ans << endl;
   while (m--) {
     int u = read(), v = read();
-    while (top[u] != top[v]) {
-      if (dep[top[u]] < dep[top[v]]) swap(u, v);
-      
+    int lca = Lca(u, v);
+    for (; dep[u] > dep[lca]; u = jp[u]) {
+      u = find(u);
+      if (up[u] == 1 && up[jp[u]] == 1) f[find(u)] = find(jp[u]);
+      if (up[u] > 1) {
+        
+      }
     }
   }
 }
