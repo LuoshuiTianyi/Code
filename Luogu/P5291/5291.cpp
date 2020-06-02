@@ -1,6 +1,6 @@
 #include <cstdio>
 #include <iostream>
-#include <vector>
+#include <deque>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
