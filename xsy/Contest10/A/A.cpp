@@ -7,7 +7,7 @@ using namespace std;
 #define go(G, x, i, v) \
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 
-char read_str[1 << 27], *CH = read_str;
+char read_str[1 << 25], *CH = read_str;
 #define getchar() (*CH++)
 LL read() {
   char ch = getchar();
@@ -39,10 +39,10 @@ bool vis[Max_n];
 
 namespace Input {
 void main() { 
-  fread(read_str, 1, 1 << 27, stdin); 
+  fread(read_str, 1, 1 << 25, stdin); 
   n = read(), K = read();
   for (int i = 1; i <= n; i++) {
-    a[i].resize(1 + (m[i] = read()));
+    a[i].resize(1 + (m[i] = read()), 0);
     for (int j = 0; j <= m[i]; j++) a[i][j + !j] += read();
     m[i] = min(m[i], K);
     for (int j = 2; j <= m[i]; j++) a[i][j] += a[i][j - 1];
@@ -57,14 +57,15 @@ pair<LL, int> s[Max_n];
 void main() {
   sort(a + 1, a + n + 1, cmp);
   for (int i = 1, p = 1; i <= K; i++) {
-    while (p <= n && m[p] < i) p++;
+    while (p <= n && a[p].size() - 1 < i) p++;
     if (p > n) break;
     t = 0;
     for (int j = p; j <= n; j++) t++, s[t].first = a[j][i], s[t].second = j;
-    int tot = min(K / i, n - p + 1);
+    int tot = min((K + i - 1) / i, n - p + 1);
     nth_element(s + 1, s + tot, s + t + 1);
     for (int i = 1; i <= tot; i++)
-      if (!vis[s[i].second]) vis[stk[++top] = s[i].second] = 1;
+      if (!vis[s[i].second])
+        vis[stk[++top] = s[i].second] = 1;
   }
 }
 }  // namespace Init
@@ -76,7 +77,7 @@ void Solve(int l, int r, int L, int R, int id) {
   int best = mid;
   f[mid] = 2e18;
   for (int i = L; i <= R; i++)
-    if (i < mid && mid - i <= m[id]) {
+    if (i < mid && mid - i <= a[id].size() - 1) {
       if (g[i] + a[id][mid - i] < f[mid])
         f[mid] = g[i] + a[id][mid - i], best = i;
     }
