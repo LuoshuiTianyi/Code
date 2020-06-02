@@ -32,7 +32,7 @@ void rstr(char *s) {
 
 const int Max_n = 100;
 int T, N;
-LL n, t, a[Max_n * 20];
+LL n, t, a[Max_n * 20 * 10];
 LL f[Max_n];
 map<LL, bool> M;
 map<LL, bool>::iterator it;
@@ -46,8 +46,11 @@ void main() {
 namespace Init {
 void Count(LL x) {
   LL c = 1;
-  for (int i = 1; i <= 19; i++, c *= 10)
-    M[(x / c / 10) * c + x % c] = 1;
+  while (c / 10 <= x) {
+    for (int i = 0; i < (c == 1e18 ? 2 : 10); i++)
+      M[(x / c) * c * 10 + x % c + c * i] = 1;
+    c *= 10;
+  }
 }
 void main() {
   N = 1, f[1] = 1;
@@ -58,7 +61,10 @@ void main() {
     if (f[N] <= 1e17) Count(f[N]);
   }
   for (it = M.begin(); it != M.end(); it++)
-    if (it->first <= 1e18) a[++t] = it->first;
+    if (it->first <= 1e18) {
+      cout << it->first << endl;
+      a[++t] = it->first;
+    }
 }
 }  // namespace Init
 
