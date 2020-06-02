@@ -86,18 +86,24 @@ int Lca(int u, int v) {
   }
   return dep[u] > dep[v] ? v : u;
 }
+void Qry(int u, int lca) {
+  for (; dep[u] > dep[lca]; u = jp[u]) {
+    u = find(u);
+    if (up[u] == 1 && up[jp[u]] == 1) f[find(u)] = find(jp[u]);
+    if (up[u] > 1) {
+      int w = sqrt(up[u]);
+      (ans += mod - (LL)(up[u] - w) * sz[u] % mod * (n - sz[u]) % mod) %= mod;
+      up[u] = w;
+    }
+  }
+}
 void main() {
   cout << ans << endl;
   while (m--) {
     int u = read(), v = read();
     int lca = Lca(u, v);
-    for (; dep[u] > dep[lca]; u = jp[u]) {
-      u = find(u);
-      if (up[u] == 1 && up[jp[u]] == 1) f[find(u)] = find(jp[u]);
-      if (up[u] > 1) {
-        
-      }
-    }
+    Qry(u, lca), Qry(v, lca);
+    printf("%d\n", ans);
   }
 }
 }  // namespace Solve
