@@ -22,7 +22,7 @@ inline LL read() {
 
 const int Max_n = 1e6 + 5, mod = 998244353;
 int n, L, K, ans;
-vector<int> f[Max_n], g[Max_n];
+int son[Max_n], Lg[Max_n];
 struct graph {
   int hd[Max_n];
   int cntr, nx[Max_n << 1], to[Max_n << 1];
@@ -52,31 +52,18 @@ void main() {
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void build(int x, int fa) {
+  go(G, x, i, v) if (v != fa) {
+    build(v, x), Lg[x] = max(Lg[x], Lg[v]);
+    if (Lg[v] >= Lg[son[x]]) son[x] = v;
+  }
+}
+void main() {
+  build(1, 0);
+}
 }  // namespace Init
 
 namespace Solve {
-void DP1(int x, int fa) {
-  go(G, x, i, v) if (v != fa) {
-    DP1(v, x);
-    for (int i = 1; i <= L; i++)
-      f[x][i] = 1ll * f[x][i] * (f[v][i - 1] + 1) % mod;
-  }
-}
-void DP2(int x, int fa) {
-  if (x != 1) {
-    for (int i = 1; i <= L; i++) {
-      g[x][i] = g[fa][i - 1];
-      if (i > 1)
-        g[x][i] =
-            1ll * g[x][i] * f[fa][i - 1] % mod * ksm(f[x][i - 2] + 1) % mod;
-      Mod(++g[x][i]);
-    }
-    Mod(ans -= ksm(1ll * f[x][L - 1] * (g[x][L] + mod - 1) % mod, K) - mod);
-  }
-  Mod(ans += ksm(1ll * f[x][L] * g[x][L] % mod, K));
-  go(G, x, i, v) if (v != fa) DP2(v, x);
-}
 void main() {
   for (int i = 1; i <= n; i++) f[i].resize(L + 1, 1), g[i].resize(L + 1, 1);
   DP1(1, 0), DP2(1, 0);
