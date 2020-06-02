@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -34,30 +35,51 @@ const int Max_n = 1e5 + 5;
 const LD eps = 1e-8;
 int n, id[Max_n];
 LD a, b;
-LD x[Max_n], v[Max_n];
+struct light {
+  LD x, v;
+} k[Max_n];
 
 namespace Input {
 void main() { 
   fread(read_str, 1, 1 << 25, stdin); 
   n = read(), a = read(), b = read();
   for (int i = 1; i <= n; i++)
-    x[i] = read(), v[i] = read(), id[i] = i;
+    k[i].x = read(), k[i].v = read();
 }
 }  // namespace Input
 
+bool pd(LD v0, LD v, LD d) {
+  return sqrt(v0 * v0 - 2.0 * b * d);
+}
+
 namespace Init {
-bool cmp(int a, int b) { return x[a] < x[b]; }
+bool cmp(light a, light b) { return a.x < b.x; }
 int top, stk[Max_n];
 void main() {
-  sort(id + 1, id + n + 1, cmp);
   for (int i = 1; i <= n; i++) {
-    
+    while (top && pd(k[stk[top]].v, k[i].v, k[i].x - k[stk[top]].x)) top--;
+    stk[++top] = i;
   }
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+LD v[Max_n];
+bool check(LD t, LD v0, LD lim, LD d) {
+  
+}
+void main() {
+  for (int i = 0; i < top; i++) {
+    light x = k[stk[i]], y = k[stk[i + 1]];
+    LD v0 = v[i], d = y.x - x.x, v1 = y.v;
+    LD l = 0, r = 1e4, ans;
+    while (r - l > eps) {
+      LD mid = (l + r) / 2;
+      if (check(mid, v0, v1, d)) l = ans = mid;
+      else r = mid;
+    }
+  }
+}
 }  // namespace Solve
 
 int main() {
