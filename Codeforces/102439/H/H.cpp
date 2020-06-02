@@ -31,7 +31,6 @@ void rstr(char *s) {
 
 const int Max_n = 100;
 int T, N;
-LL f[Max_n];
 
 namespace Input {
 void main() { 
@@ -39,22 +38,28 @@ void main() {
 }
 }  // namespace Input
 
-namespace Init {
-void main() {
-  N = 1, f[1] = 1;
-  for (N = 2;; N++) {
-    f[N] = f[N - 1] + f[N - 2];
-    if (f[N] >= 1e18) break;
-    cout << f[N] << endl;
-  }
-}
-}  // namespace Init
-
 namespace Solve {
+int top, nu[Max_n];
+LL f[Max_n][2][2];
+bool pd(int x) { return (x == 1) || (x == 2) || (x == 3) || (x == 5) || (x == 8); }
+LL DP(int len, bool lim, bool m) {
+  if (!len) return !m;
+  LL &res = f[len][lim][m];
+  if (res != -1) return res;
+  res = 0;
+  for (int i = 0; i <= (lim ? nu[len] : 9); i++)
+    res += DP(len - 1, lim && (i == nu[len]), m | pd(i));
+  return res;
+}
 void main() {
   T = read();
   while (T--) {
     LL n = read();
+    top = 0;
+    while (n) nu[++top] = n % 10, n /= 10;
+    for (int i = 1; i <= top; i++)
+      f[i][0][0] = f[i][0][1] = f[i][1][0] = f[i][1][1] = -1;
+    cout << DP(top, 1, 0) << endl;
   }
 }
 }  // namespace Solve
@@ -65,6 +70,5 @@ int main() {
   freopen("H.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
