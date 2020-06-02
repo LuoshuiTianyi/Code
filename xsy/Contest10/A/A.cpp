@@ -77,10 +77,9 @@ void Solve(int l, int r, int L, int R, int id) {
   int best = mid;
   f[mid] = 2e18;
   for (int i = L; i <= R; i++)
-    if (i < mid && mid - i <= a[id].size() - 1) {
+    if (i < mid && mid - i <= a[id].size() - 1)
       if (g[i] + a[id][mid - i] < f[mid])
         f[mid] = g[i] + a[id][mid - i], best = i;
-    }
   Solve(l, mid - 1, L, best, id), Solve(mid + 1, r, best, R, id);
 }
 void main() {
