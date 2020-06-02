@@ -1,11 +1,11 @@
 from random import randint
-n, K = 3, 2
+n, K = 1000, 1000
 print(n, K)
 for i in range(n):
-    m = 2
+    m = 2000
     print(m, end = " ")
     Bef = 0
     for j in range(m + 1):
-        Bef = randint(Bef, 3)
+        Bef = randint(Bef, 1000000000)
         print(Bef, end = " ")
     print()
