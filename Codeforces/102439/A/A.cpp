@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 #define LL long long
-#define Ld long double
+#define LD long double
 #define go(G, x, i, v) \
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 
@@ -31,19 +31,29 @@ void rstr(char *s) {
 }
 
 const int Max_n = 1e5 + 5;
-int n;
-double a, b;
-double x[Max_n], v[Max_n];
+const LD eps = 1e-8;
+int n, id[Max_n];
+LD a, b;
+LD x[Max_n], v[Max_n];
 
 namespace Input {
 void main() { 
   fread(read_str, 1, 1 << 25, stdin); 
   n = read(), a = read(), b = read();
+  for (int i = 1; i <= n; i++)
+    x[i] = read(), v[i] = read(), id[i] = i;
 }
 }  // namespace Input
 
 namespace Init {
-void main() {}
+bool cmp(int a, int b) { return x[a] < x[b]; }
+int top, stk[Max_n];
+void main() {
+  sort(id + 1, id + n + 1, cmp);
+  for (int i = 1; i <= n; i++) {
+    
+  }
+}
 }  // namespace Init
 
 namespace Solve {
