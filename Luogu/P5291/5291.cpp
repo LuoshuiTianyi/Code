@@ -22,7 +22,7 @@ inline LL read() {
 
 const int Max_n = 1e6 + 5, mod = 998244353;
 int n, L, K, ans;
-int son[Max_n], Lg[Max_n];
+int top[Max_n], son[Max_n], dep[Max_n], Lg[Max_n];
 struct graph {
   int hd[Max_n];
   int cntr, nx[Max_n << 1], to[Max_n << 1];
@@ -53,6 +53,7 @@ void main() {
 
 namespace Init {
 void build(int x, int fa) {
+  top[x] = x, dep[x] = dep[fa] + 1;
   go(G, x, i, v) if (v != fa) {
     build(v, x), Lg[x] = max(Lg[x], Lg[v]);
     if (Lg[v] >= Lg[son[x]]) son[x] = v;
