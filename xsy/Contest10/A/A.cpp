@@ -7,7 +7,7 @@ using namespace std;
 #define go(G, x, i, v) \
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 
-char read_str[1 << 26], *CH = read_str;
+char read_str[1 << 27], *CH = read_str;
 #define getchar() (*CH++)
 LL read() {
   char ch = getchar();
@@ -39,13 +39,13 @@ bool vis[Max_n];
 
 namespace Input {
 void main() { 
-  fread(read_str, 1, 1 << 26, stdin); 
+  fread(read_str, 1, 1 << 27, stdin); 
   n = read(), K = read();
   for (int i = 1; i <= n; i++) {
-    a[i].resize(1 + (m[i] = read()), 0);
-    //for (int j = 0; j <= m[i]; j++) a[i][j + !j] += read();
-    //m[i] = min(m[i], K);
-    //for (int j = 2; j <= m[i]; j++) a[i][j] += a[i][j - 1];
+    a[i].resize(1 + (m[i] = read()));
+    for (int j = 0; j <= m[i]; j++) a[i][j + !j] += read();
+    m[i] = min(m[i], K);
+    for (int j = 2; j <= m[i]; j++) a[i][j] += a[i][j - 1];
   }
 }
 }  // namespace Input
@@ -60,7 +60,7 @@ void main() {
     while (p <= n && m[p] < i) p++;
     if (p > n) break;
     t = 0;
-    for (int j = p; j <= n; j++) s[++t] = make_pair(a[j][i], j);
+    for (int j = p; j <= n; j++) t++, s[t].first = a[j][i], s[t].second = j;
     int tot = min(K / i, n - p + 1);
     nth_element(s + 1, s + tot, s + t + 1);
     for (int i = 1; i <= tot; i++)
@@ -99,6 +99,6 @@ int main() {
   freopen("A.out", "w", stdout);
 #endif
   Input::main();
-  //Init::main();
-  //Solve::main();
+  Init::main();
+  Solve::main();
 }
