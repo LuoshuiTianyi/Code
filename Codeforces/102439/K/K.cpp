@@ -29,10 +29,10 @@ void rstr(char *s) {
   }
 }
 
-const int Max_n = 2e5 + 5;
-int n, m;
-int sz[Max_n], son[Max_n], up[Max_n];
-int cntd, top[Max_n], dfn[Max_n];
+const int Max_n = 2e5 + 5, mod = 1e9 + 7;
+int n, m, ans;
+int sz[Max_n], son[Max_n], up[Max_n], jp[Max_n], dep[Max_n];
+int cntd, top[Max_n], dfn[Max_n], f[Max_n], pos[Max_n];
 struct graph {
   int hd[Max_n];
   int cntr, nx[Max_n << 1], to[Max_n << 1], w[Max_n << 1];
@@ -56,21 +56,39 @@ void main() {
 
 namespace Init {
 void dfs1(int x, int fa) {
-  sz[x] = 1;
+  sz[x] = 1, top[x] = x, jp[x] = fa, dep[x] = dep[fa] + 1;
   go(G, x, i, v) if (v != fa) {
     dfs1(v, x), sz[x] += sz[v];
+    (ans += (LL)(up[v] = G.w[i]) * sz[v] % mod * (n - sz[v]) % mod) %= mod;
     if (sz[v] >= sz[son[x]]) son[x] = v;
   }
 }
 void dfs2(int x, int fa) {
+  pos[dfn[x] = ++cntd] = x;
+  if (son[x]) {
+    top[son[x]] = top[x];
+    dfs2(son[x], x);
+  }
+  go(G, x, i, v) if (v != fa && v != son[x]) dfs2(v, x);
 }
 void main() {
-  dfs1(1, 0);
+  dfs1(1, 0), dfs2(1, 0);
+  for (int i = 1; i <= n; i++) f[i] = i;
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+int find(int x) { return f[x] == x ? x : f[x] = find(f[x]); }
+void main() {
+  cout << ans << endl;
+  while (m--) {
+    int u = read(), v = read();
+    while (top[u] != top[v]) {
+      if (dep[top[u]] < dep[top[v]]) swap(u, v);
+      
+    }
+  }
+}
 }  // namespace Solve
 
 int main() {
