@@ -51,12 +51,11 @@ void main() {
 }  // namespace Input
 
 namespace Init {
-bool cmp(vector<LL> &a, vector<LL> &b) { return a.size() < b.size(); }
+bool cmp(vector<LL> a, vector<LL> b) { return a.size() < b.size(); }
 int t;
 pair<LL, int> s[Max_n];
 void main() {
   sort(a + 1, a + n + 1, cmp);
-  for (int i = 1; i <= n; i++) stk[++top] = i;
   for (int i = 1, p = 1; i <= K; i++) {
     while (p <= n && m[p] < i) p++;
     if (p > n) break;
@@ -89,8 +88,6 @@ void main() {
     swap(f, g);
     Solve(1, K, 0, K, stk[i]);
     for (int j = 1; j <= K; j++) f[j] = min(f[j], g[j]);
-    //for (int j = 1; j <= K; j++) cout << f[j] << " ";
-    //cout << endl;
   }
   for (int i = 1; i <= K; i++) cout << f[i] << " ";
 }
