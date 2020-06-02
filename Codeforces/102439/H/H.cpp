@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 #include <map>
@@ -30,10 +31,11 @@ void rstr(char *s) {
 }
 
 const int Max_n = 100;
-int t, N;
-LL n;
-unsigned LL f[Max_n];
+int T, N;
+LL n, t, a[Max_n * 20];
+LL f[Max_n];
 map<LL, bool> M;
+map<LL, bool>::iterator it;
 
 namespace Input {
 void main() { 
@@ -42,24 +44,33 @@ void main() {
 }  // namespace Input
 
 namespace Init {
-void Count(unsigned LL x) {
-  unsigned LL c = 1;
-  for (int i = 1; i <= 19; i++, c *= 10) {
-  }
+void Count(LL x) {
+  LL c = 1;
+  for (int i = 1; i <= 19; i++, c *= 10)
+    M[(x / c / 10) * c + x % c] = 1;
 }
 void main() {
   N = 1, f[1] = 1;
   for (N = 2;; N++) {
     f[N] = f[N - 1] + f[N - 2];
-    if (f[N] >= 1e19) break;
+    if (f[N] >= 1e18) break;
     M[f[N]] = 1;
-    Count(f[N]);
+    if (f[N] <= 1e17) Count(f[N]);
   }
+  for (it = M.begin(); it != M.end(); it++)
+    if (it->first <= 1e18) a[++t] = it->first;
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  T = read();
+  while (T--) {
+    n = read();
+    LL ans = n + 1 - (lower_bound(a + 1, a + t + 1, n) - a);
+    printf("%lld\n", ans);
+  }
+}
 }  // namespace Solve
 
 int main() {
