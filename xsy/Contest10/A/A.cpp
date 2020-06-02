@@ -7,7 +7,7 @@ using namespace std;
 #define go(G, x, i, v) \
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 
-char read_str[1 << 25], *CH = read_str;
+char read_str[1 << 26], *CH = read_str;
 #define getchar() (*CH++)
 LL read() {
   char ch = getchar();
@@ -39,13 +39,13 @@ bool vis[Max_n];
 
 namespace Input {
 void main() { 
-  fread(read_str, 1, 1 << 25, stdin); 
+  fread(read_str, 1, 1 << 26, stdin); 
   n = read(), K = read();
   for (int i = 1; i <= n; i++) {
     a[i].resize(1 + (m[i] = read()), 0);
-    for (int j = 0; j <= m[i]; j++) a[i][j + !j] += read();
-    m[i] = min(m[i], K);
-    for (int j = 2; j <= m[i]; j++) a[i][j] += a[i][j - 1];
+    //for (int j = 0; j <= m[i]; j++) a[i][j + !j] += read();
+    //m[i] = min(m[i], K);
+    //for (int j = 2; j <= m[i]; j++) a[i][j] += a[i][j - 1];
   }
 }
 }  // namespace Input
@@ -99,6 +99,6 @@ int main() {
   freopen("A.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
-  Solve::main();
+  //Init::main();
+  //Solve::main();
 }
