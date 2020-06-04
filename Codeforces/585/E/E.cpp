@@ -63,12 +63,8 @@ void Mod(int &x) { x = x >= mod ? x - mod : x; }
 void main() {
   for (int i = 1; i <= cnt; i++)
     for (int j = 1e7 / pri[i]; j; j--) c[j] += c[j * pri[i]];
-  //for (int i = 1; i <= 1e7; i++) {
-  //  if (mu[i]) {
-  //    int tot = mu[i] == -1 ? mod - c[i] : c[i];
-  //    for (int j = i; j <= 1e7; j += i) Mod(f[j] += tot);
-  //  }
-  //}
+  for (int i = 1; i <= 1e7; i++) 
+    if (mu[i]) f[i] = mu[i] == -1 ? mod - 
   //pw2[0] = 1;
   //for (int i = 1; i <= n; i++) pw2[i] = 2ll * pw2[i - 1] % mod;
   //for (int i = 1; i <= 1e7; i++) s[i] = pw2[c[i]] - 1;
