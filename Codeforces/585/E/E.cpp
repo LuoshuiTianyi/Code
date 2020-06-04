@@ -64,15 +64,17 @@ void main() {
   for (int i = 1; i <= cnt; i++)
     for (int j = 1e7 / pri[i]; j; j--) c[j] += c[j * pri[i]];
   for (int i = 1; i <= 1e7; i++) 
-    if (mu[i]) f[i] = mu[i] == -1 ? mod - 
-  //pw2[0] = 1;
-  //for (int i = 1; i <= n; i++) pw2[i] = 2ll * pw2[i - 1] % mod;
-  //for (int i = 1; i <= 1e7; i++) s[i] = pw2[c[i]] - 1;
-  //for (int i = 1; i <= 1e7; i++)
-  //  for (int j = i << 1; j <= 1e7; j += i) Mod(s[j] += mod - s[i]);
-  //int ans = 0;
-  //for (int i = 1; i <= 1e7; i++) Mod(ans += (LL)f[i] * s[i] % mod);
-  //cout << ans << endl;
+    if (mu[i]) f[i] = mu[i] == -1 ? mod - c[i] : c[i];
+  for (int i = 1; i <= cnt; i++)
+    for (int j = 1; pri[i] * j <= 1e7; j++) Mod(f[j * pri[i]] += f[j]);
+  pw2[0] = 1;
+  for (int i = 1; i <= n; i++) pw2[i] = 2ll * pw2[i - 1] % mod;
+  for (int i = 1; i <= 1e7; i++) s[i] = pw2[c[i]] - 1;
+  for (int i = 1; i <= cnt; i++)
+    for (int j = 1; pri[i] * j <= 1e7; j++) s[j] -= s[j * pri[i]];
+  int ans = 0;
+  for (int i = 2; i <= 1e7; i++) Mod(ans += (LL)f[i] * s[i] % mod);
+  cout << ans << endl;
 }
 }  // namespace Solve
 
