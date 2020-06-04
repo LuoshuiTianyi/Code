@@ -28,9 +28,9 @@ void rstr(char *s) {
   }
 }
 
-const int Max_n = 1e7 + 5;
+const int Max_n = 1e7 + 5, mod = 1e9 + 7;
 int n;
-int cnt, pri[Max_n], mu[Max_n];
+int cnt, pri[Max_n], mu[Max_n], pw2[Max_n];
 int f[Max_n], c[Max_n], s[Max_n];
 bool vis[Max_n];
 
@@ -59,9 +59,19 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
+void Mod(int &x) { x = x >= mod ? x - mod : x; }
 void main() {
   for (int i = 1; i <= 1e7; i++)
     for (int j = i << 1; j <= 1e7; j += i) c[i] += c[j];
+  //for (int i = 1; i <= 1e7; i++) {
+  //  int tot = !mu[i] ? 0 : (mu[i] == -1 ? mod - c[i] : c[i]);
+  //  for (int j = i; j <= 1e7; j += i) Mod(f[j] += tot);
+  //}
+  //pw2[0] = 1;
+  //for (int i = 1; i <= n; i++) pw2[i] = 2ll * pw2[i - 1] % mod;
+  //for (int i = 1; i <= 1e7; i++) s[i] = pw2[c[i]] - 1;
+  //for (int i = 1; i <= 1e7; i++)
+  //  for (int j = i << 1; j <= 1e7; j += i) Mod(s[j] += mod - s[i]);
 }
 }  // namespace Solve
 
