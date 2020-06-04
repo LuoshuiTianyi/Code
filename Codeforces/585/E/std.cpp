@@ -26,7 +26,7 @@ void sieve(int x) {
 }
 signed main() {
   freopen("E.in", "r", stdin);
-  freopen("E.out", "w", stdout);
+  freopen("E.ans", "w", stdout);
   cin >> n;
   for (int i = 1; i <= n; ++i)
     scanf("%d", &A[i]), ++c[A[i]], lim = max(lim, A[i]);
@@ -34,15 +34,15 @@ signed main() {
   sieve(lim);
   for (int i = 1; i <= en; ++i)
     for (int j = lim / pri[i]; j; --j) c[j] += c[j * pri[i]];
-  //for (int i = 1; i <= lim; ++i) mu[i] *= c[i];
-  //for (int i = 1; i <= en; ++i)
-  //  for (int j = 1; j * pri[i] <= lim; ++j) (mu[j * pri[i]] += mu[j]) %= P;
-  //_[0] = 1;
-  //for (int i = 1; i < 500006; ++i) _[i] = _[i - 1] * 2 % P;
-  //for (int i = 1; i <= lim; ++i) s[i] = _[c[i]] - 1;
-  //for (int i = en; i; --i)
-  //  for (int j = 1; j * pri[i] <= lim; ++j) (s[j] -= s[j * pri[i]]) %= P;
-  //int ans = 0;
-  //for (int i = 2; i <= lim; ++i) (ans += 1ll * s[i] * mu[i] % P) %= P;
-  //cout << (ans + P) % P << endl;
+  for (int i = 1; i <= lim; ++i) mu[i] *= c[i];
+  for (int i = 1; i <= en; ++i)
+    for (int j = 1; j * pri[i] <= lim; ++j) (mu[j * pri[i]] += mu[j]) %= P;
+  _[0] = 1;
+  for (int i = 1; i < 500006; ++i) _[i] = _[i - 1] * 2 % P;
+  for (int i = 1; i <= lim; ++i) s[i] = _[c[i]] - 1;
+  for (int i = en; i; --i)
+    for (int j = 1; j * pri[i] <= lim; ++j) (s[j] -= s[j * pri[i]]) %= P;
+  int ans = 0;
+  for (int i = 2; i <= lim; ++i) (ans += 1ll * s[i] * mu[i] % P) %= P;
+  cout << (ans + P) % P << endl;
 }

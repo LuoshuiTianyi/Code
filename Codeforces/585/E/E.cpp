@@ -30,15 +30,15 @@ void rstr(char *s) {
 
 const int Max_n = 1e7 + 5, mod = 1e9 + 7;
 int n;
-int cnt, pri[Max_n], mu[Max_n], pw2[Max_n];
-int f[Max_n], c[Max_n], s[Max_n];
+int cnt, pri[700000], mu[Max_n], pw2[Max_n];
+int f[Max_n], s[Max_n];
 bool vis[Max_n];
 
 namespace Input {
 void main() { 
   fread(read_str, 1, 1 << 25, stdin); 
   n = read();
-  for (int i = 1; i <= n; i++) c[read()]++;
+  for (int i = 1; i <= n; i++) f[read()]++;
 }
 }  // namespace Input
 
@@ -62,16 +62,18 @@ namespace Solve {
 void Mod(int &x) { x = x >= mod ? x - mod : x; }
 void main() {
   for (int i = 1; i <= cnt; i++)
-    for (int j = 1e7 / pri[i]; j; j--) c[j] += c[j * pri[i]];
-  for (int i = 1; i <= 1e7; i++) 
-    if (mu[i]) f[i] = mu[i] == -1 ? mod - c[i] : c[i];
-  for (int i = 1; i <= cnt; i++)
-    for (int j = 1; pri[i] * j <= 1e7; j++) Mod(f[j * pri[i]] += f[j]);
+    for (int j = 1e7 / pri[i]; j; j--) Mod(f[j] += f[j * pri[i]]);
   pw2[0] = 1;
   for (int i = 1; i <= n; i++) pw2[i] = 2ll * pw2[i - 1] % mod;
-  for (int i = 1; i <= 1e7; i++) s[i] = pw2[c[i]] - 1;
+  for (int i = 1; i <= 1e7; i++) s[i] = pw2[f[i]] - 1;
+  for (int i = 1; i <= 1e7; i++) {
+    f[i] *= mu[i];
+    if (f[i] < 0) f[i] += mod;
+  }
   for (int i = 1; i <= cnt; i++)
-    for (int j = 1; pri[i] * j <= 1e7; j++) s[j] -= s[j * pri[i]];
+    for (int j = 1; pri[i] * j <= 1e7; j++) Mod(f[j * pri[i]] += f[j]);
+  for (int i = 1; i <= cnt; i++)
+    for (int j = 1; pri[i] * j <= 1e7; j++) Mod(s[j] += mod - s[j * pri[i]]);
   int ans = 0;
   for (int i = 2; i <= 1e7; i++) Mod(ans += (LL)f[i] * s[i] % mod);
   cout << ans << endl;
