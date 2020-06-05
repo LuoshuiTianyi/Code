@@ -32,11 +32,11 @@ void rstr(char *s) {
 const int Max_n = 1e6 + 5, mod = 1e9 + 7;
 int T;
 int n, p, ans, k[Max_n];
-int top, stk[Max_n], a1[Max_n], a2[Max_n];
+int top, stk[Max_n], a[Max_n];
 
 namespace Input {
 void main() {
-  n = read(), p = read(), top = 0;
+  n = read(), p = read(), top = ans = 0;
   for (int i = 1; i <= n; i++) k[i] = read();
 }
 }  // namespace Input
@@ -48,23 +48,32 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
+int ksm(int a, int b) {
+  int res = 1;
+  for (; b; b >>= 1, a = (LL)a * a % mod)
+    if (b & 1) res = (LL)res * a % mod;
+  return res;
+}
 void add(int x) {
   int now = x;
-  while (a2[now]) a2[now++] = 0;
+  while (a[now] == p) a[now++] = 0;
+  a[now] = 1, stk[++top] = now;
 }
 void main() {
   if (p == 1) {
     printf("%d\n", (n & 1));
     return;
   }
-  bool fl = 0;
+  int fl = 0;
   for (int i = n; i; i--) {
     if (!fl) {
-      a1[k[i]] = 1;
+      fl = k[i], ans = ksm(p, k[i]);
     } else {
-      add(k[i]);
+      add(k[i]), stk[++top] = k[i], (ans += mod - ksm(p, k[i])) %= mod;
+      if (a[fl]) a[fl] = 0, fl = top = 0;
     }
   }
+  printf("%d\n", ans);
 }
 }  // namespace Solve
 
@@ -75,7 +84,9 @@ int main() {
 #endif
   fread(read_str, 1, 1 << 25, stdin);
   T = read();
-  Input::main();
-  Init::main();
-  Solve::main();
+  while (T--) {
+    Input::main();
+    Init::main();
+    Solve::main();
+  }
 }
