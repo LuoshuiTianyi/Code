@@ -28,24 +28,46 @@ void rstr(char *s) {
   }
 }
 
+const int Max_n = 1e6 + 5, Max = 1e8 + 5, mod = 1e9 + 7;
+int T;
+int n, p, ans, tot;
+int a[Max_n];
+bool f[Max];
+
 namespace Input {
-void main() { fread(read_str, 1, 1 << 25, stdin); }
+int ksm(int a, int b) {
+  int res = 1;
+  for (; b; b >>= 1, a = (LL)a * a % mod)
+    if (b & 1) res = (LL)res * a % mod;
+  return res;
+}
+void main() {
+  n = read(), p = read();
+  for (int i = 1; i <= n; i++) tot += (a[i] = ksm(p, read()));
+}
 }  // namespace Input
 
-namespace Init {
-void main() {}
-}  // namespace Init
-
 namespace Solve {
-void main() {}
+void main() {
+  f[0] = 1;
+  for (int i = 1; i <= n; i++)
+    for (int j = tot; j >= a[i]; j--) f[j] |= f[j - a[i]];
+  int ans = 1e9;
+  for (int i = 1; i <= tot; i++)
+    if (f[i]) ans = min(ans, abs(tot - i - i));
+  cout << ans << endl;
+}
 }  // namespace Solve
 
 int main() {
 #ifndef ONLINE_JUDGE
-  freopen("bf.in", "r", stdin);
-  freopen("bf.out", "w", stdout);
+  freopen("B.in", "r", stdin);
+  freopen("B.ans", "w", stdout);
 #endif
-  Input::main();
-  Init::main();
-  Solve::main();
+  fread(read_str, 1, 1 << 25, stdin);
+  T = read();
+  while (T--) {
+    Input::main();
+    Solve::main();
+  }
 }

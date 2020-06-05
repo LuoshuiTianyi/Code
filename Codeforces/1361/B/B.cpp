@@ -56,8 +56,8 @@ int ksm(int a, int b) {
 }
 void add(int x) {
   int now = x;
-  while (a[now] == p) a[now++] = 0;
-  a[now] = 1, stk[++top] = now;
+  while (a[now] == p - 1) a[now++] = 0;
+  a[now]++, stk[++top] = now;
 }
 void main() {
   if (p == 1) {
@@ -73,6 +73,7 @@ void main() {
       if (a[fl]) a[fl] = 0, fl = top = 0;
     }
   }
+  for (int i = 1; i <= top; i++) a[stk[i]] = 0;
   printf("%d\n", ans);
 }
 }  // namespace Solve
