@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 #include <cstdio>
 #include <iostream>
 using namespace std;
@@ -29,64 +30,60 @@ void rstr(char *s) {
   }
 }
 
-const int Max_n = 1e6 + 5, mod = 1e9 + 7;
-int T;
-int n, p, ans, k[Max_n];
-int top, stk[Max_n << 1], a[Max_n << 1];
+const int N = 1e6 + 7, mod = 1e9 + 7;
+int n, p, a[N];
 
-namespace Input {
-void main() {
-  n = read(), p = read(), top = ans = 0;
-  for (int i = 1; i <= n; i++) k[i] = read();
-}
-}  // namespace Input
-
-namespace Init {
-void main() {
-  sort(k + 1, k + n + 1);
-}
-}  // namespace Init
-
-namespace Solve {
 int ksm(int a, int b) {
   int res = 1;
   for (; b; b >>= 1, a = (LL)a * a % mod)
     if (b & 1) res = (LL)res * a % mod;
   return res;
 }
-void add(int x) {
-  while (a[x] == p - 1) a[x++] = 0;
-  a[x]++, stk[++top] = x;
-}
-void main() {
-  if (p == 1) {
-    printf("%d\n", (n & 1));
-    return;
-  }
-  int fl = 0;
-  for (int i = n; i; i--) {
-    if (!fl) {
-      fl = k[i], ans = ksm(p, k[i]);
+void solve() {
+  n = read(), p = read();
+  for (int i = 1; i <= n; i++) a[i] = read();
+  if (p == 1) return void(printf("%d\n", (n & 1)));
+  sort(a + 1, a + n + 1);
+  reverse(a + 1, a + n + 1);
+  int ans = ksm(p, a[1]) % mod;
+  LL c = 1;
+  int k = a[1], w = log(n) / log(p) + 1;
+  for (int i = 2; i <= n; i++) {
+    if (k - a[i] > w) {
+      if (c > 0)
+        c = n;
+      else if (c < 0)
+        c = -n;
+      k = a[i];
+    } else
+      while (k > a[i]) {
+        --k;
+        c *= p;
+        if (c > n) {
+          c = n;
+          break;
+        }
+        if (c < -n) {
+          c = -n;
+          break;
+        }
+      }
+    if (c <= 0) {
+      (ans += (p ^ a[i]) % mod) %= mod;
+      ++c;
     } else {
-      add(k[i]), stk[++top] = k[i], (ans += mod - ksm(p, k[i])) %= mod;
-      if (a[fl]) a[fl] = 0, fl = top = 0;
+      (ans += mod - (p ^ a[i]) % mod) %= mod;
+      --c;
     }
   }
-  for (int i = 1; i <= top; i++) a[stk[i]] = 0;
   printf("%d\n", ans);
 }
-}  // namespace Solve
 
 int main() {
-#ifndef ONLINE_JUDGE
   freopen("B.in", "r", stdin);
   freopen("B.out", "w", stdout);
-#endif
   fread(read_str, 1, 1 << 25, stdin);
-  T = read();
-  while (T--) {
-    Input::main();
-    Init::main();
-    Solve::main();
-  }
+  int T = read();
+  while (T--) solve();
+  return 0;
 }
