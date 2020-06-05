@@ -3,7 +3,6 @@
 #include <iostream>
 using namespace std;
 #define LL long long
-#define int LL
 #define go(G, x, i, v) \
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 
@@ -33,7 +32,7 @@ void rstr(char *s) {
 const int Max_n = 1e6 + 5, mod = 1e9 + 7;
 int T;
 int n, p, ans, k[Max_n];
-int top, stk[Max_n], a[Max_n];
+int top, stk[Max_n << 1], a[Max_n << 1];
 
 namespace Input {
 void main() {
@@ -62,7 +61,7 @@ void add(int x) {
 }
 void main() {
   if (p == 1) {
-    printf("%lld\n", (n & 1));
+    printf("%d\n", (n & 1));
     return;
   }
   int fl = 0;
@@ -75,11 +74,11 @@ void main() {
     }
   }
   for (int i = 1; i <= top; i++) a[stk[i]] = 0;
-  printf("%lld\n", ans);
+  printf("%d\n", ans);
 }
 }  // namespace Solve
 
-main() {
+int main() {
 #ifndef ONLINE_JUDGE
   freopen("B.in", "r", stdin);
   freopen("B.out", "w", stdout);

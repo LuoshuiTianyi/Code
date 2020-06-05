@@ -43,7 +43,8 @@ int ksm(int a, int b) {
 }
 void main() {
   n = read(), p = read(), tot = 0;
-  for (int i = 1; i <= n; i++) tot += (a[i] = ksm(p, read()));
+  for (int i = 1; i <= n; i++)
+    tot += (a[i] = ksm(p, read()));
 }
 }  // namespace Input
 
