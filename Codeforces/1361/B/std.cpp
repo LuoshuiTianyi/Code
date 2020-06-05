@@ -30,8 +30,8 @@ void rstr(char *s) {
   }
 }
 
-const int N = 1e6 + 7, mod = 1e9 + 7;
-int n, p, a[N];
+const int Max_n = 1e6 + 7, mod = 1e9 + 7;
+int n, p, a[Max_n];
 
 int ksm(int a, int b) {
   int res = 1;
@@ -42,48 +42,38 @@ int ksm(int a, int b) {
 void solve() {
   n = read(), p = read();
   for (int i = 1; i <= n; i++) a[i] = read();
-  if (p == 1) return void(printf("%d\n", (n & 1)));
+  if (p == 1) {
+    printf("%d\n", (n & 1));
+    return;
+  }
   sort(a + 1, a + n + 1);
-  reverse(a + 1, a + n + 1);
-  int ans = ksm(p, a[1]) % mod;
+  int ans = ksm(p, a[n]);
   LL c = 1;
-  int k = a[1], w = log(n) / log(p) + 1;
-  for (int i = 2; i <= n; i++) {
+  int k = a[n], w = log(n) / log(p) + 1;
+  for (int i = n - 1; i; i--) {
     if (k - a[i] > w) {
       if (c > 0)
         c = n;
-      else if (c < 0)
-        c = -n;
+      else 
+        if (c < 0) c = -n;
       k = a[i];
-    } else
-      while (k > a[i]) {
-        --k;
-        c *= p;
-        if (c > n) {
-          c = n;
-          break;
-        }
-        if (c < -n) {
-          c = -n;
-          break;
-        }
-      }
-    if (c <= 0) {
-      (ans += ksm(p, a[i])) %= mod;
-      ++c;
     } else {
-      (ans += mod - ksm(p, a[i]) % mod) %= mod;
-      --c;
+      for (; k > a[i]; k--, c *= p)
+        if (c > n) 
+          c = n;
+        else 
+          if (c < -n) c = -n;
     }
+    if (c <= 0)
+      (ans += ksm(p, a[i])) %= mod, c++;
+    else
+      (ans += mod - ksm(p, a[i])) %= mod, c--;
   }
   printf("%d\n", ans);
 }
 
 int main() {
-  freopen("B.in", "r", stdin);
-  freopen("B.ans", "w", stdout);
   fread(read_str, 1, 1 << 25, stdin);
   int T = read();
   while (T--) solve();
-  return 0;
 }
