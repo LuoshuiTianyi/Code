@@ -31,20 +31,41 @@ void rstr(char *s) {
 
 const int Max_n = 1e6 + 5, mod = 1e9 + 7;
 int T;
-int n, p, k[Max_n];
+int n, p, ans, k[Max_n];
+int top, stk[Max_n], a1[Max_n], a2[Max_n];
 
 namespace Input {
 void main() {
-  n = read(), p = read();
+  n = read(), p = read(), top = 0;
+  for (int i = 1; i <= n; i++) k[i] = read();
 }
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  sort(k + 1, k + n + 1);
+}
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void add(int x) {
+  int now = x;
+  while (a2[now]) a2[now++] = 0;
+}
+void main() {
+  if (p == 1) {
+    printf("%d\n", (n & 1));
+    return;
+  }
+  bool fl = 0;
+  for (int i = n; i; i--) {
+    if (!fl) {
+      a1[k[i]] = 1;
+    } else {
+      add(k[i]);
+    }
+  }
+}
 }  // namespace Solve
 
 int main() {
