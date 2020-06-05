@@ -69,10 +69,10 @@ void solve() {
         }
       }
     if (c <= 0) {
-      (ans += (p ^ a[i]) % mod) %= mod;
+      (ans += ksm(p, a[i])) %= mod;
       ++c;
     } else {
-      (ans += mod - (p ^ a[i]) % mod) %= mod;
+      (ans += mod - ksm(p, a[i]) % mod) %= mod;
       --c;
     }
   }
@@ -81,7 +81,7 @@ void solve() {
 
 int main() {
   freopen("B.in", "r", stdin);
-  freopen("B.out", "w", stdout);
+  freopen("B.ans", "w", stdout);
   fread(read_str, 1, 1 << 25, stdin);
   int T = read();
   while (T--) solve();

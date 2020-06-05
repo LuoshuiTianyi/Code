@@ -5,7 +5,7 @@ for((cnt=1;;cnt++))
 do
 python3 ./gen.py > B.in
 ./B
-./bf
+./std
 if diff B.ans B.out;
 then
 	echo -e "\033[32m ${AC} Accept data-${cnt}\033[0m"
