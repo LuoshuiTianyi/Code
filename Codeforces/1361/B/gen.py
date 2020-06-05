@@ -1,7 +1,8 @@
 from random import randint
-T = 1
+T = 10000
 print(T)
-n, p = 20, 3
-print(n, p)
-for i in range(n):
-    print(randint(1, 15), end = " ")
+for o in range(T):
+    n, p = 20, 1
+    print(n, p)
+    for i in range(n):
+        print(randint(1, 10), end = " ")

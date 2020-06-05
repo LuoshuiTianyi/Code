@@ -42,7 +42,7 @@ int ksm(int a, int b) {
   return res;
 }
 void main() {
-  n = read(), p = read();
+  n = read(), p = read(), tot = 0;
   for (int i = 1; i <= n; i++) tot += (a[i] = ksm(p, read()));
 }
 }  // namespace Input
@@ -50,6 +50,7 @@ void main() {
 namespace Solve {
 void main() {
   f[0] = 1;
+  for (int i = 1; i <= tot; i++) f[i] = 0;
   for (int i = 1; i <= n; i++)
     for (int j = tot; j >= a[i]; j--) f[j] |= f[j - a[i]];
   int ans = 1e9;
