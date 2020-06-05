@@ -3,6 +3,7 @@
 #include <iostream>
 using namespace std;
 #define LL long long
+#define int LL
 #define go(G, x, i, v) \
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 
@@ -61,7 +62,7 @@ void add(int x) {
 }
 void main() {
   if (p == 1) {
-    printf("%d\n", (n & 1));
+    printf("%lld\n", (n & 1));
     return;
   }
   int fl = 0;
@@ -74,11 +75,11 @@ void main() {
     }
   }
   for (int i = 1; i <= top; i++) a[stk[i]] = 0;
-  printf("%d\n", ans);
+  printf("%lld\n", ans);
 }
 }  // namespace Solve
 
-int main() {
+main() {
 #ifndef ONLINE_JUDGE
   freopen("B.in", "r", stdin);
   freopen("B.out", "w", stdout);
