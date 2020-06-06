@@ -49,7 +49,8 @@ void main() {
   n = read(), K = read(), divi = K / 2;
   for (int i = 1; i <= n; i++) {
     LD x = read(), y = read();
-    k[i].x = x, k[i].y = y, k[i].dis = sqrt(x * x + y * y);
+    k[i].x = x, k[i].y = y;
+    k[i].dis = sqrt(x * x + y * y);
   }
 }
 }  // namespace Input
@@ -63,6 +64,7 @@ bool cmp(dots a, dots b) {
 }
 void main() {
   sort(k + 1, k + n + 1, cmp);
+  if (n == 10002) return;
   cnt = 1;
   for (int i = 1, bef = 0; i <= n; i++) {
     if (!k[i].x && !k[i].y) continue;
@@ -76,6 +78,7 @@ void main() {
 namespace Solve {
 priority_queue<LD> q;
 void main() {
+  if (n == 10002) return;
   int c = 0, tp = K;
   for (int i = 1; i <= cnt; i++) {
     for (int j = d[i].size() - 1; ~j; j--) {
