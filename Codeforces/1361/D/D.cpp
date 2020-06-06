@@ -60,11 +60,12 @@ void main() {
 
 namespace Init {
 bool cmp(dots a, dots b) {
-  return !(a * b) ? ((a ^ b) < 0) : ((a * b) < 0);
+  if (a.x < 0 && a.y <= 0 && b.x <= 0 && b.y > 0) return 1;
+  if (b.x < 0 && b.y <= 0 && a.x <= 0 && a.y > 0) return 0;
+  return a * b < 0;
 }
 void main() {
   sort(k + 1, k + n + 1, cmp);
-  cout << k[2] * k[4] << endl;
   cnt = 1;
   for (int i = 2; i <= n; i++) {
     if (k[i] * k[i - 1] != 0 || (k[i] ^ k[i - 1]) < 0) cnt++;
