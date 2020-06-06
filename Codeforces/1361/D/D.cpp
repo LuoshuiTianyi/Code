@@ -78,7 +78,7 @@ void main() {
     for (int j = d[i].size() - 1; ~j; j--) {
       q.push(d[i][j] * (K - ((int)d[i].size() - 1 - j) * 2 - 1));
     }
-  while (K && q.top() > 0) ans += q.top(), q.pop(), K--;
+  while (K && !q.empty() && q.top() > 0) ans += q.top(), q.pop(), K--;
   if (K) {
     K--;
     for (int i = 1; i <= cnt; i++)
@@ -88,7 +88,7 @@ void main() {
         break;
       }
   }
-  printf("%.7lf", ans);
+  printf("%.10lf", ans);
 }
 }  // namespace Solve
 
