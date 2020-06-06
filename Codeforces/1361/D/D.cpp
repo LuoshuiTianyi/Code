@@ -50,7 +50,6 @@ void main() {
   for (int i = 1; i <= n; i++) {
     LD x = read(), y = read();
     k[i].x = x, k[i].y = y, k[i].dis = sqrt(x * x + y * y);
-    if (!x && !y) i--, n--;
   }
 }
 }  // namespace Input
@@ -65,9 +64,10 @@ bool cmp(dots a, dots b) {
 void main() {
   sort(k + 1, k + n + 1, cmp);
   cnt = 1;
-  for (int i = 1; i <= n; i++) {
-    if (k[i] * k[i - 1] != 0 || (k[i] ^ k[i - 1]) < 0) cnt++;
-    d[cnt].push_back(k[i].dis);
+  for (int i = 1, bef = 0; i <= n; i++) {
+    if (!k[i].x && !k[i].y) continue;
+    if (k[i] * k[bef] != 0 || (k[i] ^ k[bef]) < 0) cnt++;
+    d[cnt].push_back(k[i].dis), bef = i;
   }
   for (int i = 1; i <= cnt; i++) sort(d[i].begin(), d[i].end());
 }
@@ -76,7 +76,6 @@ void main() {
 namespace Solve {
 priority_queue<LD> q;
 void main() {
-  if (n == 10002) return;
   int c = 0, tp = K;
   for (int i = 1; i <= cnt; i++) {
     for (int j = d[i].size() - 1; ~j; j--) {
@@ -91,6 +90,7 @@ void main() {
         for (int j = K - 1; ~j; j--)
           ans += d[i][j] * (tp - (divi + K - 1 - j) * 2 - 1);
         break;
+      }
   }
   printf("%.10lf", ans);
 }
