@@ -2,6 +2,7 @@
 #include <ext/pb_ds/hash_policy.hpp>
 using namespace __gnu_pbds;
 
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 #include <set>
@@ -42,21 +43,37 @@ int bel[Max_n];
 set<LD> S;
 cc_hash_table<LD, int> M;
 vector<LD> d[Max_n];
+LD sqr(LD x) { return x * x; }
 struct dots {
-  LD x, y;
+  LD x, y, dis;
+  LD operator*(const dots &b) const {
+    return x * b.y - y * b.x;
+  }
 } k[Max_n];
 
 namespace Input {
 void main() { 
   fread(read_str, 1, 1 << 25, stdin); 
   n = read(), K = read();
-  for (int i = 1; i <= n; i++)
-    k[i].x = read(), k[i].y = read();
+  for (int i = 1; i <= n; i++) {
+    LD x = read(), y = read();
+    k[i].x = x, k[i].y = y, k[i].dis;
+  }
 }
 }  // namespace Input
 
 namespace Init {
-void main() {}
+bool cmp(dots a, dots b) {
+  return a * b < 0;
+}
+void main() {
+  sort(k + 1, k + n + 1, cmp);
+  for (int i = 1; i <= n; i++) {
+    if (k[i].x == 0 && k[i].y == 0) continue;
+    if (k[i] * k[i - 1] != 0) cnt++;
+    M[cnt].push_back();
+  }
+}
 }  // namespace Init
 
 namespace Solve {
