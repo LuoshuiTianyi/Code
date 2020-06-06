@@ -3,9 +3,10 @@
 #include <cstdio>
 #include <iostream>
 #include <vector>
+#include <queue>
 using namespace std;
 #define LL long long
-#define LD long double
+#define LD double
 #define go(G, x, i, v) \
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 
@@ -33,7 +34,7 @@ void rstr(char *s) {
 }
 
 const int Max_n = 5e5 + 5;
-int n, K, cnt;
+int n, K, divi, cnt;
 LD ans, sec[Max_n];
 vector<LD> d[Max_n];
 struct dots {
@@ -46,7 +47,7 @@ struct dots {
 namespace Input {
 void main() { 
   fread(read_str, 1, 1 << 25, stdin); 
-  n = read(), K = read();
+  n = read(), K = read(), divi = K / 2;
   for (int i = 1; i <= n; i++) {
     LD x = read(), y = read();
     k[i].x = x, k[i].y = y, k[i].dis = sqrt(x * x + y * y);
@@ -70,14 +71,24 @@ void main() {
 }  // namespace Init
 
 namespace Solve {
+priority_queue<LD> q;
 void main() {
-  int c = 0;
+  int c = 0, tp = K;
   for (int i = 1; i <= cnt; i++)
-    for (int j = d[i].size() - 1; ~j; j--)
-      sec[++c] = d[i][j] * (K - (d[i].size() - 1 - j) * 2 - 1);
-  sort(sec + 1, sec + c + 1);
-  while (K && ) {
+    for (int j = d[i].size() - 1; ~j; j--) {
+      q.push(d[i][j] * (K - ((int)d[i].size() - 1 - j) * 2 - 1));
+    }
+  while (K && q.top() > 0) ans += q.top(), q.pop(), K--;
+  if (K) {
+    K--;
+    for (int i = 1; i <= cnt; i++)
+      if ((int)d[i].size() >= divi) {
+        for (int j = K - 1; ~j; j--)
+          ans += d[i][j] * (tp - (divi + K - 1 - j) * 2 - 1);
+        break;
+      }
   }
+  printf("%.7lf", ans);
 }
 }  // namespace Solve
 
