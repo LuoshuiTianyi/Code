@@ -60,8 +60,8 @@ void main() {
 
 namespace Init {
 bool cmp(dots a, dots b) {
-  if (a.x < 0 && a.y <= 0 && b.x <= 0 && b.y > 0) return 1;
-  if (b.x < 0 && b.y <= 0 && a.x <= 0 && a.y > 0) return 0;
+  if (a.x < 0 && a.y <= 0 && b.x <= 0 && b.y > 0) return 0;
+  if (b.x < 0 && b.y <= 0 && a.x <= 0 && a.y > 0) return 1;
   return a * b < 0;
 }
 void main() {
@@ -70,7 +70,7 @@ void main() {
   for (int i = 2; i <= n; i++) {
     if (k[i] * k[i - 1] != 0 || (k[i] ^ k[i - 1]) < 0) cnt++;
     d[cnt].push_back(k[i].dis);
-    cout << k[i].dis << " " << cnt << endl;
+    cout << k[i].x << " " << k[i].y << endl;
   }
   for (int i = 1; i <= cnt; i++) sort(d[i].begin(), d[i].end());
 }
