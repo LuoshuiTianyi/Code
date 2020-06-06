@@ -2,8 +2,8 @@
 #include <cmath>
 #include <cstdio>
 #include <iostream>
-#include <vector>
 #include <queue>
+#include <vector>
 using namespace std;
 #define LL long long
 #define LD double
@@ -39,20 +39,17 @@ LD ans, sec[Max_n];
 vector<LD> d[Max_n];
 struct dots {
   LD x, y, dis;
-  LD operator*(const dots &b) const {
-    return x * b.y - y * b.x;
-  }
-  LD operator^(const dots &b) const {
-    return x * b.x + y * b.y;
-  }
+  LD operator*(const dots &b) const { return x * b.y - y * b.x; }
+  LD operator^(const dots &b) const { return x * b.x + y * b.y; }
 } k[Max_n];
 
 namespace Input {
-void main() { 
-  fread(read_str, 1, 1 << 25, stdin); 
+void main() {
+  fread(read_str, 1, 1 << 25, stdin);
   n = read(), K = read(), divi = K / 2;
   for (int i = 1; i <= n; i++) {
     LD x = read(), y = read();
+    if (!x && !y) i--, n--;
     k[i].x = x, k[i].y = y, k[i].dis = sqrt(x * x + y * y);
   }
 }
@@ -60,17 +57,18 @@ void main() {
 
 namespace Init {
 bool cmp(dots a, dots b) {
-  if (a * b == 0) return a.x < b.x;
-  return a * b < 0;
+  if (atan2(a.y, a.x) != atan2(b.y, b.x))
+    return atan2(a.y, a.x) < atan2(b.y, b.x);
+  else
+    return a.x < b.x;
 }
 void main() {
-  stable_sort(k + 1, k + n + 1, cmp);
+  sort(k + 1, k + n + 1, cmp);
   cnt = 1;
+  //for (int i = 1; i <= n; i++) cout << k[i].x << " " << k[i].y << endl;
   for (int i = 1; i <= n; i++) {
-    if (!k[i].x && !k[i].y) continue;
     if (k[i] * k[i - 1] != 0 || (k[i] ^ k[i - 1]) < 0) cnt++;
     d[cnt].push_back(k[i].dis);
-    cout << k[i].x << " " << k[i].y << endl;
   }
   for (int i = 1; i <= cnt; i++) sort(d[i].begin(), d[i].end());
 }
