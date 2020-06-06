@@ -63,13 +63,13 @@ void main() {
     printf("%d\n", (n & 1));
     return;
   }
-  int fl = 0;
+  int fl = -1;
   for (int i = n; i; i--) {
-    if (!fl) {
+    if (fl == -1) {
       fl = k[i], ans = ksm(p, k[i]);
     } else {
       add(k[i]), stk[++top] = k[i], (ans += mod - ksm(p, k[i])) %= mod;
-      if (a[fl]) a[fl] = 0, fl = top = 0;
+      if (a[fl]) a[fl] = 0, fl = -1, top = 0;
     }
   }
   for (int i = 1; i <= top; i++) a[stk[i]] = 0;
