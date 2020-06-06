@@ -1,5 +1,10 @@
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/hash_policy.hpp>
+using namespace __gnu_pbds;
+
 #include <cstdio>
 #include <iostream>
+#include <set>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
@@ -28,7 +33,11 @@ void rstr(char *s) {
   }
 }
 
-const int Max_n = ;
+const int Max_n = 5e5 + 5;
+int n, K;
+int bel[Max_n];
+set<double> S;
+cc_hash_table<double, int> M;
 
 namespace Input {
 void main() { fread(read_str, 1, 1 << 25, stdin); }
