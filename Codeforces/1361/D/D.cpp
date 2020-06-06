@@ -7,6 +7,7 @@ using namespace __gnu_pbds;
 #include <set>
 using namespace std;
 #define LL long long
+#define LD long double
 #define go(G, x, i, v) \
   for (int i = G.hd[x], v = G.to[i]; i; v = G.to[i = G.nx[i]])
 
@@ -34,13 +35,23 @@ void rstr(char *s) {
 }
 
 const int Max_n = 5e5 + 5;
+const LD eps = 1e-7;
 int n, K;
+LD x[Max_n], y[Max_n];
 int bel[Max_n];
-set<double> S;
-cc_hash_table<double, int> M;
+set<LD> S;
+cc_hash_table<LD, int> M;
 
 namespace Input {
-void main() { fread(read_str, 1, 1 << 25, stdin); }
+void main() { 
+  fread(read_str, 1, 1 << 25, stdin); 
+  n = read(), K = read();
+  for (int i = 1; i <= n; i++) {
+    x[i] = read(), y[i] = read();
+    if (x[i] == 0 && y[i] == 0)  
+      
+  }
+}
 }  // namespace Input
 
 namespace Init {
