@@ -1,11 +1,7 @@
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/hash_policy.hpp>
-using namespace __gnu_pbds;
-
 #include <algorithm>
+#include <cmath>
 #include <cstdio>
 #include <iostream>
-#include <set>
 #include <vector>
 using namespace std;
 #define LL long long
@@ -37,11 +33,7 @@ void rstr(char *s) {
 }
 
 const int Max_n = 5e5 + 5;
-const LD eps = 1e-7;
-int n, K;
-int bel[Max_n];
-set<LD> S;
-cc_hash_table<LD, int> M;
+int n, K, cnt;
 vector<LD> d[Max_n];
 LD sqr(LD x) { return x * x; }
 struct dots {
@@ -57,7 +49,7 @@ void main() {
   n = read(), K = read();
   for (int i = 1; i <= n; i++) {
     LD x = read(), y = read();
-    k[i].x = x, k[i].y = y, k[i].dis;
+    k[i].x = x, k[i].y = y, k[i].dis = sqrt(sqr(x) + sqr(y));
   }
 }
 }  // namespace Input
@@ -71,13 +63,15 @@ void main() {
   for (int i = 1; i <= n; i++) {
     if (k[i].x == 0 && k[i].y == 0) continue;
     if (k[i] * k[i - 1] != 0) cnt++;
-    M[cnt].push_back();
+    d[cnt].push_back(k[i].dis);
   }
+  for (int i = 1; i <= cnt; i++) sort(d[i].begin(), d[i].end());
 }
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+}
 }  // namespace Solve
 
 int main() {
