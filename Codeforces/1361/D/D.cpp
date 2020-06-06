@@ -38,21 +38,20 @@ void rstr(char *s) {
 const int Max_n = 5e5 + 5;
 const LD eps = 1e-7;
 int n, K;
-LD x[Max_n], y[Max_n];
 int bel[Max_n];
 set<LD> S;
 cc_hash_table<LD, int> M;
 vector<LD> d[Max_n];
+struct dots {
+  LD x, y;
+} k[Max_n];
 
 namespace Input {
 void main() { 
   fread(read_str, 1, 1 << 25, stdin); 
   n = read(), K = read();
-  for (int i = 1; i <= n; i++) {
-    x[i] = read(), y[i] = read();
-    if (x[i] != 0 || y[i] != 0)  
-      
-  }
+  for (int i = 1; i <= n; i++)
+    k[i].x = read(), k[i].y = read();
 }
 }  // namespace Input
 
