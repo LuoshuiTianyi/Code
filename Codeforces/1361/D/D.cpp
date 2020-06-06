@@ -34,8 +34,8 @@ void rstr(char *s) {
 
 const int Max_n = 5e5 + 5;
 int n, K, cnt;
+LD ans, sec[Max_n];
 vector<LD> d[Max_n];
-LD sqr(LD x) { return x * x; }
 struct dots {
   LD x, y, dis;
   LD operator*(const dots &b) const {
@@ -49,7 +49,7 @@ void main() {
   n = read(), K = read();
   for (int i = 1; i <= n; i++) {
     LD x = read(), y = read();
-    k[i].x = x, k[i].y = y, k[i].dis = sqrt(sqr(x) + sqr(y));
+    k[i].x = x, k[i].y = y, k[i].dis = sqrt(x * x + y * y);
   }
 }
 }  // namespace Input
@@ -60,8 +60,8 @@ bool cmp(dots a, dots b) {
 }
 void main() {
   sort(k + 1, k + n + 1, cmp);
-  for (int i = 1; i <= n; i++) {
-    if (k[i].x == 0 && k[i].y == 0) continue;
+  cnt = 1;
+  for (int i = 2; i <= n; i++) {
     if (k[i] * k[i - 1] != 0) cnt++;
     d[cnt].push_back(k[i].dis);
   }
@@ -71,6 +71,13 @@ void main() {
 
 namespace Solve {
 void main() {
+  int c = 0;
+  for (int i = 1; i <= cnt; i++)
+    for (int j = d[i].size() - 1; ~j; j--)
+      sec[++c] = d[i][j] * (K - (d[i].size() - 1 - j) * 2 - 1);
+  sort(sec + 1, sec + c + 1);
+  while (K && ) {
+  }
 }
 }  // namespace Solve
 
