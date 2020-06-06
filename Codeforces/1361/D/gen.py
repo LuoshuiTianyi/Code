@@ -1,16 +1,14 @@
-from random import randint, choice
-n = 10
-V = 10
+from random import randint, choice, shuffle
+n = 10002
 print(n, randint(2, n))
-Dot = []
-for i in range(-V, V + 1):
-    for j in range(-V, V + 1):
-        Dot.append([i, j])
-for i in range(n):
-    dot = []
-    if i == 0:
-        dot = [0, 0]
-    else:
-        dot = choice(Dot)
-    print(dot[0], dot[1])
-    Dot.remove(dot)
+a = []
+for i in range(-100, 101):
+    for j in range(-100, 101):
+        a.append([i, j])
+shuffle(a)
+for i in a:
+    print(i[0], i[1])
+        #if i == 0:
+        #    print(0, 0);
+        #else:
+        #    print(randint(-V, V), randint(-V, V))
