@@ -5,6 +5,7 @@ using namespace __gnu_pbds;
 #include <cstdio>
 #include <iostream>
 #include <set>
+#include <vector>
 using namespace std;
 #define LL long long
 #define LD long double
@@ -41,6 +42,7 @@ LD x[Max_n], y[Max_n];
 int bel[Max_n];
 set<LD> S;
 cc_hash_table<LD, int> M;
+vector<LD> d[Max_n];
 
 namespace Input {
 void main() { 
@@ -48,7 +50,7 @@ void main() {
   n = read(), K = read();
   for (int i = 1; i <= n; i++) {
     x[i] = read(), y[i] = read();
-    if (x[i] == 0 && y[i] == 0)  
+    if (x[i] != 0 || y[i] != 0)  
       
   }
 }
