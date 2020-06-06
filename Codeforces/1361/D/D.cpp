@@ -42,6 +42,9 @@ struct dots {
   LD operator*(const dots &b) const {
     return x * b.y - y * b.x;
   }
+  LD operator^(const dots &b) const {
+    return x * b.x + y * b.y;
+  }
 } k[Max_n];
 
 namespace Input {
@@ -57,13 +60,13 @@ void main() {
 
 namespace Init {
 bool cmp(dots a, dots b) {
-  return a * b < 0;
+  return a * b == 0 ? ((a ^ b) < 0) : (a * b < 0);
 }
 void main() {
   sort(k + 1, k + n + 1, cmp);
   cnt = 1;
   for (int i = 2; i <= n; i++) {
-    if (k[i] * k[i - 1] != 0) cnt++;
+    if (k[i] * k[i - 1] != 0 || (k[i] ^ k[i - 1]) < 0) cnt++;
     d[cnt].push_back(k[i].dis);
   }
   for (int i = 1; i <= cnt; i++) sort(d[i].begin(), d[i].end());
@@ -74,12 +77,12 @@ namespace Solve {
 priority_queue<LD> q;
 void main() {
   int c = 0, tp = K;
-  for (int i = 1; i <= cnt; i++)
+  for (int i = 1; i <= cnt; i++) {
     for (int j = d[i].size() - 1; ~j; j--) {
       q.push(d[i][j] * (K - ((int)d[i].size() - 1 - j) * 2 - 1));
     }
+  }
   while (K && !q.empty() && q.top() > 0) ans += q.top(), q.pop(), K--;
-  cout << ans << endl;
   if (K) {
     K--;
     for (int i = 1; i <= cnt; i++)
