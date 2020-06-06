@@ -65,7 +65,6 @@ bool cmp(dots a, dots b) {
 void main() {
   sort(k + 1, k + n + 1, cmp);
   cnt = 1;
-  //for (int i = 1; i <= n; i++) cout << k[i].x << " " << k[i].y << endl;
   for (int i = 1; i <= n; i++) {
     if (k[i] * k[i - 1] != 0 || (k[i] ^ k[i - 1]) < 0) cnt++;
     d[cnt].push_back(k[i].dis);
@@ -88,8 +87,10 @@ void main() {
     K--;
     for (int i = 1; i <= cnt; i++)
       if ((int)d[i].size() >= divi) {
-        for (int j = K - 1; ~j; j--)
+        for (int j = K - 1; ~j; j--) {
           ans += d[i][j] * (tp - (divi + K - 1 - j) * 2 - 1);
+          //cout << d[i][j] << " " << (tp - (divi + K - 1 - j) * 2 - 1) << endl;
+        }
         break;
       }
   }
