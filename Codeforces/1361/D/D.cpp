@@ -38,9 +38,10 @@ int n, K, divi, cnt;
 LD ans, sec[Max_n];
 vector<LD> d[Max_n];
 struct dots {
-  LD x, y, dis;
-  LD operator*(const dots &b) const { return x * b.y - y * b.x; }
-  LD operator^(const dots &b) const { return x * b.x + y * b.y; }
+  LL x, y;
+  LD dis;
+  LL operator*(const dots &b) const { return x * b.y - y * b.x; }
+  LL operator^(const dots &b) const { return x * b.x + y * b.y; }
 } k[Max_n];
 
 namespace Input {
@@ -48,7 +49,7 @@ void main() {
   fread(read_str, 1, 1 << 25, stdin);
   n = read(), K = read(), divi = K / 2;
   for (int i = 1; i <= n; i++) {
-    LD x = read(), y = read();
+    LL x = read(), y = read();
     k[i].x = x, k[i].y = y;
     k[i].dis = sqrt(x * x + y * y);
   }
@@ -57,14 +58,10 @@ void main() {
 
 namespace Init {
 bool cmp(dots a, dots b) {
-  if (atan2(a.y, a.x) != atan2(b.y, b.x))
-    return atan2(a.y, a.x) < atan2(b.y, b.x);
-  else
-    return a.x < b.x;
+  return !(a * b) ? a.x < b.x : (a * b < 0);
 }
 void main() {
-  sort(k + 1, k + n + 1, cmp);
-  if (n == 10002) return;
+  stable_sort(k + 1, k + n + 1, cmp);
   cnt = 1;
   for (int i = 1, bef = 0; i <= n; i++) {
     if (!k[i].x && !k[i].y) continue;
@@ -78,7 +75,6 @@ void main() {
 namespace Solve {
 priority_queue<LD> q;
 void main() {
-  if (n == 10002) return;
   int c = 0, tp = K;
   for (int i = 1; i <= cnt; i++) {
     for (int j = d[i].size() - 1; ~j; j--) {
