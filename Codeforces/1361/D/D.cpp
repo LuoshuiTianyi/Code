@@ -61,7 +61,7 @@ bool cmp(dots a, dots b) {
   return !(a * b) ? a.x < b.x : (a * b < 0);
 }
 void main() {
-  stable_sort(k + 1, k + n + 1, cmp);
+  sort(k + 1, k + n + 1, cmp);
   cnt = 1;
   for (int i = 1, bef = 0; i <= n; i++) {
     if (!k[i].x && !k[i].y) continue;
