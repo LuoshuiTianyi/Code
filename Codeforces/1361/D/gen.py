@@ -1,6 +1,6 @@
 from random import randint, choice
-n = 10
-V = 10
+n = 5
+V = 3
 print(n, randint(2, n))
 Dot = []
 for i in range(-V, V + 1):
