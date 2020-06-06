@@ -38,10 +38,9 @@ int n, K, divi, cnt;
 LD ans, sec[Max_n];
 vector<LD> d[Max_n];
 struct dots {
-  LL x, y;
-  LD dis;
-  LL operator*(const dots &b) const { return x * b.y - y * b.x; }
-  LL operator^(const dots &b) const { return x * b.x + y * b.y; }
+  LD x, y, dis, atan;
+  LD operator*(const dots &b) const { return x * b.y - y * b.x; }
+  LD operator^(const dots &b) const { return x * b.x + y * b.y; }
 } k[Max_n];
 
 namespace Input {
@@ -49,8 +48,8 @@ void main() {
   fread(read_str, 1, 1 << 25, stdin);
   n = read(), K = read(), divi = K / 2;
   for (int i = 1; i <= n; i++) {
-    LL x = read(), y = read();
-    k[i].x = x, k[i].y = y;
+    LD x = read(), y = read();
+    k[i].x = x, k[i].y = y, k[i].atan = atan2(k[i].y, k[i].x);
     k[i].dis = sqrt(x * x + y * y);
   }
 }
@@ -58,10 +57,13 @@ void main() {
 
 namespace Init {
 bool cmp(dots a, dots b) {
-  return !(a * b) ? a.x < b.x : (a * b < 0);
+  if (a.atan != b.atan)
+    return a.atan < b.atan;
+  else
+    return a.x < b.x;
 }
 void main() {
-  sort(k + 1, k + n + 1, cmp);
+  stable_sort(k + 1, k + n + 1, cmp);
   cnt = 1;
   for (int i = 1, bef = 0; i <= n; i++) {
     if (!k[i].x && !k[i].y) continue;
