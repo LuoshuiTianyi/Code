@@ -30,6 +30,7 @@ void rstr(char *s) {
 
 const int Max_n = 2e5 + 5;
 int n, nu;
+int c[Max_n];
 bool ans[Max_n];
 LL Max, fnl, a[Max_n], b[Max_n];
 
@@ -38,7 +39,7 @@ void main() {
   fread(read_str, 1, 1 << 25, stdin); 
   n = read();
   for (int i = 1; i <= n; i++) {
-    a[i] = read();
+    a[i] = read(), c[i] = n - i + 1;
     if (a[i] > Max) Max = a[i], nu = 0;
     nu += a[i] == Max;
   }
@@ -62,22 +63,36 @@ void main() {
   for (int i = 1; i <= n; i++)
     if (a[i] != fnl) {
       ans[i] = 1;
-      LL res = a[i] - a[bef] - (n - i + 1), lim = i - 1;
+      LL res = a[i] - a[bef] - c[i], lim = c[bef + 1];
       int num = i - bef - 1;
       for (int j = 1; j <= num; j++) {
-        res -= bef + 1;
+        res -= c[i - 1];
         if (b[j] <= res && res <= b[num]) {
           while (j--) {
             int now = min(res, lim);
             if (now == lim) lim--;
-            ans[now + bef] = 1, res -= now;
+            ans[i - 1 - now] = 1, res -= now;
           }
           break;
         }
       }
       bef = i;
     }
-  if (fnl)
+  if (fnl && a[bef] < fnl - 1) {
+    LL res = fnl - a[bef] - 1, lim = c[bef + 1];
+    int num = n - bef;
+    for (int j = 1; j <= num; j++) {
+      res -= c[n];
+      if (b[j] <= res && res <= b[num]) {
+        while (j--) {
+          int now = min(res, lim);
+          if (now == lim) lim--;
+          ans[n - now] = 1, res -= now;
+        }
+        break;
+      }
+    }
+  }
   for (int i = 1; i <= n; i++) printf("%d",  ans[i]);
 }
 }  // namespace Solve
