@@ -30,7 +30,7 @@ void rstr(char *s) {
 
 const int Max_n = 2e5 + 5;
 int n, nu;
-LL Max, fnl, a[Max_n];
+LL Max, fnl, a[Max_n], b[Max_n];
 
 namespace Input {
 void main() { 
@@ -44,6 +44,12 @@ void main() {
 }
 }  // namespace Input
 
+namespace Init {
+void main() {
+  for (int i = 1; i <= n; i++) b[i] = b[i - 1] + i - 1;
+}
+}
+
 namespace Solve {
 void main() {
   if (Max <= 1) {
@@ -55,7 +61,16 @@ void main() {
   for (int i = 1; i <= n; i++)
     if (a[i] != fnl) {
       LL res = a[i] - a[bef] - (n - i + 1);
-      
+      int num = i - bef - 1;
+      for (int j = 1; j <= num; j++) {
+        res -= bef + 1;
+        if (b[j] <= res && res <= b[num]) {
+          while (j--) {
+            
+          }
+          break;
+        }
+      }
       bef = i;
     }
 }
@@ -67,5 +82,6 @@ int main() {
   freopen("E.out", "w", stdout);
 #endif
   Input::main();
+  Init::main();
   Solve::main();
 }
