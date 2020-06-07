@@ -32,12 +32,12 @@ void rstr(char *s) {
 const int Max_n = 1e3 + 5;
 const int dx[5] = {0, 1, -1, 0, 0}, dy[5] = {0, 0, 0, 1, -1};
 int n, m, Q;
-int a[Max_n][Max_n], col[Max_n][Max_n];
+int a[Max_n][Max_n];
 int vis[Max_n][Max_n];
 
 namespace Input {
-void main() { 
-  fread(read_str, 1, 1 << 25, stdin); 
+void main() {
+  fread(read_str, 1, 1 << 25, stdin);
   n = read(), m = read(), Q = read();
   char s[Max_n];
   for (int i = 1; i <= n; i++) {
@@ -55,9 +55,11 @@ void main() {
       vis[i][j] = -1;
       for (int k = 1; k <= 4; k++) {
         int x = i + dx[k], y = j + dy[k];
-        if (x < 0 || y < 0 || x > n || y > m) continue;
-        if (a[x][y] == a[i][j]) 
-          vis[i][j] = 0, col[i][j] = a[i][j], q.push(make_pair(i, j));
+        if (x < 1 || y < 1 || x > n || y > m) continue;
+        if (a[x][y] == a[i][j]) {
+          vis[i][j] = 0, q.push(make_pair(i, j));
+          break;
+        }
       }
     }
   while (!q.empty()) {
@@ -66,8 +68,8 @@ void main() {
     for (int k = 1; k <= 4; k++) {
       int xx = x + dx[k], yy = y + dy[k];
       if (xx < 0 || yy < 0 || xx > n || yy > m) continue;
-      if (vis[xx][yy] == -1) 
-        vis[xx][yy] = vis[x][y] + 1, col[xx][yy] = col[x][y], q.push(make_pair(xx, yy));
+      if (vis[xx][yy] == -1)
+        vis[xx][yy] = vis[x][y] + 1, q.push(make_pair(xx, yy));
     }
   }
 }
@@ -78,7 +80,11 @@ void main() {
   while (Q--) {
     int x = read(), y = read();
     LL p = read();
-    printf("%d\n", );
+    if (vis[x][y] == -1)
+      printf("%d\n", a[x][y]);
+    else
+      printf("%d\n",
+             p <= vis[x][y] ? a[x][y] : a[x][y] ^ (int)((p - vis[x][y]) & 1));
   }
 }
 }  // namespace Solve
