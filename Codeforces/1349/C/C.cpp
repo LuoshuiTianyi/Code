@@ -28,51 +28,36 @@ void rstr(char *s) {
   }
 }
 
-const int Max_n = 1e5 + 5;
-int T;
-int n, K, a[Max_n];
-bool fl;
+const int Max_n = 1e3 + 5;
+int n, m, Q;
+int a[Max_n][Max_n];
 
 namespace Input {
 void main() { 
-  n = read(), K = read(), fl = 0;
-  for (int i = 1; i <= n; i++) fl |= (a[i] = read()) == K;
+  fread(read_str, 1, 1 << 25, stdin); 
+  n = read(), m = read(), Q = read();
+  char s[Max_n];
+  for (int i = 1; i <= n; i++) {
+    rstr(s + 1);
+    for (int j = 1; j <= m; j++) a[i][j] = s[j] == '1';
+  }
 }
 }  // namespace Input
 
+namespace Init {
+void main() {}
+}  // namespace Init
+
 namespace Solve {
-void main() {
-  if (!fl) {
-    puts("no");
-    return;
-  }
-  if (n == 1) {
-    puts("yes");
-    return;
-  }
-  for (int i = 1; i < n; i++)
-    if (a[i] >= K && a[i + 1] >= K) {
-      puts("yes");
-      return;
-    }
-  for (int i = 1; i < n - 1; i++)
-    if (a[i] >= K && a[i + 2] >= K) {
-      puts("yes");
-      return;
-    }
-  puts("no");
-}
+void main() {}
 }  // namespace Solve
 
 int main() {
 #ifndef ONLINE_JUDGE
-  freopen("B.in", "r", stdin);
-  freopen("B.out", "w", stdout);
+  freopen("C.in", "r", stdin);
+  freopen("C.out", "w", stdout);
 #endif
-  fread(read_str, 1, 1 << 25, stdin); 
-  T = read();
-  while (T--) {
-    Input::main();
-    Solve::main();
-  }
+  Input::main();
+  Init::main();
+  Solve::main();
 }
