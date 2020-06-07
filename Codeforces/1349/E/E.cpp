@@ -30,6 +30,7 @@ void rstr(char *s) {
 
 const int Max_n = 2e5 + 5;
 int n, nu;
+bool ans[Max_n];
 LL Max, fnl, a[Max_n], b[Max_n];
 
 namespace Input {
@@ -60,19 +61,24 @@ void main() {
   int bef = 0;
   for (int i = 1; i <= n; i++)
     if (a[i] != fnl) {
-      LL res = a[i] - a[bef] - (n - i + 1);
+      ans[i] = 1;
+      LL res = a[i] - a[bef] - (n - i + 1), lim = i - 1;
       int num = i - bef - 1;
       for (int j = 1; j <= num; j++) {
         res -= bef + 1;
         if (b[j] <= res && res <= b[num]) {
           while (j--) {
-            
+            int now = min(res, lim);
+            if (now == lim) lim--;
+            ans[now + bef] = 1, res -= now;
           }
           break;
         }
       }
       bef = i;
     }
+  if (fnl)
+  for (int i = 1; i <= n; i++) printf("%d",  ans[i]);
 }
 }  // namespace Solve
 
