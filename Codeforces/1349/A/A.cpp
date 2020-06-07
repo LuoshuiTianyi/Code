@@ -40,13 +40,15 @@ void main() {
   fread(read_str, 1, 1 << 25, stdin); 
   n = read();
   for (int i = 1; i <= n; i++) {
-    a[i] = read();
-    for (int j = 2; j * j <= a[i]; j++)
+    int tp = a[i] = read();
+    for (int j = 2; j * j <= tp; j++) {
       if (a[i] % j == 0) {
         int now = 0;
         while (a[i] % j == 0) a[i] /= j, now++;
         nu[j].push_back(now);
       }
+    }
+    if (a[i] > 1) nu[a[i]].push_back(1);
   }
 }
 }  // namespace Input
@@ -54,7 +56,14 @@ void main() {
 namespace Solve {
 void main() {
   ans = 1;
-  for (int i = 2; i <= 2e5; i++)
+  for (int i = 2; i <= 2e5; i++) {
+    sort(nu[i].begin(), nu[i].end());
+    if (nu[i].size() == n)
+      for (int j = nu[i][1]; j; j--) ans *= i;
+    if (nu[i].size() == n - 1)
+      for (int j = nu[i][0]; j; j--) ans *= i;
+  }
+  cout << ans << endl;
 }
 }  // namespace Solve
 
