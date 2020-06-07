@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <iostream>
+#include <queue>
 using namespace std;
 #define LL long long
 #define go(G, x, i, v) \
@@ -29,8 +30,10 @@ void rstr(char *s) {
 }
 
 const int Max_n = 1e3 + 5;
+const int dx[5] = {0, 1, -1, 0, 0}, dy[5] = {0, 0, 0, 1, -1};
 int n, m, Q;
-int a[Max_n][Max_n];
+int a[Max_n][Max_n], col[Max_n][Max_n];
+int vis[Max_n][Max_n];
 
 namespace Input {
 void main() { 
@@ -45,11 +48,39 @@ void main() {
 }  // namespace Input
 
 namespace Init {
-void main() {}
+queue<pair<int, int> > q;
+void main() {
+  for (int i = 1; i <= n; i++)
+    for (int j = 1; j <= m; j++) {
+      vis[i][j] = -1;
+      for (int k = 1; k <= 4; k++) {
+        int x = i + dx[k], y = j + dy[k];
+        if (x < 0 || y < 0 || x > n || y > m) continue;
+        if (a[x][y] == a[i][j]) 
+          vis[i][j] = 0, col[i][j] = a[i][j], q.push(make_pair(i, j));
+      }
+    }
+  while (!q.empty()) {
+    int x = q.front().first, y = q.front().second;
+    q.pop();
+    for (int k = 1; k <= 4; k++) {
+      int xx = x + dx[k], yy = y + dy[k];
+      if (xx < 0 || yy < 0 || xx > n || yy > m) continue;
+      if (vis[xx][yy] == -1) 
+        vis[xx][yy] = vis[x][y] + 1, col[xx][yy] = col[x][y], q.push(make_pair(xx, yy));
+    }
+  }
+}
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  while (Q--) {
+    int x = read(), y = read();
+    LL p = read();
+    printf("%d\n", );
+  }
+}
 }  // namespace Solve
 
 int main() {
