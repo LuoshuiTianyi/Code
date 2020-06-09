@@ -52,7 +52,7 @@ void main() {
   f[0] = n - 1;
   int t = (LL)m * (n - 1) % mod;
   for (int i = 1; i < m; i++)
-    f[i] = ((LL)i * (n - 1) % mod * f[i - 1] % mod + t) * ksm(m + i) % mod;
+    f[i] = ((LL)i * (n - 1) % mod * f[i - 1] % mod + t) * ksm(m - i) % mod;
   for (int i = m - 1; ~i; i--) (f[i] += f[i + 1]) %= mod;
   int ans = 0;
   for (int i = 1; i <= n; i++) (ans += f[a[i]]) %= mod;
