@@ -56,7 +56,9 @@ void main() {
   for (int i = m - 1; ~i; i--) (f[i] += f[i + 1]) %= mod;
   int ans = 0;
   for (int i = 1; i <= n; i++) (ans += f[a[i]]) %= mod;
-  ans += mod - (LL)(n - 1) * 
+  (ans += mod - (LL)(n - 1) * f[0] % mod) %= mod;
+  ans = (LL)ans * ksm(n) % mod;
+  cout << ans << endl;
 }
 }  // namespace Solve
 
