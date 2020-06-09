@@ -52,7 +52,7 @@ inline void ntt(int *a, int flag) {
     if (i < rev[i]) swap(a[i], a[rev[i]]);
   for (int len = 2; len <= lim; len <<= 1) {
     int wn = Pow((flag == 1) ? G : GI, (Mod - 1) / len);
-    for (int l = 0; l + len - 1 < lim; l += len) {
+    for (int l = 0; l < lim; l += len) {
       int r = l + len - 1, mid = (l + r >> 1);
       for (int i = 0, wnk = 1; i + l <= mid; ++i, wnk = 1ll * wnk * wn % Mod) {
         int x = a[i + l], y = 1ll * a[i + mid + 1] * wnk % Mod;
