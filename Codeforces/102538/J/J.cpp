@@ -29,27 +29,47 @@ void rstr(char *s) {
 }
 
 const int Max_n = 2e5 + 5, mod = 998244353;
-int n, m;
+int T, n, m, ans;
+int tot, cnt;
 int deg[Max_n];
+bool vis[Max_n];
 struct graph {
   int cntr;
   int hd[Max_n], nx[Max_n * 3], to[Max_n * 3];
   void addr(int u, int v) {
     cntr++;
-    hd[u] = cntr, nx[cntr] = hd[u], to[cntr] = v;
+    nx[cntr] = hd[u], to[cntr] = v;
+    hd[u] = cntr;
   }
 } G;
 
 namespace Input {
-void main() { fread(read_str, 1, 1 << 25, stdin); }
+void main() { 
+  n = read(), m = read(), G.cntr = 0;
+  for (int i = 1; i <= n; i++) G.hd[i] = deg[i] = vis[i] = 0;
+  for (int i = 1; i <= m; i++) {
+    int u = read(), v = read();
+    deg[u]++, deg[v]++;
+    G.addr(u, v), G.addr(v, u);
+  }
+}
 }  // namespace Input
 
-namespace Init {
-void main() {}
-}  // namespace Init
-
 namespace Solve {
-void main() {}
+void dfs(int x) {
+  vis[x] = 1, tot++, cnt += deg[x];
+  go(G, x, i, v) if (!vis[v]) dfs(v);
+}
+void main() {
+  ans = 1;
+  for (int i = 1; i <= n; i++)
+    if (!vis[i]) {
+      tot = cnt = 0, dfs(i);
+      cnt >>= 1;
+      for (int j = n; j <= cnt; j++) ans = 5ll * ans % mod;
+    }
+  printf("%d\n", ans);
+}
 }  // namespace Solve
 
 int main() {
@@ -57,7 +77,10 @@ int main() {
   freopen("J.in", "r", stdin);
   freopen("J.out", "w", stdout);
 #endif
-  Input::main();
-  Init::main();
-  Solve::main();
+  fread(read_str, 1, 1 << 25, stdin); 
+  T = read();
+  while (T--) {
+    Input::main();
+    Solve::main();
+  }
 }
