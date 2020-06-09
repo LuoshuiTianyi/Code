@@ -28,12 +28,26 @@ void rstr(char *s) {
   }
 }
 
+const int Max_n = 3005;
+int n, m;
+int tot, a[Max_n][Max_n];
+
 namespace Input {
-void main() { fread(read_str, 1, 1 << 25, stdin); }
+void main() {
+  fread(read_str, 1, 1 << 25, stdin); 
+  n = read(), m = read();
+  char S[Max_n];
+  for (int i = 1; i <= n; i++) {
+    scanf("%s", S + 1);
+    for (int j = 1; j <= m; j++) tot += a[i][j] = S[j] == '*';
+  }
+}
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  
+}
 }  // namespace Init
 
 namespace Solve {
