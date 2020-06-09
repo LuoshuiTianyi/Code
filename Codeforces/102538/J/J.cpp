@@ -31,8 +31,8 @@ void rstr(char *s) {
 const int Max_n = 2e5 + 5, mod = 998244353;
 int T, n, m, ans;
 int tot, cnt;
-int deg[Max_n];
-bool vis[Max_n];
+int deg[Max_n], col[Max_n];
+bool fl;
 struct graph {
   int cntr;
   int hd[Max_n], nx[Max_n * 3], to[Max_n * 3];
@@ -46,7 +46,7 @@ struct graph {
 namespace Input {
 void main() { 
   n = read(), m = read(), G.cntr = 0;
-  for (int i = 1; i <= n; i++) G.hd[i] = deg[i] = vis[i] = 0;
+  for (int i = 1; i <= n; i++) G.hd[i] = deg[i] = 0, col[i] = -1;
   for (int i = 1; i <= m; i++) {
     int u = read(), v = read();
     deg[u]++, deg[v]++;
@@ -56,17 +56,19 @@ void main() {
 }  // namespace Input
 
 namespace Solve {
-void dfs(int x) {
-  vis[x] = 1, tot++, cnt += deg[x];
-  go(G, x, i, v) if (!vis[v]) dfs(v);
+void dfs(int x, int c) {
+  col[x] = c, tot++, cnt += deg[x];
+  go(G, x, i, v) 
+    if (col[v] == -1) dfs(v, c ^ 1);
+    else if (col[v] != (c ^ 1)) fl = 1;
 }
 void main() {
   ans = 1;
   for (int i = 1; i <= n; i++)
-    if (!vis[i]) {
-      tot = cnt = 0, dfs(i);
+    if (col[i] == -1) {
+      tot = cnt = fl = 0, dfs(i, 0);
       cnt >>= 1;
-      for (int j = n; j <= cnt; j++) ans = 5ll * ans % mod;
+      for (int j = tot + fl; j <= cnt; j++) ans = 5ll * ans % mod;
     }
   printf("%d\n", ans);
 }
