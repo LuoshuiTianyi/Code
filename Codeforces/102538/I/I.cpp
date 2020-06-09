@@ -29,21 +29,31 @@ void rstr(char *s) {
 }
 
 const int Max_n = 205, mod = 998244353;
-int n, K;
-int a[Max_n];
+int n, K, ans;
+LL a[Max_n];
+bool vis[Max_n];
 
 namespace Input {
 void main() { 
   fread(read_str, 1, 1 << 25, stdin); 
+  n = read(), K = read();
+  for (int i = 1; i <= n; i++) a[i] = read();
 }
 }  // namespace Input
 
-namespace Init {
-void main() {}
-}  // namespace Init
-
 namespace Solve {
-void main() {}
+void main() {
+  for  (int i = 1; i <= n; i++) {
+    int s1 = 1, s2 = i;
+    for (int j = 0; j < K; j++) {
+      if ((a[i] >> j & 1) && !vis[j]) vis[j] = 1, s1 = (s1 << 1) % mod;
+      if (!(a[i] >> j & 1) && !vis[j]) s2 = (s2 << 1) % mod;
+    }
+    (ans += (LL)s1 * s2 % mod) %= mod;
+    (ans += mod - (LL)s2) %= mod;
+  }
+  cout << ans << endl;
+}
 }  // namespace Solve
 
 int main() {
@@ -52,6 +62,5 @@ int main() {
   freopen("I.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
