@@ -19,7 +19,7 @@ inline LL read() {
   return x * w;
 }
 
-const int Max_n = 6e5 + 5, mod = 998244353;
+const int Max_n = 1e6 + 5, mod = 998244353;
 
 int ksm(int a, int b = mod - 2) {
   int res = 1;
