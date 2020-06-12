@@ -30,10 +30,9 @@ void rstr(char *s) {
   }
 }
 
-const int Max_n = 6e5 + 5, Len = 1 << 20;
+const int Max_n = 6e5 + 5;
 const unsigned long long mod = 998244353;
 int n, a[Max_n], ans[Max_n];
-int gp[Len | 1];
 
 namespace Input {
 void main() { 
@@ -49,18 +48,11 @@ int ksm(int a, int b = mod - 2) {
     if (b & 1) res = (LL)res * a % mod;
   return res;
 }
-namespace Init {
-void main() {
-  gp[0] = 1;
-  int g = ksm(3, (mod - 1) / Len);
-  for (int i = 1; i <= Len; i++) gp[i] = (LL)gp[i - 1] * g % mod;
-}
-}  // namespace Init
 
 namespace Poly {
 int bit, len, rev[Max_n];
 void init(int n) {
-  len = 1 << (bit = log2(n) + 1);
+  len = 1 << (bit = log2(n - 1) + 1);
   for (int i = 0; i < len; i++) rev[i] = rev[i >> 1] >> 1 | ((i & 1) << bit - 1);
 }
 void dft(int *f, bool t) {
@@ -87,7 +79,7 @@ void Inv(int *f, int *inv, int N) {
   static int F[Max_n];
   inv[0] = ksm(f[0]), inv[1] = 0;
   for (int deg = 2; deg < (N << 1); deg <<= 1) {
-    init(deg * 3);
+    init(deg * 2);
     for (int i = 0; i < deg; i++) F[i] = f[i];
     for (int i = deg; i < len; i++) F[i] = inv[i] = 0;
     dft(F, 0), dft(inv, 0);
@@ -113,6 +105,5 @@ int main() {
   freopen("4238.out", "w", stdout);
 #endif
   Input::main();
-  Init::main();
   Solve::main();
 }
