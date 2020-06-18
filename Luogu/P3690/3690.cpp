@@ -72,6 +72,23 @@ void splay(int x) {
     if (nrt(fa)) rotate(rotate(kd(fa) ^ kd(x) ? x : fa));
   upd(x);
 }
+void access(int x) {
+  for (int y = 0; x; x = k[y = x].fa) splay(x), rs(x) = y;
+}
+void makert(int x) { access(x), splay(x), roll(x); }
+int findrt(int x) {
+  access(x), splay(x);
+  while (ls(x)) x = ls(x);
+  return x;
+}
+void link(int u, int v) {
+  makert(u);
+  if (findrt(v) != u) k[u].fa = v;
+}
+void cut(int u, int v) {
+  makert(u);
+  if (findrt(v) == u && k[v].fa == x && !ls(v)) [];
+}
 }  // namespace LCT
 
 namespace Init {
