@@ -91,7 +91,7 @@ void link(int u, int v) {
 }
 void cut(int u, int v) {
   makert(u);
-  if (findrt(v) == u && k[v].fa == u && !ls(v)) rs(u) = k[v].fa = 0, upd(u);
+  if (findrt(v) == u && k[v].fa == u && !ls(v)) rs(u) = k[v].fa = 0;
 }
 int qry(int u, int v) {
   makert(u), access(v), splay(v);
@@ -121,7 +121,7 @@ void main() {
       cut(u, v);
       break;
     case 3:
-      k[u].val = v;
+      splay(u), k[u].val = v;
       break;
     }
   }
