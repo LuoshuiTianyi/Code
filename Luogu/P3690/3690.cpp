@@ -33,7 +33,10 @@ int n, m;
 int a[Max_n];
 
 namespace Input {
-void main() { fread(read_str, 1, 1 << 25, stdin); }
+void main() { 
+  fread(read_str, 1, 1 << 25, stdin); 
+  n = read(), m = read();
+}
 }  // namespace Input
 
 namespace LCT {
@@ -69,7 +72,7 @@ void Push(int x) {
 void splay(int x) {
   Push(x);
   for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
-    if (nrt(fa)) rotate(rotate(kd(fa) ^ kd(x) ? x : fa));
+    if (nrt(fa)) rotate(kd(fa) ^ kd(x) ? x : fa);
   upd(x);
 }
 void access(int x) {
@@ -87,16 +90,37 @@ void link(int u, int v) {
 }
 void cut(int u, int v) {
   makert(u);
-  if (findrt(v) == u && k[v].fa == x && !ls(v)) [];
+  if (findrt(v) == u && k[v].fa == u && !ls(v)) rs(u) = k[v].fa = 0, upd(u);
+}
+int qry(int u, int v) {
+  makert(u), access(v), splay(v);
+  return k[v].xor_sum;
 }
 }  // namespace LCT
+using namespace LCT;
 
 namespace Init {
-void main() {}
+void main() {
+  for (int i = 1; i <= n; i++) k[i].val = read();
+}
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  while (m--) {
+    int op = read(), u = read(), v = read();
+    switch(op) {
+    case 0:
+      printf("%d\n", qry(u, v));
+    case 1:
+      link(u, v);
+    case 2:
+      cut(u, v);
+    case 3:
+      k[u].val = v;
+    }
+  }
+}
 }  // namespace Solve
 
 int main() {
