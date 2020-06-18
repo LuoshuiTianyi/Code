@@ -40,10 +40,24 @@ namespace LCT {
 #define ls(x) k[x].s[0]
 #define rs(x) k[x].s[1]
 struct node {
-  int fa, val, xor_sum, s[2];
+  int fa, val, rev_tag, xor_sum, s[2];
 } k[Max_n];
 bool kd(int x) { return rs(k[x].fa) == x; }
-
+bool nrt(int x) { return ls(k[x].fa) == x || rs(k[x].fa) == x; }
+void upd(int x) { k[x].xor_sum = k[x].val ^ k[ls(x)].xor_sum ^ k[rs(x)].xor_sum; }
+void roll(int x) {
+  if (!x) return;
+  swap(ls(x), rs(x)), k[x].rev_tag ^= 1;
+}
+void pushdown(int x) {
+  if (k[x].rev_tag) {
+    roll(ls(x)), roll(rs(x));
+    k[x].rev_tag = 0;
+  }
+}
+void rotate(int x) {
+  int 
+}
 }
 
 namespace Init {
