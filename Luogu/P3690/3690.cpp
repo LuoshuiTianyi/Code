@@ -44,7 +44,9 @@ struct node {
 } k[Max_n];
 bool kd(int x) { return rs(k[x].fa) == x; }
 bool nrt(int x) { return ls(k[x].fa) == x || kd(x); }
-void upd(int x) { k[x].xor_sum = k[x].val ^ k[ls(x)].xor_sum ^ k[rs(x)].xor_sum; }
+void upd(int x) {
+  k[x].xor_sum = k[x].val ^ k[ls(x)].xor_sum ^ k[rs(x)].xor_sum;
+}
 void roll(int x) {
   if (!x) return;
   swap(ls(x), rs(x)), k[x].rev_tag ^= 1;
@@ -58,6 +60,7 @@ void rotate(int x) {
   k[x].s[!s1] = y, k[y].s[s1] = s2;
   if (s2) k[s2].fa = y;
   k[y].fa = x, k[x].fa = z;
+  upd(y);
 }
 void Push(int x) {
   if (nrt(x)) Push(k[x].fa);
@@ -66,9 +69,10 @@ void Push(int x) {
 void splay(int x) {
   Push(x);
   for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
-    if (nrt(fa)) rotate(kd(fa) ^ kd(x) ? rotate(x) : rotate(fa));
+    if (nrt(fa)) rotate(rotate(kd(fa) ^ kd(x) ? x : fa));
+  upd(x);
 }
-}
+}  // namespace LCT
 
 namespace Init {
 void main() {}
