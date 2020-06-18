@@ -82,6 +82,7 @@ void makert(int x) { access(x), splay(x), roll(x); }
 int findrt(int x) {
   access(x), splay(x);
   while (ls(x)) x = ls(x);
+  splay(x);
   return x;
 }
 void link(int u, int v) {
@@ -112,12 +113,16 @@ void main() {
     switch(op) {
     case 0:
       printf("%d\n", qry(u, v));
+      break;
     case 1:
       link(u, v);
+      break;
     case 2:
       cut(u, v);
+      break;
     case 3:
       k[u].val = v;
+      break;
     }
   }
 }

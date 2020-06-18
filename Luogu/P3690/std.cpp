@@ -20,15 +20,15 @@ inline LL read() {
 const int Max_n = 1e5 + 5;
 int n, m;
 
-struct Splay {
-  int fa, tag, v, sum, s[2];
-} k[Max_n];
 namespace LCT {
 #define ls(x) k[x].s[0]
 #define rs(x) k[x].s[1]
-bool kd(int x) { return rs(k[x].fa) == x; }
+struct node {
+  int fa, s[2], v, tag, xs;
+} k[Max_n];
+bool kd(int x) { return x == rs(k[x].fa); }
 bool nrt(int x) { return ls(k[x].fa) == x || rs(k[x].fa) == x; }
-void upd(int x) { k[x].sum = k[ls(x)].sum ^ k[rs(x)].sum ^ k[x].v; }
+void upd(int x) { k[x].xs = k[x].v ^ k[ls(x)].xs ^ k[rs(x)].xs; }
 void roll(int x) {
   if (!x) return;
   swap(ls(x), rs(x)), k[x].tag ^= 1;
@@ -43,14 +43,14 @@ void rotate(int x) {
   if (s2) k[s2].fa = y;
   k[x].fa = z, k[y].fa = x, upd(y);
 }
-int stk[Max_n];
+void Push(int x) {
+  if (nrt(x)) Push(k[x].fa);
+  pushdown(x);
+}
 void splay(int x) {
-  int top = 0, p;
-  for (p = x; nrt(p); p = k[p].fa) stk[++top] = p;
-  stk[++top] = p;
-  while (top) pushdown(stk[top--]);
+  Push(x);
   for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
-    if (nrt(fa)) rotate(kd(x) ^ kd(fa) ? x : fa);
+    if (nrt(fa)) rotate(kd(fa) ^ kd(x) ? x : fa);
   upd(x);
 }
 void access(int x) {
@@ -59,13 +59,13 @@ void access(int x) {
 void makert(int x) { access(x), splay(x), roll(x); }
 int findrt(int x) {
   access(x), splay(x);
-  while (ls(x)) pushdown(x), x = ls(x);
+  while (ls(x)) x = ls(x);
   splay(x);
   return x;
 }
 int query(int x, int y) {
   makert(x), access(y), splay(y);
-  return k[y].sum;
+  return k[y].xs;
 }
 void link(int x, int y) {
   makert(x);
@@ -76,6 +76,7 @@ void cut(int x, int y) {
   if (findrt(y) == x && k[y].fa == x && !ls(y)) k[y].fa = rs(x) = 0, upd(x);
 }
 }  // namespace LCT
+using namespace LCT;
 
 namespace Input {
 void main() {
@@ -86,13 +87,22 @@ void main() {
 
 namespace Solve {
 void main() {
-  int op, x, y;
   while (m--) {
-    op = read(), x = read(), y = read();
-    if (op == 0) printf("%d\n", LCT::query(x, y));
-    if (op == 1) LCT::link(x, y);
-    if (op == 2) LCT::cut(x, y);
-    if (op == 3) LCT::splay(x), k[x].v = y;
+    int opt = read(), u = read(), v = read();
+    switch (opt) {
+      case 0:
+        printf("%d\n", query(u, v));
+        break;
+      case 1:
+        link(u, v);
+        break;
+      case 2:
+        cut(u, v);
+        break;
+      default:
+        splay(u), k[u].v = v;
+        break;
+    }
   }
 }
 }  // namespace Solve
@@ -100,7 +110,7 @@ void main() {
 int main() {
 #ifndef ONLINE_JUDGE
   freopen("3690.in", "r", stdin);
-  freopen("3690.out", "w", stdout);
+  freopen("3690.ans", "w", stdout);
 #endif
   Input::main();
   Solve::main();
