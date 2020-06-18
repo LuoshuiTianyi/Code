@@ -43,20 +43,30 @@ struct node {
   int fa, val, rev_tag, xor_sum, s[2];
 } k[Max_n];
 bool kd(int x) { return rs(k[x].fa) == x; }
-bool nrt(int x) { return ls(k[x].fa) == x || rs(k[x].fa) == x; }
+bool nrt(int x) { return ls(k[x].fa) == x || kd(x); }
 void upd(int x) { k[x].xor_sum = k[x].val ^ k[ls(x)].xor_sum ^ k[rs(x)].xor_sum; }
 void roll(int x) {
   if (!x) return;
   swap(ls(x), rs(x)), k[x].rev_tag ^= 1;
 }
 void pushdown(int x) {
-  if (k[x].rev_tag) {
-    roll(ls(x)), roll(rs(x));
-    k[x].rev_tag = 0;
-  }
+  if (k[x].rev_tag) roll(ls(x)), roll(rs(x)), k[x].rev_tag = 0;
 }
 void rotate(int x) {
-  int 
+  int y = k[x].fa, z = k[y].fa, s1 = kd(x), s2 = k[x].s[!s1];
+  if (nrt(y)) k[z].s[kd(y)] = x;
+  k[x].s[!s1] = y, k[y].s[s1] = s2;
+  if (s2) k[s2].fa = y;
+  k[y].fa = x, k[x].fa = z;
+}
+void Push(int x) {
+  if (nrt(x)) Push(k[x].fa);
+  pushdown(x);
+}
+void splay(int x) {
+  Push(x);
+  for (int fa = k[x].fa; nrt(x); rotate(x), fa = k[x].fa)
+    if (nrt(fa)) rotate(kd(fa) ^ kd(x) ? rotate(x) : rotate(fa));
 }
 }
 
