@@ -70,10 +70,16 @@ void access(int x) {
   for (int y = 0; x; x = fa(y = x)) splay(x), rs(x) = y;
 }
 void makert(int x) {
+  access(x), splay(x), roll(x);
 }
 int findrt(int x) {
+  access(x), splay(x);
+  while (ls(x)) x = ls(x);
+  return x;
 }
 void link(int u, int v) {
+  makert(u), access(v), splay(v);
+  
 }
 void cut(int u, int v) {
 }
