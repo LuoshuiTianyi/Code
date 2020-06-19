@@ -49,6 +49,36 @@ void roll(int x) {
 void pushdown (int x) {
   if (k[x].rev_tag) roll(ls(x)), roll(rs(x)), k[x].rev_tag = 0;
 }
+void rotate(int x) {
+  int y = fa(x), z = fa(y), s1 = kd(x), s2 = k[x].s[!s1];
+  if (nrt(y)) k[z].s[kd(y)] = x;
+  k[x].s[!s1] = y, k[y].s[s1] = s2;
+  if (s2) k[s2].fa = y;
+  k[y].fa = x, k[x].fa = z, upd(y);
+}
+void Push(int x) {
+  if (nrt(x)) Push(fa(x));
+  pushdown(x);
+}
+void splay(int x) {
+  Push(x);
+  for (int f = fa(x); nrt(x); rotate(x), f = fa(x))
+    if (nrt(f)) rotate(kd(f) ^ kd(x) ? x : f);
+  upd(x);
+}
+void access(int x) {
+  for (int y = 0; x; x = fa(y = x)) splay(x), rs(x) = y;
+}
+void makert(int x) {
+}
+int findrt(int x) {
+}
+void link(int u, int v) {
+}
+void cut(int u, int v) {
+}
+int qry(int u, int v) {
+}
 }
 
 namespace Input {
