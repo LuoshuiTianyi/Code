@@ -29,6 +29,7 @@ void rstr(char *s) {
 }
 
 const int Max_n = 1e5 + 5;
+int n, m;
 
 namespace LCT {
 #define ls(x) k[x].s[0]
@@ -46,7 +47,7 @@ void roll(int x) {
   if (!x) return;
   swap(ls(x), rs(x)), k[x].rev_tag ^= 1;
 }
-void pushdown (int x) {
+void pushdown(int x) {
   if (k[x].rev_tag) roll(ls(x)), roll(rs(x)), k[x].rev_tag = 0;
 }
 void rotate(int x) {
@@ -54,7 +55,7 @@ void rotate(int x) {
   if (nrt(y)) k[z].s[kd(y)] = x;
   k[x].s[!s1] = y, k[y].s[s1] = s2;
   if (s2) k[s2].fa = y;
-  k[y].fa = x, k[x].fa = z, upd(y);
+  fa(y) = x, fa(x) = z, upd(y);
 }
 void Push(int x) {
   if (nrt(x)) Push(fa(x));
@@ -69,34 +70,61 @@ void splay(int x) {
 void access(int x) {
   for (int y = 0; x; x = fa(y = x)) splay(x), rs(x) = y;
 }
-void makert(int x) {
-  access(x), splay(x), roll(x);
-}
+void makert(int x) { access(x), splay(x), roll(x); }
 int findrt(int x) {
   access(x), splay(x);
   while (ls(x)) x = ls(x);
+  splay(x);
   return x;
 }
 void link(int u, int v) {
-  makert(u), access(v), splay(v);
-  
+  makert(u);
+  if (findrt(v) != u) fa(u) = v;
 }
 void cut(int u, int v) {
+  makert(u);
+  if (findrt(v) == u && fa(v) == u && !ls(v)) rs(u) = fa(v) = 0, upd(u);
 }
 int qry(int u, int v) {
+  makert(u), access(v), splay(v);
+  return k[v].xor_sum;
 }
-}
+}  // namespace LCT
+using namespace LCT;
 
 namespace Input {
-void main() { fread(read_str, 1, 1 << 25, stdin); }
+void main() { 
+  fread(read_str, 1, 1 << 25, stdin); 
+  n = read(), m = read();
+}
 }  // namespace Input
 
 namespace Init {
-void main() {}
+void main() {
+  for (int i = 1; i <= n; i++) k[i].val = read();
+}
 }  // namespace Init
 
 namespace Solve {
-void main() {}
+void main() {
+  while (m--) {
+    int op = read(), u = read(), v = read();
+    switch(op) {
+    case 0:
+      printf("%d\n", qry(u, v));
+      break;
+    case 1:
+      link(u, v);
+      break;
+    case 2:
+      cut(u, v);
+      break;
+    default:
+      splay(u), k[u].val = v;
+      break;
+    }
+  }
+}
 }  // namespace Solve
 
 int main() {
